@@ -72,7 +72,7 @@
         <org.apache.http.version>4.5.14</org.apache.http.version>
         <org.lombok.version>1.18.30</org.lombok.version>
         <org.openapitools.nullable>0.2.6</org.openapitools.nullable>
-        <org.postgresql.version>42.7.1</org.postgresql.version>
+        <org.postgresql.version>42.7.2</org.postgresql.version>
         <org.slf4j.version>2.0.9</org.slf4j.version>
         <org.springframework.version>6.1.2</org.springframework.version>
         <org.springdoc.version>2.3.0</org.springdoc.version>
