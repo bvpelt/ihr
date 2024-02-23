@@ -154,7 +154,7 @@ public class PlannenService {
     }
     public UpdateCounter loadPlannen() {
         UpdateCounter updateCounter = new UpdateCounter();
-        Iterable<ImroLoadDto> imroLoadDtos = imroLoadRepository.findAll();
+        Iterable<ImroLoadDto> imroLoadDtos = imroLoadRepository.findByIdentificatieNotLoaded();
 
         imroLoadDtos.forEach(
                 imroPlan -> {

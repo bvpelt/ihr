@@ -15,8 +15,8 @@ public interface ImroLoadRepository extends PagingAndSortingRepository<ImroLoadD
         CrudRepository<ImroLoadDto, Long>,
         JpaSpecificationExecutor<ImroLoadDto> {
 
-    @Query(
+     @Query(
             value =
-                    "SELECT * FROM plan WHERE identificatie = :identificatie", nativeQuery = true)
-    Optional<PlanDto> findByIdentificatie(String identificatie);
+                    "SELECT * FROM imroload WHERE  loaded = false", nativeQuery = true)
+    Iterable<ImroLoadDto> findByIdentificatieNotLoaded();
 }
