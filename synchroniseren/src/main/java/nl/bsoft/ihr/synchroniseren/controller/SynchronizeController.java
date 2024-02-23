@@ -22,8 +22,8 @@ public class SynchronizeController {
     private final PlannenService plannenService;
 
     @Operation(
-            operationId = "bestuurlijkeGebiedenSynchronisation",
-            summary = "Synchronize bestuurlijkegebieden",
+            operationId = "ihrSynchronisation",
+            summary = "Synchronize ihr",
             responses = {
                     @ApiResponse(responseCode = "200", description = "OK.", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = UpdateCounter.class))
@@ -39,6 +39,28 @@ public class SynchronizeController {
         UpdateCounter counter = new UpdateCounter();
 
         counter = plannenService.getAllPlannen();
+
+        return ResponseEntity.ok(counter);
+    }
+
+    @Operation(
+            operationId = "ihrSynchronisation",
+            summary = "Synchronize ihr",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "OK.", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = UpdateCounter.class))
+                    })
+            }
+    )
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value = "/load",
+            produces = {"application/json"}
+    )
+    public ResponseEntity<UpdateCounter> loadIhrPlannen() {
+        UpdateCounter counter = new UpdateCounter();
+
+        counter = plannenService.loadPlannen();
 
         return ResponseEntity.ok(counter);
     }

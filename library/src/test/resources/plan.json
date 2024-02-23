@@ -1,0 +1,156 @@
+{
+  "_links": {
+    "self": {
+      "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0268.FBPGeluidzoneWink-VG01"
+    }
+  },
+  "relatiesVanuitExternePlannen": {
+    "tenGevolgeVan": [],
+    "gedeeltelijkeHerzieningVan": [],
+    "uitTeWerkenIn": [],
+    "vervangt": [],
+    "uitgewerktIn": [],
+    "gebruiktInformatieUit": [],
+    "muteert": []
+  },
+  "regelStatus": "geldend",
+  "ondergronden": [
+    {
+      "datum": "2022-07-26",
+      "type": "other: basisregistratie grootschalige topografie (BGT) en Digitale Kadastrale Kaart (DKK)"
+    }
+  ],
+  "normadressant": [],
+  "heeftOnderdelen": [
+    {
+      "type": "regels",
+      "heeftObjectgerichteTeksten": [
+        {
+          "titel": "Regels",
+          "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0268.FBPGeluidzoneWink-VG01/teksten/NL.IMRO.PT.regels.s4",
+          "type": "regels"
+        }
+      ],
+      "externeReferenties": [
+        "https://www.ruimtelijkeplannen.nl/documents/NL.IMRO.0268.FBPGeluidzoneWink-VG01/r_NL.IMRO.0268.FBPGeluidzoneWink-VG01.html"
+      ]
+    },
+    {
+      "type": "toelichting",
+      "heeftObjectgerichteTeksten": [
+        {
+          "titel": "Toelichting",
+          "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0268.FBPGeluidzoneWink-VG01/teksten/NL.IMRO.PT.toelichting.s1",
+          "type": "toelichting"
+        },
+        {
+          "titel": "Bijlagen bij toelichting",
+          "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0268.FBPGeluidzoneWink-VG01/teksten/NL.IMRO.PT.toelichting.Bijlagenbijtoelichting",
+          "type": "bijlagen bij toelichting"
+        }
+      ],
+      "externeReferenties": [
+        "https://www.ruimtelijkeplannen.nl/documents/NL.IMRO.0268.FBPGeluidzoneWink-VG01/t_NL.IMRO.0268.FBPGeluidzoneWink-VG01.html"
+      ]
+    }
+  ],
+  "type": "gemeentelijk plan; wijzigingsplan artikel 11",
+  "verwijzingNaarGml": "https://www.ruimtelijkeplannen.nl/documents/NL.IMRO.0268.FBPGeluidzoneWink-VG01/NL.IMRO.0268.FBPGeluidzoneWink-VG01.gml",
+  "planstatusInfo": {
+    "datum": "2023-07-12",
+    "planstatus": "vastgesteld"
+  },
+  "beleidsmatigVerantwoordelijkeOverheid": {
+    "code": "0268",
+    "type": "gemeentelijke overheid",
+    "naam": "Gemeente Nijmegen"
+  },
+  "verwijzingNorm": [
+    "IMRO2012",
+    "PRBP2012",
+    "PRABPK2012"
+  ],
+  "relatiesMetExternePlannen": {
+    "tenGevolgeVan": [],
+    "gedeeltelijkeHerzieningVan": [],
+    "uitTeWerkenIn": [],
+    "vervangt": [
+      {
+        "dossier": {
+          "status": "geheel in werking"
+        },
+        "id": "NL.IMRO.0268.BPa4000-VG01",
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0268.BPa4000-VG01",
+        "naam": "Nijmegen Dukenburg 2021",
+        "planstatusInfo": {
+          "datum": "2022-03-09",
+          "planstatus": "vastgesteld"
+        }
+      }
+    ],
+    "uitgewerktIn": [],
+    "gebruiktInformatieUit": [],
+    "muteert": [
+      {
+        "dossier": {
+          "status": "geheel onherroepelijk in werking"
+        },
+        "id": "NL.IMRO.0268.BPa12001-VG01",
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0268.BPa12001-VG01",
+        "naam": "Nijmegen Goffert Winkelsteeg 2017 - 1 (Weg door Jonkerbos 55)",
+        "planstatusInfo": {
+          "datum": "2022-03-09",
+          "planstatus": "vastgesteld"
+        }
+      },
+      {
+        "dossier": {
+          "status": "geheel onherroepelijk in werking"
+        },
+        "id": "NL.IMRO.0268.BPa12000-VG01",
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0268.BPa12000-VG01",
+        "naam": "Nijmegen Goffert-Winkelsteeg 2017",
+        "planstatusInfo": {
+          "datum": "2019-01-30",
+          "planstatus": "vastgesteld"
+        }
+      },
+      {
+        "dossier": {
+          "status": "deels onherroepelijk in werking"
+        },
+        "id": "NL.IMRO.0268.BP11000-VG02",
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0268.BP11000-VG02",
+        "naam": "Nijmegen West",
+        "planstatusInfo": {
+          "datum": "2013-10-23",
+          "planstatus": "vastgesteld"
+        }
+      }
+    ]
+  },
+  "id": "NL.IMRO.0268.FBPGeluidzoneWink-VG01",
+  "besluitnummer": "66/2023",
+  "verwijzingNaarVaststellingsbesluit": "https://www.ruimtelijkeplannen.nl/documents/NL.IMRO.0268.FBPGeluidzoneWink-VG01/vb_NL.IMRO.0268.FBPGeluidzoneWink-VG01.pdf",
+  "locatienamen": [
+    "Nijmegen"
+  ],
+  "dossier": {
+    "id": "NL.IMRO.0268.FBPGeluidzoneWink",
+    "status": "geheel onherroepelijk in werking"
+  },
+  "naam": "Facetbestemmingsplan Geluidzone Winkelsteeg",
+  "regelBinding": "burgerbindend",
+  "isTamPlan": false,
+  "beroepEnBezwaar": "nee",
+  "isHistorisch": false,
+  "verwijderdOp": null,
+  "isParapluplan": true,
+  "illustraties": [],
+  "eindeRechtsgeldigheid": null,
+  "publicerendBevoegdGezag": {
+    "code": "0268",
+    "type": "gemeentelijke overheid",
+    "naam": "gemeente Nijmegen"
+  }
+}

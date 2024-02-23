@@ -62,15 +62,26 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <com.betadriven.version>2.4</com.betadriven.version>
+        <com.google.code.version>3.0.2</com.google.code.version>
+        <commons-codec.version>1.16.0</commons-codec.version>
+        <doxyia-module-markdown.version>1.12.0</doxyia-module-markdown.version>
+        <io.github.version>7.0.0</io.github.version>
         <io.swagger.version>2.2.20</io.swagger.version>
         <jackson-bom.version>2.16.1</jackson-bom.version>
+        <jakarta.activation.version>2.1.2</jakarta.activation.version>
+        <jakarta.persistence.version>3.1.0</jakarta.persistence.version>
         <jakarta.validation.version>3.0.2</jakarta.validation.version>
         <flyway-core.version>10.4.1</flyway-core.version>
+        <maven-compiler-plugin.version>3.12.0</maven-compiler-plugin.version>
         <maven-jxr-plugin.version>3.3.1</maven-jxr-plugin.version>
         <openapi-plugin.version>7.2.0</openapi-plugin.version>
         <org.apache.commons.version>3.14.0</org.apache.commons.version>
         <org.apache.http.version>4.5.14</org.apache.http.version>
+        <org.hibernate.orm.hibernate-spatial.version>6.4.1.Final</org.hibernate.orm.hibernate-spatial.version>
+        <org.junit.jupiter.version>5.10.1</org.junit.jupiter.version>
         <org.lombok.version>1.18.30</org.lombok.version>
+        <org.mapstruct.version>1.6.0.Beta1</org.mapstruct.version>
+        <org.mapstruct-binding.version>0.2.0</org.mapstruct-binding.version>
         <org.openapitools.nullable>0.2.6</org.openapitools.nullable>
         <org.postgresql.version>42.7.1</org.postgresql.version>
         <org.slf4j.version>2.0.9</org.slf4j.version>
@@ -151,6 +162,11 @@
                 <artifactId>flyway-database-postgresql</artifactId>
                 <version>${flyway-core.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${org.mapstruct.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.openapitools</groupId>
@@ -202,6 +218,32 @@
         <pluginManagement>
             <plugins>
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin.version}</version>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                                <version>${lombok.version}</version>
+                            </path>
+                            <path>
+                                <groupId>org.mapstruct</groupId>
+                                <artifactId>mapstruct-processor</artifactId>
+                                <version>${org.mapstruct.version}</version>
+                            </path>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok-mapstruct-binding</artifactId>
+                                <version>${org.mapstruct-binding.version}</version>
+                            </path>
+                        </annotationProcessorPaths>
+                    </configuration>
+                </plugin>
+                <plugin>
                     <groupId>org.flywaydb</groupId>
                     <artifactId>flyway-maven-plugin</artifactId>
                     <version>${flyway-core.version}</version>
@@ -222,35 +264,6 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jxr-plugin</artifactId>
                     <version>${maven-jxr-plugin.version}</version>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>${maven-compiler-plugin.version}</version>
-                    <configuration>
-                        <source>${java.version}</source>
-                        <target>${java.version}</target>
-                        <annotationProcessorPaths>
-                            <path>
-                                <groupId>org.projectlombok</groupId>
-                                <artifactId>lombok</artifactId>
-                                <version>${lombok.version}</version>
-                            </path>
-                            <!--
-                            <path>
-                                <groupId>org.mapstruct</groupId>
-                                <artifactId>mapstruct-processor</artifactId>
-                                <version>${org.mapstruct.version}</version>
-                            </path>
-                            <path>
-                                <groupId>org.projectlombok</groupId>
-                                <artifactId>lombok-mapstruct-binding</artifactId>
-                                <version>${org.mapstruct-binding.version}</version>
-                            </path>
-                            -->
-                        </annotationProcessorPaths>
-                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>

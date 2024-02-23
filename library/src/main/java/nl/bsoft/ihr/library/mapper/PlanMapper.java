@@ -1,0 +1,98 @@
+package nl.bsoft.ihr.library.mapper;
+
+import lombok.Setter;
+import nl.bsoft.ihr.generated.model.Plan;
+import nl.bsoft.ihr.generated.model.PlanDossier;
+import nl.bsoft.ihr.generated.model.PlanType;
+import nl.bsoft.ihr.generated.model.PlanstatusInfo;
+import nl.bsoft.ihr.library.model.dto.PlanDto;
+import org.locationtech.jts.io.ParseException;
+import org.mapstruct.*;
+import org.openapitools.jackson.nullable.JsonNullable;
+
+import java.time.LocalDate;
+
+@Setter
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
+        componentModel = "spring",
+        injectionStrategy = InjectionStrategy.CONSTRUCTOR,
+        uses = {
+                JsonNullableMapper.class
+        },
+        nullValueIterableMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
+public abstract class PlanMapper {
+
+    @Mapping(target = "id", source = "id", ignore = true)
+    @Mapping(target = "identificatie", source = "id", qualifiedByName = "toId")
+    @Mapping(target = "naam", source = "naam")
+    @Mapping(target = "besluitNummer", source = "besluitnummer", qualifiedByName = "toJsonNullableString")
+    @Mapping(target = "plantype", source = "type", qualifiedByName = "toPlanType")
+    @Mapping(target = "planstatus", source = "planstatusInfo.planstatus", qualifiedByName = "toPlanStatus")
+    @Mapping(target = "planstatusdate", source = ".", qualifiedByName = "toPlanStatusDate")
+    @Mapping(target = "regelstatus", source = "regelStatus", qualifiedByName = "toJsonNullableString")
+    @Mapping(target = "dossierid", source = "dossier", qualifiedByName = "toDossierId")
+    @Mapping(target = "dossierstatus", source = "dossier", qualifiedByName = "toDossierStatus")
+    public abstract PlanDto toPlan(Plan plan) throws ParseException;
+
+    @Named("toId")
+    protected String toPlanStatusDate(String id) {
+        return id;
+    }
+
+    @Named("toPlanType")
+    protected String toPlanType(PlanType planType) {
+        String type = null;
+
+        type = planType.getValue();
+        return type;
+    }
+
+    @Named("toPlanStatusDate")
+    protected LocalDate toPlanStatusDate(Plan plan) {
+        LocalDate planStatusDate;
+
+
+        planStatusDate = plan.getPlanstatusInfo().getDatum();
+        return planStatusDate;
+    }
+
+    @Named("toPlanStatus")
+    protected String toPlanStatus(PlanstatusInfo.PlanstatusEnum planstatusEnum) {
+        String planStatus = null;
+
+        planStatus = planstatusEnum.getValue();
+
+        return planStatus;
+    }
+
+    @Named("toDossierId")
+    protected String toDossierId(JsonNullable<PlanDossier> planDossierJsonNullable) {
+        String dossierid = null;
+
+        if (planDossierJsonNullable.isPresent()) {
+            dossierid = planDossierJsonNullable.get().getId();
+        }
+        return dossierid;
+    }
+
+    @Named("toDossierStatus")
+    protected String toDossierStatus(JsonNullable<PlanDossier> planDossierJsonNullable) {
+        String dossierstatus = null;
+
+        if (planDossierJsonNullable.isPresent()) {
+            if (planDossierJsonNullable.get().getStatus().isPresent()) {
+                dossierstatus = planDossierJsonNullable.get().getStatus().get();
+            }
+        }
+        return dossierstatus;
+    }
+
+    @Named("toJsonNullableString")
+    protected String toJsonNullableString(JsonNullable<String> jsonNullable) {
+        if (jsonNullable.isPresent()) {
+            return jsonNullable.get();
+        } else {
+            return null;
+        }
+    }
+}

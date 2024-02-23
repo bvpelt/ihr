@@ -23,30 +23,59 @@ public class PlanDto {
     private String identificatie;
     @Column(name = "naam")
     private String naam;
+    @Column(name = "besluitnummer")
+    private String besluitNummer;
     @Column(name = "plantype")
     private String plantype;
     @Column(name = "planstatus")
     private String planstatus;
     @Column(name = "planstatusdate")
     private LocalDate planstatusdate;
+    @Column(name = "regelstatus")
+    private String regelstatus;
+    @Column(name = "dossierid")
+    private String dossierid;
+    @Column(name = "dossierstatus")
+    private String dossierstatus;
 
-    public PlanDto(String identificatie, String naam, String plantype, String planstatus, LocalDate planstatusdate) {
+    public PlanDto(String identificatie, String naam, String plantype, String planstatus, LocalDate planstatusdate, String dossierid, String dossierstatus, String besluitNummer, String regelstatus) {
         this.identificatie = identificatie;
         this.naam = naam;
+        this.besluitNummer = besluitNummer;
         this.plantype = plantype;
         this.planstatus = planstatus;
         this.planstatusdate = planstatusdate;
+        this.regelstatus = regelstatus;
+        this.dossierid = dossierid;
+        this.dossierstatus = dossierstatus;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PlanDto planDto = (PlanDto) o;
-        return Objects.equals(identificatie, planDto.identificatie) && Objects.equals(naam, planDto.naam) && Objects.equals(plantype, planDto.plantype) && Objects.equals(planstatus, planDto.planstatus) && Objects.equals(planstatusdate, planDto.planstatusdate);
+        return Objects.equals(identificatie, planDto.identificatie) && Objects.equals(naam, planDto.naam) && Objects.equals(besluitNummer, planDto.besluitNummer) && Objects.equals(plantype, planDto.plantype) && Objects.equals(planstatus, planDto.planstatus) && Objects.equals(planstatusdate, planDto.planstatusdate) && Objects.equals(regelstatus, planDto.regelstatus) && Objects.equals(dossierid, planDto.dossierid) && Objects.equals(dossierstatus, planDto.dossierstatus);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(identificatie, naam, plantype, planstatus, planstatusdate);
+        return Objects.hash(identificatie, naam, besluitNummer, plantype, planstatus, planstatusdate, regelstatus, dossierid, dossierstatus);
+    }
+
+    @Override
+    public String toString() {
+        return "PlanDto{" +
+                "id=" + id +
+                ", identificatie='" + identificatie + '\'' +
+                ", naam='" + naam + '\'' +
+                ", besluitNummer='" + besluitNummer + '\'' +
+                ", plantype='" + plantype + '\'' +
+                ", planstatus='" + planstatus + '\'' +
+                ", planstatusdate=" + planstatusdate +
+                ", regelstatus='" + regelstatus + '\'' +
+                ", dossierid='" + dossierid + '\'' +
+                ", dossierstatus='" + dossierstatus + '\'' +
+                '}';
     }
 }

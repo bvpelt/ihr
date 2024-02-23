@@ -1,0 +1,30 @@
+nl:
+  bsoft:
+    ihr:
+      library:
+        config:
+          ihr:
+            rest:
+              api:
+                maxpagesize: 50
+                baseurl: https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4
+                apikey: l7f833bd256c04444da04b0fe9ad3def88
+                coordinatereferencesystem: epsg:28992
+
+spring:
+  application:
+    name: '@project.name@'
+  main:
+    banner-mode: 'off'
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/ihr
+    username: testuser
+    password: 12345
+  flyway:
+    enabled: false
+    url: jdbc:postgresql://localhost:5432/ihr
+    user: testuser
+    password: 12345
+    validateMigrationNaming: true
+    locations: classpath:db/migration
