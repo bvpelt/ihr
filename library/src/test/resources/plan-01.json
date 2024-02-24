@@ -135,10 +135,7 @@
   "locatienamen": [
     "Nijmegen"
   ],
-  "dossier": {
-    "id": "NL.IMRO.0268.FBPGeluidzoneWink",
-    "status": "geheel onherroepelijk in werking"
-  },
+  "dossier": null,
   "naam": "Facetbestemmingsplan Geluidzone Winkelsteeg",
   "regelBinding": "burgerbindend",
   "isTamPlan": false,

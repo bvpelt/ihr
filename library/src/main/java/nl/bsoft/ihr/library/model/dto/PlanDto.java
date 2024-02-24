@@ -14,7 +14,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "plan", schema = "public", catalog = "ihr")
 public class PlanDto {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 4L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,7 +38,11 @@ public class PlanDto {
     @Column(name = "dossierstatus")
     private String dossierstatus;
 
-    public PlanDto(String identificatie, String naam, String plantype, String planstatus, LocalDate planstatusdate, String dossierid, String dossierstatus, String besluitNummer, String regelstatus) {
+    // link to location -- do not use in equal check
+    @Column(name = "md5hash", nullable = false)
+    private String md5hash;
+
+    public PlanDto(String identificatie, String naam, String plantype, String planstatus, LocalDate planstatusdate, String dossierid, String dossierstatus, String besluitNummer, String regelstatus, String md5hash) {
         this.identificatie = identificatie;
         this.naam = naam;
         this.besluitNummer = besluitNummer;
@@ -48,6 +52,7 @@ public class PlanDto {
         this.regelstatus = regelstatus;
         this.dossierid = dossierid;
         this.dossierstatus = dossierstatus;
+        this.md5hash = md5hash;
     }
 
     @Override
@@ -55,12 +60,12 @@ public class PlanDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PlanDto planDto = (PlanDto) o;
-        return Objects.equals(identificatie, planDto.identificatie) && Objects.equals(naam, planDto.naam) && Objects.equals(besluitNummer, planDto.besluitNummer) && Objects.equals(plantype, planDto.plantype) && Objects.equals(planstatus, planDto.planstatus) && Objects.equals(planstatusdate, planDto.planstatusdate) && Objects.equals(regelstatus, planDto.regelstatus) && Objects.equals(dossierid, planDto.dossierid) && Objects.equals(dossierstatus, planDto.dossierstatus);
+        return Objects.equals(identificatie, planDto.identificatie) && Objects.equals(naam, planDto.naam) && Objects.equals(besluitNummer, planDto.besluitNummer) && Objects.equals(plantype, planDto.plantype) && Objects.equals(planstatus, planDto.planstatus) && Objects.equals(planstatusdate, planDto.planstatusdate) && Objects.equals(regelstatus, planDto.regelstatus) && Objects.equals(dossierid, planDto.dossierid) && Objects.equals(dossierstatus, planDto.dossierstatus) && Objects.equals(md5hash, planDto.md5hash);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(identificatie, naam, besluitNummer, plantype, planstatus, planstatusdate, regelstatus, dossierid, dossierstatus);
+        return Objects.hash(identificatie, naam, besluitNummer, plantype, planstatus, planstatusdate, regelstatus, dossierid, dossierstatus, md5hash);
     }
 
     @Override
@@ -76,6 +81,7 @@ public class PlanDto {
                 ", regelstatus='" + regelstatus + '\'' +
                 ", dossierid='" + dossierid + '\'' +
                 ", dossierstatus='" + dossierstatus + '\'' +
+                ", md5hash='" + md5hash + '\'' +
                 '}';
     }
 }

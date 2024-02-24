@@ -14,7 +14,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "imroload", schema = "public", catalog = "ihr")
 public class ImroLoadDto {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

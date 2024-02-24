@@ -1,10 +1,8 @@
 package nl.bsoft.ihr.library.mapper;
 
 import lombok.Setter;
-import nl.bsoft.ihr.generated.model.Plan;
-import nl.bsoft.ihr.generated.model.PlanDossier;
-import nl.bsoft.ihr.generated.model.PlanType;
-import nl.bsoft.ihr.generated.model.PlanstatusInfo;
+import nl.bsoft.ihr.generated.model.*;
+import nl.bsoft.ihr.library.model.dto.OverheidDto;
 import nl.bsoft.ihr.library.model.dto.PlanDto;
 import org.locationtech.jts.io.ParseException;
 import org.mapstruct.*;
@@ -34,6 +32,18 @@ public abstract class PlanMapper {
     @Mapping(target = "dossierstatus", source = "dossier", qualifiedByName = "toDossierStatus")
     public abstract PlanDto toPlan(Plan plan) throws ParseException;
 
+    @Mapping(target = "id", source = "id", ignore = true)
+    @Mapping(target = "type", source = "beleidsmatigVerantwoordelijkeOverheid", qualifiedByName = "toBeleidType")
+    @Mapping(target = "code", source = "beleidsmatigVerantwoordelijkeOverheid.code", qualifiedByName = "toJsonNullableString")
+    @Mapping(target = "plan_identificatie", source = "id", qualifiedByName = "toId")
+    public abstract OverheidDto toBeleidOverheid(Plan plan) throws ParseException;
+
+    @Mapping(target = "id", source = "id", ignore = true)
+    @Mapping(target = "type", source = "publicerendBevoegdGezag", qualifiedByName = "toPublicerendType")
+    @Mapping(target = "code", source = "publicerendBevoegdGezag", qualifiedByName = "toPublicerendCode")
+    @Mapping(target = "plan_identificatie", source = "id", qualifiedByName = "toId")
+    public abstract OverheidDto toPublicerendOverheid(Plan plan) throws ParseException;
+
     @Named("toId")
     protected String toPlanStatusDate(String id) {
         return id;
@@ -47,10 +57,40 @@ public abstract class PlanMapper {
         return type;
     }
 
+    @Named("toBeleidType")
+    protected String toBeleidType(PlanBeleidsmatigVerantwoordelijkeOverheid publicerendBevoegdGezag) {
+        String type = null;
+
+        type = publicerendBevoegdGezag.getType().getValue();
+        return type;
+    }
+
+    @Named("toPublicerendType")
+    protected String toPublicerendType( JsonNullable<PlanPublicerendBevoegdGezag>  publicerendBevoegdGezag) {
+        String type = null;
+
+        if (publicerendBevoegdGezag.isPresent()) {
+            type = publicerendBevoegdGezag.get().getType().getValue();
+        }
+
+        return type;
+    }
+
+    @Named("toPublicerendCode")
+    protected String toPublicerendCode( JsonNullable<PlanPublicerendBevoegdGezag>  publicerendBevoegdGezag) {
+        String code = null;
+
+        if (publicerendBevoegdGezag.isPresent()) {
+            if (publicerendBevoegdGezag.get().getCode().isPresent()) {
+                code = publicerendBevoegdGezag.get().getCode().get();
+            }
+        }
+        return code;
+    }
+
     @Named("toPlanStatusDate")
     protected LocalDate toPlanStatusDate(Plan plan) {
         LocalDate planStatusDate;
-
 
         planStatusDate = plan.getPlanstatusInfo().getDatum();
         return planStatusDate;
@@ -69,8 +109,14 @@ public abstract class PlanMapper {
     protected String toDossierId(JsonNullable<PlanDossier> planDossierJsonNullable) {
         String dossierid = null;
 
-        if (planDossierJsonNullable.isPresent()) {
-            dossierid = planDossierJsonNullable.get().getId();
+        if (planDossierJsonNullable != null) {
+            if (planDossierJsonNullable.isPresent()) {
+                if (planDossierJsonNullable.get() != null) {
+                    if (planDossierJsonNullable.get().getId() != null) {
+                        dossierid = planDossierJsonNullable.get().getId();
+                    }
+                }
+            }
         }
         return dossierid;
     }
@@ -79,9 +125,13 @@ public abstract class PlanMapper {
     protected String toDossierStatus(JsonNullable<PlanDossier> planDossierJsonNullable) {
         String dossierstatus = null;
 
-        if (planDossierJsonNullable.isPresent()) {
-            if (planDossierJsonNullable.get().getStatus().isPresent()) {
-                dossierstatus = planDossierJsonNullable.get().getStatus().get();
+        if (planDossierJsonNullable != null) {
+            if (planDossierJsonNullable.isPresent()) {
+                if (planDossierJsonNullable.get() != null) {
+                    if (planDossierJsonNullable.get().getStatus().isPresent()) {
+                        dossierstatus = planDossierJsonNullable.get().getStatus().get();
+                    }
+                }
             }
         }
         return dossierstatus;

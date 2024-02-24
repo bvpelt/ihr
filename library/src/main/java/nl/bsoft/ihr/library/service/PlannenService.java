@@ -4,16 +4,24 @@ import lombok.extern.slf4j.Slf4j;
 import nl.bsoft.ihr.generated.model.Plan;
 import nl.bsoft.ihr.generated.model.PlanCollectie;
 import nl.bsoft.ihr.generated.model.PlanCollectieEmbedded;
+import nl.bsoft.ihr.library.mapper.LocatieMapper;
 import nl.bsoft.ihr.library.mapper.PlanMapper;
 import nl.bsoft.ihr.library.model.dto.ImroLoadDto;
+import nl.bsoft.ihr.library.model.dto.LocatieDto;
+import nl.bsoft.ihr.library.model.dto.OverheidDto;
 import nl.bsoft.ihr.library.model.dto.PlanDto;
 import nl.bsoft.ihr.library.repository.ImroLoadRepository;
+import nl.bsoft.ihr.library.repository.LocatieRepository;
+import nl.bsoft.ihr.library.repository.OverheidRepository;
 import nl.bsoft.ihr.library.repository.PlanRepository;
 import nl.bsoft.ihr.library.util.UpdateCounter;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -25,14 +33,28 @@ public class PlannenService {
     private final APIService APIService;
     private final PlanRepository planRepository;
     private final ImroLoadRepository imroLoadRepository;
+    private final LocatieRepository locatieRepository;
+
+    private final OverheidRepository overheidRepository;
     private final PlanMapper planMapper;
 
+    private final LocatieMapper locatieMapper;
+
     @Autowired
-    public PlannenService(APIService APIService, PlanRepository planRepository,  ImroLoadRepository imroLoadRepository, PlanMapper planMapper) {
+    public PlannenService(APIService APIService,
+                          PlanRepository planRepository,
+                          ImroLoadRepository imroLoadRepository,
+                          OverheidRepository overheidRepository,
+                          LocatieRepository locatieRepository,
+                          PlanMapper planMapper,
+                          LocatieMapper locatieMapper) {
         this.APIService = APIService;
         this.planRepository = planRepository;
         this.imroLoadRepository = imroLoadRepository;
+        this.overheidRepository = overheidRepository;
+        this.locatieRepository = locatieRepository;
         this.planMapper = planMapper;
+        this.locatieMapper = locatieMapper;
         this.MAX_PAGE_SIZE = APIService.getMAX_PAGE_SIZE();
     }
 
@@ -40,6 +62,8 @@ public class PlannenService {
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(APIService.getApiUrl() + "/plannen");
         uriComponentsBuilder.queryParam("page", page);
         uriComponentsBuilder.queryParam("pageSize", size);
+        String [] expand = { "geometrie" };
+        uriComponentsBuilder.queryParam("expand", expand);
         log.trace("using url: {}", uriComponentsBuilder.build().toUri());
         return APIService.getDirectly(uriComponentsBuilder.build().toUri(), PlanCollectie.class);
     }
@@ -85,8 +109,59 @@ public class PlannenService {
         PlanDto savedPlan = null;
 
         PlanDto planDto = null;
+        OverheidDto beleid = null;
+        OverheidDto publicerend = null;
         try {
             planDto = planMapper.toPlan(plan);
+            beleid = planMapper.toBeleidOverheid(plan);
+            publicerend = planMapper.toPublicerendOverheid(plan);
+
+            //
+            // Check if locatie is known
+            // if known
+            //    skip
+            // else
+            //    store locatie
+            //
+            String md5hash = DigestUtils.md5Hex(plan.getGeometrie().toString().toUpperCase());
+            planDto.setMd5hash(md5hash);
+
+            Optional<LocatieDto> optionalLocatieDto = locatieRepository.findByMd5hash(md5hash);
+            if (!optionalLocatieDto.isPresent()) {
+                LocatieDto locatieDto = locatieMapper.toLocatieDto(plan);
+                locatieDto.setMd5hash(md5hash);
+                locatieDto.setRegistratie(LocalDateTime.now());
+                locatieRepository.save(locatieDto);
+                log.debug("Added locatie: {}", md5hash);
+            }
+            //
+            // check if overheid is known for this plan and beleid code -- always mandatory
+            // if so
+            //   if publicerend has same code
+            //     check if database entry has beleid = true and publicerende = true
+            //   if publicerend has different code
+            //     add occurance
+            Optional<OverheidDto> foundOverheid = overheidRepository.findByIdentificatieAndCode(beleid.getPlan_identificatie(), beleid.getCode());
+            if (foundOverheid.isPresent()) {
+                OverheidDto found = foundOverheid.get();
+                if (!found.getBeleidsmatig()) {
+                    found.setBeleidsmatig(true);
+                }
+                if ((publicerend.getCode() != null) && (publicerend.getCode().equals(beleid.getCode()))) {
+                    found.setPublicerend(true);
+                } else {
+                    found.setPublicerend(false);
+                }
+                overheidRepository.save(found);
+            } else {
+                beleid.setBeleidsmatig(true);
+                if ((publicerend.getCode() != null) && (publicerend.getCode().equals(beleid.getCode()))) {
+                    beleid.setPublicerend(true);
+                } else {
+                    beleid.setPublicerend(false);
+                }
+                overheidRepository.save(beleid);
+            }
 
             Optional<PlanDto> optionalPlanDto = planRepository.findByIdentificatie(planDto.getIdentificatie());
 
@@ -136,12 +211,15 @@ public class PlannenService {
         original.setRegelstatus(planDto.getRegelstatus());
         original.setDossierid(planDto.getDossierid());
         original.setDossierstatus(planDto.getDossierstatus());
+        original.setMd5hash(planDto.getMd5hash());
 
         return original;
     }
 
     public Plan getPlan(String identificatie) {
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(APIService.getApiUrl() + "/plannen/" + identificatie);
+        String [] expand = { "geometrie" };
+        uriComponentsBuilder.queryParam("expand", expand);
         log.trace("using url: {}", uriComponentsBuilder.build().toUri());
         return APIService.getDirectly(uriComponentsBuilder.build().toUri(), Plan.class);
     }

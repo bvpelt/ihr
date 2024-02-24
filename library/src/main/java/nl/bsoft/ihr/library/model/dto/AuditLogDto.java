@@ -15,7 +15,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "auditlog", schema = "public", catalog = "ihr")
 public class AuditLogDto {
-    private static final long serialVersionUID = 3L;
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
