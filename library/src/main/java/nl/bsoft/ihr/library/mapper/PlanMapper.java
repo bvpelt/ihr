@@ -22,14 +22,16 @@ public abstract class PlanMapper {
 
     @Mapping(target = "id", source = "id", ignore = true)
     @Mapping(target = "identificatie", source = "id", qualifiedByName = "toId")
-    @Mapping(target = "naam", source = "naam")
-    @Mapping(target = "besluitNummer", source = "besluitnummer", qualifiedByName = "toJsonNullableString")
     @Mapping(target = "plantype", source = "type", qualifiedByName = "toPlanType")
+    @Mapping(target = "naam", source = "naam")
     @Mapping(target = "planstatus", source = "planstatusInfo.planstatus", qualifiedByName = "toPlanStatus")
     @Mapping(target = "planstatusdate", source = ".", qualifiedByName = "toPlanStatusDate")
+    @Mapping(target = "besluitNummer", source = "besluitnummer", qualifiedByName = "toJsonNullableString")
     @Mapping(target = "regelstatus", source = "regelStatus", qualifiedByName = "toJsonNullableString")
     @Mapping(target = "dossierid", source = "dossier", qualifiedByName = "toDossierId")
     @Mapping(target = "dossierstatus", source = "dossier", qualifiedByName = "toDossierStatus")
+    @Mapping(target = "isParapluPlan", source = "isParapluplan")
+    @Mapping(target = "beroepEnBezwaar", source = "beroepEnBezwaar", qualifiedByName = "toBeroepEnBezwaar")
     public abstract PlanDto toPlan(Plan plan) throws ParseException;
 
     @Mapping(target = "id", source = "id", ignore = true)
@@ -49,6 +51,11 @@ public abstract class PlanMapper {
         return id;
     }
 
+    @Named("toIsParapluePlan")
+    protected Boolean toPlanType(Boolean isParapluePlan) {
+
+        return isParapluePlan;
+    }
     @Named("toPlanType")
     protected String toPlanType(PlanType planType) {
         String type = null;
@@ -135,6 +142,15 @@ public abstract class PlanMapper {
             }
         }
         return dossierstatus;
+    }
+    @Named("toBeroepEnBezwaar")
+    protected String toBeroepEnBezwaar(JsonNullable<Plan.BeroepEnBezwaarEnum> value) {
+        if (value.isPresent()) {
+            if (value.get() != null) {
+                return value.get().getValue();
+            }
+        }
+        return null;
     }
 
     @Named("toJsonNullableString")

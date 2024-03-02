@@ -64,4 +64,26 @@ public class SynchronizeController {
 
         return ResponseEntity.ok(counter);
     }
+
+    @Operation(
+            operationId = "ihrSynchronisation",
+            summary = "Synchronize ihr",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "OK.", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = UpdateCounter.class))
+                    })
+            }
+    )
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value = "/teksten",
+            produces = {"application/json"}
+    )
+    public ResponseEntity<UpdateCounter> loadIhrTeksten() {
+        UpdateCounter counter = new UpdateCounter();
+
+        counter = plannenService.loadTeksten();
+
+        return ResponseEntity.ok(counter);
+    }
 }

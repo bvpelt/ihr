@@ -25,4 +25,10 @@ select * from plan
         ) 
 order by identificatie;
 
+-- plannen with teksten
+select p.identificatie, t.planidentificatie from plan p left join tekst t on (p.identificatie=t.planidentificatie) where t.planidentificatie is not null;
+
+-- plannen without teksten
+select p.identificatie, t.planidentificatie from plan p left join tekst t on (p.identificatie=t.planidentificatie) where t.planidentificatie is null;
+
 ```

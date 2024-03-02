@@ -1,19 +1,12 @@
 package nl.bsoft.ihr.library.service;
 
 import lombok.extern.slf4j.Slf4j;
-import nl.bsoft.ihr.generated.model.Plan;
-import nl.bsoft.ihr.generated.model.PlanCollectie;
-import nl.bsoft.ihr.generated.model.PlanCollectieEmbedded;
+import nl.bsoft.ihr.generated.model.*;
 import nl.bsoft.ihr.library.mapper.LocatieMapper;
 import nl.bsoft.ihr.library.mapper.PlanMapper;
-import nl.bsoft.ihr.library.model.dto.ImroLoadDto;
-import nl.bsoft.ihr.library.model.dto.LocatieDto;
-import nl.bsoft.ihr.library.model.dto.OverheidDto;
-import nl.bsoft.ihr.library.model.dto.PlanDto;
-import nl.bsoft.ihr.library.repository.ImroLoadRepository;
-import nl.bsoft.ihr.library.repository.LocatieRepository;
-import nl.bsoft.ihr.library.repository.OverheidRepository;
-import nl.bsoft.ihr.library.repository.PlanRepository;
+import nl.bsoft.ihr.library.mapper.TekstMapper;
+import nl.bsoft.ihr.library.model.dto.*;
+import nl.bsoft.ihr.library.repository.*;
 import nl.bsoft.ihr.library.util.UpdateCounter;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,27 +26,30 @@ public class PlannenService {
     private final PlanRepository planRepository;
     private final ImroLoadRepository imroLoadRepository;
     private final LocatieRepository locatieRepository;
-
     private final OverheidRepository overheidRepository;
+    private final TekstRepository tekstRepository;
     private final PlanMapper planMapper;
-
     private final LocatieMapper locatieMapper;
-
+    private final TekstMapper tekstMapper;
     @Autowired
     public PlannenService(APIService APIService,
                           PlanRepository planRepository,
                           ImroLoadRepository imroLoadRepository,
                           OverheidRepository overheidRepository,
+                          TekstRepository tekstRepository,
                           LocatieRepository locatieRepository,
                           PlanMapper planMapper,
-                          LocatieMapper locatieMapper) {
+                          LocatieMapper locatieMapper,
+                          TekstMapper tekstMapper) {
         this.APIService = APIService;
         this.planRepository = planRepository;
         this.imroLoadRepository = imroLoadRepository;
         this.overheidRepository = overheidRepository;
+        this.tekstRepository = tekstRepository;
         this.locatieRepository = locatieRepository;
         this.planMapper = planMapper;
         this.locatieMapper = locatieMapper;
+        this.tekstMapper = tekstMapper;
         this.MAX_PAGE_SIZE = APIService.getMAX_PAGE_SIZE();
     }
 
@@ -193,6 +188,9 @@ public class PlannenService {
                 updateCounter.add();
             }
 
+            UpdateCounter tekstCounter = new UpdateCounter();
+            procesTekst(savedPlan.getIdentificatie(), tekstCounter);
+
             log.info("[IHR] plan {}", planDto);
         } catch (Exception e) {
             updateCounter.skipped();
@@ -241,5 +239,65 @@ public class PlannenService {
         );
 
         return updateCounter;
+    }
+
+    public UpdateCounter loadTeksten() {
+        UpdateCounter updateCounter = new UpdateCounter();
+        Iterable<ImroLoadDto> imroLoadDtos = imroLoadRepository.findByIdentificatieNotLoaded();
+
+        imroLoadDtos.forEach(
+                imroPlan -> {
+                    procesTekst(imroPlan.getIdentificatie(), updateCounter);
+                }
+        );
+
+        return updateCounter;
+    }
+    private void procesTekst(String identificatie, UpdateCounter updateCounter) {
+        TekstCollectie teksten = getTeksten(identificatie);
+        if (teksten != null) {
+            teksten.getEmbedded().getTeksten().forEach(tekst -> {
+                addTekst(identificatie, tekst, updateCounter);
+            });
+        }
+    }
+
+    public TekstCollectie getTeksten(String identificatie) {
+        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(APIService.getApiUrl() + "/plannen/" + identificatie + "/teksten");
+        log.trace("using url: {}", uriComponentsBuilder.build().toUri());
+        return APIService.getDirectly(uriComponentsBuilder.build().toUri(), TekstCollectie.class);
+    }
+
+    private TekstDto addTekst(String planidentificatie, Tekst tekst, UpdateCounter updateCounter) {
+        TekstDto savedTekst = null;
+
+        try {
+            TekstDto current = tekstMapper.toTekst(tekst);
+            current.setPlanidentificatie(planidentificatie);
+
+            Optional<TekstDto> found = tekstRepository.findByPlanidentificatieAndTekstidentificatie(current.getPlanidentificatie(), current.getTekstidentificatie());
+
+            if (found.isPresent()) {
+                // if equal do not save
+                if (found.equals(current)) {
+                    updateCounter.skipped();
+                } else { // if changed update
+                    TekstDto updated = found.get();
+                    updated.setTitel(current.getTitel());
+                    updated.setInhoud(current.getInhoud());
+                    updated.setExternLabel(current.getExternLabel());
+                    updated.setVolgNummer(current.getVolgNummer());
+                    updated.setExternHRef(current.getExternHRef());
+                    updateCounter.updated();
+                    current = updated;
+                }
+            } else { // new occurrence
+                updateCounter.add();
+            }
+            savedTekst = tekstRepository.save(current);
+        } catch (Exception e) {
+            log.error("Error while processing: {} in tekst processing: {}", tekst, e);
+        }
+        return savedTekst;
     }
 }

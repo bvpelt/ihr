@@ -186,7 +186,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${project.basedir}/src/main/resources/ihr.4.0.1-revised.yaml</inputSpec>
+                            <inputSpec>${project.basedir}/src/main/resources/ihr.4.0.2-revised.yaml</inputSpec>
 
                             <generatorName>spring</generatorName>
                             <library>spring-boot</library>

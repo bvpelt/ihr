@@ -1,0 +1,803 @@
+{
+  "id": "NL.IMRO.PT.regels._5.1_Bestemmingsomschrijving",
+  "titel": "5.1 Bestemmingsomschrijving",
+  "inhoud": "<p xmlns=\\\"http://www.w3.org/1999/xhtml\\\" xmlns:xl=\\\"http://www.w3.org/1999/xlink\\\" xmlns:imropt=\\\"http://www.geonovum.nl/imro/pt/2012/1.0\\\" xmlns:xsi=\\\"http://www.w3.org/2001/XMLSchema-instance\\\">De voor '<span class=\\\"interneVerwijzing\\\" data-imro-plan-id=\\\"NL.IMRO.0200.bp1253-vas1\\\" data-imro-tekst-id=\\\"NL.IMRO.PT.regels._5_Verkeer-Verblijfsgebied\\\">Verkeer - Verblijfsgebied</span>' aangewezen gronden zijn bestemd voor: </p><ol xmlns=\\\"http://www.w3.org/1999/xhtml\\\" xmlns:xl=\\\"http://www.w3.org/1999/xlink\\\" xmlns:imropt=\\\"http://www.geonovum.nl/imro/pt/2012/1.0\\\" xmlns:xsi=\\\"http://www.w3.org/2001/XMLSchema-instance\\\" type=\\\"a\\\">\\n<li>\\n<span class=\\\"lijstnummer\\\">a. </span>\\n<span class=\\\"interneVerwijzing\\\" data-imro-plan-id=\\\"NL.IMRO.0200.bp1253-vas1\\\" data-imro-tekst-id=\\\"NL.IMRO.PT.regels._1.46_verblijfsgebied\\\">verblijfsgebied</span>, waarbij ter plaatse van de aanduiding 'minimum aantal rijstroken' een weg met ten minste 2 rijstroken aangelegd dient te worden, waarbij tevens een groene middenberm gerealiseerd dient te worden;</li>\\n<li>\\n<span class=\\\"lijstnummer\\\">b. </span>watergangen en overige voorzieningen voor de waterhuishouding;</li>\\n<li>\\n<span class=\\\"lijstnummer\\\">c. </span>nutsvoorzieningen;</li>\\n<li>\\n<span class=\\\"lijstnummer\\\">d. </span>tuin;</li>\\n</ol><p xmlns=\\\"http://www.w3.org/1999/xhtml\\\" xmlns:xl=\\\"http://www.w3.org/1999/xlink\\\" xmlns:imropt=\\\"http://www.geonovum.nl/imro/pt/2012/1.0\\\" xmlns:xsi=\\\"http://www.w3.org/2001/XMLSchema-instance\\\">met de daarbij behorende bouwwerken, geen gebouwen zijnde.</p>",
+  "volgnummer": 90,
+  "externeReferentie": {
+    "href": "https://www.ruimtelijkeplannen.nl/documents/NL.IMRO.0200.bp1253-vas1/b_NL.IMRO.0200.bp1253-vas1_rb1.pdf",
+    "label": "Bijlage 1 Lijst van toegelaten bedrijfstypen"
+  },
+  "kruimelpad": [
+    {
+      "id": "NL.IMRO.PT.regels._1_Begrippen",
+      "titel": "Artikel 1 Begrippen",
+      "volgnummer": 4
+    }
+  ],
+  "_links": {
+    "self": {
+      "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/teksten/NL.IMRO.PT.regels._1_Begrippen"
+    },
+    "children": [
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/teksten/NL.IMRO.PT.regels._5.1_Bestemmingsomschrijving"
+      }
+    ],
+    "bestemmingsvlakken": [
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/bestemmingsvlakken/NL.IMRO.07420194a7e6471a94c1098e52a4769c"
+      }
+    ],
+    "bouwaanduidingen": [
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/bouwaanduidingen/NL.IMRO.c16e4c5b356b4b958c3e52b899e8dea6"
+      }
+    ],
+    "figuren": [
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1/figuren/NL.IMRO.0200.ID387926-00"
+      }
+    ],
+    "functieaanduidingen": [
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/functieaanduidingen/NL.IMRO.0a76ec81382749dd93bd364a1f36a846"
+      }
+    ],
+    "gebiedsaanduidingen": [
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1/gebiedsaanduidingen/NL.IMRO.0200.GP2213788321-00"
+      }
+    ],
+    "lettertekenaanduidingen": [
+      "string"
+    ],
+    "maatvoeringen": [
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/maatvoeringen/NL.IMRO.1a169935c6634c5aad4276a9cc275a96"
+      }
+    ],
+    "besluitvlakken": [
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.ov1015-vas1/besluitvlakken/NL.IMRO.3"
+      }
+    ],
+    "besluitsubvlakken": [
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0222.R05KE006A-0002/besluitsubvlakken/NL.IMRO.00a8ac2b580040b8a44a4ebf7c116a7d"
+      }
+    ],
+    "structuurvisiegebieden": [
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.sv1007-vas1/structuurvisiegebieden/NL.IMRO.GSVgeb10"
+      }
+    ],
+    "structuurvisiecomplexen": [
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.sv1007-vas1/structuurvisiecomplexen/NL.IMRO.GSVcplx1"
+      }
+    ],
+    "structuurvisieverklaringen": [
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.9925.SVOmgvisie-vst1/structuurvisieverklaringen/NL.IMRO.9925PRIMA201200000001109"
+      }
+    ]
+  },
+  "_embedded": {
+    "children": [
+      {
+        "id": "NL.IMRO.PT.regels._5.1_Bestemmingsomschrijving",
+        "titel": "5.1 Bestemmingsomschrijving",
+        "inhoud": "<p xmlns=\\\"http://www.w3.org/1999/xhtml\\\" xmlns:xl=\\\"http://www.w3.org/1999/xlink\\\" xmlns:imropt=\\\"http://www.geonovum.nl/imro/pt/2012/1.0\\\" xmlns:xsi=\\\"http://www.w3.org/2001/XMLSchema-instance\\\">De voor '<span class=\\\"interneVerwijzing\\\" data-imro-plan-id=\\\"NL.IMRO.0200.bp1253-vas1\\\" data-imro-tekst-id=\\\"NL.IMRO.PT.regels._5_Verkeer-Verblijfsgebied\\\">Verkeer - Verblijfsgebied</span>' aangewezen gronden zijn bestemd voor: </p><ol xmlns=\\\"http://www.w3.org/1999/xhtml\\\" xmlns:xl=\\\"http://www.w3.org/1999/xlink\\\" xmlns:imropt=\\\"http://www.geonovum.nl/imro/pt/2012/1.0\\\" xmlns:xsi=\\\"http://www.w3.org/2001/XMLSchema-instance\\\" type=\\\"a\\\">\\n<li>\\n<span class=\\\"lijstnummer\\\">a. </span>\\n<span class=\\\"interneVerwijzing\\\" data-imro-plan-id=\\\"NL.IMRO.0200.bp1253-vas1\\\" data-imro-tekst-id=\\\"NL.IMRO.PT.regels._1.46_verblijfsgebied\\\">verblijfsgebied</span>, waarbij ter plaatse van de aanduiding 'minimum aantal rijstroken' een weg met ten minste 2 rijstroken aangelegd dient te worden, waarbij tevens een groene middenberm gerealiseerd dient te worden;</li>\\n<li>\\n<span class=\\\"lijstnummer\\\">b. </span>watergangen en overige voorzieningen voor de waterhuishouding;</li>\\n<li>\\n<span class=\\\"lijstnummer\\\">c. </span>nutsvoorzieningen;</li>\\n<li>\\n<span class=\\\"lijstnummer\\\">d. </span>tuin;</li>\\n</ol><p xmlns=\\\"http://www.w3.org/1999/xhtml\\\" xmlns:xl=\\\"http://www.w3.org/1999/xlink\\\" xmlns:imropt=\\\"http://www.geonovum.nl/imro/pt/2012/1.0\\\" xmlns:xsi=\\\"http://www.w3.org/2001/XMLSchema-instance\\\">met de daarbij behorende bouwwerken, geen gebouwen zijnde.</p>",
+        "volgnummer": 90,
+        "externeReferentie": {
+          "href": "https://www.ruimtelijkeplannen.nl/documents/NL.IMRO.0200.bp1253-vas1/b_NL.IMRO.0200.bp1253-vas1_rb1.pdf",
+          "label": "Bijlage 1 Lijst van toegelaten bedrijfstypen"
+        },
+        "kruimelpad": [
+          {
+            "id": "NL.IMRO.PT.regels._1_Begrippen",
+            "titel": "Artikel 1 Begrippen",
+            "volgnummer": 4
+          }
+        ],
+        "_links": {
+          "self": {
+            "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/teksten/NL.IMRO.PT.regels._1_Begrippen"
+          },
+          "children": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/teksten/NL.IMRO.PT.regels._5.1_Bestemmingsomschrijving"
+            }
+          ],
+          "bestemmingsvlakken": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/bestemmingsvlakken/NL.IMRO.07420194a7e6471a94c1098e52a4769c"
+            }
+          ],
+          "bouwaanduidingen": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/bouwaanduidingen/NL.IMRO.c16e4c5b356b4b958c3e52b899e8dea6"
+            }
+          ],
+          "figuren": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1/figuren/NL.IMRO.0200.ID387926-00"
+            }
+          ],
+          "functieaanduidingen": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/functieaanduidingen/NL.IMRO.0a76ec81382749dd93bd364a1f36a846"
+            }
+          ],
+          "gebiedsaanduidingen": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1/gebiedsaanduidingen/NL.IMRO.0200.GP2213788321-00"
+            }
+          ],
+          "lettertekenaanduidingen": [
+            "string"
+          ],
+          "maatvoeringen": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/maatvoeringen/NL.IMRO.1a169935c6634c5aad4276a9cc275a96"
+            }
+          ],
+          "besluitvlakken": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.ov1015-vas1/besluitvlakken/NL.IMRO.3"
+            }
+          ],
+          "besluitsubvlakken": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0222.R05KE006A-0002/besluitsubvlakken/NL.IMRO.00a8ac2b580040b8a44a4ebf7c116a7d"
+            }
+          ],
+          "structuurvisiegebieden": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.sv1007-vas1/structuurvisiegebieden/NL.IMRO.GSVgeb10"
+            }
+          ],
+          "structuurvisiecomplexen": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.sv1007-vas1/structuurvisiecomplexen/NL.IMRO.GSVcplx1"
+            }
+          ],
+          "structuurvisieverklaringen": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.9925.SVOmgvisie-vst1/structuurvisieverklaringen/NL.IMRO.9925PRIMA201200000001109"
+            }
+          ]
+        },
+        "_embedded": {
+          "children": [
+            {
+              "id": "NL.IMRO.PT.regels._5.1_Bestemmingsomschrijving",
+              "titel": "5.1 Bestemmingsomschrijving",
+              "inhoud": "<p xmlns=\\\"http://www.w3.org/1999/xhtml\\\" xmlns:xl=\\\"http://www.w3.org/1999/xlink\\\" xmlns:imropt=\\\"http://www.geonovum.nl/imro/pt/2012/1.0\\\" xmlns:xsi=\\\"http://www.w3.org/2001/XMLSchema-instance\\\">De voor '<span class=\\\"interneVerwijzing\\\" data-imro-plan-id=\\\"NL.IMRO.0200.bp1253-vas1\\\" data-imro-tekst-id=\\\"NL.IMRO.PT.regels._5_Verkeer-Verblijfsgebied\\\">Verkeer - Verblijfsgebied</span>' aangewezen gronden zijn bestemd voor: </p><ol xmlns=\\\"http://www.w3.org/1999/xhtml\\\" xmlns:xl=\\\"http://www.w3.org/1999/xlink\\\" xmlns:imropt=\\\"http://www.geonovum.nl/imro/pt/2012/1.0\\\" xmlns:xsi=\\\"http://www.w3.org/2001/XMLSchema-instance\\\" type=\\\"a\\\">\\n<li>\\n<span class=\\\"lijstnummer\\\">a. </span>\\n<span class=\\\"interneVerwijzing\\\" data-imro-plan-id=\\\"NL.IMRO.0200.bp1253-vas1\\\" data-imro-tekst-id=\\\"NL.IMRO.PT.regels._1.46_verblijfsgebied\\\">verblijfsgebied</span>, waarbij ter plaatse van de aanduiding 'minimum aantal rijstroken' een weg met ten minste 2 rijstroken aangelegd dient te worden, waarbij tevens een groene middenberm gerealiseerd dient te worden;</li>\\n<li>\\n<span class=\\\"lijstnummer\\\">b. </span>watergangen en overige voorzieningen voor de waterhuishouding;</li>\\n<li>\\n<span class=\\\"lijstnummer\\\">c. </span>nutsvoorzieningen;</li>\\n<li>\\n<span class=\\\"lijstnummer\\\">d. </span>tuin;</li>\\n</ol><p xmlns=\\\"http://www.w3.org/1999/xhtml\\\" xmlns:xl=\\\"http://www.w3.org/1999/xlink\\\" xmlns:imropt=\\\"http://www.geonovum.nl/imro/pt/2012/1.0\\\" xmlns:xsi=\\\"http://www.w3.org/2001/XMLSchema-instance\\\">met de daarbij behorende bouwwerken, geen gebouwen zijnde.</p>",
+              "volgnummer": 90,
+              "externeReferentie": {
+                "href": "https://www.ruimtelijkeplannen.nl/documents/NL.IMRO.0200.bp1253-vas1/b_NL.IMRO.0200.bp1253-vas1_rb1.pdf",
+                "label": "Bijlage 1 Lijst van toegelaten bedrijfstypen"
+              },
+              "kruimelpad": [
+                {
+                  "id": "NL.IMRO.PT.regels._1_Begrippen",
+                  "titel": "Artikel 1 Begrippen",
+                  "volgnummer": 4
+                }
+              ],
+              "_links": {
+                "self": {
+                  "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/teksten/NL.IMRO.PT.regels._1_Begrippen"
+                },
+                "children": [
+                  {
+                    "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/teksten/NL.IMRO.PT.regels._5.1_Bestemmingsomschrijving"
+                  }
+                ],
+                "bestemmingsvlakken": [
+                  {
+                    "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/bestemmingsvlakken/NL.IMRO.07420194a7e6471a94c1098e52a4769c"
+                  }
+                ],
+                "bouwaanduidingen": [
+                  {
+                    "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/bouwaanduidingen/NL.IMRO.c16e4c5b356b4b958c3e52b899e8dea6"
+                  }
+                ],
+                "figuren": [
+                  {
+                    "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1/figuren/NL.IMRO.0200.ID387926-00"
+                  }
+                ],
+                "functieaanduidingen": [
+                  {
+                    "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/functieaanduidingen/NL.IMRO.0a76ec81382749dd93bd364a1f36a846"
+                  }
+                ],
+                "gebiedsaanduidingen": [
+                  {
+                    "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1/gebiedsaanduidingen/NL.IMRO.0200.GP2213788321-00"
+                  }
+                ],
+                "lettertekenaanduidingen": [
+                  "string"
+                ],
+                "maatvoeringen": [
+                  {
+                    "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/maatvoeringen/NL.IMRO.1a169935c6634c5aad4276a9cc275a96"
+                  }
+                ],
+                "besluitvlakken": [
+                  {
+                    "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.ov1015-vas1/besluitvlakken/NL.IMRO.3"
+                  }
+                ],
+                "besluitsubvlakken": [
+                  {
+                    "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0222.R05KE006A-0002/besluitsubvlakken/NL.IMRO.00a8ac2b580040b8a44a4ebf7c116a7d"
+                  }
+                ],
+                "structuurvisiegebieden": [
+                  {
+                    "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.sv1007-vas1/structuurvisiegebieden/NL.IMRO.GSVgeb10"
+                  }
+                ],
+                "structuurvisiecomplexen": [
+                  {
+                    "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.sv1007-vas1/structuurvisiecomplexen/NL.IMRO.GSVcplx1"
+                  }
+                ],
+                "structuurvisieverklaringen": [
+                  {
+                    "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.9925.SVOmgvisie-vst1/structuurvisieverklaringen/NL.IMRO.9925PRIMA201200000001109"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "bestemmingsvlakken": [
+      {
+        "id": "NL.IMRO.07420194a7e6471a94c1098e52a4769c",
+        "type": "enkelbestemming",
+        "naam": "Bos",
+        "bestemmingshoofdgroep": "bos",
+        "bestemmingsfuncties": [
+          {
+            "bestemmingsfunctie": "wonen",
+            "functieniveau": "hoofdfunctie"
+          }
+        ],
+        "artikelnummer": "3",
+        "verwijzingNaarTekst": [
+          "https://ruimtelijkeplannen.nl/documents/NL.IMRO.0200.bp1253-vas1/r_NL.IMRO.0200.bp1253-vas1.html#_3_Bos"
+        ],
+        "labelInfo": "naam",
+        "_links": {
+          "self": {
+            "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/bestemmingsvlakken/NL.IMRO.07420194a7e6471a94c1098e52a4769c"
+          },
+          "bouwaanduidingen": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/bouwaanduidingen/NL.IMRO.c16e4c5b356b4b958c3e52b899e8dea6"
+            }
+          ],
+          "bouwvlakken": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/bouwvlakken/NL.IMRO.5aa3991073534df586500a4fdfae9f50"
+            }
+          ],
+          "figuren": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1/figuren/NL.IMRO.0200.ID387926-00"
+            }
+          ],
+          "functieaanduidingen": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/functieaanduidingen/NL.IMRO.0a76ec81382749dd93bd364a1f36a846"
+            }
+          ],
+          "gebiedsaanduidingen": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1/gebiedsaanduidingen/NL.IMRO.0200.GP2213788321-00"
+            }
+          ],
+          "lettertekenaanduidingen": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200000030115-/lettertekenaanduidingen/LP34407"
+            }
+          ],
+          "maatvoeringen": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/maatvoeringen/NL.IMRO.1a169935c6634c5aad4276a9cc275a96"
+            }
+          ],
+          "teksten": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/teksten/NL.IMRO.PT.regels._5.1_Bestemmingsomschrijving"
+            }
+          ]
+        }
+      }
+    ],
+    "bouwaanduidingen": [
+      {
+        "id": "NL.IMRO.c16e4c5b356b4b958c3e52b899e8dea6",
+        "naam": "plat dak",
+        "labelInfo": [
+          "pd"
+        ],
+        "verwijzingNaarTekst": "https://ruimtelijkeplannen.nl/documents/NL.IMRO.0200.bp1253-vas1/r_NL.IMRO.0200.bp1253-vas1.html#_3_Bos",
+        "_links": {
+          "self": {
+            "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/bouwaanduidingen/NL.IMRO.c16e4c5b356b4b958c3e52b899e8dea6"
+          },
+          "teksten": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/teksten/NL.IMRO.PT.regels._5.1_Bestemmingsomschrijving"
+            }
+          ]
+        }
+      }
+    ],
+    "figuren": [
+      {
+        "id": "NL.IMRO.0200.ID387926-00",
+        "naam": "hartlijn leiding - hoogspanningsverbinding",
+        "artikelnummers": [
+          "43",
+          "23"
+        ],
+        "verwijzingNaarTekst": [
+          "https://www.ruimtelijkeplannen.nl/historic/NL.IMRO.0200.bp1002-ont1_2019.01.10_14.54.32/i_NL.IMRO.0200.bp1002-ont1_0001.jpg"
+        ],
+        "labelInfo": "hoogspanningsverbinding",
+        "illustraties": [
+          {
+            "href": "https://ruimtelijkeplannen.nl/documents/NL.IMRO.0200.sv1002-vas1/i_NL.IMRO.0200.sv1002-vas1_1.pdf",
+            "type": "kaart",
+            "naam": "Regionale Structuurvisie Stedendriehoek 2030",
+            "legendanaam": "Beleidskaart"
+          }
+        ],
+        "_links": {
+          "self": {
+            "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1/figuren/NL.IMRO.0200.ID387926-00"
+          },
+          "teksten": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/teksten/NL.IMRO.PT.regels._5.1_Bestemmingsomschrijving"
+            }
+          ]
+        }
+      }
+    ],
+    "functieaanduidingen": [
+      {
+        "id": "NL.IMRO.0a76ec81382749dd93bd364a1f36a846",
+        "naam": "bedrijf tot en met categorie 2",
+        "labelInfo": "(b≤2)",
+        "verwijzingNaarTekst": "https://ruimtelijkeplannen.nl/documents/NL.IMRO.0200.ov1015-vas1/b_NL.IMRO.0200.ov1015-vas1.pdf",
+        "_links": {
+          "self": {
+            "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/functieaanduidingen/NL.IMRO.0a76ec81382749dd93bd364a1f36a846"
+          },
+          "teksten": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/teksten/NL.IMRO.PT.regels._5.1_Bestemmingsomschrijving"
+            }
+          ]
+        }
+      }
+    ],
+    "gebiedsaanduidingen": [
+      {
+        "id": "NL.IMRO.0200.GP2213788321-00",
+        "naam": "veiligheidszone - bevi",
+        "gebiedsaanduidinggroep": "veiligheidszone",
+        "artikelnummers": [
+          "33.3"
+        ],
+        "verwijzingNaarTekst": [
+          "https://www.ruimtelijkeplannen.nl/historic/NL.IMRO.0200.bp1002-ont1_2019.01.10_14.54.32/r_NL.IMRO.0200.bp1002-ont1_3.33.html#_33.3_veiligheidszone-bevi"
+        ],
+        "labelInfo": "naam",
+        "bestemmingsfuncties": [
+          {
+            "bestemmingsfunctie": "wonen",
+            "functieniveau": "hoofdfunctie"
+          }
+        ],
+        "_links": {
+          "self": {
+            "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1/gebiedsaanduidingen/NL.IMRO.0200.GP2213788321-00"
+          },
+          "figuren": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1/figuren/NL.IMRO.0200.ID387926-00"
+            }
+          ],
+          "bouwaanduidingen": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/bouwaanduidingen/NL.IMRO.c16e4c5b356b4b958c3e52b899e8dea6"
+            }
+          ],
+          "functieaanduidingen": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/functieaanduidingen/NL.IMRO.0a76ec81382749dd93bd364a1f36a846"
+            }
+          ],
+          "maatvoeringen": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/maatvoeringen/NL.IMRO.1a169935c6634c5aad4276a9cc275a96"
+            }
+          ],
+          "teksten": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/teksten/NL.IMRO.PT.regels._5.1_Bestemmingsomschrijving"
+            }
+          ]
+        }
+      }
+    ],
+    "maatvoeringen": [
+      {
+        "id": "NL.IMRO.1a169935c6634c5aad4276a9cc275a96",
+        "naam": "maximum goothoogte (m), maximum bouwhoogte (m)",
+        "omvang": [
+          {
+            "naam": "maximum goothoogte (m)",
+            "waarde": "24"
+          }
+        ],
+        "verwijzingNaarTekst": "https://ruimtelijkeplannen.nl/documents/NL.IMRO.0200.ov1015-vas1/b_NL.IMRO.0200.ov1015-vas1.pdf",
+        "_links": {
+          "self": {
+            "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/maatvoeringen/NL.IMRO.1a169935c6634c5aad4276a9cc275a96"
+          },
+          "teksten": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/teksten/NL.IMRO.PT.regels._5.1_Bestemmingsomschrijving"
+            }
+          ]
+        }
+      }
+    ],
+    "besluitvlakken": [
+      {
+        "id": "NL.IMRO.3",
+        "naam": "Besluitvlak omgevingsvergunning",
+        "thema": [
+          "energie"
+        ],
+        "verwijzingNaarTekst": [
+          "https://ruimtelijkeplannen.nl/documents/NL.IMRO.0200.ov1015-vas1/b_NL.IMRO.0200.ov1015-vas1.pdf"
+        ],
+        "illustraties": [
+          {
+            "href": "https://ruimtelijkeplannen.nl/documents/NL.IMRO.0200.sv1002-vas1/i_NL.IMRO.0200.sv1002-vas1_1.pdf",
+            "type": "kaart",
+            "naam": "Regionale Structuurvisie Stedendriehoek 2030",
+            "legendanaam": "Beleidskaart"
+          }
+        ],
+        "cartografieInfo": [
+          {
+            "kaartnummer": 1,
+            "kaartnaam": "Structuurvisie Baarn",
+            "symboolCode": "ES039"
+          }
+        ],
+        "_links": {
+          "self": {
+            "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.ov1015-vas1/besluitvlakken/NL.IMRO.3"
+          },
+          "besluitsubvlakken": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0222.R05KE006A-0002/besluitsubvlakken/NL.IMRO.00a8ac2b580040b8a44a4ebf7c116a7d"
+            }
+          ],
+          "teksten": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/teksten/NL.IMRO.PT.regels._5.1_Bestemmingsomschrijving"
+            }
+          ]
+        }
+      }
+    ],
+    "besluitsubvlakken": [
+      {
+        "id": "NL.IMRO.00a8ac2b580040b8a44a4ebf7c116a7d",
+        "naam": "Archeologische verwachting 2",
+        "thema": [
+          "archeologie"
+        ],
+        "verwijzingNaarTekst": [
+          "https://ruimtelijkeplannen.nl/documents/NL.IMRO.0222.R05KE006A-0002/t_NL.IMRO.0222.R05KE006A-0002.html"
+        ],
+        "illustraties": [
+          {
+            "href": "https://ruimtelijkeplannen.nl/documents/NL.IMRO.0200.sv1002-vas1/i_NL.IMRO.0200.sv1002-vas1_1.pdf",
+            "type": "kaart",
+            "naam": "Regionale Structuurvisie Stedendriehoek 2030",
+            "legendanaam": "Beleidskaart"
+          }
+        ],
+        "cartografieInfo": [
+          {
+            "kaartnummer": 1,
+            "kaartnaam": "Structuurvisie Baarn",
+            "symboolCode": "ES039"
+          }
+        ],
+        "_links": {
+          "self": {
+            "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0222.R05KE006A-0002/besluitsubvlakken/NL.IMRO.00a8ac2b580040b8a44a4ebf7c116a7d"
+          },
+          "besluitsubvlakken": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0222.R05KE006A-0002/besluitsubvlakken/NL.IMRO.00a8ac2b580040b8a44a4ebf7c116a7d"
+            }
+          ],
+          "teksten": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/teksten/NL.IMRO.PT.regels._5.1_Bestemmingsomschrijving"
+            }
+          ]
+        }
+      }
+    ],
+    "structuurvisiegebieden": [
+      {
+        "id": "NL.IMRO.9925PRIMA201200000001022",
+        "naam": "Windenergie uitgesloten wegens wettelijke beperkingen",
+        "thema": [
+          "energie"
+        ],
+        "beleid": [
+          {
+            "belang": "betrouwbare, betaalbare en hernieuwbare energievoorziening en naar energieneutraliteit in 2050",
+            "rol": "kaderstellend",
+            "instrument": "bestuurlijke afspraken (convenanten)"
+          }
+        ],
+        "verwijzingNaarTekst": [
+          "https://ruimtelijkeplannen.nl/documents/NL.IMRO.9925.SVOmgvisie-vst1/pt_NL.IMRO.9925.SVOmgvisie-vst1.xml#NL.IMRO.PT.s102838"
+        ],
+        "illustraties": [
+          {
+            "href": "https://ruimtelijkeplannen.nl/documents/NL.IMRO.0200.sv1002-vas1/i_NL.IMRO.0200.sv1002-vas1_1.pdf",
+            "type": "kaart",
+            "naam": "Regionale Structuurvisie Stedendriehoek 2030",
+            "legendanaam": "Beleidskaart"
+          }
+        ],
+        "relatiesMetExternePlannen": {
+          "tenGevolgeVan": [
+            {
+              "naam": "Malkenschoten-Kayersmolen",
+              "id": "NL.IMRO.0200.bp1002-ont1",
+              "planstatusInfo": {
+                "planstatus": "string",
+                "datum": "string"
+              },
+              "dossier": {
+                "status": "string"
+              },
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1"
+            }
+          ],
+          "gebruiktInformatieUit": [
+            {
+              "naam": "Malkenschoten-Kayersmolen",
+              "id": "NL.IMRO.0200.bp1002-ont1",
+              "planstatusInfo": {
+                "planstatus": "string",
+                "datum": "string"
+              },
+              "dossier": {
+                "status": "string"
+              },
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1"
+            }
+          ],
+          "uitTeWerkenIn": [
+            {
+              "naam": "Malkenschoten-Kayersmolen",
+              "id": "NL.IMRO.0200.bp1002-ont1",
+              "planstatusInfo": {
+                "planstatus": "string",
+                "datum": "string"
+              },
+              "dossier": {
+                "status": "string"
+              },
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1"
+            }
+          ],
+          "uitgewerktIn": [
+            {
+              "naam": "Malkenschoten-Kayersmolen",
+              "id": "NL.IMRO.0200.bp1002-ont1",
+              "planstatusInfo": {
+                "planstatus": "string",
+                "datum": "string"
+              },
+              "dossier": {
+                "status": "string"
+              },
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1"
+            }
+          ]
+        },
+        "cartografieInfo": [
+          {
+            "kaartnummer": 1,
+            "kaartnaam": "Structuurvisie Baarn",
+            "symboolCode": "ES039"
+          }
+        ],
+        "_links": {
+          "self": {
+            "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.9925.SVOmgvisie-vst1/structuurvisiegebieden/NL.IMRO.9925PRIMA201200000001022"
+          },
+          "teksten": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/teksten/NL.IMRO.PT.regels._5.1_Bestemmingsomschrijving"
+            }
+          ]
+        }
+      }
+    ],
+    "structuurvisiecomplexen": [
+      {
+        "id": "NL.IMRO.9925PRIMA201200000001122",
+        "naam": "Waterveiligheid tot 2015",
+        "thema": "waterkwantiteit",
+        "beleid": [
+          {
+            "belang": "blijvend te beschermen tegen overstromingen vanuit de (grote) rivieren en de Veluwerandmeren.",
+            "rol": "other: normerend",
+            "instrument": "verordening"
+          }
+        ],
+        "verwijzingNaarTekst": [
+          "https://ruimtelijkeplannen.nl/documents/NL.IMRO.9925.SVOmgvisie-vst1/pt_NL.IMRO.9925.SVOmgvisie-vst1.xml#NL.IMRO.PT.s132"
+        ],
+        "illustraties": [
+          {
+            "href": "https://ruimtelijkeplannen.nl/documents/NL.IMRO.0200.sv1002-vas1/i_NL.IMRO.0200.sv1002-vas1_1.pdf",
+            "type": "kaart",
+            "naam": "Regionale Structuurvisie Stedendriehoek 2030",
+            "legendanaam": "Beleidskaart"
+          }
+        ],
+        "relatiesMetExternePlannen": {
+          "tenGevolgeVan": [
+            {
+              "naam": "Malkenschoten-Kayersmolen",
+              "id": "NL.IMRO.0200.bp1002-ont1",
+              "planstatusInfo": {
+                "planstatus": "string",
+                "datum": "string"
+              },
+              "dossier": {
+                "status": "string"
+              },
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1"
+            }
+          ],
+          "gebruiktInformatieUit": [
+            {
+              "naam": "Malkenschoten-Kayersmolen",
+              "id": "NL.IMRO.0200.bp1002-ont1",
+              "planstatusInfo": {
+                "planstatus": "string",
+                "datum": "string"
+              },
+              "dossier": {
+                "status": "string"
+              },
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1"
+            }
+          ],
+          "uitTeWerkenIn": [
+            {
+              "naam": "Malkenschoten-Kayersmolen",
+              "id": "NL.IMRO.0200.bp1002-ont1",
+              "planstatusInfo": {
+                "planstatus": "string",
+                "datum": "string"
+              },
+              "dossier": {
+                "status": "string"
+              },
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1"
+            }
+          ],
+          "uitgewerktIn": [
+            {
+              "naam": "Malkenschoten-Kayersmolen",
+              "id": "NL.IMRO.0200.bp1002-ont1",
+              "planstatusInfo": {
+                "planstatus": "string",
+                "datum": "string"
+              },
+              "dossier": {
+                "status": "string"
+              },
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1"
+            }
+          ]
+        },
+        "cartografieInfo": [
+          {
+            "kaartnummer": 1,
+            "kaartnaam": "Structuurvisie Baarn",
+            "symboolCode": "ES039"
+          }
+        ],
+        "_links": {
+          "self": {
+            "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.9925.SVOmgvisie-vst1/structuurvisiecomplexen/NL.IMRO.9925PRIMA201200000001122"
+          },
+          "structuurvisiegebieden": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.sv1007-vas1/structuurvisiegebieden/NL.IMRO.GSVgeb10"
+            }
+          ],
+          "structuurvisieverklaringen": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.9925.SVOmgvisie-vst1/structuurvisieverklaringen/NL.IMRO.9925PRIMA201200000001109"
+            }
+          ],
+          "teksten": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/teksten/NL.IMRO.PT.regels._5.1_Bestemmingsomschrijving"
+            }
+          ]
+        }
+      }
+    ],
+    "structuurvisieverklaringen": [
+      {
+        "id": "NL.IMRO.ddf6f96c97ed4042b8acec676c4c840a",
+        "naam": "Grondwaterfluctuatiezone (toelichtend)",
+        "thema": [
+          "other: stedelijk gebied"
+        ],
+        "verwijzingNaarTekst": [
+          "https://ruimtelijkeplannen.nl/documents/NL.IMRO.9925.SVOmgvisie-vst1/pt_NL.IMRO.9925.SVOmgvisie-vst1.xml#NL.IMRO.PT.s102642"
+        ],
+        "illustraties": [
+          {
+            "href": "https://ruimtelijkeplannen.nl/documents/NL.IMRO.0200.sv1002-vas1/i_NL.IMRO.0200.sv1002-vas1_1.pdf",
+            "type": "kaart",
+            "naam": "Regionale Structuurvisie Stedendriehoek 2030",
+            "legendanaam": "Beleidskaart"
+          }
+        ],
+        "cartografieInfo": [
+          {
+            "kaartnummer": 1,
+            "kaartnaam": "Structuurvisie Baarn",
+            "symboolCode": "ES039"
+          }
+        ],
+        "_links": {
+          "self": {
+            "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.9925.SVOmgvisie-vst1/structuurvisieverklaringen/NL.IMRO.9925PRIMA201200000001109"
+          },
+          "teksten": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/teksten/NL.IMRO.PT.regels._5.1_Bestemmingsomschrijving"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
