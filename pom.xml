@@ -281,11 +281,6 @@
                     <version>${maven-jxr-plugin.version}</version>
                 </plugin>
                 <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-jxr-plugin</artifactId>
-                    <version>${maven-jxr-plugin.version}</version>
-                </plugin>
-                <plugin>
                     <groupId>pl.project13.maven</groupId>
                     <artifactId>git-commit-id-plugin</artifactId>
                     <version>4.9.10</version>
