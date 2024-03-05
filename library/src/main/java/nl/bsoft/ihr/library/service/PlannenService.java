@@ -31,6 +31,9 @@ public class PlannenService {
     private final PlanMapper planMapper;
     private final LocatieMapper locatieMapper;
     private final TekstMapper tekstMapper;
+
+    private final int MAXTEKSTSIZE=100;
+
     @Autowired
     public PlannenService(APIService APIService,
                           PlanRepository planRepository,
@@ -189,7 +192,7 @@ public class PlannenService {
             }
 
             UpdateCounter tekstCounter = new UpdateCounter();
-            procesTekst(savedPlan.getIdentificatie(), tekstCounter);
+            procesTekst(savedPlan.getIdentificatie(), 1, tekstCounter);
 
             log.info("[IHR] plan {}", planDto);
         } catch (Exception e) {
@@ -241,29 +244,69 @@ public class PlannenService {
         return updateCounter;
     }
 
-    public UpdateCounter loadTeksten() {
+    public UpdateCounter loadTekstenFromList() {
         UpdateCounter updateCounter = new UpdateCounter();
         Iterable<ImroLoadDto> imroLoadDtos = imroLoadRepository.findByIdentificatieNotLoaded();
 
         imroLoadDtos.forEach(
                 imroPlan -> {
-                    procesTekst(imroPlan.getIdentificatie(), updateCounter);
+                    procesTekst(imroPlan.getIdentificatie(), 1, updateCounter);
                 }
         );
 
         return updateCounter;
     }
-    private void procesTekst(String identificatie, UpdateCounter updateCounter) {
-        TekstCollectie teksten = getTeksten(identificatie);
+
+    private void saveText(String identificatie, int page, TekstCollectie teksten, UpdateCounter updateCounter) {
         if (teksten != null) {
-            teksten.getEmbedded().getTeksten().forEach(tekst -> {
-                addTekst(identificatie, tekst, updateCounter);
-            });
+            if (teksten.getEmbedded() != null) {
+                if (teksten.getEmbedded().getTeksten() != null) {
+                    // add each found text
+                    teksten.getEmbedded().getTeksten().forEach(tekst -> {
+                        addTekst(identificatie, tekst, updateCounter);
+
+                        List<TekstReferentie> tekstReferentieList = tekst.getLinks().getChildren();
+                        tekstReferentieList.forEach(tekstReferentie -> {
+                            String href = tekstReferentie.getHref();
+                            procesTekstRef(identificatie, href, 1, updateCounter);
+                        });
+                    });
+
+                    // while maximum number of teksten retrieved, get next page
+                    if (teksten.getEmbedded().getTeksten().size() == MAXTEKSTSIZE) {
+                        procesTekst(identificatie, page + 1, updateCounter);
+                    }
+                }
+            }
+        }
+    }
+    private void procesTekstRef(String identificatie, String href, int page, UpdateCounter updateCounter) {
+        TekstCollectie teksten =  getTekstRef(href, page);
+
+        if (teksten != null) {
+            saveText(identificatie, page, teksten, updateCounter);
         }
     }
 
-    public TekstCollectie getTeksten(String identificatie) {
+    private void procesTekst(String identificatie, int page, UpdateCounter updateCounter) {
+        TekstCollectie teksten = getTekstenForId(identificatie, page);
+        if (teksten != null ) {
+            saveText(identificatie, page, teksten, updateCounter);
+        }
+    }
+
+    public TekstCollectie getTekstRef(String ref, int page) {
+        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(ref);
+        //uriComponentsBuilder.queryParam("pageSize", MAXTEKSTSIZE);
+        //uriComponentsBuilder.queryParam("page", page);
+        log.trace("using url: {}", uriComponentsBuilder.build().toUri());
+        return APIService.getDirectly(uriComponentsBuilder.build().toUri(), TekstCollectie.class);
+    }
+
+    public TekstCollectie getTekstenForId(String identificatie, int page) {
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(APIService.getApiUrl() + "/plannen/" + identificatie + "/teksten");
+        uriComponentsBuilder.queryParam("pageSize", MAXTEKSTSIZE);
+        uriComponentsBuilder.queryParam("page", page);
         log.trace("using url: {}", uriComponentsBuilder.build().toUri());
         return APIService.getDirectly(uriComponentsBuilder.build().toUri(), TekstCollectie.class);
     }

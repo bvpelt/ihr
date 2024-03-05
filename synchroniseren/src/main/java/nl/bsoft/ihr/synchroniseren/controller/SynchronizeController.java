@@ -82,7 +82,7 @@ public class SynchronizeController {
     public ResponseEntity<UpdateCounter> loadIhrTeksten() {
         UpdateCounter counter = new UpdateCounter();
 
-        counter = plannenService.loadTeksten();
+        counter = plannenService.loadTekstenFromList();
 
         return ResponseEntity.ok(counter);
     }
