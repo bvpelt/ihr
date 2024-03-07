@@ -152,7 +152,6 @@ public abstract class PlanMapper {
         }
         return null;
     }
-
     @Named("toJsonNullableString")
     protected String toJsonNullableString(JsonNullable<String> jsonNullable) {
         if (jsonNullable.isPresent()) {

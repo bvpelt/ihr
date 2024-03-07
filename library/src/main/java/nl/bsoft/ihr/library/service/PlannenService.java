@@ -23,36 +23,40 @@ import java.util.Optional;
 public class PlannenService {
     private final int MAX_PAGE_SIZE;
     private final APIService APIService;
+
+    private final TekstenService tekstenService;
     private final PlanRepository planRepository;
     private final ImroLoadRepository imroLoadRepository;
     private final LocatieRepository locatieRepository;
     private final OverheidRepository overheidRepository;
-    private final TekstRepository tekstRepository;
+    //private final TekstRepository tekstRepository;
     private final PlanMapper planMapper;
     private final LocatieMapper locatieMapper;
-    private final TekstMapper tekstMapper;
-
+    //private final TekstMapper tekstMapper;
     private final int MAXTEKSTSIZE=100;
 
     @Autowired
     public PlannenService(APIService APIService,
+                          TekstenService tekstenService,
                           PlanRepository planRepository,
                           ImroLoadRepository imroLoadRepository,
                           OverheidRepository overheidRepository,
-                          TekstRepository tekstRepository,
+//                          TekstRepository tekstRepository,
                           LocatieRepository locatieRepository,
                           PlanMapper planMapper,
-                          LocatieMapper locatieMapper,
-                          TekstMapper tekstMapper) {
+                          LocatieMapper locatieMapper
+                          /* TekstMapper tekstMapper */
+    ) {
         this.APIService = APIService;
+        this.tekstenService = tekstenService;
         this.planRepository = planRepository;
         this.imroLoadRepository = imroLoadRepository;
         this.overheidRepository = overheidRepository;
-        this.tekstRepository = tekstRepository;
+//        this.tekstRepository = tekstRepository;
         this.locatieRepository = locatieRepository;
         this.planMapper = planMapper;
         this.locatieMapper = locatieMapper;
-        this.tekstMapper = tekstMapper;
+ //       this.tekstMapper = tekstMapper;
         this.MAX_PAGE_SIZE = APIService.getMAX_PAGE_SIZE();
     }
 
@@ -192,7 +196,7 @@ public class PlannenService {
             }
 
             UpdateCounter tekstCounter = new UpdateCounter();
-            procesTekst(savedPlan.getIdentificatie(), 1, tekstCounter);
+            tekstenService.procesTekst(savedPlan.getIdentificatie(), 1, tekstCounter);
 
             log.info("[IHR] plan {}", planDto);
         } catch (Exception e) {
@@ -250,13 +254,14 @@ public class PlannenService {
 
         imroLoadDtos.forEach(
                 imroPlan -> {
-                    procesTekst(imroPlan.getIdentificatie(), 1, updateCounter);
+                    tekstenService.procesTekst(imroPlan.getIdentificatie(), 1, updateCounter);
                 }
         );
 
         return updateCounter;
     }
 
+    /*
     private void saveText(String identificatie, int page, TekstCollectie teksten, UpdateCounter updateCounter) {
         if (teksten != null) {
             if (teksten.getEmbedded() != null) {
@@ -343,4 +348,6 @@ public class PlannenService {
         }
         return savedTekst;
     }
+
+ */
 }

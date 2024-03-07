@@ -1,0 +1,29 @@
+{
+  "bestemmingshoofdgroep" : "wonen",
+  "labelInfo" : "W",
+  "_links" : {
+    "figuren" : [ ],
+    "maatvoeringen" : [ ],
+    "teksten" : [ {
+      "href" : "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.1705.178-VG01/teksten/NL.IMRO.PT.regels.6f0307e150e546d08c64c1540eaa8cf2"
+    } ],
+    "bouwaanduidingen" : [ ],
+    "self" : {
+      "href" : "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.1705.178-VG01/bestemmingsvlakken/NL.IMRO.EB203348"
+    },
+    "lettertekenaanduidingen" : [ ],
+    "functieaanduidingen" : [ ],
+    "bouwvlakken" : [ {
+      "href" : "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.1705.178-VG01/bouwvlakken/NL.IMRO.BV203345"
+    }, {
+      "href" : "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.1705.178-VG01/bouwvlakken/NL.IMRO.BV203346"
+    } ],
+    "gebiedsaanduidingen" : [ ]
+  },
+  "verwijzingNaarTekst" : [ "https://ruimtelijkeplannen.nl/documents/NL.IMRO.1705.178-VG01/r_NL.IMRO.1705.178-VG01.html#NL.IMRO.PT.6f0307e150e546d08c64c1540eaa8cf2" ],
+  "bestemmingsfuncties" : [ ],
+  "id" : "NL.IMRO.EB203348",
+  "type" : "enkelbestemming",
+  "naam" : "Wonen",
+  "artikelnummer" : "4"
+}

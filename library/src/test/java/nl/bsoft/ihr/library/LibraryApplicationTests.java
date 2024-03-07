@@ -3,14 +3,13 @@ package nl.bsoft.ihr.library;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import nl.bsoft.ihr.generated.model.Bestemmingsvlak;
 import nl.bsoft.ihr.generated.model.Plan;
 import nl.bsoft.ihr.generated.model.Tekst;
 import nl.bsoft.ihr.library.mapper.*;
-import nl.bsoft.ihr.library.model.dto.LocatieDto;
-import nl.bsoft.ihr.library.model.dto.OverheidDto;
-import nl.bsoft.ihr.library.model.dto.PlanDto;
-import nl.bsoft.ihr.library.model.dto.TekstDto;
+import nl.bsoft.ihr.library.model.dto.*;
 import org.junit.jupiter.api.Test;
+import org.locationtech.jts.io.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ResourceLoader;
@@ -24,6 +23,7 @@ public class LibraryApplicationTests {
     private final PlanMapper planMapper = new PlanMapperImpl();
     private final TekstMapper tekstMapper = new TekstMapperImpl();
     private final LocatieMapper locatieMapper = new LocatieMapperImpl();
+    private final BestemmingsvlakMapper bestemmingsvlakMapper = new BestemmingsvlakMapperImpl();
 
     @Autowired
     private ResourceLoader resourceLoader = null;
@@ -100,6 +100,101 @@ public class LibraryApplicationTests {
 
         } catch (Exception e) {
             log.error("Error in mapTekstDto test: {}", e);
+        }
+        log.info("End   tekst.json");
+    }
+
+    @Test
+    public void mapBestemmingsvlakDto() {
+        Bestemmingsvlak bestemmingsvlak;
+        log.info("Start bestemmingsvlak.json");
+        try {
+            File dataFile = resourceLoader.getResource("classpath:bestemmingsvlak.json").getFile();
+
+            bestemmingsvlak = objectMapper.readValue(dataFile, Bestemmingsvlak.class);
+            log.info("tekst: \n{}", bestemmingsvlak.toString());
+
+            BestemmingsvlakDto bestemmingsvlakDto = bestemmingsvlakMapper.toBestemmingsvlak(bestemmingsvlak);
+            log.info("bestemmingsvlakDto: \n{}", bestemmingsvlakDto.toString());
+
+        } catch (Exception e) {
+            log.error("Error in mapBestemmingsvlakDto test: {}", e);
+        }
+        log.info("End   tekst.json");
+    }
+
+    @Test
+    public void mapBestemmingsvlakDto_01() {
+        Bestemmingsvlak bestemmingsvlak;
+        log.info("Start bestemmingsvlak-01.json");
+        try {
+            File dataFile = resourceLoader.getResource("classpath:bestemmingsvlak-01.json").getFile();
+
+            bestemmingsvlak = objectMapper.readValue(dataFile, Bestemmingsvlak.class);
+            log.info("tekst: \n{}", bestemmingsvlak.toString());
+
+            BestemmingsvlakDto bestemmingsvlakDto = bestemmingsvlakMapper.toBestemmingsvlak(bestemmingsvlak);
+            log.info("bestemmingsvlakDto: \n{}", bestemmingsvlakDto.toString());
+
+        } catch (Exception e) {
+            log.error("Error in mapBestemmingsvlakDto test: {}", e);
+        }
+        log.info("End   tekst.json");
+    }
+
+    @Test
+    public void mapBestemmingsvlakDto_02() {
+        Bestemmingsvlak bestemmingsvlak;
+        log.info("Start bestemmingsvlak-02.json");
+        try {
+            File dataFile = resourceLoader.getResource("classpath:bestemmingsvlak-02.json").getFile();
+
+            bestemmingsvlak = objectMapper.readValue(dataFile, Bestemmingsvlak.class);
+            log.info("tekst: \n{}", bestemmingsvlak.toString());
+
+            BestemmingsvlakDto bestemmingsvlakDto = bestemmingsvlakMapper.toBestemmingsvlak(bestemmingsvlak);
+            log.info("bestemmingsvlakDto: \n{}", bestemmingsvlakDto.toString());
+
+        } catch (Exception e) {
+            log.error("Error in mapBestemmingsvlakDto test: {}", e);
+        }
+        log.info("End   tekst.json");
+    }
+
+    @Test
+    public void mapBestemmingsvlakDto_03() {
+        Bestemmingsvlak bestemmingsvlak;
+        log.info("Start bestemmingsvlak-03.json");
+        try {
+            File dataFile = resourceLoader.getResource("classpath:bestemmingsvlak-03.json").getFile();
+
+            bestemmingsvlak = objectMapper.readValue(dataFile, Bestemmingsvlak.class);
+            log.info("tekst: \n{}", bestemmingsvlak.toString());
+
+            BestemmingsvlakDto bestemmingsvlakDto = bestemmingsvlakMapper.toBestemmingsvlak(bestemmingsvlak);
+            log.info("bestemmingsvlakDto: \n{}", bestemmingsvlakDto.toString());
+
+        } catch (Exception e) {
+            log.error("Error in mapBestemmingsvlakDto test: {}", e);
+        }
+        log.info("End   tekst.json");
+    }
+
+    @Test
+    public void mapBestemmingsvlakDto_04() {
+        Bestemmingsvlak bestemmingsvlak;
+        log.info("Start bestemmingsvlak-04.json");
+        try {
+            File dataFile = resourceLoader.getResource("classpath:bestemmingsvlak-04.json").getFile();
+
+            bestemmingsvlak = objectMapper.readValue(dataFile, Bestemmingsvlak.class);
+            log.info("tekst: \n{}", bestemmingsvlak.toString());
+
+            BestemmingsvlakDto bestemmingsvlakDto = bestemmingsvlakMapper.toBestemmingsvlak(bestemmingsvlak);
+            log.info("bestemmingsvlakDto: \n{}", bestemmingsvlakDto.toString());
+
+        } catch (Exception e) {
+            log.error("Error in mapBestemmingsvlakDto test: {}", e);
         }
         log.info("End   tekst.json");
     }
