@@ -1,14 +1,12 @@
 package nl.bsoft.ihr.library.mapper;
 
 import lombok.Setter;
-import nl.bsoft.ihr.generated.model.*;
+import nl.bsoft.ihr.generated.model.ExterneReferentie;
+import nl.bsoft.ihr.generated.model.Tekst;
 import nl.bsoft.ihr.library.model.dto.TekstDto;
 import org.locationtech.jts.io.ParseException;
 import org.mapstruct.*;
 import org.openapitools.jackson.nullable.JsonNullable;
-
-
-import java.time.LocalDate;
 
 @Setter
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
@@ -33,6 +31,7 @@ public abstract class TekstMapper {
     protected String toPlanStatusDate(String id) {
         return id;
     }
+
     @Named("toExternalHref")
     protected String toExternalHref(JsonNullable<ExterneReferentie> extref) {
         String result = null;

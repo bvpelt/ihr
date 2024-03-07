@@ -2,10 +2,7 @@ package nl.bsoft.ihr.library.mapper;
 
 import lombok.Setter;
 import nl.bsoft.ihr.generated.model.Bestemmingsvlak;
-import nl.bsoft.ihr.generated.model.ExterneReferentie;
-import nl.bsoft.ihr.generated.model.Tekst;
 import nl.bsoft.ihr.library.model.dto.BestemmingsvlakDto;
-import nl.bsoft.ihr.library.model.dto.TekstDto;
 import org.locationtech.jts.io.ParseException;
 import org.mapstruct.*;
 import org.openapitools.jackson.nullable.JsonNullable;
@@ -33,10 +30,12 @@ public abstract class BestemmingsvlakMapper {
     protected String toPlanStatusDate(String id) {
         return id;
     }
+
     @Named("toType")
     protected String toType(Bestemmingsvlak.TypeEnum typeEnum) {
         return typeEnum.getValue();
     }
+
     @Named("toJsonNullableString")
     protected String toJsonNullableString(JsonNullable<String> jsonNullable) {
         if (jsonNullable.isPresent()) {

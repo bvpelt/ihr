@@ -1,17 +1,23 @@
 package nl.bsoft.ihr.library.service;
 
 import lombok.extern.slf4j.Slf4j;
-import nl.bsoft.ihr.generated.model.*;
+import nl.bsoft.ihr.generated.model.Plan;
+import nl.bsoft.ihr.generated.model.PlanCollectie;
+import nl.bsoft.ihr.generated.model.PlanCollectieEmbedded;
 import nl.bsoft.ihr.library.mapper.LocatieMapper;
 import nl.bsoft.ihr.library.mapper.PlanMapper;
-import nl.bsoft.ihr.library.mapper.TekstMapper;
-import nl.bsoft.ihr.library.model.dto.*;
-import nl.bsoft.ihr.library.repository.*;
+import nl.bsoft.ihr.library.model.dto.ImroLoadDto;
+import nl.bsoft.ihr.library.model.dto.LocatieDto;
+import nl.bsoft.ihr.library.model.dto.OverheidDto;
+import nl.bsoft.ihr.library.model.dto.PlanDto;
+import nl.bsoft.ihr.library.repository.ImroLoadRepository;
+import nl.bsoft.ihr.library.repository.LocatieRepository;
+import nl.bsoft.ihr.library.repository.OverheidRepository;
+import nl.bsoft.ihr.library.repository.PlanRepository;
 import nl.bsoft.ihr.library.util.UpdateCounter;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDateTime;
@@ -29,11 +35,8 @@ public class PlannenService {
     private final ImroLoadRepository imroLoadRepository;
     private final LocatieRepository locatieRepository;
     private final OverheidRepository overheidRepository;
-    //private final TekstRepository tekstRepository;
     private final PlanMapper planMapper;
     private final LocatieMapper locatieMapper;
-    //private final TekstMapper tekstMapper;
-    private final int MAXTEKSTSIZE=100;
 
     @Autowired
     public PlannenService(APIService APIService,
@@ -45,18 +48,16 @@ public class PlannenService {
                           LocatieRepository locatieRepository,
                           PlanMapper planMapper,
                           LocatieMapper locatieMapper
-                          /* TekstMapper tekstMapper */
+            /* TekstMapper tekstMapper */
     ) {
         this.APIService = APIService;
         this.tekstenService = tekstenService;
         this.planRepository = planRepository;
         this.imroLoadRepository = imroLoadRepository;
         this.overheidRepository = overheidRepository;
-//        this.tekstRepository = tekstRepository;
         this.locatieRepository = locatieRepository;
         this.planMapper = planMapper;
         this.locatieMapper = locatieMapper;
- //       this.tekstMapper = tekstMapper;
         this.MAX_PAGE_SIZE = APIService.getMAX_PAGE_SIZE();
     }
 
@@ -64,18 +65,12 @@ public class PlannenService {
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(APIService.getApiUrl() + "/plannen");
         uriComponentsBuilder.queryParam("page", page);
         uriComponentsBuilder.queryParam("pageSize", size);
-        String [] expand = { "geometrie" };
+        String[] expand = {"geometrie"};
         uriComponentsBuilder.queryParam("expand", expand);
         log.trace("using url: {}", uriComponentsBuilder.build().toUri());
         return APIService.getDirectly(uriComponentsBuilder.build().toUri(), PlanCollectie.class);
     }
 
-    /*
-    correct 44*100 = 88*50
-    correct 89*50 = 4450
-    correct 446*10 = 4460
-    error page 447
-     */
     public UpdateCounter getAllPlannen() {
         int page = 46;
         UpdateCounter updateCounter = new UpdateCounter();
@@ -223,11 +218,12 @@ public class PlannenService {
 
     public Plan getPlan(String identificatie) {
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(APIService.getApiUrl() + "/plannen/" + identificatie);
-        String [] expand = { "geometrie" };
+        String[] expand = {"geometrie"};
         uriComponentsBuilder.queryParam("expand", expand);
         log.trace("using url: {}", uriComponentsBuilder.build().toUri());
         return APIService.getDirectly(uriComponentsBuilder.build().toUri(), Plan.class);
     }
+
     private void procesPlan(String identificatie, ImroLoadDto imroPlan, UpdateCounter updateCounter) {
         Plan plan = getPlan(identificatie);
         PlanDto savedPlan = addPlan(plan, updateCounter);
@@ -235,6 +231,7 @@ public class PlannenService {
         imroPlan.setLoaded(true);
         imroLoadRepository.save(imroPlan);
     }
+
     public UpdateCounter loadPlannen() {
         UpdateCounter updateCounter = new UpdateCounter();
         Iterable<ImroLoadDto> imroLoadDtos = imroLoadRepository.findByIdentificatieNotLoaded();
@@ -260,94 +257,4 @@ public class PlannenService {
 
         return updateCounter;
     }
-
-    /*
-    private void saveText(String identificatie, int page, TekstCollectie teksten, UpdateCounter updateCounter) {
-        if (teksten != null) {
-            if (teksten.getEmbedded() != null) {
-                if (teksten.getEmbedded().getTeksten() != null) {
-                    // add each found text
-                    teksten.getEmbedded().getTeksten().forEach(tekst -> {
-                        addTekst(identificatie, tekst, updateCounter);
-
-                        List<TekstReferentie> tekstReferentieList = tekst.getLinks().getChildren();
-                        tekstReferentieList.forEach(tekstReferentie -> {
-                            String href = tekstReferentie.getHref();
-                            procesTekstRef(identificatie, href, 1, updateCounter);
-                        });
-                    });
-
-                    // while maximum number of teksten retrieved, get next page
-                    if (teksten.getEmbedded().getTeksten().size() == MAXTEKSTSIZE) {
-                        procesTekst(identificatie, page + 1, updateCounter);
-                    }
-                }
-            }
-        }
-    }
-    private void procesTekstRef(String identificatie, String href, int page, UpdateCounter updateCounter) {
-        TekstCollectie teksten =  getTekstRef(href, page);
-
-        if (teksten != null) {
-            saveText(identificatie, page, teksten, updateCounter);
-        }
-    }
-
-    private void procesTekst(String identificatie, int page, UpdateCounter updateCounter) {
-        TekstCollectie teksten = getTekstenForId(identificatie, page);
-        if (teksten != null ) {
-            saveText(identificatie, page, teksten, updateCounter);
-        }
-    }
-
-    public TekstCollectie getTekstRef(String ref, int page) {
-        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(ref);
-        //uriComponentsBuilder.queryParam("pageSize", MAXTEKSTSIZE);
-        //uriComponentsBuilder.queryParam("page", page);
-        log.trace("using url: {}", uriComponentsBuilder.build().toUri());
-        return APIService.getDirectly(uriComponentsBuilder.build().toUri(), TekstCollectie.class);
-    }
-
-    public TekstCollectie getTekstenForId(String identificatie, int page) {
-        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(APIService.getApiUrl() + "/plannen/" + identificatie + "/teksten");
-        uriComponentsBuilder.queryParam("pageSize", MAXTEKSTSIZE);
-        uriComponentsBuilder.queryParam("page", page);
-        log.trace("using url: {}", uriComponentsBuilder.build().toUri());
-        return APIService.getDirectly(uriComponentsBuilder.build().toUri(), TekstCollectie.class);
-    }
-
-    private TekstDto addTekst(String planidentificatie, Tekst tekst, UpdateCounter updateCounter) {
-        TekstDto savedTekst = null;
-
-        try {
-            TekstDto current = tekstMapper.toTekst(tekst);
-            current.setPlanidentificatie(planidentificatie);
-
-            Optional<TekstDto> found = tekstRepository.findByPlanidentificatieAndTekstidentificatie(current.getPlanidentificatie(), current.getTekstidentificatie());
-
-            if (found.isPresent()) {
-                // if equal do not save
-                if (found.equals(current)) {
-                    updateCounter.skipped();
-                } else { // if changed update
-                    TekstDto updated = found.get();
-                    updated.setTitel(current.getTitel());
-                    updated.setInhoud(current.getInhoud());
-                    updated.setExternLabel(current.getExternLabel());
-                    updated.setVolgNummer(current.getVolgNummer());
-                    updated.setExternHRef(current.getExternHRef());
-                    updateCounter.updated();
-                    current = updated;
-                }
-            } else { // new occurrence
-                updateCounter.add();
-            }
-            savedTekst = tekstRepository.save(current);
-        } catch (Exception e) {
-            log.error("Error while processing: {} in tekst processing: {}", tekst, e);
-        }
-        return savedTekst;
-    }
-
- */
 }

@@ -1,10 +1,10 @@
 create table overheid
 (
-    id            bigint not null primary key,
-    type          text,
-    code          text,
-    beleidsmatig boolean default false,
-    publicerend boolean default false,
+    id                 bigint not null primary key,
+    type               text,
+    code               text,
+    beleidsmatig       boolean default false,
+    publicerend        boolean default false,
     plan_identificatie text   not null
 );
 

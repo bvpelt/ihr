@@ -1,25 +1,29 @@
 {
-  "bestemmingshoofdgroep" : "waarde",
-  "labelInfo" : "WR-A4",
-  "_links" : {
-    "figuren" : [ ],
-    "maatvoeringen" : [ ],
-    "teksten" : [ {
-      "href" : "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.1705.178-VG01/teksten/NL.IMRO.PT.regels.48150877206841488d3818d0638b4271"
-    } ],
-    "bouwaanduidingen" : [ ],
-    "self" : {
-      "href" : "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.1705.178-VG01/bestemmingsvlakken/NL.IMRO.DB203340"
+  "bestemmingshoofdgroep": "waarde",
+  "labelInfo": "WR-A4",
+  "_links": {
+    "figuren": [],
+    "maatvoeringen": [],
+    "teksten": [
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.1705.178-VG01/teksten/NL.IMRO.PT.regels.48150877206841488d3818d0638b4271"
+      }
+    ],
+    "bouwaanduidingen": [],
+    "self": {
+      "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.1705.178-VG01/bestemmingsvlakken/NL.IMRO.DB203340"
     },
-    "lettertekenaanduidingen" : [ ],
-    "functieaanduidingen" : [ ],
-    "bouwvlakken" : [ ],
-    "gebiedsaanduidingen" : [ ]
+    "lettertekenaanduidingen": [],
+    "functieaanduidingen": [],
+    "bouwvlakken": [],
+    "gebiedsaanduidingen": []
   },
-  "verwijzingNaarTekst" : [ "https://ruimtelijkeplannen.nl/documents/NL.IMRO.1705.178-VG01/r_NL.IMRO.1705.178-VG01.html#NL.IMRO.PT.48150877206841488d3818d0638b4271" ],
-  "bestemmingsfuncties" : [ ],
-  "id" : "NL.IMRO.DB203340",
-  "type" : "dubbelbestemming",
-  "naam" : "Waarde - Archeologie 4",
-  "artikelnummer" : "5"
+  "verwijzingNaarTekst": [
+    "https://ruimtelijkeplannen.nl/documents/NL.IMRO.1705.178-VG01/r_NL.IMRO.1705.178-VG01.html#NL.IMRO.PT.48150877206841488d3818d0638b4271"
+  ],
+  "bestemmingsfuncties": [],
+  "id": "NL.IMRO.DB203340",
+  "type": "dubbelbestemming",
+  "naam": "Waarde - Archeologie 4",
+  "artikelnummer": "5"
 }

@@ -19,6 +19,8 @@ public class BestemmingsvlakDto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "planidentificatie")
+    private String planidentificatie;
     @Column(name = "identificatie")
     private String identificatie;
     @Column(name = "type")
@@ -27,14 +29,15 @@ public class BestemmingsvlakDto {
     private String naam;
     @Column(name = "bestemmingshoofdgroep")
     private String bestemmingshoofdgroep;
-   // private String [] bestemmingsfuncties;
-   @Column(name = "artikelnummer")
-    private String  artikelnummer;
+    // private String [] bestemmingsfuncties;
+    @Column(name = "artikelnummer")
+    private String artikelnummer;
     //private String [] verwijzingNaarTekst;
     @Column(name = "labelInfo")
     private String labelInfo;
     @Column(name = "md5hash")
     private String md5hash;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -42,10 +45,12 @@ public class BestemmingsvlakDto {
         BestemmingsvlakDto that = (BestemmingsvlakDto) o;
         return Objects.equals(identificatie, that.identificatie) && Objects.equals(type, that.type) && Objects.equals(naam, that.naam) && Objects.equals(bestemmingshoofdgroep, that.bestemmingshoofdgroep) && Objects.equals(artikelnummer, that.artikelnummer) && Objects.equals(labelInfo, that.labelInfo) && Objects.equals(md5hash, that.md5hash);
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(identificatie, type, naam, bestemmingshoofdgroep, artikelnummer, labelInfo, md5hash);
     }
+
     @Override
     public String toString() {
         return "BestemmingsvlakDto{" +

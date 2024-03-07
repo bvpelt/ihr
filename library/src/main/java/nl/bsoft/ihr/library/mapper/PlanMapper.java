@@ -56,6 +56,7 @@ public abstract class PlanMapper {
 
         return isParapluePlan;
     }
+
     @Named("toPlanType")
     protected String toPlanType(PlanType planType) {
         String type = null;
@@ -73,7 +74,7 @@ public abstract class PlanMapper {
     }
 
     @Named("toPublicerendType")
-    protected String toPublicerendType( JsonNullable<PlanPublicerendBevoegdGezag>  publicerendBevoegdGezag) {
+    protected String toPublicerendType(JsonNullable<PlanPublicerendBevoegdGezag> publicerendBevoegdGezag) {
         String type = null;
 
         if (publicerendBevoegdGezag.isPresent()) {
@@ -84,7 +85,7 @@ public abstract class PlanMapper {
     }
 
     @Named("toPublicerendCode")
-    protected String toPublicerendCode( JsonNullable<PlanPublicerendBevoegdGezag>  publicerendBevoegdGezag) {
+    protected String toPublicerendCode(JsonNullable<PlanPublicerendBevoegdGezag> publicerendBevoegdGezag) {
         String code = null;
 
         if (publicerendBevoegdGezag.isPresent()) {
@@ -143,6 +144,7 @@ public abstract class PlanMapper {
         }
         return dossierstatus;
     }
+
     @Named("toBeroepEnBezwaar")
     protected String toBeroepEnBezwaar(JsonNullable<Plan.BeroepEnBezwaarEnum> value) {
         if (value.isPresent()) {
@@ -152,6 +154,7 @@ public abstract class PlanMapper {
         }
         return null;
     }
+
     @Named("toJsonNullableString")
     protected String toJsonNullableString(JsonNullable<String> jsonNullable) {
         if (jsonNullable.isPresent()) {

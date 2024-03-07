@@ -1,36 +1,30 @@
 package nl.bsoft.ihr.library.service;
 
 import lombok.extern.slf4j.Slf4j;
-import nl.bsoft.ihr.generated.model.*;
-import nl.bsoft.ihr.library.mapper.LocatieMapper;
-import nl.bsoft.ihr.library.mapper.PlanMapper;
+import nl.bsoft.ihr.generated.model.Tekst;
+import nl.bsoft.ihr.generated.model.TekstCollectie;
+import nl.bsoft.ihr.generated.model.TekstReferentie;
 import nl.bsoft.ihr.library.mapper.TekstMapper;
-import nl.bsoft.ihr.library.model.dto.*;
-import nl.bsoft.ihr.library.repository.*;
+import nl.bsoft.ihr.library.model.dto.ImroLoadDto;
+import nl.bsoft.ihr.library.model.dto.TekstDto;
+import nl.bsoft.ihr.library.repository.ImroLoadRepository;
+import nl.bsoft.ihr.library.repository.TekstRepository;
 import nl.bsoft.ihr.library.util.UpdateCounter;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
 @Slf4j
 @Service
 public class TekstenService {
-    //private final int MAX_PAGE_SIZE;
     private final APIService APIService;
-    //private final PlanRepository planRepository;
     private final ImroLoadRepository imroLoadRepository;
-    //private final LocatieRepository locatieRepository;
-    //private final OverheidRepository overheidRepository;
     private final TekstRepository tekstRepository;
-    //private final PlanMapper planMapper;
-    //private final LocatieMapper locatieMapper;
     private final TekstMapper tekstMapper;
-
-    private final int MAXTEKSTSIZE=100;
+    private final int MAXTEKSTSIZE = 100;
 
     @Autowired
     public TekstenService(APIService APIService,
@@ -79,18 +73,19 @@ public class TekstenService {
             }
         }
     }
+
     public void procesTekstRef(String identificatie, String href, int page, UpdateCounter updateCounter) {
-        TekstCollectie teksten =  getTekstRef(href, page);
+        TekstCollectie teksten = getTekstRef(href, page);
 
         if (teksten != null) {
             saveText(identificatie, page, teksten, updateCounter);
         }
     }
 
-    public void procesTekst(String identificatie, int page, UpdateCounter updateCounter) {
-        TekstCollectie teksten = getTekstenForId(identificatie, page);
-        if (teksten != null ) {
-            saveText(identificatie, page, teksten, updateCounter);
+    public void procesTekst(String planidentificatie, int page, UpdateCounter updateCounter) {
+        TekstCollectie teksten = getTekstenForId(planidentificatie, page);
+        if (teksten != null) {
+            saveText(planidentificatie, page, teksten, updateCounter);
         }
     }
 
@@ -102,8 +97,8 @@ public class TekstenService {
         return APIService.getDirectly(uriComponentsBuilder.build().toUri(), TekstCollectie.class);
     }
 
-    private TekstCollectie getTekstenForId(String identificatie, int page) {
-        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(APIService.getApiUrl() + "/plannen/" + identificatie + "/teksten");
+    private TekstCollectie getTekstenForId(String planidentificatie, int page) {
+        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(APIService.getApiUrl() + "/plannen/" + planidentificatie + "/teksten");
         uriComponentsBuilder.queryParam("pageSize", MAXTEKSTSIZE);
         uriComponentsBuilder.queryParam("page", page);
         log.trace("using url: {}", uriComponentsBuilder.build().toUri());

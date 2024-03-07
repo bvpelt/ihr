@@ -1,8 +1,6 @@
 package nl.bsoft.ihr.library.repository;
 
 import nl.bsoft.ihr.library.model.dto.LocatieDto;
-import nl.bsoft.ihr.library.model.dto.OverheidDto;
-import nl.bsoft.ihr.library.model.dto.PlanDto;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
