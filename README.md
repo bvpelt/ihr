@@ -32,3 +32,6 @@ select p.identificatie, t.planidentificatie from plan p left join tekst t on (p.
 select p.identificatie, t.planidentificatie from plan p left join tekst t on (p.identificatie=t.planidentificatie) where t.planidentificatie is null;
 
 ```
+
+# JPA Releations
+See https://www.baeldung.com/hibernate-one-to-many 

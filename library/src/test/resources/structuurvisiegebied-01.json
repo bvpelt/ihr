@@ -1,0 +1,38 @@
+{
+  "illustraties": [],
+  "_links": {
+    "teksten": [],
+    "self": {
+      "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.9920.SVOostpolder-VA01/structuurvisiegebieden/NL.IMRO.31c0c4817ad942d2bb741917f77feda0"
+    }
+  },
+  "thema": [
+    "bedrijven",
+    "Wonen"
+  ],
+  "verwijzingNaarTekst": [
+    "https://www.ruimtelijkeplannen.nl/documents/NL.IMRO.9920.SVOostpolder-VA01/d_NL.IMRO.9920.SVOostpolder-VA01.html"
+  ],
+  "relatiesMetExternePlannen": {
+    "tenGevolgeVan": [],
+    "uitTeWerkenIn": [],
+    "uitgewerktIn": [],
+    "gebruiktInformatieUit": []
+  },
+  "id": "NL.IMRO.31c0c4817ad942d2bb741917f77feda0",
+  "beleid": [
+    {
+      "instrument": null,
+      "belang": "Aantrekkelijk vestigingsklimaat",
+      "rol": "other: regulerend"
+    },
+    {
+      "instrument": null,
+      "belang": "Aantrekkelijk vestigingsklimaat",
+      "rol": "faciliterend"
+    }
+  ],
+  "naam": "Gebied1",
+  "cartografieInfo": []
+}
+

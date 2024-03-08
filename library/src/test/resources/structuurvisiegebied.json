@@ -1,0 +1,32 @@
+{
+  "illustraties": [],
+  "_links": {
+    "teksten": [],
+    "self": {
+      "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.1900.2023SVworkumzuid-vast/structuurvisiegebieden/NL.IMRO.1900.GS1592916150-00"
+    }
+  },
+  "thema": [
+    "Wonen"
+  ],
+  "verwijzingNaarTekst": [
+    "https://www.ruimtelijkeplannen.nl/documents/NL.IMRO.1900.2023SVworkumzuid-vast/t_NL.IMRO.1900.2023SVworkumzuid-vast.pdf"
+  ],
+  "relatiesMetExternePlannen": {
+    "tenGevolgeVan": [],
+    "uitTeWerkenIn": [],
+    "uitgewerktIn": [],
+    "gebruiktInformatieUit": []
+  },
+  "id": "NL.IMRO.1900.GS1592916150-00",
+  "beleid": [],
+  "naam": "Structuurvisie Workum",
+  "cartografieInfo": [
+    {
+      "symboolCode": "S005",
+      "kaartnummer": 1,
+      "kaartnaam": "Gebiedsgericht"
+    }
+  ]
+}
+
