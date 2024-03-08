@@ -5,6 +5,7 @@ import nl.bsoft.ihr.generated.model.*;
 import nl.bsoft.ihr.library.model.dto.StructuurVisieGebiedBeleidDto;
 import nl.bsoft.ihr.library.model.dto.StructuurVisieGebiedDto;
 import nl.bsoft.ihr.library.model.dto.StructuurVisieGebiedThemaDto;
+import nl.bsoft.ihr.library.model.dto.TekstRefDto;
 import org.locationtech.jts.io.ParseException;
 import org.mapstruct.*;
 import org.openapitools.jackson.nullable.JsonNullable;
@@ -29,6 +30,7 @@ public abstract class StructuurVisieGebiedMapper {
     @Mapping(target = "naam", source = "naam")
     @Mapping(target = "thema", source = "thema", qualifiedByName = "toThemaListString")
     @Mapping(target = "beleid", source = "beleid", qualifiedByName = "toBeleidListString")
+    @Mapping(target = "verwijzingNaarTekst", source = "verwijzingNaarTekst", qualifiedByName = "toVerwijzingNaarTekstListString")
     public abstract StructuurVisieGebiedDto toStructuurVisieGebied(Structuurvisiegebied structuurvisiegebied) throws ParseException;
     @Named("toIdentificatie")
     protected String toIdentificatie(String id) {
@@ -46,6 +48,19 @@ public abstract class StructuurVisieGebiedMapper {
             });
         }
         return themaDtos;
+    }
+    @Named("toVerwijzingNaarTekstListString")
+    protected Set<TekstRefDto> toVerwijzingNaarTekstListString(List<String> verwijzingen) {
+        final Set<TekstRefDto> tekstRefs = new HashSet<>();
+
+        if ((verwijzingen != null) && (verwijzingen.size() > 0)) {
+            verwijzingen.forEach(referentie -> {
+                TekstRefDto tekstRef = new TekstRefDto();
+                tekstRef.setReferentie(referentie);
+                tekstRefs.add(tekstRef);
+            });
+        }
+        return tekstRefs;
     }
     @Named("toBeleidListString")
     protected Set<StructuurVisieGebiedBeleidDto> toBeleidListString(List<BaseStructuurvisiegebiedBeleidInner> beleiden) {

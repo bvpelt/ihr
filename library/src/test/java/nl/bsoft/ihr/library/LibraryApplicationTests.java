@@ -31,13 +31,6 @@ public class LibraryApplicationTests {
     @Autowired
     private ObjectMapper objectMapper;
 
-    /*
-    @Autowired
-
-    public LibraryApplicationTests(PlanMapperImpl planMapper) {
-        this.planMapper = planMapper;
-    }
-*/
     @Test
     public void mapPlanDto() {
         Plan plan;
@@ -60,7 +53,6 @@ public class LibraryApplicationTests {
         }
         log.info("End   plan.json");
     }
-
     @Test
     public void mapPlan01Dto() {
         Plan plan;
@@ -79,7 +71,6 @@ public class LibraryApplicationTests {
         }
         log.info("End   plan-01.json");
     }
-
     @Test
     public void mapTekstDto() {
         Tekst tekst;
@@ -98,7 +89,6 @@ public class LibraryApplicationTests {
         }
         log.info("End   tekst.json");
     }
-
     @Test
     public void mapBestemmingsvlakDto() {
         Bestemmingsvlak bestemmingsvlak;
@@ -117,7 +107,6 @@ public class LibraryApplicationTests {
         }
         log.info("End   tekst.json");
     }
-
     @Test
     public void mapBestemmingsvlakDto_01() {
         Bestemmingsvlak bestemmingsvlak;
@@ -136,7 +125,6 @@ public class LibraryApplicationTests {
         }
         log.info("End   tekst.json");
     }
-
     @Test
     public void mapBestemmingsvlakDto_02() {
         Bestemmingsvlak bestemmingsvlak;
@@ -155,7 +143,6 @@ public class LibraryApplicationTests {
         }
         log.info("End   tekst.json");
     }
-
     @Test
     public void mapBestemmingsvlakDto_03() {
         Bestemmingsvlak bestemmingsvlak;
@@ -164,7 +151,7 @@ public class LibraryApplicationTests {
             File dataFile = resourceLoader.getResource("classpath:bestemmingsvlak-03.json").getFile();
 
             bestemmingsvlak = objectMapper.readValue(dataFile, Bestemmingsvlak.class);
-            log.info("tekst: \n{}", bestemmingsvlak.toString());
+            log.info("bestemmingsvlak: \n{}", bestemmingsvlak.toString());
 
             BestemmingsvlakDto bestemmingsvlakDto = bestemmingsvlakMapper.toBestemmingsvlak(bestemmingsvlak);
             log.info("bestemmingsvlakDto: \n{}", bestemmingsvlakDto.toString());
@@ -174,7 +161,6 @@ public class LibraryApplicationTests {
         }
         log.info("End   tekst.json");
     }
-
     @Test
     public void mapBestemmingsvlakDto_04() {
         Bestemmingsvlak bestemmingsvlak;
@@ -193,7 +179,6 @@ public class LibraryApplicationTests {
         }
         log.info("End   tekst.json");
     }
-
     @Test
     public void mapStructuurVisieGebiedDto () {
         Structuurvisiegebied structuurvisiegebied;

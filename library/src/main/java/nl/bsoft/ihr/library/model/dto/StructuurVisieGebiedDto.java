@@ -19,21 +19,18 @@ public class StructuurVisieGebiedDto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(name = "planidentificatie")
     private String planidentificatie;
     @Column(name = "identificatie")
     private String identificatie;
-
     @Column(name = "naam")
     private String naam;
-
     @OneToMany(mappedBy = "structuurvisiegebied" )
     private Set<StructuurVisieGebiedThemaDto> thema;
-
     @OneToMany(mappedBy="structuurvisiegebied")
     private Set<StructuurVisieGebiedBeleidDto> beleid;
-
+    @OneToMany(mappedBy="structuurvisiegebied")
+    private Set<TekstRefDto> verwijzingNaarTekst;
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -56,6 +53,7 @@ public class StructuurVisieGebiedDto {
                 ", naam='" + naam + '\'' +
                 ", thema=" + thema +
                 ", beleid=" + beleid +
+                ", verwijzingNaarTekst=" + verwijzingNaarTekst +
                 '}';
     }
 }
