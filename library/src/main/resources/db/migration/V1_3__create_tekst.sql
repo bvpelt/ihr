@@ -1,13 +1,13 @@
 create table tekst
 (
-    id            bigint not null primary key,
-    planidentificatie text   not null,
+    id                 bigint not null primary key,
+    planidentificatie  text   not null,
     tekstidentificatie text   not null,
-    titel         text,
-    inhoud text,
-    volgnummer int,
-    externhref text,
-    externlabel text
+    titel              text,
+    inhoud             text,
+    volgnummer         int,
+    externhref         text,
+    externlabel        text
 );
 
 create unique index tekst_planidentificatie_idx on tekst (planidentificatie, volgnummer);

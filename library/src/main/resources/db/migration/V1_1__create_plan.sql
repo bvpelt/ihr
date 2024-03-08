@@ -1,13 +1,33 @@
 create table plan
 (
-    id            bigint not null primary key,
-    identificatie text   not null,
-    naam          text
+    id              bigint not null primary key,
+    identificatie   text   not null,
+    plantype        text   not null,
+    beloverheidtype text,
+    beloverheidcode text,
+    beloverheidnaam text,
+    puboverheidtype text,
+    puboverheidcode text,
+    puboverheidnaam text,
+    naam            text,
+    planstatus      text   not null,
+    planstatusdate  date   not null,
+    dossierid       text,
+    dossierstatus   text,
+    besluitnummer   text,
+    regelstatus     text,
+    md5hash         text,
+    isparapluplan   boolean,
+    beroepenbezwaar text
 );
 
 create index plan_identificatie_idx on plan (identificatie);
 
 create index plan_naam_idx on plan (naam);
+
+create index plan_dossier_idx on plan (dossierid);
+
+create index plan_besluitnummer_idx on plan (besluitnummer);
 
 ALTER TABLE public.plan
     OWNER TO testuser;

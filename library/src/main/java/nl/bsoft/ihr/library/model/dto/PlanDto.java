@@ -23,6 +23,18 @@ public class PlanDto {
     private String identificatie;
     @Column(name = "plantype")
     private String plantype;
+    @Column(name="beloverheidtype")
+    private String beloverheidtype ;
+    @Column(name="beloverheidcode")
+    private String beloverheidcode ;
+    @Column(name="beloverheidnaam")
+    private String beloverheidnaam ;
+    @Column(name="puboverheidtype")
+    private String puboverheidtype ;
+    @Column(name="puboverheidcode")
+    private String puboverheidcode ;
+    @Column(name="puboverheidnaam")
+    private String puboverheidnaam ;
     @Column(name = "naam")
     private String naam;
     @Column(name = "planstatus")
@@ -46,7 +58,7 @@ public class PlanDto {
     // link to location -- do not use in equal check
     @Column(name = "md5hash", nullable = false)
     private String md5hash;
-
+/*
     public PlanDto(String identificatie, String plantype, String naam, String planstatus, LocalDate planstatusdate, String besluitNummer, String regelstatus, String dossierid, String dossierstatus, String md5hash) {
         this.identificatie = identificatie;
         this.plantype = plantype;
@@ -59,18 +71,19 @@ public class PlanDto {
         this.dossierstatus = dossierstatus;
         this.md5hash = md5hash;
     }
+*/
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PlanDto planDto = (PlanDto) o;
-        return Objects.equals(identificatie, planDto.identificatie) && Objects.equals(plantype, planDto.plantype) && Objects.equals(naam, planDto.naam) && Objects.equals(planstatus, planDto.planstatus) && Objects.equals(planstatusdate, planDto.planstatusdate) && Objects.equals(besluitNummer, planDto.besluitNummer) && Objects.equals(regelstatus, planDto.regelstatus) && Objects.equals(dossierid, planDto.dossierid) && Objects.equals(dossierstatus, planDto.dossierstatus) && Objects.equals(isParapluPlan, planDto.isParapluPlan) && Objects.equals(beroepEnBezwaar, planDto.beroepEnBezwaar) && Objects.equals(md5hash, planDto.md5hash);
+        return Objects.equals(identificatie, planDto.identificatie) && Objects.equals(plantype, planDto.plantype) && Objects.equals(beloverheidtype, planDto.beloverheidtype) && Objects.equals(beloverheidcode, planDto.beloverheidcode) && Objects.equals(beloverheidnaam, planDto.beloverheidnaam) && Objects.equals(puboverheidtype, planDto.puboverheidtype) && Objects.equals(puboverheidcode, planDto.puboverheidcode) && Objects.equals(puboverheidnaam, planDto.puboverheidnaam) && Objects.equals(naam, planDto.naam) && Objects.equals(planstatus, planDto.planstatus) && Objects.equals(planstatusdate, planDto.planstatusdate) && Objects.equals(besluitNummer, planDto.besluitNummer) && Objects.equals(regelstatus, planDto.regelstatus) && Objects.equals(dossierid, planDto.dossierid) && Objects.equals(dossierstatus, planDto.dossierstatus) && Objects.equals(isParapluPlan, planDto.isParapluPlan) && Objects.equals(beroepEnBezwaar, planDto.beroepEnBezwaar) && Objects.equals(md5hash, planDto.md5hash);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(identificatie, plantype, naam, planstatus, planstatusdate, besluitNummer, regelstatus, dossierid, dossierstatus, isParapluPlan, beroepEnBezwaar, md5hash);
+        return Objects.hash(identificatie, plantype, beloverheidtype, beloverheidcode, beloverheidnaam, puboverheidtype, puboverheidcode, puboverheidnaam, naam, planstatus, planstatusdate, besluitNummer, regelstatus, dossierid, dossierstatus, isParapluPlan, beroepEnBezwaar, md5hash);
     }
 
     @Override
@@ -79,6 +92,12 @@ public class PlanDto {
                 "id=" + id +
                 ", identificatie='" + identificatie + '\'' +
                 ", plantype='" + plantype + '\'' +
+                ", beloverheidtype='" + beloverheidtype + '\'' +
+                ", beloverheidcode='" + beloverheidcode + '\'' +
+                ", beloverheidnaam='" + beloverheidnaam + '\'' +
+                ", puboverheidtype='" + puboverheidtype + '\'' +
+                ", puboverheidcode='" + puboverheidcode + '\'' +
+                ", puboverheidnaam='" + puboverheidnaam + '\'' +
                 ", naam='" + naam + '\'' +
                 ", planstatus='" + planstatus + '\'' +
                 ", planstatusdate=" + planstatusdate +

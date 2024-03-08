@@ -1,6 +1,3 @@
-alter table plan
-    add md5hash text;
-
 create table locatie
 (
     id          bigint                  not null primary key,

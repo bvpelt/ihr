@@ -8,11 +8,9 @@ import nl.bsoft.ihr.library.mapper.LocatieMapper;
 import nl.bsoft.ihr.library.mapper.PlanMapper;
 import nl.bsoft.ihr.library.model.dto.ImroLoadDto;
 import nl.bsoft.ihr.library.model.dto.LocatieDto;
-import nl.bsoft.ihr.library.model.dto.OverheidDto;
 import nl.bsoft.ihr.library.model.dto.PlanDto;
 import nl.bsoft.ihr.library.repository.ImroLoadRepository;
 import nl.bsoft.ihr.library.repository.LocatieRepository;
-import nl.bsoft.ihr.library.repository.OverheidRepository;
 import nl.bsoft.ihr.library.repository.PlanRepository;
 import nl.bsoft.ihr.library.util.UpdateCounter;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -34,7 +32,6 @@ public class PlannenService {
     private final PlanRepository planRepository;
     private final ImroLoadRepository imroLoadRepository;
     private final LocatieRepository locatieRepository;
-    private final OverheidRepository overheidRepository;
     private final PlanMapper planMapper;
     private final LocatieMapper locatieMapper;
 
@@ -44,7 +41,6 @@ public class PlannenService {
                           BestemmingsvlakkenService bestemmingsvlakkenService,
                           PlanRepository planRepository,
                           ImroLoadRepository imroLoadRepository,
-                          OverheidRepository overheidRepository,
                           LocatieRepository locatieRepository,
                           PlanMapper planMapper,
                           LocatieMapper locatieMapper
@@ -54,7 +50,6 @@ public class PlannenService {
         this.bestemmingsvlakkenService = bestemmingsvlakkenService;
         this.planRepository = planRepository;
         this.imroLoadRepository = imroLoadRepository;
-        this.overheidRepository = overheidRepository;
         this.locatieRepository = locatieRepository;
         this.planMapper = planMapper;
         this.locatieMapper = locatieMapper;
@@ -105,13 +100,9 @@ public class PlannenService {
         PlanDto savedPlan = null;
 
         PlanDto planDto = null;
-        OverheidDto beleid = null;
-        OverheidDto publicerend = null;
+
         try {
             planDto = planMapper.toPlan(plan);
-            beleid = planMapper.toBeleidOverheid(plan);
-            publicerend = planMapper.toPublicerendOverheid(plan);
-
             //
             // Check if locatie is known
             // if known
@@ -129,34 +120,6 @@ public class PlannenService {
                 locatieDto.setRegistratie(LocalDateTime.now());
                 locatieRepository.save(locatieDto);
                 log.debug("Added locatie: {}", md5hash);
-            }
-            //
-            // check if overheid is known for this plan and beleid code -- always mandatory
-            // if so
-            //   if publicerend has same code
-            //     check if database entry has beleid = true and publicerende = true
-            //   if publicerend has different code
-            //     add occurance
-            Optional<OverheidDto> foundOverheid = overheidRepository.findByIdentificatieAndCode(beleid.getPlan_identificatie(), beleid.getCode());
-            if (foundOverheid.isPresent()) {
-                OverheidDto found = foundOverheid.get();
-                if (!found.getBeleidsmatig()) {
-                    found.setBeleidsmatig(true);
-                }
-                if ((publicerend.getCode() != null) && (publicerend.getCode().equals(beleid.getCode()))) {
-                    found.setPublicerend(true);
-                } else {
-                    found.setPublicerend(false);
-                }
-                overheidRepository.save(found);
-            } else {
-                beleid.setBeleidsmatig(true);
-                if ((publicerend.getCode() != null) && (publicerend.getCode().equals(beleid.getCode()))) {
-                    beleid.setPublicerend(true);
-                } else {
-                    beleid.setPublicerend(false);
-                }
-                overheidRepository.save(beleid);
             }
 
             Optional<PlanDto> optionalPlanDto = planRepository.findByIdentificatie(planDto.getIdentificatie());
