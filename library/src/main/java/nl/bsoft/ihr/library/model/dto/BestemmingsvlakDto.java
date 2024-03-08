@@ -11,7 +11,7 @@ import java.util.Objects;
 @Setter
 @RequiredArgsConstructor
 @Entity
-@Table(name = "tekst", schema = "public", catalog = "ihr")
+@Table(name = "bestemmingsvlak", schema = "public", catalog = "ihr")
 public class BestemmingsvlakDto {
     private static final long serialVersionUID = 7L;
 
@@ -33,7 +33,7 @@ public class BestemmingsvlakDto {
     @Column(name = "artikelnummer")
     private String artikelnummer;
     //private String [] verwijzingNaarTekst;
-    @Column(name = "labelInfo")
+    @Column(name = "labelinfo")
     private String labelInfo;
     @Column(name = "md5hash")
     private String md5hash;

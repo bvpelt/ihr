@@ -1,6 +1,7 @@
 package nl.bsoft.ihr.library.mapper;
 
 import lombok.Setter;
+import nl.bsoft.ihr.generated.model.Bestemmingsvlak;
 import nl.bsoft.ihr.generated.model.Plan;
 import nl.bsoft.ihr.library.model.dto.LocatieDto;
 import nl.bsoft.ihr.library.service.GeoService;
@@ -28,4 +29,8 @@ public abstract class LocatieMapper {
         GeoService geoService = new GeoService(new GeoMapperImpl());
         return geoService.geoJsonToJTS(inputGeometry);
     }
+
+    @Mapping(target = "id", source = "id", ignore = true)
+    @Mapping(target = "geometrie", source = "geometrie", qualifiedByName = "toGeometrie")
+    public abstract LocatieDto toLocatieDto(Bestemmingsvlak bestemmingsvlak) throws ParseException;
 }

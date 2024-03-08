@@ -29,8 +29,8 @@ import java.util.Optional;
 public class PlannenService {
     private final int MAX_PAGE_SIZE;
     private final APIService APIService;
-
     private final TekstenService tekstenService;
+    private final BestemmingsvlakkenService bestemmingsvlakkenService;
     private final PlanRepository planRepository;
     private final ImroLoadRepository imroLoadRepository;
     private final LocatieRepository locatieRepository;
@@ -41,17 +41,17 @@ public class PlannenService {
     @Autowired
     public PlannenService(APIService APIService,
                           TekstenService tekstenService,
+                          BestemmingsvlakkenService bestemmingsvlakkenService,
                           PlanRepository planRepository,
                           ImroLoadRepository imroLoadRepository,
                           OverheidRepository overheidRepository,
-//                          TekstRepository tekstRepository,
                           LocatieRepository locatieRepository,
                           PlanMapper planMapper,
                           LocatieMapper locatieMapper
-            /* TekstMapper tekstMapper */
     ) {
         this.APIService = APIService;
         this.tekstenService = tekstenService;
+        this.bestemmingsvlakkenService = bestemmingsvlakkenService;
         this.planRepository = planRepository;
         this.imroLoadRepository = imroLoadRepository;
         this.overheidRepository = overheidRepository;
@@ -72,7 +72,7 @@ public class PlannenService {
     }
 
     public UpdateCounter getAllPlannen() {
-        int page = 46;
+        int page = 1;
         UpdateCounter updateCounter = new UpdateCounter();
 
         log.info("Start synchronizing ihr");
@@ -101,7 +101,6 @@ public class PlannenService {
         }
         return updateCounter;
     }
-
     public PlanDto addPlan(Plan plan, UpdateCounter updateCounter) {
         PlanDto savedPlan = null;
 
@@ -192,6 +191,11 @@ public class PlannenService {
 
             UpdateCounter tekstCounter = new UpdateCounter();
             tekstenService.procesTekst(savedPlan.getIdentificatie(), 1, tekstCounter);
+            log.info("processed tekst: {}", tekstCounter.toString());
+
+            UpdateCounter bestemmingsvlakCounter = new UpdateCounter();
+            bestemmingsvlakkenService.procesBestemmingsvlak(savedPlan.getIdentificatie(), 1, bestemmingsvlakCounter);
+            log.info("processed bestemmingsvlak: {}", bestemmingsvlakCounter.toString());
 
             log.info("[IHR] plan {}", planDto);
         } catch (Exception e) {

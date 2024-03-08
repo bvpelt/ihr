@@ -13,5 +13,5 @@ public interface BestemmingsvlakRepository extends PagingAndSortingRepository<Be
         CrudRepository<BestemmingsvlakDto, Long>,
         JpaSpecificationExecutor<BestemmingsvlakDto> {
 
-    Optional<BestemmingsvlakDto> findByPlanidentificatieAndTekstidentificatie(String planidentificatie, String tekstIdentificatie);
+    Optional<BestemmingsvlakDto> findByPlanidentificatieAndIdentificatie(String planidentificatie, String identificatie);
 }

@@ -7,14 +7,15 @@ create table bestemmingsvlak
     naam                  text,
     bestemmingshoofdgroep text,
     artikelnummer         text,
-    labelInfo             text
+    labelinfo             text,
+    md5hash               text
 );
 
-create unique index bestemmingsvlak_planidentificatie_idx on bestemmingsvlak (planidentificatie);
+create index bestemmingsvlak_planidentificatie_idx on bestemmingsvlak (planidentificatie);
 
 create index bestemmingsvlak_identificatie_idx on bestemmingsvlak (identificatie);
 
-create unique index bestemmingsvlak_planidentificatie_identificatie_idx on tekst (planidentificatie, identificatie);
+create unique index bestemmingsvlak_planidentificatie_identificatie_idx on bestemmingsvlak (planidentificatie, identificatie);
 
 ALTER TABLE public.bestemmingsvlak
     OWNER TO testuser;
