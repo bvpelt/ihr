@@ -2,6 +2,11 @@
 
 IHR
 
+# Import data
+In postgresql (psql) connected with the database
+```sql
+\copy imroload (identificatie) from data-1708678385058.csv with CSV HEADER;
+```
 # Usefull Queries
 
 ```sql

@@ -29,6 +29,7 @@ public class PlannenService {
     private final APIService APIService;
     private final TekstenService tekstenService;
     private final BestemmingsvlakkenService bestemmingsvlakkenService;
+    private final StructuurVisieGebiedService structuurVisieGebiedService;
     private final PlanRepository planRepository;
     private final ImroLoadRepository imroLoadRepository;
     private final LocatieRepository locatieRepository;
@@ -39,6 +40,7 @@ public class PlannenService {
     public PlannenService(APIService APIService,
                           TekstenService tekstenService,
                           BestemmingsvlakkenService bestemmingsvlakkenService,
+                          StructuurVisieGebiedService structuurVisieGebiedService,
                           PlanRepository planRepository,
                           ImroLoadRepository imroLoadRepository,
                           LocatieRepository locatieRepository,
@@ -48,6 +50,7 @@ public class PlannenService {
         this.APIService = APIService;
         this.tekstenService = tekstenService;
         this.bestemmingsvlakkenService = bestemmingsvlakkenService;
+        this.structuurVisieGebiedService = structuurVisieGebiedService;
         this.planRepository = planRepository;
         this.imroLoadRepository = imroLoadRepository;
         this.locatieRepository = locatieRepository;
@@ -159,6 +162,10 @@ public class PlannenService {
             UpdateCounter bestemmingsvlakCounter = new UpdateCounter();
             bestemmingsvlakkenService.procesBestemmingsvlak(savedPlan.getIdentificatie(), 1, bestemmingsvlakCounter);
             log.info("processed bestemmingsvlak: {}", bestemmingsvlakCounter.toString());
+
+            UpdateCounter structuurvisieCounter = new UpdateCounter();
+            structuurVisieGebiedService.procesStructuurVisieGebied(savedPlan.getIdentificatie(), 1, structuurvisieCounter);
+            log.info("processed structuurvisiegebied: {}", structuurvisieCounter.toString());
 
             log.info("[IHR] plan {}", planDto);
         } catch (Exception e) {

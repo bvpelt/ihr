@@ -18,8 +18,11 @@ public class StructuurVisieGebiedBeleidDto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "belang")
     private String belang;
+    @Column(name = "rol")
     private String rol;
+    @Column(name = "instrument")
     private String instrument;
 
     @ManyToOne

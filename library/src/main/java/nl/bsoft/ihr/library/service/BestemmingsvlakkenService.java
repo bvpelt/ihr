@@ -112,8 +112,9 @@ public class BestemmingsvlakkenService {
 
             if (found.isPresent()) {
                 // if equal do not save
-                if (found.equals(current)) {
+                if (found.get().equals(current)) {
                     updateCounter.skipped();
+                    savedBestemmingsvlak = found.get();
                 } else { // if changed update
                     BestemmingsvlakDto updated = found.get();
                     updated.setArtikelnummer(current.getArtikelnummer());
@@ -125,11 +126,12 @@ public class BestemmingsvlakkenService {
 
                     updateCounter.updated();
                     current = updated;
+                    savedBestemmingsvlak = bestemmingsvlakRepository.save(current);
                 }
             } else { // new occurrence
                 updateCounter.add();
+                savedBestemmingsvlak = bestemmingsvlakRepository.save(current);
             }
-            savedBestemmingsvlak = bestemmingsvlakRepository.save(current);
         } catch (Exception e) {
             log.error("Error while processing: {} in tekst processing: {}", bestemmingsvlak, e);
         }

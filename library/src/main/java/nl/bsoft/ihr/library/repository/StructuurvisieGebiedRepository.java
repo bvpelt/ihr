@@ -13,4 +13,5 @@ import java.util.Optional;
 public interface StructuurvisieGebiedRepository extends PagingAndSortingRepository<StructuurVisieGebiedDto, Long>,
         CrudRepository<StructuurVisieGebiedDto, Long>,
         JpaSpecificationExecutor<StructuurVisieGebiedDto> {
+    Optional<StructuurVisieGebiedDto> findByPlanidentificatieAndIdentificatie(String planidentificatie, String identificatie);
 }
