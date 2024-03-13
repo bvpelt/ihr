@@ -23,18 +23,18 @@ public class PlanDto {
     private String identificatie;
     @Column(name = "plantype")
     private String plantype;
-    @Column(name="beloverheidtype")
-    private String beloverheidtype ;
-    @Column(name="beloverheidcode")
-    private String beloverheidcode ;
-    @Column(name="beloverheidnaam")
-    private String beloverheidnaam ;
-    @Column(name="puboverheidtype")
-    private String puboverheidtype ;
-    @Column(name="puboverheidcode")
-    private String puboverheidcode ;
-    @Column(name="puboverheidnaam")
-    private String puboverheidnaam ;
+    @Column(name = "beloverheidtype")
+    private String beloverheidtype;
+    @Column(name = "beloverheidcode")
+    private String beloverheidcode;
+    @Column(name = "beloverheidnaam")
+    private String beloverheidnaam;
+    @Column(name = "puboverheidtype")
+    private String puboverheidtype;
+    @Column(name = "puboverheidcode")
+    private String puboverheidcode;
+    @Column(name = "puboverheidnaam")
+    private String puboverheidnaam;
     @Column(name = "naam")
     private String naam;
     @Column(name = "planstatus")

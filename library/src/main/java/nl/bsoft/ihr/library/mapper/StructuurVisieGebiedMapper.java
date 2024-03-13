@@ -1,7 +1,8 @@
 package nl.bsoft.ihr.library.mapper;
 
 import lombok.Setter;
-import nl.bsoft.ihr.generated.model.*;
+import nl.bsoft.ihr.generated.model.BaseStructuurvisiegebiedBeleidInner;
+import nl.bsoft.ihr.generated.model.Structuurvisiegebied;
 import nl.bsoft.ihr.library.model.dto.StructuurVisieGebiedBeleidDto;
 import nl.bsoft.ihr.library.model.dto.StructuurVisieGebiedDto;
 import nl.bsoft.ihr.library.model.dto.StructuurVisieGebiedThemaDto;
@@ -10,7 +11,6 @@ import org.locationtech.jts.io.ParseException;
 import org.mapstruct.*;
 import org.openapitools.jackson.nullable.JsonNullable;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,10 +32,12 @@ public abstract class StructuurVisieGebiedMapper {
     @Mapping(target = "beleid", source = "beleid", qualifiedByName = "toBeleidListString")
     @Mapping(target = "verwijzingNaarTekst", source = "verwijzingNaarTekst", qualifiedByName = "toVerwijzingNaarTekstListString")
     public abstract StructuurVisieGebiedDto toStructuurVisieGebied(Structuurvisiegebied structuurvisiegebied) throws ParseException;
+
     @Named("toIdentificatie")
     protected String toIdentificatie(String id) {
         return id;
     }
+
     @Named("toThemaListString")
     protected Set<StructuurVisieGebiedThemaDto> toThemaListString(List<String> themas) {
         final Set<StructuurVisieGebiedThemaDto> themaDtos = new HashSet<>();
@@ -49,6 +51,7 @@ public abstract class StructuurVisieGebiedMapper {
         }
         return themaDtos;
     }
+
     @Named("toVerwijzingNaarTekstListString")
     protected Set<TekstRefDto> toVerwijzingNaarTekstListString(List<String> verwijzingen) {
         final Set<TekstRefDto> tekstRefs = new HashSet<>();
@@ -62,9 +65,10 @@ public abstract class StructuurVisieGebiedMapper {
         }
         return tekstRefs;
     }
+
     @Named("toBeleidListString")
     protected Set<StructuurVisieGebiedBeleidDto> toBeleidListString(List<BaseStructuurvisiegebiedBeleidInner> beleiden) {
-        final Set<StructuurVisieGebiedBeleidDto> beleidDtos =new HashSet<>();
+        final Set<StructuurVisieGebiedBeleidDto> beleidDtos = new HashSet<>();
 
         if ((beleiden != null) && (beleiden.size() > 0)) {
             beleiden.forEach(beleid -> {
@@ -77,6 +81,7 @@ public abstract class StructuurVisieGebiedMapper {
         }
         return beleidDtos;
     }
+
     @Named("toJsonNullableString")
     protected String toJsonNullableString(JsonNullable<String> jsonNullable) {
         if (jsonNullable.isPresent()) {

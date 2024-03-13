@@ -25,12 +25,13 @@ public class StructuurVisieGebiedDto {
     private String identificatie;
     @Column(name = "naam")
     private String naam;
-    @OneToMany(mappedBy = "structuurvisiegebied" )
+    @OneToMany
     private Set<StructuurVisieGebiedThemaDto> thema;
-    @OneToMany(mappedBy="structuurvisiegebied")
+    @OneToMany
     private Set<StructuurVisieGebiedBeleidDto> beleid;
-    @OneToMany(mappedBy="structuurvisiegebied")
+    @OneToMany
     private Set<TekstRefDto> verwijzingNaarTekst;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

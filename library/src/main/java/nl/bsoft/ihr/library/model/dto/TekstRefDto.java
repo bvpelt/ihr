@@ -17,13 +17,9 @@ public class TekstRefDto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(name = "referentie")
     private String referentie;
 
-    @ManyToOne
-    @JoinColumn(name="structuurvisiegebied_id", nullable = false)
-    private StructuurVisieGebiedDto structuurvisiegebied;
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -31,10 +27,12 @@ public class TekstRefDto {
         TekstRefDto that = (TekstRefDto) o;
         return Objects.equals(referentie, that.referentie);
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(referentie);
     }
+
     @Override
     public String toString() {
         return "TekstRefDto{" +

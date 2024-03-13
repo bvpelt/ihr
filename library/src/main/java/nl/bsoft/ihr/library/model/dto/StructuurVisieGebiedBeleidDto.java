@@ -25,31 +25,26 @@ public class StructuurVisieGebiedBeleidDto {
     @Column(name = "instrument")
     private String instrument;
 
-    @ManyToOne
-    @JoinColumn(name="structuurvisiegebied_id", nullable = false)
-    private StructuurVisieGebiedDto structuurvisiegebied;
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         StructuurVisieGebiedBeleidDto that = (StructuurVisieGebiedBeleidDto) o;
-        return Objects.equals(belang, that.belang) && Objects.equals(rol, that.rol) && Objects.equals(instrument, that.instrument) && Objects.equals(structuurvisiegebied, that.structuurvisiegebied);
+        return Objects.equals(belang, that.belang) && Objects.equals(rol, that.rol) && Objects.equals(instrument, that.instrument);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(belang, rol, instrument, structuurvisiegebied);
+        return Objects.hash(belang, rol, instrument);
     }
 
     @Override
     public String toString() {
-        return "StructVisieGebiedBeleidDto{" +
+        return "StructuurVisieGebiedBeleidDto{" +
                 "id=" + id +
                 ", belang='" + belang + '\'' +
                 ", rol='" + rol + '\'' +
                 ", instrument='" + instrument + '\'' +
-                ", structuurvisiegebied=" + structuurvisiegebied +
                 '}';
     }
 }

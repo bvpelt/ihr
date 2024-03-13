@@ -11,34 +11,34 @@ import java.util.Objects;
 @Setter
 @RequiredArgsConstructor
 @Entity
-@Table(name = "structuurvisiegebiedthema", schema = "public", catalog = "ihr")
-public class StructuurVisieGebiedThemaDto {
-    private static final long serialVersionUID = 10L;
-
+@Table(name = "artikel", schema = "public", catalog = "ihr")
+public class ArtikelnummerRefDto {
+    private static final long serialVersionUID = 12L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "thema")
-    private String thema;
+
+    @Column(name = "artikel")
+    private String artikel;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        StructuurVisieGebiedThemaDto that = (StructuurVisieGebiedThemaDto) o;
-        return Objects.equals(thema, that.thema);
+        ArtikelnummerRefDto that = (ArtikelnummerRefDto) o;
+        return Objects.equals(artikel, that.artikel);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(thema);
+        return Objects.hash(artikel);
     }
 
     @Override
     public String toString() {
-        return "StructuurVisieGebiedThemaDto{" +
+        return "ArtikelnummerRefDto{" +
                 "id=" + id +
-                ", thema='" + thema + '\'' +
+                ", artikel='" + artikel + '\'' +
                 '}';
     }
 }

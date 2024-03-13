@@ -1,51 +1,40 @@
 package nl.bsoft.ihr.library.service;
 
 import lombok.extern.slf4j.Slf4j;
-import nl.bsoft.ihr.generated.model.Bestemmingsvlak;
-import nl.bsoft.ihr.generated.model.BestemmingsvlakCollectie;
 import nl.bsoft.ihr.library.mapper.BestemmingsvlakMapper;
 import nl.bsoft.ihr.library.mapper.LocatieMapper;
-import nl.bsoft.ihr.library.model.dto.BestemmingsvlakDto;
-import nl.bsoft.ihr.library.model.dto.ImroLoadDto;
-import nl.bsoft.ihr.library.model.dto.LocatieDto;
-import nl.bsoft.ihr.library.repository.BestemmingsvlakRepository;
+import nl.bsoft.ihr.library.repository.GebeidsaanduidingRepository;
 import nl.bsoft.ihr.library.repository.ImroLoadRepository;
 import nl.bsoft.ihr.library.repository.LocatieRepository;
-import nl.bsoft.ihr.library.util.UpdateCounter;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriComponentsBuilder;
-
-import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Slf4j
 @Service
-public class BestemmingsvlakkenService {
+public class GebiedsaanduidingService {
     private final APIService APIService;
     private final ImroLoadRepository imroLoadRepository;
-    private final BestemmingsvlakRepository bestemmingsvlakRepository;
+    private final GebeidsaanduidingRepository gebeidsaanduidingRepository;
     private final LocatieRepository locatieRepository;
     private final BestemmingsvlakMapper bestemmingsvlakMapper;
     private final LocatieMapper locatieMapper;
     private final int MAXBESTEMMINGSVLAKKEN = 100;
 
     @Autowired
-    public BestemmingsvlakkenService(APIService APIService,
-                                     ImroLoadRepository imroLoadRepository,
-                                     BestemmingsvlakRepository bestemmingsvlakRepository,
-                                     LocatieRepository locatieRepository,
-                                     BestemmingsvlakMapper bestemmingsvlakMapper,
-                                     LocatieMapper locatieMapper) {
+    public GebiedsaanduidingService(APIService APIService,
+                                    ImroLoadRepository imroLoadRepository,
+                                    GebeidsaanduidingRepository gebeidsaanduidingRepository,
+                                    LocatieRepository locatieRepository,
+                                    BestemmingsvlakMapper bestemmingsvlakMapper,
+                                    LocatieMapper locatieMapper) {
         this.APIService = APIService;
         this.imroLoadRepository = imroLoadRepository;
-        this.bestemmingsvlakRepository = bestemmingsvlakRepository;
+        this.gebeidsaanduidingRepository = gebeidsaanduidingRepository;
         this.locatieRepository = locatieRepository;
         this.bestemmingsvlakMapper = bestemmingsvlakMapper;
         this.locatieMapper = locatieMapper;
     }
-
+    /*
     public UpdateCounter loadTekstenFromList() {
         UpdateCounter updateCounter = new UpdateCounter();
         Iterable<ImroLoadDto> imroLoadDtos = imroLoadRepository.findByIdentificatieNotLoaded();
@@ -57,7 +46,6 @@ public class BestemmingsvlakkenService {
         );
         return updateCounter;
     }
-
     private void saveBestemmingsvlakken(String planidentificatie, int page, BestemmingsvlakCollectie bestemmingsvlakken, UpdateCounter updateCounter) {
         if (bestemmingsvlakken != null) {
 
@@ -75,14 +63,12 @@ public class BestemmingsvlakkenService {
             }
         }
     }
-
     public void procesBestemmingsvlak(String planidentificatie, int page, UpdateCounter updateCounter) {
         BestemmingsvlakCollectie bestemmingsvlakCollectie = getBestemmingsvlakkenForId(planidentificatie, page);
         if (bestemmingsvlakCollectie != null) {
             saveBestemmingsvlakken(planidentificatie, page, bestemmingsvlakCollectie, updateCounter);
         }
     }
-
     private BestemmingsvlakCollectie getBestemmingsvlakkenForId(String planidentificatie, int page) {
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(APIService.getApiUrl() + "/plannen/" + planidentificatie + "/bestemmingsvlakken");
         uriComponentsBuilder.queryParam("pageSize", MAXBESTEMMINGSVLAKKEN);
@@ -90,7 +76,6 @@ public class BestemmingsvlakkenService {
         log.trace("using url: {}", uriComponentsBuilder.build().toUri());
         return APIService.getDirectly(uriComponentsBuilder.build().toUri(), BestemmingsvlakCollectie.class);
     }
-
     private BestemmingsvlakDto addBestemmingsvlak(String planidentificatie, Bestemmingsvlak bestemmingsvlak, UpdateCounter updateCounter) {
         BestemmingsvlakDto savedBestemmingsvlak = null;
 
@@ -100,7 +85,7 @@ public class BestemmingsvlakkenService {
 
             String md5hash = null;
 
-            if (bestemmingsvlak.getGeometrie() != null) {
+            if (bestemmingsvlak.getGeometrie() != null ) {
                 md5hash = DigestUtils.md5Hex(bestemmingsvlak.getGeometrie().toString().toUpperCase());
                 current.setMd5hash(md5hash);
 
@@ -143,4 +128,6 @@ public class BestemmingsvlakkenService {
         }
         return savedBestemmingsvlak;
     }
+
+     */
 }

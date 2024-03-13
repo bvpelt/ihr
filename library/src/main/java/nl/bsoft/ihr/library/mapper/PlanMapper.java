@@ -43,11 +43,13 @@ public abstract class PlanMapper {
     protected String toPlanStatusDate(String id) {
         return id;
     }
+
     @Named("toIsParapluePlan")
     protected Boolean toPlanType(Boolean isParapluePlan) {
 
         return isParapluePlan;
     }
+
     @Named("toPlanType")
     protected String toPlanType(PlanType planType) {
         String type = null;
@@ -55,6 +57,7 @@ public abstract class PlanMapper {
         type = planType.getValue();
         return type;
     }
+
     @Named("toBeleidType")
     protected String toBeleidType(PlanBeleidsmatigVerantwoordelijkeOverheid publicerendBevoegdGezag) {
         String type = null;
@@ -62,6 +65,7 @@ public abstract class PlanMapper {
         type = publicerendBevoegdGezag.getType().getValue();
         return type;
     }
+
     @Named("toPublicerendType")
     protected String toPublicerendType(JsonNullable<PlanPublicerendBevoegdGezag> publicerendBevoegdGezag) {
         String type = null;
@@ -72,6 +76,7 @@ public abstract class PlanMapper {
 
         return type;
     }
+
     @Named("toPublicerendCode")
     protected String toPublicerendCode(JsonNullable<PlanPublicerendBevoegdGezag> publicerendBevoegdGezag) {
         String code = null;
@@ -83,6 +88,7 @@ public abstract class PlanMapper {
         }
         return code;
     }
+
     @Named("toPublicerendNaam")
     protected String toPublicerendNaam(JsonNullable<PlanPublicerendBevoegdGezag> publicerendBevoegdGezag) {
         String naam = null;
@@ -94,6 +100,7 @@ public abstract class PlanMapper {
         }
         return naam;
     }
+
     @Named("toPlanStatusDate")
     protected LocalDate toPlanStatusDate(Plan plan) {
         LocalDate planStatusDate;
@@ -101,6 +108,7 @@ public abstract class PlanMapper {
         planStatusDate = plan.getPlanstatusInfo().getDatum();
         return planStatusDate;
     }
+
     @Named("toPlanStatus")
     protected String toPlanStatus(PlanstatusInfo.PlanstatusEnum planstatusEnum) {
         String planStatus = null;
@@ -109,6 +117,7 @@ public abstract class PlanMapper {
 
         return planStatus;
     }
+
     @Named("toDossierId")
     protected String toDossierId(JsonNullable<PlanDossier> planDossierJsonNullable) {
         String dossierid = null;
@@ -124,6 +133,7 @@ public abstract class PlanMapper {
         }
         return dossierid;
     }
+
     @Named("toDossierStatus")
     protected String toDossierStatus(JsonNullable<PlanDossier> planDossierJsonNullable) {
         String dossierstatus = null;
@@ -139,6 +149,7 @@ public abstract class PlanMapper {
         }
         return dossierstatus;
     }
+
     @Named("toBeroepEnBezwaar")
     protected String toBeroepEnBezwaar(JsonNullable<Plan.BeroepEnBezwaarEnum> value) {
         if (value.isPresent()) {
@@ -148,6 +159,7 @@ public abstract class PlanMapper {
         }
         return null;
     }
+
     @Named("toJsonNullableString")
     protected String toJsonNullableString(JsonNullable<String> jsonNullable) {
         if (jsonNullable.isPresent()) {

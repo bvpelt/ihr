@@ -1,0 +1,27 @@
+{
+  "gebiedsaanduidinggroep": "vrijwaringszone",
+  "labelInfo": "2",
+  "artikelnummers": [
+    "32.5"
+  ],
+  "_links": {
+    "figuren": [],
+    "maatvoeringen": [],
+    "teksten": [
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0765.02BP00012010-0401/teksten/NL.IMRO.PT.regels.109a1051-31d4-4fa8-bc65-3b9006ae7db8"
+      }
+    ],
+    "bouwaanduidingen": [],
+    "self": {
+      "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0765.02BP00012010-0401/gebiedsaanduidingen/NL.IMRO.0765.GP1191602860-00"
+    },
+    "functieaanduidingen": []
+  },
+  "verwijzingNaarTekst": [
+    "https://ruimtelijkeplannen.nl/documents/NL.IMRO.0765.02BP00012010-0401/r_NL.IMRO.0765.02BP00012010-0401.html#109a1051-31d4-4fa8-bc65-3b9006ae7db8"
+  ],
+  "bestemmingsfuncties": [],
+  "id": "NL.IMRO.0765.GP1191602860-00",
+  "naam": "vrijwaringszone - molenbiotoop 2"
+}

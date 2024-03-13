@@ -36,6 +36,7 @@ public class TekstenService {
         this.tekstRepository = tekstRepository;
         this.tekstMapper = tekstMapper;
     }
+
     public UpdateCounter loadTekstenFromList() {
         UpdateCounter updateCounter = new UpdateCounter();
         Iterable<ImroLoadDto> imroLoadDtos = imroLoadRepository.findByIdentificatieNotLoaded();
@@ -47,6 +48,7 @@ public class TekstenService {
         );
         return updateCounter;
     }
+
     private void saveText(String identificatie, int page, TekstCollectie teksten, UpdateCounter updateCounter) {
         if (teksten != null) {
             if (teksten.getEmbedded() != null) {
@@ -70,6 +72,7 @@ public class TekstenService {
             }
         }
     }
+
     public void procesTekstRef(String identificatie, String href, int page, UpdateCounter updateCounter) {
         TekstCollectie teksten = getTekstRef(href, page);
 
@@ -77,17 +80,20 @@ public class TekstenService {
             saveText(identificatie, page, teksten, updateCounter);
         }
     }
+
     public void procesTekst(String planidentificatie, int page, UpdateCounter updateCounter) {
         TekstCollectie teksten = getTekstenForId(planidentificatie, page);
         if (teksten != null) {
             saveText(planidentificatie, page, teksten, updateCounter);
         }
     }
+
     private TekstCollectie getTekstRef(String ref, int page) {
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(ref);
         log.trace("using url: {}", uriComponentsBuilder.build().toUri());
         return APIService.getDirectly(uriComponentsBuilder.build().toUri(), TekstCollectie.class);
     }
+
     private TekstCollectie getTekstenForId(String planidentificatie, int page) {
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(APIService.getApiUrl() + "/plannen/" + planidentificatie + "/teksten");
         uriComponentsBuilder.queryParam("pageSize", MAXTEKSTSIZE);
@@ -95,6 +101,7 @@ public class TekstenService {
         log.trace("using url: {}", uriComponentsBuilder.build().toUri());
         return APIService.getDirectly(uriComponentsBuilder.build().toUri(), TekstCollectie.class);
     }
+
     private TekstDto addTekst(String planidentificatie, Tekst tekst, UpdateCounter updateCounter) {
         TekstDto savedTekst = null;
 

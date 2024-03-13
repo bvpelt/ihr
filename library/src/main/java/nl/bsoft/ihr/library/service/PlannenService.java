@@ -99,6 +99,7 @@ public class PlannenService {
         }
         return updateCounter;
     }
+
     public PlanDto addPlan(Plan plan, UpdateCounter updateCounter) {
         PlanDto savedPlan = null;
 
@@ -157,15 +158,15 @@ public class PlannenService {
 
             UpdateCounter tekstCounter = new UpdateCounter();
             tekstenService.procesTekst(savedPlan.getIdentificatie(), 1, tekstCounter);
-            log.info("processed tekst: {}", tekstCounter.toString());
+            log.info("processed tekst: {}", tekstCounter);
 
             UpdateCounter bestemmingsvlakCounter = new UpdateCounter();
             bestemmingsvlakkenService.procesBestemmingsvlak(savedPlan.getIdentificatie(), 1, bestemmingsvlakCounter);
-            log.info("processed bestemmingsvlak: {}", bestemmingsvlakCounter.toString());
+            log.info("processed bestemmingsvlak: {}", bestemmingsvlakCounter);
 
             UpdateCounter structuurvisieCounter = new UpdateCounter();
             structuurVisieGebiedService.procesStructuurVisieGebied(savedPlan.getIdentificatie(), 1, structuurvisieCounter);
-            log.info("processed structuurvisiegebied: {}", structuurvisieCounter.toString());
+            log.info("processed structuurvisiegebied: {}", structuurvisieCounter);
 
             log.info("[IHR] plan {}", planDto);
         } catch (Exception e) {

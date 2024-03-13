@@ -1,0 +1,27 @@
+{
+  "gebiedsaanduidinggroep": "vrijwaringszone",
+  "labelInfo": null,
+  "artikelnummers": [
+    "32.4"
+  ],
+  "_links": {
+    "figuren": [],
+    "maatvoeringen": [],
+    "teksten": [
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0765.02BP00012010-0401/teksten/NL.IMRO.PT.regels.5433323a-20f0-4399-9aac-a0159706a62f"
+      }
+    ],
+    "bouwaanduidingen": [],
+    "self": {
+      "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0765.02BP00012010-0401/gebiedsaanduidingen/NL.IMRO.0765.GP22264251766-00"
+    },
+    "functieaanduidingen": []
+  },
+  "verwijzingNaarTekst": [
+    "https://ruimtelijkeplannen.nl/documents/NL.IMRO.0765.02BP00012010-0401/r_NL.IMRO.0765.02BP00012010-0401.html#5433323a-20f0-4399-9aac-a0159706a62f"
+  ],
+  "bestemmingsfuncties": [],
+  "id": "NL.IMRO.0765.GP22264251766-00",
+  "naam": "vrijwaringszone - kade"
+}

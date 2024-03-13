@@ -1,25 +1,20 @@
 package nl.bsoft.ihr.library.service;
 
 import lombok.extern.slf4j.Slf4j;
-import nl.bsoft.ihr.generated.model.Bestemmingsvlak;
-import nl.bsoft.ihr.generated.model.BestemmingsvlakCollectie;
 import nl.bsoft.ihr.generated.model.Structuurvisiegebied;
 import nl.bsoft.ihr.generated.model.StructuurvisiegebiedCollectie;
-import nl.bsoft.ihr.library.mapper.BestemmingsvlakMapper;
-import nl.bsoft.ihr.library.mapper.LocatieMapper;
 import nl.bsoft.ihr.library.mapper.StructuurVisieGebiedMapper;
-import nl.bsoft.ihr.library.model.dto.BestemmingsvlakDto;
 import nl.bsoft.ihr.library.model.dto.ImroLoadDto;
-import nl.bsoft.ihr.library.model.dto.LocatieDto;
 import nl.bsoft.ihr.library.model.dto.StructuurVisieGebiedDto;
-import nl.bsoft.ihr.library.repository.*;
+import nl.bsoft.ihr.library.repository.ImroLoadRepository;
+import nl.bsoft.ihr.library.repository.StructuurvisieGebiedBeleidRepository;
+import nl.bsoft.ihr.library.repository.StructuurvisieGebiedRepository;
+import nl.bsoft.ihr.library.repository.StructuurvisieGebiedThemaRepository;
 import nl.bsoft.ihr.library.util.UpdateCounter;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Slf4j
@@ -33,6 +28,7 @@ public class StructuurVisieGebiedService {
     private final StructuurVisieGebiedMapper structuurVisieGebiedMapper;
 
     private final int MAXBESTEMMINGSVLAKKEN = 100;
+
     @Autowired
     public StructuurVisieGebiedService(APIService APIService,
                                        ImroLoadRepository imroLoadRepository,
@@ -47,6 +43,7 @@ public class StructuurVisieGebiedService {
         this.structuurvisieGebiedThemaRepository = structuurvisieGebiedThemaRepository;
         this.structuurVisieGebiedMapper = structuurVisieGebiedMapper;
     }
+
     public UpdateCounter loadTekstenFromList() {
         UpdateCounter updateCounter = new UpdateCounter();
         Iterable<ImroLoadDto> imroLoadDtos = imroLoadRepository.findByIdentificatieNotLoaded();
@@ -58,12 +55,14 @@ public class StructuurVisieGebiedService {
         );
         return updateCounter;
     }
+
     public void procesStructuurVisieGebied(String planidentificatie, int page, UpdateCounter updateCounter) {
         StructuurvisiegebiedCollectie structuurvisiegebiedCollectie = getStructuurvisiegebiedForId(planidentificatie, page);
         if (structuurvisiegebiedCollectie != null) {
             saveStructuurvisiegebieden(planidentificatie, page, structuurvisiegebiedCollectie, updateCounter);
         }
     }
+
     private void saveStructuurvisiegebieden(String planidentificatie, int page, StructuurvisiegebiedCollectie structuurvisies, UpdateCounter updateCounter) {
         if (structuurvisies != null) {
             if (structuurvisies.getEmbedded() != null) {
@@ -73,12 +72,13 @@ public class StructuurVisieGebiedService {
                     });
 
                     if (structuurvisies.getEmbedded().getStructuurvisiegebieden().size() == MAXBESTEMMINGSVLAKKEN) {
-                        procesStructuurVisieGebied(planidentificatie,page +1, updateCounter);
+                        procesStructuurVisieGebied(planidentificatie, page + 1, updateCounter);
                     }
                 }
             }
         }
     }
+
     private StructuurvisiegebiedCollectie getStructuurvisiegebiedForId(String planidentificatie, int page) {
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(APIService.getApiUrl() + "/plannen/" + planidentificatie + "/structuurvisiegebieden");
         uriComponentsBuilder.queryParam("pageSize", MAXBESTEMMINGSVLAKKEN);
