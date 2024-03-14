@@ -194,7 +194,9 @@ public class PlannenService {
     public Plan getPlan(String identificatie) {
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(APIService.getApiUrl() + "/plannen/" + identificatie);
         String[] expand = {"geometrie"};
-        uriComponentsBuilder.queryParam("expand", expand.toString());
+        for (String param: expand) {
+            uriComponentsBuilder.queryParam("expand", param);
+        }
         log.trace("using url: {}", uriComponentsBuilder.build().toUri());
         return APIService.getDirectly(uriComponentsBuilder.build().toUri(), Plan.class);
     }
