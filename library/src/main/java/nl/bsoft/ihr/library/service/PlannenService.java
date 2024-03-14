@@ -64,7 +64,7 @@ public class PlannenService {
         uriComponentsBuilder.queryParam("page", page);
         uriComponentsBuilder.queryParam("pageSize", size);
         String[] expand = {"geometrie"};
-        uriComponentsBuilder.queryParam("expand", expand);
+        uriComponentsBuilder.queryParam("expand", expand.toString());
         log.trace("using url: {}", uriComponentsBuilder.build().toUri());
         return APIService.getDirectly(uriComponentsBuilder.build().toUri(), PlanCollectie.class);
     }
@@ -194,7 +194,7 @@ public class PlannenService {
     public Plan getPlan(String identificatie) {
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(APIService.getApiUrl() + "/plannen/" + identificatie);
         String[] expand = {"geometrie"};
-        uriComponentsBuilder.queryParam("expand", expand);
+        uriComponentsBuilder.queryParam("expand", expand.toString());
         log.trace("using url: {}", uriComponentsBuilder.build().toUri());
         return APIService.getDirectly(uriComponentsBuilder.build().toUri(), Plan.class);
     }

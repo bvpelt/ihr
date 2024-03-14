@@ -20,12 +20,12 @@ import java.util.Set;
                 JsonNullableMapper.class
         },
         nullValueIterableMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
-public abstract class GebiedsaanduidingMapper {
+public abstract class GebiedsaanduidingMapper implements JsonNullableMapper {
 
     @Mapping(target = "id", source = "id", ignore = true)
     @Mapping(target = "identificatie", source = "id", qualifiedByName = "toIdentificatie")
     @Mapping(target = "naam", source = "naam")
-    @Mapping(target = "gebiedsaanduidinggroep", source = "gebiedsaanduidinggroep")
+    @Mapping(target = "gebiedsaanduidinggroep", source = "gebiedsaanduidinggroep", qualifiedByName = "toJsonNullableString")
     @Mapping(target = "artikelnummers", source = "artikelnummers", qualifiedByName = "toArtikelnummers")
     @Mapping(target = "verwijzingNaarTekst", source = "verwijzingNaarTekst", qualifiedByName = "toVerwijzingNaarTekst")
     @Mapping(target = "labelinfo", source = "labelInfo", qualifiedByName = "toJsonNullableString")
@@ -35,6 +35,15 @@ public abstract class GebiedsaanduidingMapper {
     @Named("toIdentificatie")
     protected String toIdentificatie(String id) {
         return id;
+    }
+
+    @Named("toLabelInfo")
+    protected String toLabelInfo(Gebiedsaanduiding gebiedsaanduiding) {
+        if (gebiedsaanduiding.getLabelInfo().isPresent()) {
+            return gebiedsaanduiding.getLabelInfo().get();
+        } else {
+            return null;
+        }
     }
 
     @Named("toThemaListString")

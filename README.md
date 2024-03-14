@@ -36,6 +36,10 @@ select p.identificatie, t.planidentificatie from plan p left join tekst t on (p.
 -- plannen without teksten
 select p.identificatie, t.planidentificatie from plan p left join tekst t on (p.identificatie=t.planidentificatie) where t.planidentificatie is null;
 
+
+select distinct(identificatie) into bart from imroload;
+delete from imroload;
+insert into imroload (identificatie) select identificatie from bart;
 ```
 
 # JPA Releations
