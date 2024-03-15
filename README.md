@@ -43,4 +43,6 @@ insert into imroload (identificatie) select identificatie from bart;
 ```
 
 # JPA Releations
-See https://www.baeldung.com/hibernate-one-to-many 
+See 
+- https://www.baeldung.com/hibernate-one-to-many
+- https://www.baeldung.com/jpa-many-to-many

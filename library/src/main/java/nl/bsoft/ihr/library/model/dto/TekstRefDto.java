@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -20,17 +21,20 @@ public class TekstRefDto {
     @Column(name = "referentie")
     private String referentie;
 
+    @ManyToMany
+    private Set<BestemmingsvlakDto> bestemmingsvlakken;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TekstRefDto that = (TekstRefDto) o;
-        return Objects.equals(referentie, that.referentie);
+        return Objects.equals(referentie, that.referentie) && Objects.equals(bestemmingsvlakken, that.bestemmingsvlakken);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(referentie);
+        return Objects.hash(referentie, bestemmingsvlakken);
     }
 
     @Override
@@ -38,6 +42,7 @@ public class TekstRefDto {
         return "TekstRefDto{" +
                 "id=" + id +
                 ", referentie='" + referentie + '\'' +
+                ", bestemmingsvlakken=" + bestemmingsvlakken +
                 '}';
     }
 }

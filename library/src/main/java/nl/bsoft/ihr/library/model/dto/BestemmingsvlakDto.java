@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -29,10 +30,14 @@ public class BestemmingsvlakDto {
     private String naam;
     @Column(name = "bestemmingshoofdgroep")
     private String bestemmingshoofdgroep;
-    // private String [] bestemmingsfuncties;
+
+    @ManyToMany
+    private Set<BestemmingFunctieDto> bestemmingsfuncties;
     @Column(name = "artikelnummer")
     private String artikelnummer;
-    //private String [] verwijzingNaarTekst;
+
+    @ManyToMany
+    private Set<TekstRefDto> verwijzingNaarTekst;
     @Column(name = "labelinfo")
     private String labelInfo;
     @Column(name = "md5hash")
@@ -43,23 +48,25 @@ public class BestemmingsvlakDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BestemmingsvlakDto that = (BestemmingsvlakDto) o;
-        return Objects.equals(identificatie, that.identificatie) && Objects.equals(type, that.type) && Objects.equals(naam, that.naam) && Objects.equals(bestemmingshoofdgroep, that.bestemmingshoofdgroep) && Objects.equals(artikelnummer, that.artikelnummer) && Objects.equals(labelInfo, that.labelInfo) && Objects.equals(md5hash, that.md5hash);
+        return Objects.equals(planidentificatie, that.planidentificatie) && Objects.equals(identificatie, that.identificatie) && Objects.equals(type, that.type) && Objects.equals(naam, that.naam) && Objects.equals(bestemmingshoofdgroep, that.bestemmingshoofdgroep) && Objects.equals(bestemmingsfuncties, that.bestemmingsfuncties) && Objects.equals(artikelnummer, that.artikelnummer) && Objects.equals(verwijzingNaarTekst, that.verwijzingNaarTekst) && Objects.equals(labelInfo, that.labelInfo) && Objects.equals(md5hash, that.md5hash);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(identificatie, type, naam, bestemmingshoofdgroep, artikelnummer, labelInfo, md5hash);
+        return Objects.hash(planidentificatie, identificatie, type, naam, bestemmingshoofdgroep, bestemmingsfuncties, artikelnummer, verwijzingNaarTekst, labelInfo, md5hash);
     }
-
     @Override
     public String toString() {
         return "BestemmingsvlakDto{" +
                 "id=" + id +
+                ", planidentificatie='" + planidentificatie + '\'' +
                 ", identificatie='" + identificatie + '\'' +
                 ", type='" + type + '\'' +
                 ", naam='" + naam + '\'' +
                 ", bestemmingshoofdgroep='" + bestemmingshoofdgroep + '\'' +
+                ", bestemmingsfuncties=" + bestemmingsfuncties +
                 ", artikelnummer='" + artikelnummer + '\'' +
+                ", verwijzingNaarTekst=" + verwijzingNaarTekst +
                 ", labelInfo='" + labelInfo + '\'' +
                 ", md5hash='" + md5hash + '\'' +
                 '}';
