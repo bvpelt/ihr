@@ -25,7 +25,7 @@ public class BestemmingFunctieDto {
     @Column(name = "functieniveau")
     private String functieniveau;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "bestemmingsfuncties")
     private Set<BestemmingsvlakDto> bestemmingsvlakken;
 
     @Override

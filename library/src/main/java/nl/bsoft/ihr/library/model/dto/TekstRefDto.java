@@ -21,7 +21,7 @@ public class TekstRefDto {
     @Column(name = "referentie")
     private String referentie;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "verwijzingNaarTekst")
     private Set<BestemmingsvlakDto> bestemmingsvlakken;
 
     @Override

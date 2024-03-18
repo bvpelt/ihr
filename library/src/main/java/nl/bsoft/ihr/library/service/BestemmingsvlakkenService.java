@@ -95,7 +95,7 @@ public class BestemmingsvlakkenService {
         BestemmingsvlakDto savedBestemmingsvlak = null;
 
         try {
-            BestemmingsvlakDto current = bestemmingsvlakMapper.toBestemmingsvlak(bestemmingsvlak);
+            final BestemmingsvlakDto current = bestemmingsvlakMapper.toBestemmingsvlak(bestemmingsvlak);
             current.setPlanidentificatie(planidentificatie);
 
             String md5hash = null;
@@ -130,12 +130,41 @@ public class BestemmingsvlakkenService {
                     updated.setLabelInfo(current.getLabelInfo());
                     updated.setMd5hash(md5hash);
 
+                    updated.getBestemmingsfuncties().forEach(bestemmingsfunctie -> {
+                        // For each bestemmingsfunctie in database (updated)
+                        //   not in to process message (current)
+                        //   remove from updated
+                        if (!current.getBestemmingsfuncties().contains(bestemmingsfunctie)) {
+                            updated.getBestemmingsfuncties().remove(bestemmingsfunctie);
+                        }
+                    });
+                    current.getBestemmingsfuncties().forEach(bestemmingsfunctie -> {
+                        bestemmingsfunctie.getBestemmingsvlakken().add(updated);
+                        updated.getBestemmingsfuncties().add(bestemmingsfunctie);
+                    });
+
+                    updated.getVerwijzingNaarTekst().forEach(verwijzing -> {
+                        if (!current.getVerwijzingNaarTekst().contains(verwijzing)) {
+                            updated.getVerwijzingNaarTekst().remove(verwijzing);
+                        }
+                    });
+                    current.getVerwijzingNaarTekst().forEach(verwijzing -> {
+                        verwijzing.getBestemmingsvlakken().add(updated);
+                        updated.getVerwijzingNaarTekst().add(verwijzing);
+                    });
+
                     updateCounter.updated();
-                    current = updated;
-                    savedBestemmingsvlak = bestemmingsvlakRepository.save(current);
+
+                    savedBestemmingsvlak = bestemmingsvlakRepository.save(updated);
                 }
             } else { // new occurrence
                 updateCounter.add();
+                current.getBestemmingsfuncties().forEach(bestemmingsvlakfunctie -> {
+                    bestemmingsvlakfunctie.getBestemmingsvlakken().add(current);
+                });
+                current.getVerwijzingNaarTekst().forEach(verwijzingtekst -> {
+                    verwijzingtekst.getBestemmingsvlakken().add(current);
+                });
                 savedBestemmingsvlak = bestemmingsvlakRepository.save(current);
             }
         } catch (Exception e) {

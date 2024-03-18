@@ -30,18 +30,26 @@ public class BestemmingsvlakDto {
     private String naam;
     @Column(name = "bestemmingshoofdgroep")
     private String bestemmingshoofdgroep;
-
-    @ManyToMany
-    private Set<BestemmingFunctieDto> bestemmingsfuncties;
-    @Column(name = "artikelnummer")
-    private String artikelnummer;
-
-    @ManyToMany
-    private Set<TekstRefDto> verwijzingNaarTekst;
     @Column(name = "labelinfo")
     private String labelInfo;
     @Column(name = "md5hash")
     private String md5hash;
+    @Column(name = "artikelnummer")
+    private String artikelnummer;
+
+    @ManyToMany
+    @JoinTable(
+            name = "bestemmingsvlak_bestemmingsfunctie",
+            joinColumns = @JoinColumn(name = "bestemmingsvlak_id"),
+            inverseJoinColumns = @JoinColumn(name = "bestemmingsfunctie_id"))
+    private Set<BestemmingFunctieDto> bestemmingsfuncties;
+
+    @ManyToMany
+    @JoinTable(
+            name = "bestemmingsvlak_tekstref",
+            joinColumns = @JoinColumn(name = "bestemmingsvlak_id"),
+            inverseJoinColumns = @JoinColumn(name = "tekstref_id"))
+    private Set<TekstRefDto> verwijzingNaarTekst;
 
     @Override
     public boolean equals(Object o) {

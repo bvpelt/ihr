@@ -5,6 +5,7 @@ import nl.bsoft.ihr.generated.model.BaseBestemmingsvlakBestemmingsfunctiesInner;
 import nl.bsoft.ihr.generated.model.Bestemmingsvlak;
 import nl.bsoft.ihr.library.model.dto.BestemmingFunctieDto;
 import nl.bsoft.ihr.library.model.dto.BestemmingsvlakDto;
+import nl.bsoft.ihr.library.model.dto.TekstRefDto;
 import org.locationtech.jts.io.ParseException;
 import org.mapstruct.*;
 import org.openapitools.jackson.nullable.JsonNullable;
@@ -28,9 +29,9 @@ public abstract class BestemmingsvlakMapper {
     @Mapping(target = "type", source = "type", qualifiedByName = "toType")
     @Mapping(target = "naam", source = "naam")
     @Mapping(target = "bestemmingshoofdgroep", source = "bestemmingshoofdgroep", qualifiedByName = "toJsonNullableString")
-    @Mapping(target = "bestemmingsfuncties", source = "", qualifiedByName = "toBestemmingsfuncties")
+    @Mapping(target = "bestemmingsfuncties", source = "bestemmingsfuncties", qualifiedByName = "toBestemmingsfuncties")
     @Mapping(target = "artikelnummer", source = "artikelnummer", qualifiedByName = "toJsonNullableString")
-    @Mapping(target = "verwijzingNaarTekst", source = )
+    @Mapping(target = "verwijzingNaarTekst", source = "verwijzingNaarTekst", qualifiedByName = "toTekstRef")
     @Mapping(target = "labelInfo", source = "labelInfo", qualifiedByName = "toJsonNullableString")
     public abstract BestemmingsvlakDto toBestemmingsvlak(Bestemmingsvlak bestemmingsvlak) throws ParseException;
 
@@ -56,19 +57,17 @@ public abstract class BestemmingsvlakMapper {
         });
         return bestemmingFunctieDtos;
     }
+    @Named("toTekstRef")
+    protected Set<TekstRefDto> toVerwijzingNaarTekst(List<String> verwijzing) {
+        Set<TekstRefDto>  tekstRefDtoSet = new HashSet<>();
 
-    @Named("toBestemmingsfuncties")
-    protected Set<BestemmingFunctieDto> toBestemmingsfuncties(Bestemmingsvlak bestemmingsvlak) {
-        Set<BestemmingFunctieDto> bestemmingFunctieDtos = new HashSet<>();
-
-
-        bestemmingsfuncties.forEach(bestemmingsfunctie -> {
-            BestemmingFunctieDto bestemmingFunctieDto = new BestemmingFunctieDto();
-            bestemmingFunctieDto.setBestemmingsfunctie(bestemmingsfunctie.getBestemmingsfunctie());
-            bestemmingFunctieDto.setFunctieniveau(bestemmingsfunctie.getFunctieniveau());
-            bestemmingFunctieDtos.add(bestemmingFunctieDto);
+        verwijzing.forEach(tekstref -> {
+            TekstRefDto tekstRefDto = new TekstRefDto();
+            tekstRefDto.setReferentie(tekstref);
+            tekstRefDtoSet.add(tekstRefDto);
         });
-        return bestemmingFunctieDtos;
+
+        return tekstRefDtoSet;
     }
     @Named("toJsonNullableString")
     protected String toJsonNullableString(JsonNullable<String> jsonNullable) {
