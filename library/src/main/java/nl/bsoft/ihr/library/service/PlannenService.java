@@ -160,21 +160,27 @@ public class PlannenService {
             tekstenService.procesTekst(savedPlan.getIdentificatie(), 1, tekstCounter);
             log.info("processed tekst: {}", tekstCounter);
             if (imroPlan != null) {
-                imroPlan.setTekstenLoaded(true);
+                if (tekstCounter.getProcessed() > 0) {
+                    imroPlan.setTekstenLoaded(true);
+                }
             }
 
             UpdateCounter bestemmingsvlakCounter = new UpdateCounter();
             bestemmingsvlakkenService.procesBestemmingsvlak(savedPlan.getIdentificatie(), 1, bestemmingsvlakCounter);
             log.info("processed bestemmingsvlak: {}", bestemmingsvlakCounter);
             if (imroPlan != null) {
-                imroPlan.setBestemmingsvlakkenloaded(true);
+                if (bestemmingsvlakCounter.getProcessed() > 0) {
+                    imroPlan.setBestemmingsvlakkenloaded(true);
+                }
             }
 
             UpdateCounter structuurvisieCounter = new UpdateCounter();
             structuurVisieGebiedService.procesStructuurVisieGebied(savedPlan.getIdentificatie(), 1, structuurvisieCounter);
             log.info("processed structuurvisiegebied: {}", structuurvisieCounter);
             if (imroPlan != null) {
-                imroPlan.setStructuurvisiegebiedloaded(true);
+                if (structuurvisieCounter.getProcessed() > 0) {
+                    imroPlan.setStructuurvisiegebiedloaded(true);
+                }
             }
 
             log.info("[IHR] plan {}", planDto);

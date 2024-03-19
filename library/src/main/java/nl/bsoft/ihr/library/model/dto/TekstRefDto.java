@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -22,7 +23,7 @@ public class TekstRefDto {
     private String referentie;
 
     @ManyToMany(mappedBy = "verwijzingNaarTekst")
-    private Set<BestemmingsvlakDto> bestemmingsvlakken;
+    private Set<BestemmingsvlakDto> bestemmingsvlakken = new HashSet<BestemmingsvlakDto>();
 
     @Override
     public boolean equals(Object o) {

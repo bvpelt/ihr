@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -37,19 +39,19 @@ public class BestemmingsvlakDto {
     @Column(name = "artikelnummer")
     private String artikelnummer;
 
-    @ManyToMany
+    @ManyToMany // owns the relation
     @JoinTable(
             name = "bestemmingsvlak_bestemmingsfunctie",
             joinColumns = @JoinColumn(name = "bestemmingsvlak_id"),
             inverseJoinColumns = @JoinColumn(name = "bestemmingsfunctie_id"))
-    private Set<BestemmingFunctieDto> bestemmingsfuncties;
+    private Set<BestemmingFunctieDto> bestemmingsfuncties = new HashSet<BestemmingFunctieDto>();
 
-    @ManyToMany
+    @ManyToMany // owns the relation
     @JoinTable(
             name = "bestemmingsvlak_tekstref",
             joinColumns = @JoinColumn(name = "bestemmingsvlak_id"),
             inverseJoinColumns = @JoinColumn(name = "tekstref_id"))
-    private Set<TekstRefDto> verwijzingNaarTekst;
+    private Set<TekstRefDto> verwijzingNaarTekst = new HashSet<TekstRefDto>();
 
     @Override
     public boolean equals(Object o) {
