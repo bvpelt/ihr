@@ -22,12 +22,16 @@ public class ImroLoadDto {
     private String identificatie;
     @Column(name = "loaded")
     private Boolean loaded;
-
+    @Column(name = "tekstenloaded")
+    private Boolean tekstenLoaded;
+    @Column(name = "bestemmingsvlakkenloaded")
+    private Boolean bestemmingsvlakkenloaded;
+    @Column(name = "structuurvisiegebiedloaded")
+    private Boolean structuurvisiegebiedloaded;
     public ImroLoadDto(String identificatie, Boolean loaded) {
         this.identificatie = identificatie;
         this.loaded = loaded;
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -35,12 +39,10 @@ public class ImroLoadDto {
         ImroLoadDto that = (ImroLoadDto) o;
         return Objects.equals(identificatie, that.identificatie) && Objects.equals(loaded, that.loaded);
     }
-
     @Override
     public int hashCode() {
         return Objects.hash(identificatie, loaded);
     }
-
     @Override
     public String toString() {
         return "ImroLoadDto{" +

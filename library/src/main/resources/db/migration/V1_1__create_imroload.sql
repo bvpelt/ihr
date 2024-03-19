@@ -1,8 +1,11 @@
 create table imroload
 (
-    id            bigint not null primary key,
-    identificatie text   not null,
-    loaded        boolean default false
+    id                         bigint not null primary key,
+    identificatie              text   not null,
+    loaded                     boolean default false,
+    tekstenloaded              boolean default false,
+    bestemmingsvlakkenloaded   boolean default false,
+    structuurvisiegebiedloaded boolean default false
 );
 
 create index imroload_identificatie_idx on imroload (identificatie);

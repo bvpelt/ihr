@@ -86,7 +86,7 @@ public class PlannenService {
                 if (planCollectieEmbedded != null) {
                     List<Plan> planList = planCollectieEmbedded.getPlannen();
                     planList.forEach(plan -> {
-                        addPlan(plan, updateCounter);
+                        addPlan(plan, null, updateCounter);
                     });
                     if (planCollectie.getLinks().getNext() == null) {
                         morePages = false;
@@ -100,7 +100,7 @@ public class PlannenService {
         return updateCounter;
     }
 
-    public PlanDto addPlan(Plan plan, UpdateCounter updateCounter) {
+    public PlanDto addPlan(Plan plan, ImroLoadDto imroPlan, UpdateCounter updateCounter) {
         PlanDto savedPlan = null;
 
         PlanDto planDto = null;
@@ -159,14 +159,23 @@ public class PlannenService {
             UpdateCounter tekstCounter = new UpdateCounter();
             tekstenService.procesTekst(savedPlan.getIdentificatie(), 1, tekstCounter);
             log.info("processed tekst: {}", tekstCounter);
+            if (imroPlan != null) {
+                imroPlan.setTekstenLoaded(true);
+            }
 
             UpdateCounter bestemmingsvlakCounter = new UpdateCounter();
             bestemmingsvlakkenService.procesBestemmingsvlak(savedPlan.getIdentificatie(), 1, bestemmingsvlakCounter);
             log.info("processed bestemmingsvlak: {}", bestemmingsvlakCounter);
+            if (imroPlan != null) {
+                imroPlan.setBestemmingsvlakkenloaded(true);
+            }
 
             UpdateCounter structuurvisieCounter = new UpdateCounter();
             structuurVisieGebiedService.procesStructuurVisieGebied(savedPlan.getIdentificatie(), 1, structuurvisieCounter);
             log.info("processed structuurvisiegebied: {}", structuurvisieCounter);
+            if (imroPlan != null) {
+                imroPlan.setStructuurvisiegebiedloaded(true);
+            }
 
             log.info("[IHR] plan {}", planDto);
         } catch (Exception e) {
@@ -201,9 +210,10 @@ public class PlannenService {
         return APIService.getDirectly(uriComponentsBuilder.build().toUri(), Plan.class);
     }
 
-    private void procesPlan(String identificatie, ImroLoadDto imroPlan, UpdateCounter updateCounter) {
-        Plan plan = getPlan(identificatie);
-        PlanDto savedPlan = addPlan(plan, updateCounter);
+    private void procesPlan(ImroLoadDto imroPlan, UpdateCounter updateCounter) {
+        Plan plan = getPlan(imroPlan.getIdentificatie());
+        PlanDto savedPlan = addPlan(plan, imroPlan, updateCounter);
+        log.trace("Saved plan: {}", savedPlan.toString());
 
         imroPlan.setLoaded(true);
         imroLoadRepository.save(imroPlan);
@@ -215,7 +225,7 @@ public class PlannenService {
 
         imroLoadDtos.forEach(
                 imroPlan -> {
-                    procesPlan(imroPlan.getIdentificatie(), imroPlan, updateCounter);
+                    procesPlan(imroPlan, updateCounter);
                 }
         );
 
