@@ -143,9 +143,10 @@ public class BestemmingsvlakkenService {
                         }
                     });
                     current.getBestemmingsfuncties().forEach(bestemmingsfunctie -> {
-                        bestemmingsfunctie.getBestemmingsvlakken().add(updated);
-                        updated.getBestemmingsfuncties().add(bestemmingsfunctie);
                         bestemmingFunctieRepository.save(bestemmingsfunctie);
+                        //bestemmingsfunctie.getBestemmingsvlakken().add(updated);
+                        updated.getBestemmingsfuncties().add(bestemmingsfunctie);
+
                     });
 
                     updated.getVerwijzingNaarTekst().forEach(verwijzing -> {
@@ -154,9 +155,10 @@ public class BestemmingsvlakkenService {
                         }
                     });
                     current.getVerwijzingNaarTekst().forEach(verwijzing -> {
-                        verwijzing.getBestemmingsvlakken().add(updated);
-                        updated.getVerwijzingNaarTekst().add(verwijzing);
                         tekstRefRepository.save(verwijzing);
+                        //verwijzing.getBestemmingsvlakken().add(updated);
+                        updated.getVerwijzingNaarTekst().add(verwijzing);
+
                     });
 
                     updateCounter.updated();
@@ -166,12 +168,12 @@ public class BestemmingsvlakkenService {
             } else { // new occurrence
                 updateCounter.add();
                 current.getBestemmingsfuncties().forEach(bestemmingsvlakfunctie -> {
-                    bestemmingsvlakfunctie.getBestemmingsvlakken().add(current);
                     bestemmingFunctieRepository.save(bestemmingsvlakfunctie);
+                    //bestemmingsvlakfunctie.getBestemmingsvlakken().add(current);
                 });
                 current.getVerwijzingNaarTekst().forEach(verwijzingtekst -> {
-                    verwijzingtekst.getBestemmingsvlakken().add(current);
                     tekstRefRepository.save(verwijzingtekst);
+                    //verwijzingtekst.getBestemmingsvlakken().add(current);
                 });
                 savedBestemmingsvlak = bestemmingsvlakRepository.save(current);
             }
