@@ -58,10 +58,12 @@ public class TekstenService {
                         addTekst(identificatie, tekst, updateCounter);
 
                         List<TekstReferentie> tekstReferentieList = tekst.getLinks().getChildren();
-                        tekstReferentieList.forEach(tekstReferentie -> {
-                            String href = tekstReferentie.getHref();
-                            procesTekstRef(identificatie, href, 1, updateCounter);
-                        });
+                        if (tekstReferentieList != null) {
+                            tekstReferentieList.forEach(tekstReferentie -> {
+                                String href = tekstReferentie.getHref();
+                                procesTekstRef(identificatie, href, 1, updateCounter);
+                            });
+                        }
                     });
 
                     // while maximum number of teksten retrieved, get next page
@@ -74,10 +76,17 @@ public class TekstenService {
     }
 
     public void procesTekstRef(String identificatie, String href, int page, UpdateCounter updateCounter) {
-        TekstCollectie teksten = getTekstRef(href, page);
+        TekstCollectie teksten = null;
 
-        if (teksten != null) {
-            saveText(identificatie, page, teksten, updateCounter);
+        try {
+            teksten = getTekstRef(href, page);
+
+
+            if (teksten != null) {
+                saveText(identificatie, page, teksten, updateCounter);
+            }
+        } catch (Exception e) {
+            log.error("Expected tekstref: {}, error: {}", identificatie, e);
         }
     }
 

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -30,12 +31,26 @@ public class GebiedsaanduidingDto {
     @Column(name = "md5hash", nullable = false)
     private String md5hash;
 
-    @OneToMany
-    private Set<ArtikelnummerRefDto> artikelnummers;
-    @OneToMany
-    private Set<TekstRefDto> verwijzingNaarTekst;
-    @OneToMany
-    private Set<BestemmingFunctieDto> bestemmingfuncties;
+    @ManyToMany // owns relation
+    @JoinTable(
+            name = "gebiedsaanwijzing_artikel",
+            joinColumns = @JoinColumn(name = "gebiedsaanwijzing_id"),
+            inverseJoinColumns = @JoinColumn(name = "artikel_id"))
+    private Set<ArtikelnummerRefDto> artikelnummers = new HashSet<>();
+
+    @ManyToMany // owns relation
+    @JoinTable(
+            name = "gebiedsaanwijzing_tekstref",
+            joinColumns = @JoinColumn(name = "gebiedsaanwijzing_id"),
+            inverseJoinColumns = @JoinColumn(name = "tekstref_id"))
+    private Set<TekstRefDto> verwijzingNaarTekst = new HashSet<>();
+
+    @ManyToMany // owns relation
+    @JoinTable(
+            name = "gebiedsaanwijzing_bestemmingsfunctie",
+            joinColumns = @JoinColumn(name = "gebiedsaanwijzing_id"),
+            inverseJoinColumns = @JoinColumn(name = "bestemmingsfunctie_id"))
+    private Set<BestemmingFunctieDto> bestemmingfuncties = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {

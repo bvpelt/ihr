@@ -22,8 +22,11 @@ public class TekstRefDto {
     @Column(name = "referentie")
     private String referentie;
 
-    @ManyToMany(mappedBy = "verwijzingNaarTekst")
+    @ManyToMany(mappedBy = "verwijzingNaarTekst", fetch = FetchType.LAZY)
     private Set<BestemmingsvlakDto> bestemmingsvlakken = new HashSet<BestemmingsvlakDto>();
+
+    @ManyToMany(mappedBy = "verwijzingNaarTekst", fetch = FetchType.LAZY)
+    private Set<GebiedsaanduidingDto> gebiedsaanwijzingen = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {

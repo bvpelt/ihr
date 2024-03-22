@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -26,8 +27,11 @@ public class BestemmingFunctieDto {
     @Column(name = "functieniveau")
     private String functieniveau;
 
-    @ManyToMany(mappedBy = "bestemmingsfuncties")
+    @ManyToMany(mappedBy = "bestemmingsfuncties", fetch = FetchType.LAZY)
     private Set<BestemmingsvlakDto> bestemmingsvlakken = new HashSet<BestemmingsvlakDto>();
+
+    @ManyToMany(mappedBy = "bestemmingfuncties", fetch = FetchType.LAZY)
+    private Set<GebiedsaanduidingDto> gebiedsaanduidingen = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {

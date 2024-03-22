@@ -5,7 +5,9 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -20,6 +22,9 @@ public class ArtikelnummerRefDto {
 
     @Column(name = "artikel")
     private String artikel;
+
+    @ManyToMany(mappedBy = "artikelnummers" , fetch = FetchType.LAZY)
+    private Set<GebiedsaanduidingDto> gebiedsaanduidingen = new HashSet<GebiedsaanduidingDto>();
 
     @Override
     public boolean equals(Object o) {
