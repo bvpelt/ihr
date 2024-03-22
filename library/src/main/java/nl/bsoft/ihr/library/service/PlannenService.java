@@ -217,12 +217,18 @@ public class PlannenService {
     }
 
     private void procesPlan(ImroLoadDto imroPlan, UpdateCounter updateCounter) {
-        Plan plan = getPlan(imroPlan.getIdentificatie());
-        PlanDto savedPlan = addPlan(plan, imroPlan, updateCounter);
-        log.trace("Saved plan: {}", savedPlan.toString());
+        Plan plan = null;
 
-        imroPlan.setLoaded(true);
-        imroLoadRepository.save(imroPlan);
+        try {
+            plan = getPlan(imroPlan.getIdentificatie());
+            PlanDto savedPlan = addPlan(plan, imroPlan, updateCounter);
+            log.trace("Saved plan: {}", savedPlan.toString());
+
+            imroPlan.setLoaded(true);
+            imroLoadRepository.save(imroPlan);
+        } catch (Exception e) {
+            log.error("Plan mogelijk niet gevonden. {}", e);
+        }
     }
 
     public UpdateCounter loadPlannen() {
