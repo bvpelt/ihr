@@ -1,10 +1,9 @@
-
 --
 --  manytomany for bestemmingsvlak - bestemmingsfunctie
 --
 create table bestemmingsvlak_bestemmingsfunctie
 (
-    id                      bigint not null primary key,
+    id                    bigint not null primary key,
     bestemmingsvlak_id    bigint,
     bestemmingsfunctie_id bigint
 );
@@ -31,9 +30,9 @@ ALTER TABLE public.bestemmingsvlak_bestemmingsfunctie
 --
 create table bestemmingsvlak_tekstref
 (
-    id                      bigint not null primary key,
-    bestemmingsvlak_id    bigint,
-    tekstref_id bigint
+    id                 bigint not null primary key,
+    bestemmingsvlak_id bigint,
+    tekstref_id        bigint
 );
 
 create index bestemmingsvlak_tekstref_bestemmingsvlak_idx on bestemmingsvlak_tekstref (bestemmingsvlak_id);

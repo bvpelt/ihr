@@ -1,11 +1,10 @@
-
 --
 --  manytomany for plan - overheid
 --
 create table plan_overheid
 (
-    id                      bigint not null primary key,
-    plan_id    bigint,
+    id          bigint not null primary key,
+    plan_id     bigint,
     overheid_id bigint
 );
 
@@ -31,9 +30,9 @@ ALTER TABLE public.plan_overheid
 --
 create table overheid
 (
-    id                      bigint not null primary key,
-    type    varchar(24),
-        code varchar(4),
+    id   bigint not null primary key,
+    type varchar(24),
+    code varchar(4),
     naam text
 );
 
@@ -60,7 +59,7 @@ ALTER TABLE public.overheid
 --
 create table locatienaam
 (
-    id                      bigint not null primary key,
+    id   bigint not null primary key,
     naam text
 );
 
@@ -86,8 +85,8 @@ ALTER TABLE public.locatienaam
 --
 create table plan_locatienaam
 (
-    id                      bigint not null primary key,
-    plan_id    bigint,
+    id             bigint not null primary key,
+    plan_id        bigint,
     locatienaam_id bigint
 );
 

@@ -72,3 +72,13 @@ curl -X 'GET' \
 See 
 - https://www.baeldung.com/hibernate-one-to-many
 - https://www.baeldung.com/jpa-many-to-many
+
+
+
+```sql
+
+select l1_0.plan_id, l1_1.id, l1_1.locatienaam 
+from plan_locatienaam l1_0 
+    join public.locatienaam l1_1 on l1_1.id = l1_0.locatienaam_id where l1_0.plan_id=?
+
+```
