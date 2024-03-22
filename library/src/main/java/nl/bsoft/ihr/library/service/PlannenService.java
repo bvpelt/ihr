@@ -9,11 +9,10 @@ import nl.bsoft.ihr.library.mapper.PlanMapper;
 import nl.bsoft.ihr.library.model.dto.ImroLoadDto;
 import nl.bsoft.ihr.library.model.dto.LocatieDto;
 import nl.bsoft.ihr.library.model.dto.PlanDto;
-import nl.bsoft.ihr.library.repository.ImroLoadRepository;
-import nl.bsoft.ihr.library.repository.LocatieRepository;
-import nl.bsoft.ihr.library.repository.PlanRepository;
+import nl.bsoft.ihr.library.repository.*;
 import nl.bsoft.ihr.library.util.UpdateCounter;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.hibernate.metamodel.mapping.ordering.OrderByFragmentImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -33,6 +32,8 @@ public class PlannenService {
     private final PlanRepository planRepository;
     private final ImroLoadRepository imroLoadRepository;
     private final LocatieRepository locatieRepository;
+    private final LocatieNaamRepository locatieNaamRepository;
+    private final OverheidRepository overheidRepository;
     private final PlanMapper planMapper;
     private final LocatieMapper locatieMapper;
 
@@ -44,6 +45,8 @@ public class PlannenService {
                           PlanRepository planRepository,
                           ImroLoadRepository imroLoadRepository,
                           LocatieRepository locatieRepository,
+                          LocatieNaamRepository locatieNaamRepository,
+                          OverheidRepository overheidRepository,
                           PlanMapper planMapper,
                           LocatieMapper locatieMapper
     ) {
@@ -54,6 +57,8 @@ public class PlannenService {
         this.planRepository = planRepository;
         this.imroLoadRepository = imroLoadRepository;
         this.locatieRepository = locatieRepository;
+        this.locatieNaamRepository = locatieNaamRepository;
+        this.overheidRepository = overheidRepository;
         this.planMapper = planMapper;
         this.locatieMapper = locatieMapper;
         this.MAX_PAGE_SIZE = APIService.getMAX_PAGE_SIZE();
@@ -144,6 +149,42 @@ public class PlannenService {
                 }
             }
 
+            // save beleidsmatige overheden
+            planDto.getBeleidsmatigeoverheid().forEach(beleidsmatigeoverheid -> {
+                // if not found
+                //   save
+                // else
+                //   do nothing
+                //
+                if (beleidsmatigeoverheid.getId() == null) { // not found
+                    overheidRepository.save(beleidsmatigeoverheid);
+                }
+            });
+
+            // save publicerende overheden
+            planDto.getPublicerendeoverheid().forEach(publicerendeoverheid -> {
+                // if not found
+                //   save
+                // else
+                //   do nothing
+                //
+                if (publicerendeoverheid.getId() == null) { // not found
+                    overheidRepository.save(publicerendeoverheid);
+                }
+            });
+
+            // save locatienamen
+            planDto.getLocatienamen().forEach(locatienaam -> {
+                // if not found
+                //   save
+                // else
+                //   do nothing
+                //
+                if (locatienaam.getId() == null) { // not found
+                    locatieNaamRepository.save(locatienaam);
+                }
+            });
+
             savedPlan = planRepository.save(planDto);
 
             if (optionalPlanDto.isPresent()) {
@@ -193,14 +234,19 @@ public class PlannenService {
 
     private PlanDto updatePlanDto(PlanDto original, PlanDto planDto) {
         PlanDto updatedPlan = original;
-        original.setNaam(planDto.getNaam());
-        original.setBesluitNummer(planDto.getBesluitNummer());
         original.setPlantype(planDto.getPlantype());
+        original.setBeleidsmatigeoverheid(planDto.getBeleidsmatigeoverheid());
+        original.setPublicerendeoverheid(planDto.getPublicerendeoverheid());
+        original.setNaam(planDto.getNaam());
+        original.setLocatienamen(planDto.getLocatienamen());
         original.setPlanstatus(planDto.getPlanstatus());
         original.setPlanstatusdate(planDto.getPlanstatusdate());
+        original.setBesluitNummer(planDto.getBesluitNummer());
         original.setRegelstatus(planDto.getRegelstatus());
         original.setDossierid(planDto.getDossierid());
         original.setDossierstatus(planDto.getDossierstatus());
+        original.setIsParapluPlan(planDto.getIsParapluPlan());
+        original.setBeroepEnBezwaar(planDto.getBeroepEnBezwaar());
         original.setMd5hash(planDto.getMd5hash());
 
         return original;

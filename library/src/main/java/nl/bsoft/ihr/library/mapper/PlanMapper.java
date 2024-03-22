@@ -2,12 +2,17 @@ package nl.bsoft.ihr.library.mapper;
 
 import lombok.Setter;
 import nl.bsoft.ihr.generated.model.*;
+import nl.bsoft.ihr.library.model.dto.LocatieNaamDto;
+import nl.bsoft.ihr.library.model.dto.OverheidDto;
 import nl.bsoft.ihr.library.model.dto.PlanDto;
 import org.locationtech.jts.io.ParseException;
 import org.mapstruct.*;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Setter
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
@@ -22,13 +27,10 @@ public abstract class PlanMapper {
     @Mapping(target = "id", source = "id", ignore = true)
     @Mapping(target = "identificatie", source = "id", qualifiedByName = "toId")
     @Mapping(target = "plantype", source = "type", qualifiedByName = "toPlanType")
-    @Mapping(target = "beloverheidtype", source = "beleidsmatigVerantwoordelijkeOverheid", qualifiedByName = "toBeleidType")
-    @Mapping(target = "beloverheidcode", source = "beleidsmatigVerantwoordelijkeOverheid.code", qualifiedByName = "toJsonNullableString")
-    @Mapping(target = "beloverheidnaam", source = "beleidsmatigVerantwoordelijkeOverheid.naam", qualifiedByName = "toJsonNullableString")
-    @Mapping(target = "puboverheidtype", source = "publicerendBevoegdGezag", qualifiedByName = "toPublicerendType")
-    @Mapping(target = "puboverheidcode", source = "publicerendBevoegdGezag", qualifiedByName = "toPublicerendCode")
-    @Mapping(target = "puboverheidnaam", source = "publicerendBevoegdGezag", qualifiedByName = "toPublicerendNaam")
+    @Mapping(target = "beleidsmatigeoverheid", source = "beleidsmatigVerantwoordelijkeOverheid", qualifiedByName = "toBeleidType")
+    @Mapping(target = "publicerendeoverheid", source = "publicerendBevoegdGezag", qualifiedByName = "toPublicerendType")
     @Mapping(target = "naam", source = "naam")
+    @Mapping(target = "locatienamen", source = "locatienamen", qualifiedByName = "toLocatieNaam")
     @Mapping(target = "planstatus", source = "planstatusInfo.planstatus", qualifiedByName = "toPlanStatus")
     @Mapping(target = "planstatusdate", source = ".", qualifiedByName = "toPlanStatusDate")
     @Mapping(target = "besluitNummer", source = "besluitnummer", qualifiedByName = "toJsonNullableString")
@@ -40,8 +42,23 @@ public abstract class PlanMapper {
     public abstract PlanDto toPlan(Plan plan) throws ParseException;
 
     @Named("toId")
-    protected String toPlanStatusDate(String id) {
+    protected String toId(String id) {
         return id;
+    }
+
+    @Named("toLocatieNaam")
+    protected Set<LocatieNaamDto> toLocatieNaam(List<String > locatienamen) {
+        final Set<LocatieNaamDto> locatieNaamDtos = new HashSet<>();
+
+        if (locatienamen != null) {
+
+            locatienamen.forEach(locatie -> {
+                LocatieNaamDto locatieNaamDto = new LocatieNaamDto();
+                locatieNaamDto.setLocatienaam(locatie);
+                locatieNaamDtos.add(locatieNaamDto);
+            });
+        }
+        return locatieNaamDtos;
     }
 
     @Named("toIsParapluePlan")
@@ -59,46 +76,55 @@ public abstract class PlanMapper {
     }
 
     @Named("toBeleidType")
-    protected String toBeleidType(PlanBeleidsmatigVerantwoordelijkeOverheid publicerendBevoegdGezag) {
-        String type = null;
+    protected Set<OverheidDto>  toBeleidType(PlanBeleidsmatigVerantwoordelijkeOverheid publicerendBevoegdGezag) {
+        Set<OverheidDto> overheidDtoSet = new HashSet<>();
+        OverheidDto overheidDto = new OverheidDto();
+        String type;
+        String code = null;
+        String naam = null;
 
         type = publicerendBevoegdGezag.getType().getValue();
-        return type;
+        if (publicerendBevoegdGezag.getCode().isPresent()) {
+            code = publicerendBevoegdGezag.getCode().get();
+        }
+        if (publicerendBevoegdGezag.getNaam().isPresent()) {
+            naam = publicerendBevoegdGezag.getNaam().get();
+        }
+
+        overheidDto.setType(type);
+        overheidDto.setCode(code);
+        overheidDto.setNaam(naam);
+        overheidDtoSet.add(overheidDto);
+
+        return overheidDtoSet;
     }
 
     @Named("toPublicerendType")
-    protected String toPublicerendType(JsonNullable<PlanPublicerendBevoegdGezag> publicerendBevoegdGezag) {
-        String type = null;
+    protected Set<OverheidDto> toPublicerendType(JsonNullable<PlanPublicerendBevoegdGezag> publicerendBevoegdGezag) {
+        Set<OverheidDto> overheidDtoSet = null;
 
         if (publicerendBevoegdGezag.isPresent()) {
+            String type;
+            String code = null;
+            String naam = null;
+            overheidDtoSet = new HashSet<>();
             type = publicerendBevoegdGezag.get().getType().getValue();
-        }
 
-        return type;
-    }
-
-    @Named("toPublicerendCode")
-    protected String toPublicerendCode(JsonNullable<PlanPublicerendBevoegdGezag> publicerendBevoegdGezag) {
-        String code = null;
-
-        if (publicerendBevoegdGezag.isPresent()) {
             if (publicerendBevoegdGezag.get().getCode().isPresent()) {
                 code = publicerendBevoegdGezag.get().getCode().get();
             }
-        }
-        return code;
-    }
-
-    @Named("toPublicerendNaam")
-    protected String toPublicerendNaam(JsonNullable<PlanPublicerendBevoegdGezag> publicerendBevoegdGezag) {
-        String naam = null;
-
-        if (publicerendBevoegdGezag.isPresent()) {
             if (publicerendBevoegdGezag.get().getNaam().isPresent()) {
                 naam = publicerendBevoegdGezag.get().getNaam().get();
             }
+            OverheidDto overheidDto = new OverheidDto();
+            overheidDto.setType(type);
+            overheidDto.setCode(code);
+            overheidDto.setNaam(naam);
+
+            overheidDtoSet.add(overheidDto);
         }
-        return naam;
+
+        return overheidDtoSet;
     }
 
     @Named("toPlanStatusDate")

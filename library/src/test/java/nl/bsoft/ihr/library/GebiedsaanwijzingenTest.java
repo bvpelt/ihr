@@ -22,7 +22,6 @@ public class GebiedsaanwijzingenTest {
     private ResourceLoader resourceLoader = null;
     @Autowired
     private ObjectMapper objectMapper;
-
     @Test
     public void mapGebiedsaanwijzing_00() {
         Gebiedsaanduiding gebiedsaanduiding;
@@ -42,7 +41,6 @@ public class GebiedsaanwijzingenTest {
         }
         log.info("End   gebiedsaanwijzing-00.json");
     }
-
     @Test
     public void mapGebiedsaanwijzing_01() {
         Gebiedsaanduiding gebiedsaanduiding;

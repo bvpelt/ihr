@@ -40,8 +40,34 @@ select p.identificatie, t.planidentificatie from plan p left join tekst t on (p.
 select distinct(identificatie) into bart from imroload;
 delete from imroload;
 insert into imroload (identificatie) select identificatie from bart;
+
+
+drop table artikel;
+drop table auditlog;
+drop table bestemmingsvlak;
+drop table bestemmingsvlak_bestemmingsfunctie;
+drop table bestemmingsvlak_tekstref;
+drop table gebiedsaanduiding;
+drop table imroload;
+drop table locatie;
+drop table plan;
+drop table structuurvisiegebied;
+drop table structuurvisiegebiedbeleid;
+drop table structuurvisiegebiedthema;
+drop table tekst;
+drop table tekstref;
+
+delete from flyway_schema_history;
 ```
 
+# Check
+```bash
+curl -X 'GET' \
+  'https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen?page=1&pageSize=10' \
+  -H "X-Api-Key: l7f833bd256c04444da04b0fe9ad3def88" \
+  -H 'accept: application/hal+json' \
+  -H 'Accept-Crs: epsg:28992'
+  ```
 # JPA Releations
 See 
 - https://www.baeldung.com/hibernate-one-to-many
