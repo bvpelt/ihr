@@ -1,5 +1,3 @@
-);
-
 --
 --  artikel
 --
@@ -8,10 +6,10 @@ create table artikel
     id                      bigint not null primary key,
     referentie              text,
     structuurvisiegebied_id bigint,
-    gebiedsaanwijzing_id    bigint
+    gebiedsaanduiding_id    bigint
 );
 
-create index artikel_gebiedsaanwijzing_idx on artikel (gebiedsaanwijzing_id);
+create index artikel_gebiedsaanduiding_idx on artikel (gebiedsaanduiding_id);
 
 ALTER TABLE public.artikel
     OWNER TO testuser;

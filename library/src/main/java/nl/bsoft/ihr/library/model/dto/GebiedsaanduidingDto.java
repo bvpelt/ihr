@@ -33,22 +33,22 @@ public class GebiedsaanduidingDto {
 
     @ManyToMany // owns relation
     @JoinTable(
-            name = "gebiedsaanwijzing_artikel",
-            joinColumns = @JoinColumn(name = "gebiedsaanwijzing_id"),
+            name = "gebiedsaanduiding_artikel",
+            joinColumns = @JoinColumn(name = "gebiedsaanduiding_id"),
             inverseJoinColumns = @JoinColumn(name = "artikel_id"))
     private Set<ArtikelnummerRefDto> artikelnummers = new HashSet<>();
 
     @ManyToMany // owns relation
     @JoinTable(
-            name = "gebiedsaanwijzing_tekstref",
-            joinColumns = @JoinColumn(name = "gebiedsaanwijzing_id"),
+            name = "gebiedsaanduiding_tekstref",
+            joinColumns = @JoinColumn(name = "gebiedsaanduiding_id"),
             inverseJoinColumns = @JoinColumn(name = "tekstref_id"))
     private Set<TekstRefDto> verwijzingNaarTekst = new HashSet<>();
 
     @ManyToMany // owns relation
     @JoinTable(
-            name = "gebiedsaanwijzing_bestemmingsfunctie",
-            joinColumns = @JoinColumn(name = "gebiedsaanwijzing_id"),
+            name = "gebiedsaanduiding_bestemmingsfunctie",
+            joinColumns = @JoinColumn(name = "gebiedsaanduiding_id"),
             inverseJoinColumns = @JoinColumn(name = "bestemmingsfunctie_id"))
     private Set<BestemmingFunctieDto> bestemmingfuncties = new HashSet<>();
 

@@ -54,7 +54,7 @@ public abstract class PlanMapper {
 
             locatienamen.forEach(locatie -> {
                 LocatieNaamDto locatieNaamDto = new LocatieNaamDto();
-                locatieNaamDto.setLocatienaam(locatie);
+                locatieNaamDto.setNaam(locatie);
                 locatieNaamDtos.add(locatieNaamDto);
             });
         }

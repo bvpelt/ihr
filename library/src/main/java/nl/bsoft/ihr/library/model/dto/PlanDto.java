@@ -68,7 +68,6 @@ public class PlanDto {
     @Column(name = "beroepenbezwaar")
     private String beroepEnBezwaar;
 
-    // link to location -- do not use in equal check
     @Column(name = "md5hash", nullable = false)
     private String md5hash;
 

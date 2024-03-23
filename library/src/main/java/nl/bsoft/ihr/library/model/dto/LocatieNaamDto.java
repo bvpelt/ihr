@@ -19,8 +19,8 @@ public class LocatieNaamDto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "locatienaam")
-    private String locatienaam;
+    @Column(name = "naam")
+    private String naam;
     @ManyToMany(mappedBy = "locatienamen", fetch = FetchType.LAZY)
     private Set<PlanDto> plannen;
 
@@ -29,17 +29,17 @@ public class LocatieNaamDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         LocatieNaamDto that = (LocatieNaamDto) o;
-        return Objects.equals(locatienaam, that.locatienaam);
+        return Objects.equals(naam, that.naam);
     }
     @Override
     public int hashCode() {
-        return Objects.hash(locatienaam);
+        return Objects.hash(naam);
     }
     @Override
     public String toString() {
         return "LocatieNaamDto{" +
                 "id=" + id +
-                ", locatienaam='" + locatienaam + '\'' +
+                ", naam='" + naam + '\'' +
                 ", plannen=" + plannen +
                 '}';
     }
