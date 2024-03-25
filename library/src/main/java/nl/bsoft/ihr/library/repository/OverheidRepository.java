@@ -14,5 +14,7 @@ public interface OverheidRepository extends PagingAndSortingRepository<OverheidD
         CrudRepository<OverheidDto, Long>,
         JpaSpecificationExecutor<OverheidDto> {
 
+    Optional<OverheidDto> findByNaam(String naam);
 
+    Optional<OverheidDto> findByCode(String code);
 }

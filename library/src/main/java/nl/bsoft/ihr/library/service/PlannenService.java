@@ -6,9 +6,7 @@ import nl.bsoft.ihr.generated.model.PlanCollectie;
 import nl.bsoft.ihr.generated.model.PlanCollectieEmbedded;
 import nl.bsoft.ihr.library.mapper.LocatieMapper;
 import nl.bsoft.ihr.library.mapper.PlanMapper;
-import nl.bsoft.ihr.library.model.dto.ImroLoadDto;
-import nl.bsoft.ihr.library.model.dto.LocatieDto;
-import nl.bsoft.ihr.library.model.dto.PlanDto;
+import nl.bsoft.ihr.library.model.dto.*;
 import nl.bsoft.ihr.library.repository.*;
 import nl.bsoft.ihr.library.util.UpdateCounter;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -149,6 +147,8 @@ public class PlannenService {
                 }
             }
 
+            log.debug("working on plan: {}", planDto);
+
             // save beleidsmatige overheden
             planDto.getBeleidsmatigeoverheid().forEach(beleidsmatigeoverheid -> {
                 // if not found
@@ -156,8 +156,19 @@ public class PlannenService {
                 // else
                 //   do nothing
                 //
-                if (beleidsmatigeoverheid.getId() == null) { // not found
-                    overheidRepository.save(beleidsmatigeoverheid);
+                Optional<OverheidDto> optionalOverheidDto = overheidRepository.findByCode(beleidsmatigeoverheid.getCode());
+                OverheidDto current = null;
+                if (optionalOverheidDto.isPresent()) {
+                    current = optionalOverheidDto.get();
+                    beleidsmatigeoverheid = current;
+                    log.debug("existing overheid: {}", beleidsmatigeoverheid);
+                } else {
+                        current = new OverheidDto();
+                        current.setNaam(beleidsmatigeoverheid.getNaam());
+                        current.setCode(beleidsmatigeoverheid.getCode());
+                        current.setType(beleidsmatigeoverheid.getType());
+                        beleidsmatigeoverheid = overheidRepository.save(current);
+                    log.debug("new overheid: {}", beleidsmatigeoverheid);
                 }
             });
 
@@ -168,8 +179,19 @@ public class PlannenService {
                 // else
                 //   do nothing
                 //
-                if (publicerendeoverheid.getId() == null) { // not found
-                    overheidRepository.save(publicerendeoverheid);
+                Optional<OverheidDto> optionalOverheidDto = overheidRepository.findByCode(publicerendeoverheid.getCode());
+                OverheidDto current = null;
+                if (optionalOverheidDto.isPresent()){
+                    current = optionalOverheidDto.get();
+                    publicerendeoverheid = current;
+                    log.debug("existing overheid: {}", publicerendeoverheid);
+                } else {
+                    current = new OverheidDto();
+                    current.setNaam(publicerendeoverheid.getNaam());
+                    current.setCode(publicerendeoverheid.getCode());
+                    current.setType(publicerendeoverheid.getType());
+                    publicerendeoverheid = overheidRepository.save(current);
+                    log.debug("new overheid: {}", publicerendeoverheid);
                 }
             });
 
@@ -180,8 +202,17 @@ public class PlannenService {
                 // else
                 //   do nothing
                 //
-                if (locatienaam.getId() == null) { // not found
-                    locatieNaamRepository.save(locatienaam);
+                Optional<LocatieNaamDto> optionalLocatieNaamDto = locatieNaamRepository.findByNaam(locatienaam.getNaam());
+                LocatieNaamDto current = null;
+                if (optionalLocatieNaamDto.isPresent()) {
+                    current = optionalLocatieNaamDto.get();
+                    locatienaam = current;
+                    log.debug("existing locatie: {}", locatienaam);
+                } else {
+                    current = new LocatieNaamDto();
+                    current.setNaam(locatienaam.getNaam());
+                    locatienaam = locatieNaamRepository.save(current);
+                    log.debug("new locatie: {}", locatienaam);
                 }
             });
 

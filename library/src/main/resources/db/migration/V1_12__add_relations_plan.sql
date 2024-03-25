@@ -37,7 +37,7 @@ create table overheid
 );
 
 create index overheid_type_idx on overheid (type);
-create index overheid_code_idx on overheid (code);
+create unique index overheid_code_idx on overheid (code);
 
 
 ALTER TABLE public.overheid
