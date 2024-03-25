@@ -6,7 +6,7 @@ drop table bestemmingsvlak_bestemmingsfunctie;
 drop table bestemmingsvlak_tekstref;
 drop table gebiedsaanduiding;
 
-drop table gebeidsaanduiding_artikel;
+drop table gebiedsaanduiding_artikel;
 drop table gebiedsaanduiding_bestemmingsfunctie;
 drop table gebiedsaanduiding_tekstref;
 

@@ -51,9 +51,7 @@ public class OverheidDto {
                 "id=" + id +
                 ", type='" + type + '\'' +
                 ", code='" + code + '\'' +
-                ", naam='" + naam + '\'' +
-                ", beleidsmatig=" + beleidsmatig +
-                ", publicerend=" + publicerend +
+                ", naam='" + naam +
                 '}';
     }
 }

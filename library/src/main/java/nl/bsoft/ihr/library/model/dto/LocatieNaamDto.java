@@ -39,8 +39,7 @@ public class LocatieNaamDto {
     public String toString() {
         return "LocatieNaamDto{" +
                 "id=" + id +
-                ", naam='" + naam + '\'' +
-                ", plannen=" + plannen +
+                ", naam='" + naam +
                 '}';
     }
 }
