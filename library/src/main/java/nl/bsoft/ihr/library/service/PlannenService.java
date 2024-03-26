@@ -149,8 +149,7 @@ public class PlannenService {
             }
 
             log.debug("working on plan: {}", planDto);
-   //         planRepository.save(planDto);
-
+//            planRepository.save(planDto);
 
             PlanBeleidsmatigVerantwoordelijkeOverheid beleidsmatigeOverheid = plan.getBeleidsmatigVerantwoordelijkeOverheid();
 
@@ -174,7 +173,7 @@ public class PlannenService {
                     currentBeleidsMatigeOverheid.getBeleidsmatig().add(planDto);
                 }
                 currentBeleidsMatigeOverheid = overheidRepository.save(currentBeleidsMatigeOverheid);
-                planDto.getBeleidsmatigeoverheid().add(currentBeleidsMatigeOverheid);
+                planDto.setBeleidsmatigeoverheid(currentBeleidsMatigeOverheid);
                 log.debug("beleidsmatige overheid: {}", currentBeleidsMatigeOverheid);
             }
             // save beleidsmatige overheden
@@ -225,7 +224,8 @@ public class PlannenService {
                         currentPublicerendeOverheid.getBeleidsmatig().add(planDto);
                     }
                     currentPublicerendeOverheid = overheidRepository.save(currentPublicerendeOverheid);
-                    planDto.getPublicerendeoverheid().add(currentPublicerendeOverheid);
+
+                    planDto.setPublicerendeoverheid(currentPublicerendeOverheid);
                     log.debug("publicerende overheid: {}", currentPublicerendeOverheid);
                 }
             }

@@ -13,7 +13,6 @@ drop table locatienaam;
 drop table overheid;
 drop table plan;
 drop table plan_locatienaam;
-drop table plan_overheid;
 drop table structuurvisiegebied;
 drop table structuurvisiegebiedbeleid;
 drop table structuurvisiegebiedthema;

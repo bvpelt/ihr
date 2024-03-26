@@ -28,12 +28,11 @@ public class OverheidDto {
     private String code;
     @Column(name = "naam")
     private String naam;
-
-    @ManyToMany(mappedBy = "beleidsmatigeoverheid", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "beleidsmatigeoverheid")
     private Set<PlanDto> beleidsmatig = new HashSet<>();
-
-    @ManyToMany(mappedBy = "publicerendeoverheid", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "publicerendeoverheid")
     private Set<PlanDto> publicerend = new HashSet<>();
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -51,7 +50,7 @@ public class OverheidDto {
                 "id=" + id +
                 ", type='" + type + '\'' +
                 ", code='" + code + '\'' +
-                ", naam='" + naam +
+                ", naam='" + naam + '\'' +
                 '}';
     }
 }

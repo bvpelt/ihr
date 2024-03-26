@@ -12,7 +12,9 @@ create table plan
     regelstatus     text,
     md5hash         text,
     isparapluplan   boolean,
-    beroepenbezwaar text
+    beroepenbezwaar text,
+    beleidsmatigeoverheid_id bigint,
+    publicerendeoverheid_id bigint
 );
 
 create index plan_identificatie_idx on plan (identificatie);

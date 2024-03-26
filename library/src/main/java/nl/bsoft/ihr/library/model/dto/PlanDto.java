@@ -26,23 +26,13 @@ public class PlanDto {
     @Column(name = "plantype")
     private String plantype;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST) // owning site
-    @JoinTable(
-            name = "plan_overheid",
-            joinColumns = @JoinColumn(name = "plan_id", referencedColumnName = "id",
-                    nullable = false, updatable = false),
-            inverseJoinColumns = @JoinColumn(name = "overheid_id", referencedColumnName = "id",
-                    nullable = false, updatable = false))
-    private Set<OverheidDto> beleidsmatigeoverheid = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name="beleidsmatigeoverheid_id", nullable=false, referencedColumnName = "id")
+    private OverheidDto beleidsmatigeoverheid;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST) // owning site
-    @JoinTable(
-            name = "plan_overheid",
-            joinColumns = @JoinColumn(name = "plan_id", referencedColumnName = "id",
-                    nullable = false, updatable = false),
-            inverseJoinColumns = @JoinColumn(name = "overheid_id", referencedColumnName = "id",
-                    nullable = false, updatable = false))
-    private Set<OverheidDto> publicerendeoverheid = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name="publicerendeoverheid_id", nullable=false, referencedColumnName = "id")
+    private OverheidDto publicerendeoverheid;
 
     @Column(name = "naam")
     private String naam;
@@ -99,7 +89,7 @@ public class PlanDto {
                 ", beleidsmatigeoverheid=" + beleidsmatigeoverheid +
                 ", publicerendeoverheid=" + publicerendeoverheid +
                 ", naam='" + naam + '\'' +
-                ", locatienamen=" + locaties +
+                ", locaties=" + locaties +
                 ", planstatus='" + planstatus + '\'' +
                 ", planstatusdate=" + planstatusdate +
                 ", besluitNummer='" + besluitNummer + '\'' +
