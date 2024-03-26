@@ -1,16 +1,12 @@
-
 drop table artikel;
 drop table auditlog;
 drop table bestemmingsvlak;
 drop table bestemmingsvlak_bestemmingsfunctie;
 drop table bestemmingsvlak_tekstref;
 drop table gebiedsaanduiding;
-
 drop table gebiedsaanduiding_artikel;
 drop table gebiedsaanduiding_bestemmingsfunctie;
 drop table gebiedsaanduiding_tekstref;
-
-
 drop table imroload;
 drop table locatie;
 drop table locatienaam;

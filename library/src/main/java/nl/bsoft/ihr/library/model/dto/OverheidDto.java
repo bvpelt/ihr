@@ -29,10 +29,10 @@ public class OverheidDto {
     @Column(name = "naam")
     private String naam;
 
-    @ManyToMany(mappedBy = "beleidsmatigeoverheid")
+    @ManyToMany(mappedBy = "beleidsmatigeoverheid", fetch = FetchType.LAZY)
     private Set<PlanDto> beleidsmatig = new HashSet<>();
 
-    @ManyToMany(mappedBy = "publicerendeoverheid")
+    @ManyToMany(mappedBy = "publicerendeoverheid", fetch = FetchType.LAZY)
     private Set<PlanDto> publicerend = new HashSet<>();
     @Override
     public boolean equals(Object o) {

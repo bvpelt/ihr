@@ -59,6 +59,8 @@ drop table tekstref;
 
 delete from flyway_schema_history;
 ```
+# ManyToMany
+Example https://attacomsian.com/blog/spring-data-jpa-many-to-many-mapping
 
 # Check
 ```bash

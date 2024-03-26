@@ -1,9 +1,7 @@
 package nl.bsoft.ihr.library.service;
 
 import lombok.extern.slf4j.Slf4j;
-import nl.bsoft.ihr.generated.model.Plan;
-import nl.bsoft.ihr.generated.model.PlanCollectie;
-import nl.bsoft.ihr.generated.model.PlanCollectieEmbedded;
+import nl.bsoft.ihr.generated.model.*;
 import nl.bsoft.ihr.library.mapper.LocatieMapper;
 import nl.bsoft.ihr.library.mapper.PlanMapper;
 import nl.bsoft.ihr.library.model.dto.*;
@@ -11,13 +9,16 @@ import nl.bsoft.ihr.library.repository.*;
 import nl.bsoft.ihr.library.util.UpdateCounter;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.hibernate.metamodel.mapping.ordering.OrderByFragmentImpl;
+import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDateTime;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -129,27 +130,55 @@ public class PlannenService {
                 log.debug("Added locatie: {}", md5hash);
             }
 
-            Optional<PlanDto> optionalPlanDto = planRepository.findByIdentificatie(planDto.getIdentificatie());
+            Optional<PlanDto> optionalFoundPlanDto = planRepository.findByIdentificatie(planDto.getIdentificatie());
 
             boolean changed = false;
-            if (optionalPlanDto.isPresent()) {
+            if (optionalFoundPlanDto.isPresent()) {
                 // copy current value
-                PlanDto original = optionalPlanDto.get();
+                PlanDto foundPlanDto = optionalFoundPlanDto.get();
 
-                log.trace("[IHR] add plan \n  Original: {}\n  New     : {}", original, planDto);
-                if (original.equals(planDto)) {
+                log.trace("[IHR] add plan \n  Original: {}\n  New     : {}", foundPlanDto, planDto);
+                if (foundPlanDto.equals(planDto)) {
                     log.trace("[IHR] equal");
-                    planDto = original;
+                    planDto = foundPlanDto;
                 } else {
                     changed = true;
                     log.trace("[IHR] not equal");
-                    planDto = updatePlanDto(original, planDto);
+                    planDto = updatePlanDto(foundPlanDto, planDto);
                 }
             }
 
             log.debug("working on plan: {}", planDto);
+   //         planRepository.save(planDto);
 
+
+            PlanBeleidsmatigVerantwoordelijkeOverheid beleidsmatigeOverheid = plan.getBeleidsmatigVerantwoordelijkeOverheid();
+
+
+            // if not found
+            //   save
+            // else
+            //   do nothing
+            //
+            if (beleidsmatigeOverheid.getCode().isPresent()) {
+                Optional<OverheidDto> OptionalBeleidsmatigOverheid = overheidRepository.findByCode(beleidsmatigeOverheid.getCode().get());
+                OverheidDto currentBeleidsMatigeOverheid = null;
+                if (OptionalBeleidsmatigOverheid.isPresent()) {
+                    currentBeleidsMatigeOverheid = OptionalBeleidsmatigOverheid.get();
+                    currentBeleidsMatigeOverheid.getBeleidsmatig().add(planDto);
+                } else {
+                    currentBeleidsMatigeOverheid = new OverheidDto();
+                    currentBeleidsMatigeOverheid.setNaam(beleidsmatigeOverheid.getNaam().get());
+                    currentBeleidsMatigeOverheid.setCode(beleidsmatigeOverheid.getCode().get());
+                    currentBeleidsMatigeOverheid.setType(beleidsmatigeOverheid.getType().getValue());
+                    currentBeleidsMatigeOverheid.getBeleidsmatig().add(planDto);
+                }
+                currentBeleidsMatigeOverheid = overheidRepository.save(currentBeleidsMatigeOverheid);
+                planDto.getBeleidsmatigeoverheid().add(currentBeleidsMatigeOverheid);
+                log.debug("beleidsmatige overheid: {}", currentBeleidsMatigeOverheid);
+            }
             // save beleidsmatige overheden
+            /*
             planDto.getBeleidsmatigeoverheid().forEach(beleidsmatigeoverheid -> {
                 // if not found
                 //   save
@@ -160,6 +189,7 @@ public class PlannenService {
                 OverheidDto current = null;
                 if (optionalOverheidDto.isPresent()) {
                     current = optionalOverheidDto.get();
+                   // current.getBeleidsmatig().add(fixedPlanDto);
                     beleidsmatigeoverheid = current;
                     log.debug("existing overheid: {}", beleidsmatigeoverheid);
                 } else {
@@ -171,7 +201,37 @@ public class PlannenService {
                     log.debug("new overheid: {}", beleidsmatigeoverheid);
                 }
             });
+             */
 
+            JsonNullable<PlanPublicerendBevoegdGezag> puOverheidDto = plan.getPublicerendBevoegdGezag();
+
+            // if not found
+            //   save
+            // else
+            //   do nothing
+            //
+            if (puOverheidDto.isPresent()) {
+                if (puOverheidDto.get().getCode().isPresent()) {
+                    Optional<OverheidDto> optionalPublicerendeOverheid = overheidRepository.findByCode(puOverheidDto.get().getCode().get());
+                    OverheidDto currentPublicerendeOverheid = null;
+                    if (optionalPublicerendeOverheid.isPresent()) {
+                        currentPublicerendeOverheid = optionalPublicerendeOverheid.get();
+                        currentPublicerendeOverheid.getBeleidsmatig().add(planDto);
+                    } else {
+                        currentPublicerendeOverheid = new OverheidDto();
+                        currentPublicerendeOverheid.setNaam(puOverheidDto.get().getNaam().get());
+                        currentPublicerendeOverheid.setCode(puOverheidDto.get().getCode().get());
+                        currentPublicerendeOverheid.setType(puOverheidDto.get().getType().getValue());
+                        currentPublicerendeOverheid.getBeleidsmatig().add(planDto);
+                    }
+                    currentPublicerendeOverheid = overheidRepository.save(currentPublicerendeOverheid);
+                    planDto.getPublicerendeoverheid().add(currentPublicerendeOverheid);
+                    log.debug("publicerende overheid: {}", currentPublicerendeOverheid);
+                }
+            }
+
+
+            /*
             // save publicerende overheden
             planDto.getPublicerendeoverheid().forEach(publicerendeoverheid -> {
                 // if not found
@@ -183,6 +243,7 @@ public class PlannenService {
                 OverheidDto current = null;
                 if (optionalOverheidDto.isPresent()){
                     current = optionalOverheidDto.get();
+                //    current.getPublicerend().add(fixedPlanDto);
                     publicerendeoverheid = current;
                     log.debug("existing overheid: {}", publicerendeoverheid);
                 } else {
@@ -194,7 +255,34 @@ public class PlannenService {
                     log.debug("new overheid: {}", publicerendeoverheid);
                 }
             });
+             */
 
+
+            List<String> locatieNaamDtoSet = plan.getLocatienamen();
+            Iterator<String> locatieDtoIterable= locatieNaamDtoSet.iterator();
+            while (locatieDtoIterable.hasNext()) {
+                String puLocatieNaam = locatieDtoIterable.next();
+
+                // if not found
+                //   save
+                // else
+                //   do nothing
+                //
+                Optional<LocatieNaamDto> optionalOverheidDto = locatieNaamRepository.findByNaam(puLocatieNaam);
+                LocatieNaamDto current = null;
+                if (optionalOverheidDto.isPresent()) {
+                    current = optionalOverheidDto.get();
+                    current.getPlannen().add(planDto);
+                } else {
+                    current = new LocatieNaamDto();
+                    current.setNaam(puLocatieNaam);
+                    current.getPlannen().add(planDto);
+                }
+                current = locatieNaamRepository.save(current);
+                planDto.getLocaties().add(current);
+                log.debug("locatie: {}", current);
+            }
+            /*
             // save locatienamen
             planDto.getLocatienamen().forEach(locatienaam -> {
                 // if not found
@@ -206,6 +294,7 @@ public class PlannenService {
                 LocatieNaamDto current = null;
                 if (optionalLocatieNaamDto.isPresent()) {
                     current = optionalLocatieNaamDto.get();
+                 //   current.getPlannen().add(fixedPlanDto);
                     locatienaam = current;
                     log.debug("existing locatie: {}", locatienaam);
                 } else {
@@ -215,10 +304,11 @@ public class PlannenService {
                     log.debug("new locatie: {}", locatienaam);
                 }
             });
+             */
 
             savedPlan = planRepository.save(planDto);
 
-            if (optionalPlanDto.isPresent()) {
+            if (optionalFoundPlanDto.isPresent()) {
                 if (changed) {
                     updateCounter.updated();
                 } else {
@@ -269,7 +359,7 @@ public class PlannenService {
         original.setBeleidsmatigeoverheid(planDto.getBeleidsmatigeoverheid());
         original.setPublicerendeoverheid(planDto.getPublicerendeoverheid());
         original.setNaam(planDto.getNaam());
-        original.setLocatienamen(planDto.getLocatienamen());
+        original.setLocaties(planDto.getLocaties());
         original.setPlanstatus(planDto.getPlanstatus());
         original.setPlanstatusdate(planDto.getPlanstatusdate());
         original.setBesluitNummer(planDto.getBesluitNummer());

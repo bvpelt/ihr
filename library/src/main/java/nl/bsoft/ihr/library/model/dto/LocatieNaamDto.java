@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -21,8 +22,8 @@ public class LocatieNaamDto {
     private Long id;
     @Column(name = "naam")
     private String naam;
-    @ManyToMany(mappedBy = "locatienamen", fetch = FetchType.LAZY)
-    private Set<PlanDto> plannen;
+    @ManyToMany(mappedBy = "locaties", fetch = FetchType.LAZY)
+    private Set<PlanDto> plannen = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {

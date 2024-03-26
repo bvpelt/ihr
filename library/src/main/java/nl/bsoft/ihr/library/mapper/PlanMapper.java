@@ -27,10 +27,7 @@ public abstract class PlanMapper {
     @Mapping(target = "id", source = "id", ignore = true)
     @Mapping(target = "identificatie", source = "id", qualifiedByName = "toId")
     @Mapping(target = "plantype", source = "type", qualifiedByName = "toPlanType")
-    @Mapping(target = "beleidsmatigeoverheid", source = "beleidsmatigVerantwoordelijkeOverheid", qualifiedByName = "toBeleidType")
-    @Mapping(target = "publicerendeoverheid", source = "publicerendBevoegdGezag", qualifiedByName = "toPublicerendType")
     @Mapping(target = "naam", source = "naam")
-    @Mapping(target = "locatienamen", source = "locatienamen", qualifiedByName = "toLocatieNaam")
     @Mapping(target = "planstatus", source = "planstatusInfo.planstatus", qualifiedByName = "toPlanStatus")
     @Mapping(target = "planstatusdate", source = ".", qualifiedByName = "toPlanStatusDate")
     @Mapping(target = "besluitNummer", source = "besluitnummer", qualifiedByName = "toJsonNullableString")
@@ -40,12 +37,20 @@ public abstract class PlanMapper {
     @Mapping(target = "isParapluPlan", source = "isParapluplan")
     @Mapping(target = "beroepEnBezwaar", source = "beroepEnBezwaar", qualifiedByName = "toBeroepEnBezwaar")
     public abstract PlanDto toPlan(Plan plan) throws ParseException;
+    /*
+    @Mapping(target = ".", source = ".", qualifiedByName = "toBeleidType")
 
+    public abstract OverheidDto toPlanBeleidsmatigeOverheid(PlanBeleidsmatigVerantwoordelijkeOverheid publicerendBevoegdGezag);
+    @Mapping(target = ".", source = ".", qualifiedByName = "toPublicerendType")
+    public abstract OverheidDto toPlanPublicerendeOverheid(JsonNullable<PlanPublicerendBevoegdGezag> publicerendBevoegdGezag);
+    @Mapping(target = ".", source = ".", qualifiedByName = "toLocatieNaam")
+    public abstract Set<LocatieNaamDto> toPlanLocatieNaam(List<String > locatienamen);
+    */
     @Named("toId")
     protected String toId(String id) {
         return id;
     }
-
+/*
     @Named("toLocatieNaam")
     protected Set<LocatieNaamDto> toLocatieNaam(List<String > locatienamen) {
         final Set<LocatieNaamDto> locatieNaamDtos = new HashSet<>();
@@ -60,7 +65,7 @@ public abstract class PlanMapper {
         }
         return locatieNaamDtos;
     }
-
+*/
     @Named("toIsParapluePlan")
     protected Boolean toPlanType(Boolean isParapluePlan) {
 
@@ -76,7 +81,7 @@ public abstract class PlanMapper {
     }
 
     @Named("toBeleidType")
-    protected Set<OverheidDto>  toBeleidType(PlanBeleidsmatigVerantwoordelijkeOverheid publicerendBevoegdGezag) {
+    protected Set<OverheidDto> toBeleidType(PlanBeleidsmatigVerantwoordelijkeOverheid publicerendBevoegdGezag) {
         Set<OverheidDto> overheidDtoSet = new HashSet<>();
         OverheidDto overheidDto = new OverheidDto();
         String type;
