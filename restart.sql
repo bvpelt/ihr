@@ -20,3 +20,5 @@ drop table tekst;
 drop table tekstref;
 
 delete from flyway_schema_history;
+
+
