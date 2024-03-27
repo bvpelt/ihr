@@ -25,6 +25,9 @@ public class StructuurVisieGebiedBeleidDto {
     @Column(name = "instrument")
     private String instrument;
 
+    @ManyToOne
+    @JoinColumn(name="structuurvisiegebied_id", nullable=false, referencedColumnName = "id")
+    private StructuurVisieGebiedDto structuurVisieGebied;
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

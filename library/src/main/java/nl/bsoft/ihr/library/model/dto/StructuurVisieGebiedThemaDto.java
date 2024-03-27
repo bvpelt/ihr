@@ -21,6 +21,10 @@ public class StructuurVisieGebiedThemaDto {
     @Column(name = "thema")
     private String thema;
 
+    @ManyToOne
+    @JoinColumn(name="structuurvisiegebied_id", nullable=false, referencedColumnName = "id")
+    private StructuurVisieGebiedDto structuurVisieGebied;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

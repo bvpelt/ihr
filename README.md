@@ -36,6 +36,12 @@ select p.identificatie, t.planidentificatie from plan p left join tekst t on (p.
 -- plannen without teksten
 select p.identificatie, t.planidentificatie from plan p left join tekst t on (p.identificatie=t.planidentificatie) where t.planidentificatie is null;
 
+-- plannen met locatienaam en beleidsmatige overheid 
+select p.identificatie, l.naam, o.* from plan_locatienaam pl, plan p, locatienaam l, overheid o where pl.plan_id = p.id and pl.locatienaam_id = l.id and p.beleidsmatigeoverheid_id = o.id order by o.code;
+
+-- last loaded plan
+select * from imroload where id = (select max(id) from imroload where loaded = true);
+
 
 select distinct(identificatie) into bart from imroload;
 delete from imroload;

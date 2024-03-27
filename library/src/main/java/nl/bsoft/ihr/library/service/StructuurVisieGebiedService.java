@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Optional;
 import java.util.Set;
 
@@ -102,30 +104,30 @@ public class StructuurVisieGebiedService {
                 } else {
                     StructuurVisieGebiedDto updated = found.get();
                     updated.setNaam(current.getNaam());
-                    updated.setBeleid(current.getBeleid());
-                    updated.setThema(current.getThema());
+
                     updated.setVerwijzingNaarTekst(current.getVerwijzingNaarTekst());
                     updateCounter.updated();
-                    current = updated;
-                    savedStructuurVisieGebiedDto = structuurvisieGebiedRepository.save(current);
+
+                    savedStructuurVisieGebiedDto = structuurvisieGebiedRepository.save(updated);
+
+                    Set<StructuurVisieGebiedBeleidDto>  structuurVisieGebiedBeleidDtoSet = saveStructuurVisieBeleid(savedStructuurVisieGebiedDto, current.getBeleid());
+                    updated.setBeleid(structuurVisieGebiedBeleidDtoSet);
+                    Set<StructuurVisieGebiedThemaDto> structuurVisieGebiedThemaDtoSet = saveStructuurVisieThema(savedStructuurVisieGebiedDto, current.getThema());
+                    updated.setThema(structuurVisieGebiedThemaDtoSet);
+
+                    savedStructuurVisieGebiedDto = structuurvisieGebiedRepository.save(updated);
                 }
             } else {
                 updateCounter.add();
-                Set<StructuurVisieGebiedThemaDto> themaDtoSet = current.getThema();
-                Set<StructuurVisieGebiedBeleidDto> beleidDtoSet = current.getBeleid();
+                savedStructuurVisieGebiedDto = structuurvisieGebiedRepository.save(current);
+
+                Set<StructuurVisieGebiedBeleidDto>  structuurVisieGebiedBeleidDtoSet = saveStructuurVisieBeleid(savedStructuurVisieGebiedDto, current.getBeleid());
+                savedStructuurVisieGebiedDto.setBeleid(structuurVisieGebiedBeleidDtoSet);
+
+                Set<StructuurVisieGebiedThemaDto> structuurVisieGebiedThemaDtoSet = saveStructuurVisieThema(savedStructuurVisieGebiedDto, current.getThema());
+                savedStructuurVisieGebiedDto.setThema(structuurVisieGebiedThemaDtoSet);
+
                 Set<TekstRefDto> tekstRefDtoSet = current.getVerwijzingNaarTekst();
-
-                if ((themaDtoSet != null) && (themaDtoSet.size() > 0)) {
-                    themaDtoSet.forEach(thema -> {
-                        structuurvisieGebiedThemaRepository.save(thema);
-                    });
-                }
-
-                if ((beleidDtoSet != null) && (beleidDtoSet.size() > 0)) {
-                    beleidDtoSet.forEach(beleid -> {
-                        structuurvisieGebiedBeleidRepository.save(beleid);
-                    });
-                }
 
                 if ((tekstRefDtoSet != null) && (tekstRefDtoSet.size() > 0)) {
                     tekstRefDtoSet.forEach(tekstref -> {
@@ -139,6 +141,52 @@ public class StructuurVisieGebiedService {
             log.error("Error while processing: {} in processing: {}", structuurvisie, e);
         }
         return savedStructuurVisieGebiedDto;
+    }
+
+    private Set<StructuurVisieGebiedThemaDto> saveStructuurVisieThema(StructuurVisieGebiedDto savedStructuurVisieGebiedDto, Set<StructuurVisieGebiedThemaDto> thema) {
+        Set<StructuurVisieGebiedThemaDto> savedThema = new HashSet<>();
+
+        Iterator<StructuurVisieGebiedThemaDto> structuurVisieGebiedThemaDtoIterator = thema.iterator();
+
+        while (structuurVisieGebiedThemaDtoIterator.hasNext()) {
+            StructuurVisieGebiedThemaDto current = structuurVisieGebiedThemaDtoIterator.next();
+
+            Optional<StructuurVisieGebiedThemaDto> found = structuurvisieGebiedThemaRepository.findByThema(current.getThema());
+            StructuurVisieGebiedThemaDto currentStructuurVisieGebiedThemaDto = null;
+            if (found.isPresent()) {
+                currentStructuurVisieGebiedThemaDto = found.get();
+                currentStructuurVisieGebiedThemaDto.setStructuurVisieGebied(savedStructuurVisieGebiedDto);
+                currentStructuurVisieGebiedThemaDto = structuurvisieGebiedThemaRepository.save(currentStructuurVisieGebiedThemaDto);
+            } else {
+                current.setStructuurVisieGebied(savedStructuurVisieGebiedDto);
+                currentStructuurVisieGebiedThemaDto = structuurvisieGebiedThemaRepository.save(current);
+            }
+            savedThema.add(currentStructuurVisieGebiedThemaDto);
+        }
+        return savedThema;
+    }
+
+    private Set<StructuurVisieGebiedBeleidDto>  saveStructuurVisieBeleid(StructuurVisieGebiedDto savedStructuurVisieGebiedDto, Set<StructuurVisieGebiedBeleidDto> beleid) {
+        Set<StructuurVisieGebiedBeleidDto> savedBeleid = new HashSet<>();
+
+        Iterator<StructuurVisieGebiedBeleidDto> structuurVisieGebiedDtoIterator= beleid.iterator();
+
+        while (structuurVisieGebiedDtoIterator.hasNext()) {
+            StructuurVisieGebiedBeleidDto current = structuurVisieGebiedDtoIterator.next();
+
+            Optional<StructuurVisieGebiedBeleidDto> found = structuurvisieGebiedBeleidRepository.findByBelangAndRolAndInstrument(current.getBelang(), current.getRol(), current.getInstrument());
+            StructuurVisieGebiedBeleidDto currentStructuurVisieGebiedBeleid = null;
+            if (found.isPresent()) {
+                currentStructuurVisieGebiedBeleid = found.get();
+                currentStructuurVisieGebiedBeleid.setStructuurVisieGebied(savedStructuurVisieGebiedDto);
+                currentStructuurVisieGebiedBeleid = structuurvisieGebiedBeleidRepository.save(currentStructuurVisieGebiedBeleid);
+            } else {
+                current.setStructuurVisieGebied(savedStructuurVisieGebiedDto);
+                currentStructuurVisieGebiedBeleid = structuurvisieGebiedBeleidRepository.save(current);
+            }
+            savedBeleid.add(currentStructuurVisieGebiedBeleid);
+        }
+        return savedBeleid;
     }
 
 }

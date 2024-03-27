@@ -14,8 +14,8 @@ drop table overheid;
 drop table plan;
 drop table plan_locatienaam;
 drop table structuurvisiegebied;
-drop table structuurvisiegebiedbeleid;
-drop table structuurvisiegebiedthema;
+drop table structuurvisiegebied_beleid;
+drop table structuurvisiegebied_thema;
 drop table tekst;
 drop table tekstref;
 

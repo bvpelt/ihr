@@ -15,8 +15,8 @@ delete from overheid;
 delete from plan;
 delete from plan_locatienaam;
 delete from structuurvisiegebied;
-delete from structuurvisiegebiedbeleid;
-delete from structuurvisiegebiedthema;
+delete from structuurvisiegebied_beleid;
+delete from structuurvisiegebied_thema;
 delete from tekst;
 delete from tekstref;
 

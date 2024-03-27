@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -26,11 +27,11 @@ public class StructuurVisieGebiedDto {
     @Column(name = "naam")
     private String naam;
     @OneToMany
-    private Set<StructuurVisieGebiedThemaDto> thema;
+    private Set<StructuurVisieGebiedThemaDto> thema = new HashSet<>();
     @OneToMany
-    private Set<StructuurVisieGebiedBeleidDto> beleid;
+    private Set<StructuurVisieGebiedBeleidDto> beleid = new HashSet<>();;
     @OneToMany
-    private Set<TekstRefDto> verwijzingNaarTekst;
+    private Set<TekstRefDto> verwijzingNaarTekst = new HashSet<>();;
 
     @Override
     public boolean equals(Object o) {
