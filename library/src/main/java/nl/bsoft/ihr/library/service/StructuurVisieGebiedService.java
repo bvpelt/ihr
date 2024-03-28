@@ -119,28 +119,51 @@ public class StructuurVisieGebiedService {
                 }
             } else {
                 updateCounter.add();
+                Set<StructuurVisieGebiedBeleidDto> newBeleid = current.getBeleid();
+                Set<StructuurVisieGebiedThemaDto> newThema = current.getThema();
+                TekstRefDto newTeksref = current.getVerwijzingNaarTekst();
+
+                current.setBeleid(null);
+                current.setThema(null);
+                current.setVerwijzingNaarTekst(null);
                 savedStructuurVisieGebiedDto = structuurvisieGebiedRepository.save(current);
 
-                Set<StructuurVisieGebiedBeleidDto>  structuurVisieGebiedBeleidDtoSet = saveStructuurVisieBeleid(savedStructuurVisieGebiedDto, current.getBeleid());
+                Set<StructuurVisieGebiedBeleidDto>  structuurVisieGebiedBeleidDtoSet = saveStructuurVisieBeleid(savedStructuurVisieGebiedDto, newBeleid);
                 savedStructuurVisieGebiedDto.setBeleid(structuurVisieGebiedBeleidDtoSet);
 
-                Set<StructuurVisieGebiedThemaDto> structuurVisieGebiedThemaDtoSet = saveStructuurVisieThema(savedStructuurVisieGebiedDto, current.getThema());
+                Set<StructuurVisieGebiedThemaDto> structuurVisieGebiedThemaDtoSet = saveStructuurVisieThema(savedStructuurVisieGebiedDto, newThema);
                 savedStructuurVisieGebiedDto.setThema(structuurVisieGebiedThemaDtoSet);
 
-                Set<TekstRefDto> tekstRefDtoSet = current.getVerwijzingNaarTekst();
+                //Set<TekstRefDto> tekstRefDtoSet = current.getVerwijzingNaarTekst();
 
-                if ((tekstRefDtoSet != null) && (tekstRefDtoSet.size() > 0)) {
-                    tekstRefDtoSet.forEach(tekstref -> {
-                        tekstRefRepository.save(tekstref);
-                    });
-                }
+                TekstRefDto tekstRefDtos = saveTekstRefs(savedStructuurVisieGebiedDto,newTeksref );
+                savedStructuurVisieGebiedDto.setVerwijzingNaarTekst(tekstRefDtos);
 
-                savedStructuurVisieGebiedDto = structuurvisieGebiedRepository.save(current);
+                savedStructuurVisieGebiedDto = structuurvisieGebiedRepository.save(savedStructuurVisieGebiedDto);
+
             }
         } catch (Exception e) {
             log.error("Error while processing: {} in processing: {}", structuurvisie, e);
         }
         return savedStructuurVisieGebiedDto;
+    }
+
+    private TekstRefDto saveTekstRefs(StructuurVisieGebiedDto savedStructuurVisieGebiedDto, TekstRefDto teksref) {
+        TekstRefDto savedTekstref = null;
+
+            Optional<TekstRefDto> found = tekstRefRepository.findByReferentie(teksref.getReferentie());
+            TekstRefDto currentTekstRef = null;
+            if (found.isPresent()) {
+                currentTekstRef = found.get();
+                currentTekstRef.getStructuurvisies().add(savedStructuurVisieGebiedDto);
+                currentTekstRef = tekstRefRepository.save(currentTekstRef);
+            } else {
+                teksref.getStructuurvisies().add(savedStructuurVisieGebiedDto);
+                currentTekstRef = tekstRefRepository.save(teksref);
+            }
+            savedTekstref = currentTekstRef;
+
+        return savedTekstref;
     }
 
     private Set<StructuurVisieGebiedThemaDto> saveStructuurVisieThema(StructuurVisieGebiedDto savedStructuurVisieGebiedDto, Set<StructuurVisieGebiedThemaDto> thema) {

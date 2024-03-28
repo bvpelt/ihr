@@ -29,9 +29,9 @@ public class StructuurVisieGebiedDto {
     @OneToMany
     private Set<StructuurVisieGebiedThemaDto> thema = new HashSet<>();
     @OneToMany
-    private Set<StructuurVisieGebiedBeleidDto> beleid = new HashSet<>();;
-    @OneToMany
-    private Set<TekstRefDto> verwijzingNaarTekst = new HashSet<>();;
+    private Set<StructuurVisieGebiedBeleidDto> beleid = new HashSet<>();
+    @OneToMany // owns relation
+    private Set<TekstRefDto> verwijzingNaarTekst;
 
     @Override
     public boolean equals(Object o) {

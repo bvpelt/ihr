@@ -9,6 +9,7 @@ create table tekstref
     gebiedsaanduiding_id    bigint
 );
 
+create unique index textref_referentie on tekstref(referentie);
 create index tekstref_structuurvisiegebied_idx on tekstref (structuurvisiegebied_id);
 create index tekstref_gebiedsaanduiding_idx on tekstref (gebiedsaanduiding_id);
 
