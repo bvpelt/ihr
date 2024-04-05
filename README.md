@@ -68,6 +68,8 @@ delete from flyway_schema_history;
 # ManyToMany
 Example https://attacomsian.com/blog/spring-data-jpa-many-to-many-mapping
 
+- https://www.youtube.com/watch?v=jCYonZey5dY
+
 # Check
 ```bash
 curl -X 'GET' \
