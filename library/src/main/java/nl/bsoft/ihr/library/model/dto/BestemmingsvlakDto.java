@@ -1,9 +1,7 @@
 package nl.bsoft.ihr.library.model.dto;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -12,7 +10,8 @@ import java.util.Set;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "bestemmingsvlak", schema = "public", catalog = "ihr")
 public class BestemmingsvlakDto {
@@ -32,26 +31,51 @@ public class BestemmingsvlakDto {
     private String naam;
     @Column(name = "bestemmingshoofdgroep")
     private String bestemmingshoofdgroep;
+    @Column(name = "artikelnummer")
+    private String artikelnummer;
     @Column(name = "labelinfo")
     private String labelInfo;
     @Column(name = "md5hash")
     private String md5hash;
-    @Column(name = "artikelnummer")
-    private String artikelnummer;
 
-    @ManyToMany // owns the relation
-    @JoinTable(
-            name = "bestemmingsvlak_bestemmingsfunctie",
-            joinColumns = @JoinColumn(name = "bestemmingsvlak_id"),
-            inverseJoinColumns = @JoinColumn(name = "bestemmingsfunctie_id"))
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE) // owns the relation
+    @JoinTable(name = "bestemmingsvlak_bestemmingsfunctie",
+            joinColumns = {
+            @JoinColumn(name = "bestemmingsvlak_id", referencedColumnName = "id")
+            },
+            inverseJoinColumns = {
+            @JoinColumn(name = "bestemmingsfunctie_id", referencedColumnName = "id")
+            })
     private Set<BestemmingFunctieDto> bestemmingsfuncties = new HashSet<BestemmingFunctieDto>();
 
-    @ManyToMany // owns the relation
-    @JoinTable(
-            name = "bestemmingsvlak_tekstref",
-            joinColumns = @JoinColumn(name = "bestemmingsvlak_id"),
-            inverseJoinColumns = @JoinColumn(name = "tekstref_id"))
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE) // owns the relation
+    @JoinTable(name = "bestemmingsvlak_tekstref",
+            joinColumns = {
+            @JoinColumn(name = "bestemmingsvlak_id", referencedColumnName = "id")
+            },
+            inverseJoinColumns = {
+            @JoinColumn(name = "tekstref_id", referencedColumnName = "id")
+            })
     private Set<TekstRefDto> verwijzingNaarTekst = new HashSet<TekstRefDto>();
+
+    public void addBestemmingsfunctie(BestemmingFunctieDto bestemmingFunctie) {
+        this.bestemmingsfuncties.add(bestemmingFunctie);
+        bestemmingFunctie.getBestemmingsvlakken().add(this);
+
+    }
+    public void removeBestemmingsfunctie(BestemmingFunctieDto bestemmingFunctie) {
+        this.bestemmingsfuncties.remove(bestemmingFunctie);
+        bestemmingFunctie.getBestemmingsvlakken().remove(this);
+    }
+
+    public void addVerwijzingNaarTekst(TekstRefDto tekstRef) {
+        this.verwijzingNaarTekst.add(tekstRef);
+        tekstRef.getBestemmingsvlakken().add(this);
+    }
+    public void removeVerwijzingNaarTekst(TekstRefDto tekstRef) {
+        this.verwijzingNaarTekst.remove(tekstRef);
+        tekstRef.getBestemmingsvlakken().remove(this);
+    }
 
     @Override
     public boolean equals(Object o) {

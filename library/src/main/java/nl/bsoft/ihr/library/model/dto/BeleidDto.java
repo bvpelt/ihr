@@ -1,18 +1,18 @@
 package nl.bsoft.ihr.library.model.dto;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
-@Table(name = "structuurvisiegebiedbeleid", schema = "public", catalog = "ihr")
-public class StructuurVisieGebiedBeleidDto {
+@Table(name = "beleid", schema = "public", catalog = "ihr")
+public class BeleidDto {
     private static final long serialVersionUID = 9L;
 
     @Id
@@ -25,29 +25,30 @@ public class StructuurVisieGebiedBeleidDto {
     @Column(name = "instrument")
     private String instrument;
 
-    @ManyToOne
-    @JoinColumn(name="structuurvisiegebied_id", nullable=false, referencedColumnName = "id")
-    private StructuurVisieGebiedDto structuurVisieGebied;
+    @ManyToMany(mappedBy = "beleid", fetch = FetchType.LAZY)
+    private Set<StructuurVisieGebiedDto> structuurVisieGebied;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        StructuurVisieGebiedBeleidDto that = (StructuurVisieGebiedBeleidDto) o;
-        return Objects.equals(belang, that.belang) && Objects.equals(rol, that.rol) && Objects.equals(instrument, that.instrument);
+        BeleidDto beleidDto = (BeleidDto) o;
+        return Objects.equals(belang, beleidDto.belang) && Objects.equals(rol, beleidDto.rol) && Objects.equals(instrument, beleidDto.instrument) && Objects.equals(structuurVisieGebied, beleidDto.structuurVisieGebied);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(belang, rol, instrument);
+        return Objects.hash(belang, rol, instrument, structuurVisieGebied);
     }
 
     @Override
     public String toString() {
-        return "StructuurVisieGebiedBeleidDto{" +
+        return "BeleidDto{" +
                 "id=" + id +
                 ", belang='" + belang + '\'' +
                 ", rol='" + rol + '\'' +
                 ", instrument='" + instrument + '\'' +
+                ", structuurVisieGebied=" + structuurVisieGebied +
                 '}';
     }
 }

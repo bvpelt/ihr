@@ -1,3 +1,4 @@
+-- table locatie
 create table locatie
 (
     id          bigint                    not null primary key,

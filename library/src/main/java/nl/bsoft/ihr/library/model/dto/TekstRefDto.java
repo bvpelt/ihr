@@ -1,9 +1,7 @@
 package nl.bsoft.ihr.library.model.dto;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -11,7 +9,8 @@ import java.util.Set;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "tekstref", schema = "public", catalog = "ihr")
 public class TekstRefDto {
@@ -28,19 +27,20 @@ public class TekstRefDto {
     @ManyToMany(mappedBy = "verwijzingNaarTekst", fetch = FetchType.LAZY)
     private Set<GebiedsaanduidingDto> gebiedsaanwijzingen = new HashSet<>();
 
-    @ManyToOne(mappedBy = "verwijzingNaarTekst", fetch = FetchType.LAZY)
-    private Set<StructuurVisieGebiedDto> structuurvisies = new HashSet<>();
+    @ManyToMany(mappedBy = "verwijzingNaarTekst", fetch = FetchType.LAZY)
+    private Set<StructuurVisieGebiedDto> structuurvisiegebied;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TekstRefDto that = (TekstRefDto) o;
-        return Objects.equals(referentie, that.referentie) && Objects.equals(bestemmingsvlakken, that.bestemmingsvlakken);
+        return Objects.equals(referentie, that.referentie);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(referentie, bestemmingsvlakken);
+        return Objects.hash(referentie);
     }
 
     @Override
@@ -49,6 +49,8 @@ public class TekstRefDto {
                 "id=" + id +
                 ", referentie='" + referentie + '\'' +
                 ", bestemmingsvlakken=" + bestemmingsvlakken +
+                ", gebiedsaanwijzingen=" + gebiedsaanwijzingen +
+                ", structuurvisiegebied=" + structuurvisiegebied +
                 '}';
     }
 }

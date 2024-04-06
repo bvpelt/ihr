@@ -1,3 +1,4 @@
+-- table plan
 create table plan
 (
     id              bigint not null primary key,

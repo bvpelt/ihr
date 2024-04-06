@@ -1,0 +1,353 @@
+{
+  "id": "NL.IMRO.9925PRIMA201200000001022",
+  "naam": "Windenergie uitgesloten wegens wettelijke beperkingen",
+  "thema": [
+    "energie"
+  ],
+  "beleid": [
+    {
+      "belang": "betrouwbare, betaalbare en hernieuwbare energievoorziening en naar energieneutraliteit in 2050",
+      "rol": "kaderstellend",
+      "instrument": "bestuurlijke afspraken (convenanten)"
+    }
+  ],
+  "verwijzingNaarTekst": [
+    "https://ruimtelijkeplannen.nl/documents/NL.IMRO.9925.SVOmgvisie-vst1/pt_NL.IMRO.9925.SVOmgvisie-vst1.xml#NL.IMRO.PT.s102838"
+  ],
+  "illustraties": [
+    {
+      "href": "https://ruimtelijkeplannen.nl/documents/NL.IMRO.0200.sv1002-vas1/i_NL.IMRO.0200.sv1002-vas1_1.pdf",
+      "type": "kaart",
+      "naam": "Regionale Structuurvisie Stedendriehoek 2030",
+      "legendanaam": "Beleidskaart"
+    }
+  ],
+  "relatiesMetExternePlannen": {
+    "tenGevolgeVan": [
+      {
+        "naam": "Malkenschoten-Kayersmolen",
+        "id": "NL.IMRO.0200.bp1002-ont1",
+        "planstatusInfo": {
+          "planstatus": "string",
+          "datum": "string"
+        },
+        "dossier": {
+          "status": "string"
+        },
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1"
+      }
+    ],
+    "gebruiktInformatieUit": [
+      {
+        "naam": "Malkenschoten-Kayersmolen",
+        "id": "NL.IMRO.0200.bp1002-ont1",
+        "planstatusInfo": {
+          "planstatus": "string",
+          "datum": "string"
+        },
+        "dossier": {
+          "status": "string"
+        },
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1"
+      }
+    ],
+    "uitTeWerkenIn": [
+      {
+        "naam": "Malkenschoten-Kayersmolen",
+        "id": "NL.IMRO.0200.bp1002-ont1",
+        "planstatusInfo": {
+          "planstatus": "string",
+          "datum": "string"
+        },
+        "dossier": {
+          "status": "string"
+        },
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1"
+      }
+    ],
+    "uitgewerktIn": [
+      {
+        "naam": "Malkenschoten-Kayersmolen",
+        "id": "NL.IMRO.0200.bp1002-ont1",
+        "planstatusInfo": {
+          "planstatus": "string",
+          "datum": "string"
+        },
+        "dossier": {
+          "status": "string"
+        },
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1"
+      }
+    ]
+  },
+  "cartografieInfo": [
+    {
+      "kaartnummer": 1,
+      "kaartnaam": "Structuurvisie Baarn",
+      "symboolCode": "ES039"
+    }
+  ],
+  "_links": {
+    "self": {
+      "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.9925.SVOmgvisie-vst1/structuurvisiegebieden/NL.IMRO.9925PRIMA201200000001022"
+    },
+    "teksten": [
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/teksten/NL.IMRO.PT.regels._5.1_Bestemmingsomschrijving"
+      }
+    ]
+  },
+  "geometrie": [
+    {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            5.955381012,
+            52.179015422
+          ],
+          [
+            5.955381012,
+            52.183396603
+          ],
+          [
+            5.96179731,
+            52.183396603
+          ],
+          [
+            5.96179731,
+            52.179015422
+          ],
+          [
+            5.955381012,
+            52.179015422
+          ]
+        ]
+      ]
+    },
+    {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            5.955381012,
+            52.179015422
+          ],
+          [
+            5.955381012,
+            52.183396603
+          ],
+          [
+            5.96179731,
+            52.183396603
+          ],
+          [
+            5.96179731,
+            52.179015422
+          ],
+          [
+            5.955381012,
+            52.179015422
+          ]
+        ]
+      ]
+    },
+    {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            5.955381012,
+            52.179015422
+          ],
+          [
+            5.955381012,
+            52.183396603
+          ],
+          [
+            5.96179731,
+            52.183396603
+          ],
+          [
+            5.96179731,
+            52.179015422
+          ],
+          [
+            5.955381012,
+            52.179015422
+          ]
+        ]
+      ]
+    },
+    {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            5.955381012,
+            52.179015422
+          ],
+          [
+            5.955381012,
+            52.183396603
+          ],
+          [
+            5.96179731,
+            52.183396603
+          ],
+          [
+            5.96179731,
+            52.179015422
+          ],
+          [
+            5.955381012,
+            52.179015422
+          ]
+        ]
+      ]
+    },
+    {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            5.955381012,
+            52.179015422
+          ],
+          [
+            5.955381012,
+            52.183396603
+          ],
+          [
+            5.96179731,
+            52.183396603
+          ],
+          [
+            5.96179731,
+            52.179015422
+          ],
+          [
+            5.955381012,
+            52.179015422
+          ]
+        ]
+      ]
+    },
+    {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            5.955381012,
+            52.179015422
+          ],
+          [
+            5.955381012,
+            52.183396603
+          ],
+          [
+            5.96179731,
+            52.183396603
+          ],
+          [
+            5.96179731,
+            52.179015422
+          ],
+          [
+            5.955381012,
+            52.179015422
+          ]
+        ]
+      ]
+    }
+  ],
+  "_embedded": {
+    "teksten": [
+      {
+        "id": "NL.IMRO.PT.regels._5.1_Bestemmingsomschrijving",
+        "titel": "5.1 Bestemmingsomschrijving",
+        "inhoud": "<p xmlns=\\\"http://www.w3.org/1999/xhtml\\\" xmlns:xl=\\\"http://www.w3.org/1999/xlink\\\" xmlns:imropt=\\\"http://www.geonovum.nl/imro/pt/2012/1.0\\\" xmlns:xsi=\\\"http://www.w3.org/2001/XMLSchema-instance\\\">De voor '<span class=\\\"interneVerwijzing\\\" data-imro-plan-id=\\\"NL.IMRO.0200.bp1253-vas1\\\" data-imro-tekst-id=\\\"NL.IMRO.PT.regels._5_Verkeer-Verblijfsgebied\\\">Verkeer - Verblijfsgebied</span>' aangewezen gronden zijn bestemd voor: </p><ol xmlns=\\\"http://www.w3.org/1999/xhtml\\\" xmlns:xl=\\\"http://www.w3.org/1999/xlink\\\" xmlns:imropt=\\\"http://www.geonovum.nl/imro/pt/2012/1.0\\\" xmlns:xsi=\\\"http://www.w3.org/2001/XMLSchema-instance\\\" type=\\\"a\\\">\\n<li>\\n<span class=\\\"lijstnummer\\\">a. </span>\\n<span class=\\\"interneVerwijzing\\\" data-imro-plan-id=\\\"NL.IMRO.0200.bp1253-vas1\\\" data-imro-tekst-id=\\\"NL.IMRO.PT.regels._1.46_verblijfsgebied\\\">verblijfsgebied</span>, waarbij ter plaatse van de aanduiding 'minimum aantal rijstroken' een weg met ten minste 2 rijstroken aangelegd dient te worden, waarbij tevens een groene middenberm gerealiseerd dient te worden;</li>\\n<li>\\n<span class=\\\"lijstnummer\\\">b. </span>watergangen en overige voorzieningen voor de waterhuishouding;</li>\\n<li>\\n<span class=\\\"lijstnummer\\\">c. </span>nutsvoorzieningen;</li>\\n<li>\\n<span class=\\\"lijstnummer\\\">d. </span>tuin;</li>\\n</ol><p xmlns=\\\"http://www.w3.org/1999/xhtml\\\" xmlns:xl=\\\"http://www.w3.org/1999/xlink\\\" xmlns:imropt=\\\"http://www.geonovum.nl/imro/pt/2012/1.0\\\" xmlns:xsi=\\\"http://www.w3.org/2001/XMLSchema-instance\\\">met de daarbij behorende bouwwerken, geen gebouwen zijnde.</p>",
+        "volgnummer": 90,
+        "externeReferentie": {
+          "href": "https://www.ruimtelijkeplannen.nl/documents/NL.IMRO.0200.bp1253-vas1/b_NL.IMRO.0200.bp1253-vas1_rb1.pdf",
+          "label": "Bijlage 1 Lijst van toegelaten bedrijfstypen"
+        },
+        "kruimelpad": [
+          {
+            "id": "NL.IMRO.PT.regels._1_Begrippen",
+            "titel": "Artikel 1 Begrippen",
+            "volgnummer": 4
+          }
+        ],
+        "_links": {
+          "self": {
+            "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/teksten/NL.IMRO.PT.regels._1_Begrippen"
+          },
+          "children": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/teksten/NL.IMRO.PT.regels._5.1_Bestemmingsomschrijving"
+            }
+          ],
+          "bestemmingsvlakken": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/bestemmingsvlakken/NL.IMRO.07420194a7e6471a94c1098e52a4769c"
+            }
+          ],
+          "bouwaanduidingen": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/bouwaanduidingen/NL.IMRO.c16e4c5b356b4b958c3e52b899e8dea6"
+            }
+          ],
+          "figuren": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1/figuren/NL.IMRO.0200.ID387926-00"
+            }
+          ],
+          "functieaanduidingen": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/functieaanduidingen/NL.IMRO.0a76ec81382749dd93bd364a1f36a846"
+            }
+          ],
+          "gebiedsaanduidingen": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1/gebiedsaanduidingen/NL.IMRO.0200.GP2213788321-00"
+            }
+          ],
+          "lettertekenaanduidingen": [
+            "string"
+          ],
+          "maatvoeringen": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/maatvoeringen/NL.IMRO.1a169935c6634c5aad4276a9cc275a96"
+            }
+          ],
+          "besluitvlakken": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.ov1015-vas1/besluitvlakken/NL.IMRO.3"
+            }
+          ],
+          "besluitsubvlakken": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0222.R05KE006A-0002/besluitsubvlakken/NL.IMRO.00a8ac2b580040b8a44a4ebf7c116a7d"
+            }
+          ],
+          "structuurvisiegebieden": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.sv1007-vas1/structuurvisiegebieden/NL.IMRO.GSVgeb10"
+            }
+          ],
+          "structuurvisiecomplexen": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.sv1007-vas1/structuurvisiecomplexen/NL.IMRO.GSVcplx1"
+            }
+          ],
+          "structuurvisieverklaringen": [
+            {
+              "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.9925.SVOmgvisie-vst1/structuurvisieverklaringen/NL.IMRO.9925PRIMA201200000001109"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

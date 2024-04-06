@@ -1,3 +1,4 @@
+-- table tekst
 create table tekst
 (
     id                 bigint not null primary key,

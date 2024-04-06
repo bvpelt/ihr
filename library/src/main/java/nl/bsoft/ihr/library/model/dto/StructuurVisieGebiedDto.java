@@ -26,24 +26,58 @@ public class StructuurVisieGebiedDto {
     private String identificatie;
     @Column(name = "naam")
     private String naam;
-    @OneToMany
-    private Set<StructuurVisieGebiedThemaDto> thema = new HashSet<>();
-    @OneToMany
-    private Set<StructuurVisieGebiedBeleidDto> beleid = new HashSet<>();
-    @OneToMany // owns relation
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE) // owns the relation
+    @JoinTable(name = "structuurvisiegebied_thema",
+            joinColumns = {
+                    @JoinColumn(name = "structuurvisiegebied_id", referencedColumnName = "id")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "thema_id", referencedColumnName = "id")
+            })
+    private Set<ThemaDto> themas = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE) // owns the relation
+    @JoinTable(name = "structuurvisiegebied_beleid",
+            joinColumns = {
+                    @JoinColumn(name = "structuurvisiegebied_id", referencedColumnName = "id")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "beleid_id", referencedColumnName = "id")
+            })
+    private Set<BeleidDto> beleid = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE) // owns the relation
+    @JoinTable(name = "structuurvisiegebied_tekstref",
+            joinColumns = {
+                    @JoinColumn(name = "structuurvisiegebied_id", referencedColumnName = "id")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "tekstref_id", referencedColumnName = "id")
+            })
     private Set<TekstRefDto> verwijzingNaarTekst;
+
+    @OneToMany(mappedBy = "structuurvisiegebied")
+    private Set<IllustratieDto> illustraties;
+    @OneToMany(mappedBy = "structuurvisiegebied")
+    private Set<TekstRefDto> externeplannen;
+    @OneToMany(mappedBy = "structuurvisiegebied")
+    private Set<TekstRefDto> cartografieinfo;
+
+    @Column(name = "md5hash", nullable = false)
+    private String md5hash;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         StructuurVisieGebiedDto that = (StructuurVisieGebiedDto) o;
-        return Objects.equals(planidentificatie, that.planidentificatie) && Objects.equals(identificatie, that.identificatie) && Objects.equals(naam, that.naam) && Objects.equals(thema, that.thema) && Objects.equals(beleid, that.beleid);
+        return Objects.equals(planidentificatie, that.planidentificatie) && Objects.equals(identificatie, that.identificatie) && Objects.equals(naam, that.naam) && Objects.equals(thema, that.thema) && Objects.equals(beleid, that.beleid) && Objects.equals(verwijzingNaarTekst, that.verwijzingNaarTekst) && Objects.equals(illustraties, that.illustraties) && Objects.equals(externeplannen, that.externeplannen) && Objects.equals(cartografieinfo, that.cartografieinfo) && Objects.equals(md5hash, that.md5hash);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(planidentificatie, identificatie, naam, thema, beleid);
+        return Objects.hash(planidentificatie, identificatie, naam, thema, beleid, verwijzingNaarTekst, illustraties, externeplannen, cartografieinfo, md5hash);
     }
 
     @Override
@@ -56,6 +90,10 @@ public class StructuurVisieGebiedDto {
                 ", thema=" + thema +
                 ", beleid=" + beleid +
                 ", verwijzingNaarTekst=" + verwijzingNaarTekst +
+                ", illustraties=" + illustraties +
+                ", externeplannen=" + externeplannen +
+                ", cartografieinfo=" + cartografieinfo +
+                ", md5hash='" + md5hash + '\'' +
                 '}';
     }
 }

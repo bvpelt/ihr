@@ -5,9 +5,7 @@ import nl.bsoft.ihr.generated.model.Bestemmingsvlak;
 import nl.bsoft.ihr.generated.model.BestemmingsvlakCollectie;
 import nl.bsoft.ihr.library.mapper.BestemmingsvlakMapper;
 import nl.bsoft.ihr.library.mapper.LocatieMapper;
-import nl.bsoft.ihr.library.model.dto.BestemmingsvlakDto;
-import nl.bsoft.ihr.library.model.dto.ImroLoadDto;
-import nl.bsoft.ihr.library.model.dto.LocatieDto;
+import nl.bsoft.ihr.library.model.dto.*;
 import nl.bsoft.ihr.library.repository.*;
 import nl.bsoft.ihr.library.util.UpdateCounter;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -16,7 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -99,9 +100,8 @@ public class BestemmingsvlakkenService {
         BestemmingsvlakDto savedBestemmingsvlak = null;
 
         try {
-            final BestemmingsvlakDto current = bestemmingsvlakMapper.toBestemmingsvlak(bestemmingsvlak);
+            BestemmingsvlakDto current = bestemmingsvlakMapper.toBestemmingsvlak(bestemmingsvlak);
             current.setPlanidentificatie(planidentificatie);
-
             String md5hash = null;
 
             if (bestemmingsvlak.getGeometrie() != null) {
@@ -117,69 +117,102 @@ public class BestemmingsvlakkenService {
                     log.debug("Added locatie: {}", md5hash);
                 }
             }
+            Optional<BestemmingsvlakDto> optionalFound = bestemmingsvlakRepository.findByPlanidentificatieAndIdentificatie(current.getPlanidentificatie(), current.getIdentificatie());
 
-            Optional<BestemmingsvlakDto> found = bestemmingsvlakRepository.findByPlanidentificatieAndIdentificatie(current.getPlanidentificatie(), current.getIdentificatie());
-
-            if (found.isPresent()) {
-                // if equal do not save
-                if (found.get().equals(current)) {
+            if (optionalFound.isPresent()) { // existing entry
+                BestemmingsvlakDto found = optionalFound.get();
+                if (found.equals(current)) { // not changed
+                    savedBestemmingsvlak = found;
                     updateCounter.skipped();
-                    savedBestemmingsvlak = found.get();
-                } else { // if changed update
-                    BestemmingsvlakDto updated = found.get();
-                    updated.setArtikelnummer(current.getArtikelnummer());
-                    updated.setNaam(current.getNaam());
-                    updated.setType(current.getType());
-                    updated.setBestemmingshoofdgroep(current.getBestemmingshoofdgroep());
-                    updated.setLabelInfo(current.getLabelInfo());
-                    updated.setMd5hash(md5hash);
+                } else {                     // changed
+                    found.setType(current.getType());
+                    found.setNaam(current.getNaam());
 
-                    updated.getBestemmingsfuncties().forEach(bestemmingsfunctie -> {
-                        // For each bestemmingsfunctie in database (updated)
-                        //   not in to process message (current)
-                        //   remove from updated
-                        if (!current.getBestemmingsfuncties().contains(bestemmingsfunctie)) {
-                            updated.getBestemmingsfuncties().remove(bestemmingsfunctie);
+                    found.setBestemmingshoofdgroep(current.getBestemmingshoofdgroep());
+                    found.setArtikelnummer(current.getArtikelnummer());
+                    found.setLabelInfo(current.getLabelInfo());
+                    found.setMd5hash(md5hash);
+
+                    current.getBestemmingsfuncties().forEach(bestemmingFunctie -> {
+                        if (!found.getBestemmingsfuncties().contains(bestemmingFunctie)) {
+                            found.addBestemmingsfunctie(bestemmingFunctie);
                         }
                     });
-                    current.getBestemmingsfuncties().forEach(bestemmingsfunctie -> {
-                        bestemmingFunctieRepository.save(bestemmingsfunctie);
-                        //bestemmingsfunctie.getBestemmingsvlakken().add(updated);
-                        updated.getBestemmingsfuncties().add(bestemmingsfunctie);
 
-                    });
-
-                    updated.getVerwijzingNaarTekst().forEach(verwijzing -> {
-                        if (!current.getVerwijzingNaarTekst().contains(verwijzing)) {
-                            updated.getVerwijzingNaarTekst().remove(verwijzing);
+                    current.getVerwijzingNaarTekst().forEach(tekstRef -> {
+                        if (!found.getVerwijzingNaarTekst().contains(tekstRef)) {
+                            found.addVerwijzingNaarTekst(tekstRef);
                         }
                     });
-                    current.getVerwijzingNaarTekst().forEach(verwijzing -> {
-                        tekstRefRepository.save(verwijzing);
-                        //verwijzing.getBestemmingsvlakken().add(updated);
-                        updated.getVerwijzingNaarTekst().add(verwijzing);
-
-                    });
-
+                    savedBestemmingsvlak = bestemmingsvlakRepository.save(found);
                     updateCounter.updated();
-
-                    savedBestemmingsvlak = bestemmingsvlakRepository.save(updated);
                 }
-            } else { // new occurrence
-                updateCounter.add();
-                current.getBestemmingsfuncties().forEach(bestemmingsvlakfunctie -> {
-                    bestemmingFunctieRepository.save(bestemmingsvlakfunctie);
-                    //bestemmingsvlakfunctie.getBestemmingsvlakken().add(current);
+            } else { // new entry
+                current.getBestemmingsfuncties().forEach(bestemmingFunctie -> {
+                    Optional<BestemmingFunctieDto> optionalBestemmingsFunctie = bestemmingFunctieRepository.findByBestemmingsfunctieAndFunctieniveau(bestemmingFunctie.getBestemmingsfunctie(), bestemmingFunctie.getFunctieniveau());
+                    if (optionalBestemmingsFunctie.isPresent()) { // exist
+                        current.removeBestemmingsfunctie(bestemmingFunctie);
+                        BestemmingFunctieDto currentBestemmingFunctie = optionalBestemmingsFunctie.get();
+                        current.addBestemmingsfunctie(currentBestemmingFunctie);
+                    } else {
+                        BestemmingFunctieDto savedBestemmingsfunctie = bestemmingFunctieRepository.save(bestemmingFunctie);
+                        current.addBestemmingsfunctie(savedBestemmingsfunctie);
+                    }
                 });
-                current.getVerwijzingNaarTekst().forEach(verwijzingtekst -> {
-                    tekstRefRepository.save(verwijzingtekst);
-                    //verwijzingtekst.getBestemmingsvlakken().add(current);
+
+
+                current.getVerwijzingNaarTekst().forEach(tekstRef -> {
+                    Optional<TekstRefDto> optionalTekstRef = tekstRefRepository.findByReferentie(tekstRef.getReferentie());
+                    if (optionalTekstRef.isPresent()) {
+                        current.removeVerwijzingNaarTekst(tekstRef);
+                        TekstRefDto currentTekstRef = optionalTekstRef.get();
+                        current.addVerwijzingNaarTekst(currentTekstRef);
+                    } else {
+                        TekstRefDto savedTekstRef = tekstRefRepository.save(tekstRef);
+                        current.addVerwijzingNaarTekst(savedTekstRef);
+                    }
                 });
+
                 savedBestemmingsvlak = bestemmingsvlakRepository.save(current);
+                updateCounter.add();
             }
         } catch (Exception e) {
+            updateCounter.skipped();
             log.error("Error while processing: {} in tekst processing: {}", bestemmingsvlak, e);
         }
         return savedBestemmingsvlak;
     }
+
+    /*
+    private Set<BestemmingFunctieDto> deepCopyBestemmingsfuncties(Set<BestemmingFunctieDto> bestemmingsfuncties) {
+        Set<BestemmingFunctieDto> newBestemmingsfuncties = new HashSet<>();
+
+        bestemmingsfuncties.forEach(bestemmingFunctie -> {
+            BestemmingFunctieDto newBestemmingsfunctie = new BestemmingFunctieDto();
+            newBestemmingsfunctie.setId(bestemmingFunctie.getId());
+            newBestemmingsfunctie.setBestemmingsfunctie(bestemmingFunctie.getBestemmingsfunctie());
+            newBestemmingsfunctie.setFunctieniveau(bestemmingFunctie.getFunctieniveau());
+            newBestemmingsfunctie.setBestemmingsvlakken(bestemmingFunctie.getBestemmingsvlakken());
+            newBestemmingsfunctie.setGebiedsaanduidingen(bestemmingFunctie.getGebiedsaanduidingen());
+        } );
+        return newBestemmingsfuncties;
+    }
+
+    private Set<TekstRefDto> deepCopyTekstRefs(Set<TekstRefDto> verwijzingNaarTekst) {
+        Set<TekstRefDto> newTekstRef = new HashSet<>();
+
+        verwijzingNaarTekst.forEach(tekstRefDto -> {
+            TekstRefDto refDto = new TekstRefDto();
+            refDto.setId(tekstRefDto.getId());
+            refDto.setReferentie(tekstRefDto.getReferentie());
+                    refDto.setBestemmingsvlakken(tekstRefDto.getBestemmingsvlakken());
+                    refDto.setGebiedsaanwijzingen(tekstRefDto.getGebiedsaanwijzingen());
+                    refDto.setStructuurvisiegebied(tekstRefDto.getStructuurvisiegebied());
+
+                    newTekstRef.add(refDto);
+        });
+
+        return newTekstRef;
+    }
+    */
 }

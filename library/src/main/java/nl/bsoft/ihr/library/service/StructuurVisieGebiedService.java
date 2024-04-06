@@ -3,14 +3,17 @@ package nl.bsoft.ihr.library.service;
 import lombok.extern.slf4j.Slf4j;
 import nl.bsoft.ihr.generated.model.Structuurvisiegebied;
 import nl.bsoft.ihr.generated.model.StructuurvisiegebiedCollectie;
+import nl.bsoft.ihr.library.mapper.LocatieMapper;
 import nl.bsoft.ihr.library.mapper.StructuurVisieGebiedMapper;
 import nl.bsoft.ihr.library.model.dto.*;
 import nl.bsoft.ihr.library.repository.*;
 import nl.bsoft.ihr.library.util.UpdateCounter;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Optional;
@@ -22,10 +25,12 @@ public class StructuurVisieGebiedService {
     private final APIService APIService;
     private final ImroLoadRepository imroLoadRepository;
     private final StructuurvisieGebiedRepository structuurvisieGebiedRepository;
-    private final StructuurvisieGebiedThemaRepository structuurvisieGebiedThemaRepository;
+    private final ThemaRepository structuurvisieGebiedThemaRepository;
     private final StructuurvisieGebiedBeleidRepository structuurvisieGebiedBeleidRepository;
     private final TekstRefRepository tekstRefRepository;
+    private final LocatieRepository locatieRepository;
     private final StructuurVisieGebiedMapper structuurVisieGebiedMapper;
+    private final LocatieMapper locatieMapper;
 
     private final int MAXBESTEMMINGSVLAKKEN = 100;
 
@@ -33,17 +38,21 @@ public class StructuurVisieGebiedService {
     public StructuurVisieGebiedService(APIService APIService,
                                        ImroLoadRepository imroLoadRepository,
                                        StructuurvisieGebiedRepository structuurvisieGebiedRepository,
-                                       StructuurvisieGebiedThemaRepository structuurvisieGebiedThemaRepository,
+                                       ThemaRepository structuurvisieGebiedThemaRepository,
                                        StructuurvisieGebiedBeleidRepository structuurvisieGebiedBeleidRepository,
                                        TekstRefRepository tekstRefRepository,
-                                       StructuurVisieGebiedMapper structuurVisieGebiedMapper) {
+                                       LocatieRepository locatieRepository,
+                                       StructuurVisieGebiedMapper structuurVisieGebiedMapper,
+                                       LocatieMapper locatieMapper) {
         this.APIService = APIService;
         this.imroLoadRepository = imroLoadRepository;
         this.structuurvisieGebiedRepository = structuurvisieGebiedRepository;
         this.structuurvisieGebiedBeleidRepository = structuurvisieGebiedBeleidRepository;
         this.structuurvisieGebiedThemaRepository = structuurvisieGebiedThemaRepository;
         this.tekstRefRepository = tekstRefRepository;
+        this.locatieRepository = locatieRepository;
         this.structuurVisieGebiedMapper = structuurVisieGebiedMapper;
+        this.locatieMapper = locatieMapper;
     }
 
     public UpdateCounter loadTekstenFromList() {
@@ -95,14 +104,32 @@ public class StructuurVisieGebiedService {
             StructuurVisieGebiedDto current = structuurVisieGebiedMapper.toStructuurVisieGebied(structuurvisie);
             current.setPlanidentificatie(planidentificatie);
 
-            Optional<StructuurVisieGebiedDto> found = structuurvisieGebiedRepository.findByPlanidentificatieAndIdentificatie(current.getPlanidentificatie(), current.getIdentificatie());
+            if (structuurvisie.getGeometrie() != null) {
+                String md5hash = DigestUtils.md5Hex(structuurvisie.getGeometrie().toString().toUpperCase());
+                current.setMd5hash(md5hash);
 
-            if (found.isPresent()) {
-                if (found.get().equals(current)) {
+                Optional<LocatieDto> optionalLocatieDto = locatieRepository.findByMd5hash(md5hash);
+                if (!optionalLocatieDto.isPresent()) {
+                    LocatieDto locatieDto = locatieMapper.toLocatieDto(structuurvisie);
+                    locatieDto.setMd5hash(md5hash);
+                    locatieDto.setRegistratie(LocalDateTime.now());
+                    locatieRepository.save(locatieDto);
+                    log.debug("Added locatie: {}", md5hash);
+                }
+            }
+
+            Optional<StructuurVisieGebiedDto> optionalFound = structuurvisieGebiedRepository.findByPlanidentificatieAndIdentificatie(current.getPlanidentificatie(), current.getIdentificatie());
+
+            if (optionalFound.isPresent()) { // existing entry
+                StructuurVisieGebiedDto found = optionalFound.get();
+                if (found.equals(current)) { // not changed
+                    savedStructuurVisieGebiedDto = found;
                     updateCounter.skipped();
-                    savedStructuurVisieGebiedDto = found.get();
-                } else {
-                    StructuurVisieGebiedDto updated = found.get();
+                } else {                     // changed
+                    found.setNaam(current.getNaam());
+                    found.setMd5hash(current.getMd5hash());
+
+                    StructuurVisieGebiedDto updated = optionalFound.get();
                     updated.setNaam(current.getNaam());
 
                     updated.setVerwijzingNaarTekst(current.getVerwijzingNaarTekst());
@@ -110,33 +137,32 @@ public class StructuurVisieGebiedService {
 
                     savedStructuurVisieGebiedDto = structuurvisieGebiedRepository.save(updated);
 
-                    Set<StructuurVisieGebiedBeleidDto>  structuurVisieGebiedBeleidDtoSet = saveStructuurVisieBeleid(savedStructuurVisieGebiedDto, current.getBeleid());
+                    Set<BeleidDto>  structuurVisieGebiedBeleidDtoSet = saveStructuurVisieBeleid(savedStructuurVisieGebiedDto, current.getBeleid());
                     updated.setBeleid(structuurVisieGebiedBeleidDtoSet);
-                    Set<StructuurVisieGebiedThemaDto> structuurVisieGebiedThemaDtoSet = saveStructuurVisieThema(savedStructuurVisieGebiedDto, current.getThema());
+                    Set<ThemaDto> structuurVisieGebiedThemaDtoSet = saveStructuurVisieThema(savedStructuurVisieGebiedDto, current.getThema());
                     updated.setThema(structuurVisieGebiedThemaDtoSet);
 
                     savedStructuurVisieGebiedDto = structuurvisieGebiedRepository.save(updated);
                 }
             } else {
                 updateCounter.add();
-                Set<StructuurVisieGebiedBeleidDto> newBeleid = current.getBeleid();
-                Set<StructuurVisieGebiedThemaDto> newThema = current.getThema();
-                TekstRefDto newTeksref = current.getVerwijzingNaarTekst();
+                Set<BeleidDto> newBeleid = current.getBeleid();
+                Set<ThemaDto> newThema = current.getThema();
+                Set<TekstRefDto> newTeksref = current.getVerwijzingNaarTekst();
 
                 current.setBeleid(null);
                 current.setThema(null);
                 current.setVerwijzingNaarTekst(null);
                 savedStructuurVisieGebiedDto = structuurvisieGebiedRepository.save(current);
 
-                Set<StructuurVisieGebiedBeleidDto>  structuurVisieGebiedBeleidDtoSet = saveStructuurVisieBeleid(savedStructuurVisieGebiedDto, newBeleid);
+                Set<BeleidDto>  structuurVisieGebiedBeleidDtoSet = saveStructuurVisieBeleid(savedStructuurVisieGebiedDto, newBeleid);
                 savedStructuurVisieGebiedDto.setBeleid(structuurVisieGebiedBeleidDtoSet);
 
-                Set<StructuurVisieGebiedThemaDto> structuurVisieGebiedThemaDtoSet = saveStructuurVisieThema(savedStructuurVisieGebiedDto, newThema);
+                Set<ThemaDto> structuurVisieGebiedThemaDtoSet = saveStructuurVisieThema(savedStructuurVisieGebiedDto, newThema);
                 savedStructuurVisieGebiedDto.setThema(structuurVisieGebiedThemaDtoSet);
 
-                //Set<TekstRefDto> tekstRefDtoSet = current.getVerwijzingNaarTekst();
 
-                TekstRefDto tekstRefDtos = saveTekstRefs(savedStructuurVisieGebiedDto,newTeksref );
+                Set<TekstRefDto>  tekstRefDtos = saveTekstRefs(savedStructuurVisieGebiedDto,newTeksref );
                 savedStructuurVisieGebiedDto.setVerwijzingNaarTekst(tekstRefDtos);
 
                 savedStructuurVisieGebiedDto = structuurvisieGebiedRepository.save(savedStructuurVisieGebiedDto);
@@ -148,34 +174,39 @@ public class StructuurVisieGebiedService {
         return savedStructuurVisieGebiedDto;
     }
 
-    private TekstRefDto saveTekstRefs(StructuurVisieGebiedDto savedStructuurVisieGebiedDto, TekstRefDto teksref) {
-        TekstRefDto savedTekstref = null;
+    private Set<TekstRefDto> saveTekstRefs(StructuurVisieGebiedDto savedStructuurVisieGebiedDto, Set<TekstRefDto>  teksref) {
+        Set<TekstRefDto>  savedTekstref = new HashSet<>();
 
-            Optional<TekstRefDto> found = tekstRefRepository.findByReferentie(teksref.getReferentie());
+        Iterator<TekstRefDto> tekstRefDtoIterator = teksref.iterator();
+
+        while (tekstRefDtoIterator.hasNext()) {
+            TekstRefDto current = tekstRefDtoIterator.next();
+
+            Optional<TekstRefDto> found = tekstRefRepository.findByReferentie(current.getReferentie());
             TekstRefDto currentTekstRef = null;
             if (found.isPresent()) {
                 currentTekstRef = found.get();
-                currentTekstRef.getStructuurvisies().add(savedStructuurVisieGebiedDto);
+                currentTekstRef.setStructuurvisiegebied(savedStructuurVisieGebiedDto);
                 currentTekstRef = tekstRefRepository.save(currentTekstRef);
             } else {
-                teksref.getStructuurvisies().add(savedStructuurVisieGebiedDto);
-                currentTekstRef = tekstRefRepository.save(teksref);
+                current.setStructuurvisiegebied(savedStructuurVisieGebiedDto);
+                currentTekstRef = tekstRefRepository.save(current);
             }
-            savedTekstref = currentTekstRef;
-
+            savedTekstref.add(currentTekstRef);
+        }
         return savedTekstref;
     }
 
-    private Set<StructuurVisieGebiedThemaDto> saveStructuurVisieThema(StructuurVisieGebiedDto savedStructuurVisieGebiedDto, Set<StructuurVisieGebiedThemaDto> thema) {
-        Set<StructuurVisieGebiedThemaDto> savedThema = new HashSet<>();
+    private Set<ThemaDto> saveStructuurVisieThema(StructuurVisieGebiedDto savedStructuurVisieGebiedDto, Set<ThemaDto> thema) {
+        Set<ThemaDto> savedThema = new HashSet<>();
 
-        Iterator<StructuurVisieGebiedThemaDto> structuurVisieGebiedThemaDtoIterator = thema.iterator();
+        Iterator<ThemaDto> structuurVisieGebiedThemaDtoIterator = thema.iterator();
 
         while (structuurVisieGebiedThemaDtoIterator.hasNext()) {
-            StructuurVisieGebiedThemaDto current = structuurVisieGebiedThemaDtoIterator.next();
+            ThemaDto current = structuurVisieGebiedThemaDtoIterator.next();
 
-            Optional<StructuurVisieGebiedThemaDto> found = structuurvisieGebiedThemaRepository.findByThema(current.getThema());
-            StructuurVisieGebiedThemaDto currentStructuurVisieGebiedThemaDto = null;
+            Optional<ThemaDto> found = structuurvisieGebiedThemaRepository.findByThema(current.getThema());
+            ThemaDto currentStructuurVisieGebiedThemaDto = null;
             if (found.isPresent()) {
                 currentStructuurVisieGebiedThemaDto = found.get();
                 currentStructuurVisieGebiedThemaDto.setStructuurVisieGebied(savedStructuurVisieGebiedDto);
@@ -189,16 +220,16 @@ public class StructuurVisieGebiedService {
         return savedThema;
     }
 
-    private Set<StructuurVisieGebiedBeleidDto>  saveStructuurVisieBeleid(StructuurVisieGebiedDto savedStructuurVisieGebiedDto, Set<StructuurVisieGebiedBeleidDto> beleid) {
-        Set<StructuurVisieGebiedBeleidDto> savedBeleid = new HashSet<>();
+    private Set<BeleidDto>  saveStructuurVisieBeleid(StructuurVisieGebiedDto savedStructuurVisieGebiedDto, Set<BeleidDto> beleid) {
+        Set<BeleidDto> savedBeleid = new HashSet<>();
 
-        Iterator<StructuurVisieGebiedBeleidDto> structuurVisieGebiedDtoIterator= beleid.iterator();
+        Iterator<BeleidDto> structuurVisieGebiedDtoIterator= beleid.iterator();
 
         while (structuurVisieGebiedDtoIterator.hasNext()) {
-            StructuurVisieGebiedBeleidDto current = structuurVisieGebiedDtoIterator.next();
+            BeleidDto current = structuurVisieGebiedDtoIterator.next();
 
-            Optional<StructuurVisieGebiedBeleidDto> found = structuurvisieGebiedBeleidRepository.findByBelangAndRolAndInstrument(current.getBelang(), current.getRol(), current.getInstrument());
-            StructuurVisieGebiedBeleidDto currentStructuurVisieGebiedBeleid = null;
+            Optional<BeleidDto> found = structuurvisieGebiedBeleidRepository.findByBelangAndRolAndInstrument(current.getBelang(), current.getRol(), current.getInstrument());
+            BeleidDto currentStructuurVisieGebiedBeleid = null;
             if (found.isPresent()) {
                 currentStructuurVisieGebiedBeleid = found.get();
                 currentStructuurVisieGebiedBeleid.setStructuurVisieGebied(savedStructuurVisieGebiedDto);

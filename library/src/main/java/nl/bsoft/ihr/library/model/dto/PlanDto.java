@@ -1,9 +1,7 @@
 package nl.bsoft.ihr.library.model.dto;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -12,7 +10,8 @@ import java.util.Set;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "plan", schema = "public", catalog = "ihr")
 public class PlanDto {
@@ -37,13 +36,17 @@ public class PlanDto {
     @Column(name = "naam")
     private String naam;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST) // owning site
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL) // owning site
     @JoinTable(
             name = "plan_locatienaam",
-            joinColumns = @JoinColumn(name = "plan_id", referencedColumnName = "id",
-                    nullable = false, updatable = false),
-            inverseJoinColumns = @JoinColumn(name = "locatienaam_id", referencedColumnName = "id",
-                    nullable = false, updatable = false))
+            joinColumns = {
+                    @JoinColumn(name = "plan_id", referencedColumnName = "id")
+            },
+                    //nullable = false, updatable = false),
+            inverseJoinColumns = {
+                    @JoinColumn(name = "locatienaam_id", referencedColumnName = "id")
+            })
+                    //nullable = false, updatable = false))
     private Set<LocatieNaamDto> locaties = new HashSet<>();
 
     @Column(name = "planstatus")

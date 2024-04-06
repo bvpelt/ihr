@@ -44,12 +44,12 @@ public abstract class GebiedsaanduidingMapper implements JsonNullableMapper {
         }
     }
     @Named("toThemaListString")
-    protected Set<StructuurVisieGebiedThemaDto> toThemaListString(List<String> themas) {
-        final Set<StructuurVisieGebiedThemaDto> themaDtos = new HashSet<>();
+    protected Set<ThemaDto> toThemaListString(List<String> themas) {
+        final Set<ThemaDto> themaDtos = new HashSet<>();
 
         if ((themas != null) && (themas.size() > 0)) {
             themas.forEach(thema -> {
-                StructuurVisieGebiedThemaDto themaDto = new StructuurVisieGebiedThemaDto();
+                ThemaDto themaDto = new ThemaDto();
                 themaDto.setThema(thema);
                 themaDtos.add(themaDto);
             });

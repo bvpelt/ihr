@@ -62,4 +62,23 @@ public class StructuurvisieGebiedTests {
         }
         log.info("End   structuurvisiegebied-01.json");
     }
+
+    @Test
+    public void mapStructuurVisieGebiedDto_02 () {
+        Structuurvisiegebied structuurvisiegebied;
+        log.info("Start structuurvisiegebied-02.json");
+        try {
+            File dataFile = resourceLoader.getResource("classpath:structuurvisiegebied-02.json").getFile();
+
+            structuurvisiegebied = objectMapper.readValue(dataFile, Structuurvisiegebied.class);
+            log.info("structuurvisiegebied: \n{}", structuurvisiegebied.toString());
+
+            StructuurVisieGebiedDto structuurVisieGebiedDto = structuurVisieGebiedMapper.toStructuurVisieGebied(structuurvisiegebied);
+            log.info("structuurVisieGebiedDto: \n{}", structuurVisieGebiedDto.toString());
+
+        } catch (Exception e) {
+            log.error("Error in map structuurVisieGebiedDto test: {}", e);
+        }
+        log.info("End   structuurvisiegebied-02.json");
+    }
 }

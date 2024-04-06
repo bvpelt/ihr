@@ -1,3 +1,4 @@
+-- table: auditlog
 create table auditlog
 (
     id          bigint      not null primary key,

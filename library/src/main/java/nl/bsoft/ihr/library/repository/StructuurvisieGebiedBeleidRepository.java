@@ -1,15 +1,15 @@
 package nl.bsoft.ihr.library.repository;
 
-import nl.bsoft.ihr.library.model.dto.StructuurVisieGebiedBeleidDto;
+import nl.bsoft.ihr.library.model.dto.BeleidDto;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 import java.util.Optional;
 @Repository
-public interface StructuurvisieGebiedBeleidRepository extends PagingAndSortingRepository<StructuurVisieGebiedBeleidDto, Long>,
-        CrudRepository<StructuurVisieGebiedBeleidDto, Long>,
-        JpaSpecificationExecutor<StructuurVisieGebiedBeleidDto> {
+public interface StructuurvisieGebiedBeleidRepository extends PagingAndSortingRepository<BeleidDto, Long>,
+        CrudRepository<BeleidDto, Long>,
+        JpaSpecificationExecutor<BeleidDto> {
 
-    Optional<StructuurVisieGebiedBeleidDto> findByBelangAndRolAndInstrument(String belang, String rol, String instrument);
+    Optional<BeleidDto> findByBelangAndRolAndInstrument(String belang, String rol, String instrument);
 }

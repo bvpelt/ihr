@@ -1,18 +1,18 @@
 package nl.bsoft.ihr.library.model.dto;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
-@Table(name = "structuurvisiegebiedthema", schema = "public", catalog = "ihr")
-public class StructuurVisieGebiedThemaDto {
+@Table(name = "thema", schema = "public", catalog = "ihr")
+public class ThemaDto {
     private static final long serialVersionUID = 10L;
 
     @Id
@@ -21,28 +21,28 @@ public class StructuurVisieGebiedThemaDto {
     @Column(name = "thema")
     private String thema;
 
-    @ManyToOne
-    @JoinColumn(name="structuurvisiegebied_id", nullable=false, referencedColumnName = "id")
-    private StructuurVisieGebiedDto structuurVisieGebied;
+    @ManyToMany(mappedBy = "themas", fetch = FetchType.LAZY)
+    Set<StructuurVisieGebiedDto> structuurVisieGebieden;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        StructuurVisieGebiedThemaDto that = (StructuurVisieGebiedThemaDto) o;
-        return Objects.equals(thema, that.thema);
+        ThemaDto themaDto = (ThemaDto) o;
+        return Objects.equals(thema, themaDto.thema) && Objects.equals(structuurVisieGebieden, themaDto.structuurVisieGebieden);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(thema);
+        return Objects.hash(thema, structuurVisieGebieden);
     }
 
     @Override
     public String toString() {
-        return "StructuurVisieGebiedThemaDto{" +
+        return "ThemaDto{" +
                 "id=" + id +
                 ", thema='" + thema + '\'' +
+                ", structuurVisieGebieden=" + structuurVisieGebieden +
                 '}';
     }
 }

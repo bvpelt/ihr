@@ -3,6 +3,7 @@ package nl.bsoft.ihr.library.mapper;
 import lombok.Setter;
 import nl.bsoft.ihr.generated.model.Bestemmingsvlak;
 import nl.bsoft.ihr.generated.model.Plan;
+import nl.bsoft.ihr.generated.model.Structuurvisiegebied;
 import nl.bsoft.ihr.library.model.dto.LocatieDto;
 import nl.bsoft.ihr.library.service.GeoService;
 import org.locationtech.jts.geom.Geometry;
@@ -33,4 +34,8 @@ public abstract class LocatieMapper {
     @Mapping(target = "id", source = "id", ignore = true)
     @Mapping(target = "geometrie", source = "geometrie", qualifiedByName = "toGeometrie")
     public abstract LocatieDto toLocatieDto(Bestemmingsvlak bestemmingsvlak) throws ParseException;
+
+    @Mapping(target = "id", source = "id", ignore = true)
+    @Mapping(target = "geometrie", source = "geometrie", qualifiedByName = "toGeometrie")
+    public abstract LocatieDto toLocatieDto(Structuurvisiegebied structuurvisie) throws ParseException;
 }

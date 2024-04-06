@@ -2,11 +2,9 @@ package nl.bsoft.ihr.library.mapper;
 
 import lombok.Setter;
 import nl.bsoft.ihr.generated.model.BaseStructuurvisiegebiedBeleidInner;
+import nl.bsoft.ihr.generated.model.IllustratieReferentie;
 import nl.bsoft.ihr.generated.model.Structuurvisiegebied;
-import nl.bsoft.ihr.library.model.dto.StructuurVisieGebiedBeleidDto;
-import nl.bsoft.ihr.library.model.dto.StructuurVisieGebiedDto;
-import nl.bsoft.ihr.library.model.dto.StructuurVisieGebiedThemaDto;
-import nl.bsoft.ihr.library.model.dto.TekstRefDto;
+import nl.bsoft.ihr.library.model.dto.*;
 import org.locationtech.jts.io.ParseException;
 import org.mapstruct.*;
 import org.openapitools.jackson.nullable.JsonNullable;
@@ -31,6 +29,7 @@ public abstract class StructuurVisieGebiedMapper {
     @Mapping(target = "thema", source = "thema", qualifiedByName = "toThemaListString")
     @Mapping(target = "beleid", source = "beleid", qualifiedByName = "toBeleidListString")
     @Mapping(target = "verwijzingNaarTekst", source = "verwijzingNaarTekst", qualifiedByName = "toVerwijzingNaarTekstListString")
+    @Mapping(target = "illustraties", source = "illustraties", qualifiedByName = "toIllustraties")
     public abstract StructuurVisieGebiedDto toStructuurVisieGebied(Structuurvisiegebied structuurvisiegebied) throws ParseException;
 
     @Named("toIdentificatie")
@@ -39,17 +38,39 @@ public abstract class StructuurVisieGebiedMapper {
     }
 
     @Named("toThemaListString")
-    protected Set<StructuurVisieGebiedThemaDto> toThemaListString(List<String> themas) {
-        final Set<StructuurVisieGebiedThemaDto> themaDtos = new HashSet<>();
+    protected Set<ThemaDto> toThemaListString(List<String> themas) {
+        final Set<ThemaDto> themaDtos = new HashSet<>();
 
         if ((themas != null) && (themas.size() > 0)) {
             themas.forEach(thema -> {
-                StructuurVisieGebiedThemaDto themaDto = new StructuurVisieGebiedThemaDto();
+                ThemaDto themaDto = new ThemaDto();
                 themaDto.setThema(thema);
                 themaDtos.add(themaDto);
             });
         }
         return themaDtos;
+    }
+
+    @Named("toIllustraties")
+    protected Set<IllustratieDto>  toIllustraties(List<IllustratieReferentie> illustraties) {
+
+        final Set<IllustratieDto>  illustratieDtos = new HashSet<>();
+
+        if ((illustraties != null) && (illustraties.size() > 0)) {
+            illustraties.forEach(illustratie -> {
+                IllustratieDto illustratieDto = new IllustratieDto();
+                illustratieDto.setHref(illustratie.getHref());
+                illustratieDto.setType(illustratie.getType());
+                if (illustratie.getNaam().isPresent()) {
+                    illustratieDto.setNaam(illustratie.getNaam().get());
+                }
+                if (illustratie.getLegendanaam().isPresent()) {
+                    illustratieDto.setLegendanaam(illustratie.getLegendanaam().get());
+                }
+                illustratieDtos.add(illustratieDto);
+            });
+        }
+        return illustratieDtos;
     }
 
     @Named("toVerwijzingNaarTekstListString")
@@ -67,12 +88,12 @@ public abstract class StructuurVisieGebiedMapper {
     }
 
     @Named("toBeleidListString")
-    protected Set<StructuurVisieGebiedBeleidDto> toBeleidListString(List<BaseStructuurvisiegebiedBeleidInner> beleiden) {
-        final Set<StructuurVisieGebiedBeleidDto> beleidDtos = new HashSet<>();
+    protected Set<BeleidDto> toBeleidListString(List<BaseStructuurvisiegebiedBeleidInner> beleiden) {
+        final Set<BeleidDto> beleidDtos = new HashSet<>();
 
         if ((beleiden != null) && (beleiden.size() > 0)) {
             beleiden.forEach(beleid -> {
-                StructuurVisieGebiedBeleidDto beleidDto = new StructuurVisieGebiedBeleidDto();
+                BeleidDto beleidDto = new BeleidDto();
                 beleidDto.setBelang(toJsonNullableString(beleid.getBelang()));
                 beleidDto.setRol(toJsonNullableString(beleid.getRol()));
                 beleidDto.setInstrument(toJsonNullableString(beleid.getInstrument()));

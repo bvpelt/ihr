@@ -1,3 +1,4 @@
+-- table bestemmingsvlak
 create table bestemmingsvlak
 (
     id                    bigint not null primary key,
