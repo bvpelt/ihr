@@ -1,3 +1,4 @@
+-- table gebiedsaanduiding
 create table gebiedsaanduiding
 (
     id                     bigint not null primary key,

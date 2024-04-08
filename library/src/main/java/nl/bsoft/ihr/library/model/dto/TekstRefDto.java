@@ -28,7 +28,7 @@ public class TekstRefDto {
     private Set<GebiedsaanduidingDto> gebiedsaanwijzingen = new HashSet<>();
 
     @ManyToMany(mappedBy = "verwijzingNaarTekst", fetch = FetchType.LAZY)
-    private Set<StructuurVisieGebiedDto> structuurvisiegebied;
+    private Set<StructuurVisieGebiedDto> verwijzingNaarTekst;
 
     @Override
     public boolean equals(Object o) {

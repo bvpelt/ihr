@@ -26,7 +26,7 @@ public abstract class StructuurVisieGebiedMapper {
     @Mapping(target = "id", source = "id", ignore = true)
     @Mapping(target = "identificatie", source = "id", qualifiedByName = "toIdentificatie")
     @Mapping(target = "naam", source = "naam")
-    @Mapping(target = "thema", source = "thema", qualifiedByName = "toThemaListString")
+    @Mapping(target = "themas", source = "thema", qualifiedByName = "toThemaListString")
     @Mapping(target = "beleid", source = "beleid", qualifiedByName = "toBeleidListString")
     @Mapping(target = "verwijzingNaarTekst", source = "verwijzingNaarTekst", qualifiedByName = "toVerwijzingNaarTekstListString")
     @Mapping(target = "illustraties", source = "illustraties", qualifiedByName = "toIllustraties")

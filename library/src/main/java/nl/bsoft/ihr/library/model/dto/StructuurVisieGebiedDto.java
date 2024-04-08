@@ -57,10 +57,57 @@ public class StructuurVisieGebiedDto {
             })
     private Set<TekstRefDto> verwijzingNaarTekst;
 
-    @OneToMany(mappedBy = "structuurvisiegebied")
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE) // owns the relation
+    @JoinTable(name = "structuurvisiegebied_illustratie",
+            joinColumns = {
+                    @JoinColumn(name = "structuurvisiegebied_id", referencedColumnName = "id")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "illustratie_id", referencedColumnName = "id")
+            })
     private Set<IllustratieDto> illustraties;
-    @OneToMany(mappedBy = "structuurvisiegebied")
-    private Set<TekstRefDto> externeplannen;
+
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE) // owns the relation
+    @JoinTable(name = "structuurvisiegebied_externplan_tengevolgevan",
+            joinColumns = {
+                    @JoinColumn(name = "structuurvisiegebied_id", referencedColumnName = "id")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "externplan_id", referencedColumnName = "id")
+            })
+    private Set<ExternPlanDto> externeplan_tengevolgevan;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE) // owns the relation
+    @JoinTable(name = "structuurvisiegebied_externplan_gebruiktinformatieuit",
+            joinColumns = {
+                    @JoinColumn(name = "structuurvisiegebied_id", referencedColumnName = "id")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "externplan_id", referencedColumnName = "id")
+            })
+    private Set<ExternPlanDto> externeplan_gebruiktinformatieuit;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE) // owns the relation
+    @JoinTable(name = "structuurvisiegebied_externplan_uittewerkenin",
+            joinColumns = {
+                    @JoinColumn(name = "structuurvisiegebied_id", referencedColumnName = "id")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "externplan_id", referencedColumnName = "id")
+            })
+    private Set<ExternPlanDto> externeplan_uittewerkenin;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE) // owns the relation
+    @JoinTable(name = "structuurvisiegebied_externplan_uitgewerktin",
+            joinColumns = {
+                    @JoinColumn(name = "structuurvisiegebied_id", referencedColumnName = "id")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "externplan_id", referencedColumnName = "id")
+            })
+    private Set<ExternPlanDto> externeplan_uitgewerktin;
+
     @OneToMany(mappedBy = "structuurvisiegebied")
     private Set<TekstRefDto> cartografieinfo;
 

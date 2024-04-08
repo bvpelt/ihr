@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -25,21 +26,20 @@ public class IllustratieDto {
     private String naam;
     @Column(name = "legendanaam")
     private String legendanaam;
-    @ManyToOne
-    @JoinColumn(name="structuurvisiegebied_id", nullable=false, referencedColumnName = "id")
-    private StructuurVisieGebiedDto structuurvisiegebied;
+    @ManyToMany(mappedBy = "illustraties", fetch = FetchType.LAZY)
+    private Set<StructuurVisieGebiedDto> structuurvisiegebied;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         IllustratieDto that = (IllustratieDto) o;
-        return Objects.equals(href, that.href) && Objects.equals(type, that.type) && Objects.equals(naam, that.naam) && Objects.equals(legendanaam, that.legendanaam);
+        return Objects.equals(href, that.href) && Objects.equals(type, that.type) && Objects.equals(naam, that.naam) && Objects.equals(legendanaam, that.legendanaam) && Objects.equals(structuurvisiegebied, that.structuurvisiegebied);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(href, type, naam, legendanaam);
+        return Objects.hash(href, type, naam, legendanaam, structuurvisiegebied);
     }
 
     @Override

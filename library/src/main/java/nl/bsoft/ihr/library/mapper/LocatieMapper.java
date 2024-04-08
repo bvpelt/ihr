@@ -11,6 +11,10 @@ import org.locationtech.jts.io.ParseException;
 import org.mapstruct.*;
 import org.wololo.geojson.GeoJSON;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 @Setter
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
         componentModel = "spring",
@@ -24,6 +28,16 @@ public abstract class LocatieMapper {
     @Mapping(target = "geometrie", source = "geometrie", qualifiedByName = "toGeometrie")
     public abstract LocatieDto toLocatieDto(Plan plan) throws ParseException;
 
+
+    @Mapping(target = "id", source = "id", ignore = true)
+    @Mapping(target = "geometrie", source = "geometrie", qualifiedByName = "toGeometrie")
+    public abstract LocatieDto toLocatieDto(Bestemmingsvlak bestemmingsvlak) throws ParseException;
+
+    @Mapping(target = "id", source = "id", ignore = true)
+    @Mapping(target = "geometrie", source = "geometrie", qualifiedByName = "toGeometrieList")
+    public abstract Set<LocatieDto> toLocatieDto(Structuurvisiegebied structuurvisie) throws ParseException;
+
+
     @Named("toGeometrie")
     protected Geometry toGeometrie(GeoJSON inputGeometry) throws ParseException {
 
@@ -31,11 +45,17 @@ public abstract class LocatieMapper {
         return geoService.geoJsonToJTS(inputGeometry);
     }
 
-    @Mapping(target = "id", source = "id", ignore = true)
-    @Mapping(target = "geometrie", source = "geometrie", qualifiedByName = "toGeometrie")
-    public abstract LocatieDto toLocatieDto(Bestemmingsvlak bestemmingsvlak) throws ParseException;
 
-    @Mapping(target = "id", source = "id", ignore = true)
-    @Mapping(target = "geometrie", source = "geometrie", qualifiedByName = "toGeometrie")
-    public abstract LocatieDto toLocatieDto(Structuurvisiegebied structuurvisie) throws ParseException;
+    @Named("toGeometrieList")
+    protected List<Geometry> toGeometrieList(List<GeoJSON> inputGeometries) throws ParseException {
+
+        List<Geometry> geometries = new ArrayList<>();
+
+        inputGeometries.forEach(geojson -> {
+            GeoService geoService = new GeoService(new GeoMapperImpl());
+            Geometry geometry = geoService.geoJsonToJTS(geojson);
+            geometries.add(geometry);
+        });
+       return geometries;
+    }
 }
