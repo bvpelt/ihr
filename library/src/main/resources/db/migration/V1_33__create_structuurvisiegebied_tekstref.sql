@@ -3,7 +3,7 @@ create table structuurvisiegebied_tekstref
 (
     id                      bigint not null primary key,
     structuurvisiegebied_id bigint,
-    tekstref_id bigint
+    tekstref_id             bigint
 );
 
 create index structuurvisiegebied_tekstref_structuurvisiegebied_idx on structuurvisiegebied_tekstref (structuurvisiegebied_id);

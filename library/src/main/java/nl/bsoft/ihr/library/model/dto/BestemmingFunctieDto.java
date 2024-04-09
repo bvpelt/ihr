@@ -1,8 +1,10 @@
 package nl.bsoft.ihr.library.model.dto;
 
 import jakarta.persistence.*;
-import lombok.*;
-import org.hibernate.annotations.Fetch;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Objects;

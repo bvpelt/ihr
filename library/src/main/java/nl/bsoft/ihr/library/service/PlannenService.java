@@ -8,7 +8,6 @@ import nl.bsoft.ihr.library.model.dto.*;
 import nl.bsoft.ihr.library.repository.*;
 import nl.bsoft.ihr.library.util.UpdateCounter;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.hibernate.metamodel.mapping.ordering.OrderByFragmentImpl;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,6 @@ import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Slf4j
 @Service
@@ -205,7 +203,7 @@ public class PlannenService {
             planRepository.save(planDto); // reference for locatie
 
             List<String> locatieNaamDtoSet = plan.getLocatienamen();
-            Iterator<String> locatieDtoIterable= locatieNaamDtoSet.iterator();
+            Iterator<String> locatieDtoIterable = locatieNaamDtoSet.iterator();
             while (locatieDtoIterable.hasNext()) {
                 String puLocatieNaam = locatieDtoIterable.next();
 
@@ -299,7 +297,7 @@ public class PlannenService {
     public Plan getPlan(String identificatie) {
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(APIService.getApiUrl() + "/plannen/" + identificatie);
         String[] expand = {"geometrie"};
-        for (String param: expand) {
+        for (String param : expand) {
             uriComponentsBuilder.queryParam("expand", param);
         }
         log.trace("using url: {}", uriComponentsBuilder.build().toUri());

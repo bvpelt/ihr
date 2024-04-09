@@ -92,3 +92,13 @@ from plan_locatienaam l1_0
     join public.locatienaam l1_1 on l1_1.id = l1_0.locatienaam_id where l1_0.plan_id=?
 
 ```
+
+# Bash scripts
+## Delete all tables
+
+ library/src/main/resource/db/migration
+```bash
+pushd library/src/main/resource/db/migration
+grep -e '-- table' *.sql | sed -e 's/[^-]*-- table \(.*\)/drop table if exists \1;/'
+popd
+```

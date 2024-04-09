@@ -3,7 +3,7 @@ create table structuurvisiegebied_illustratie
 (
     id                      bigint not null primary key,
     structuurvisiegebied_id bigint,
-    illustratie_id bigint
+    illustratie_id          bigint
 );
 
 create index structuurvisiegebied_illustratie_structuurvisiegebied_idx on structuurvisiegebied_illustratie (structuurvisiegebied_id);

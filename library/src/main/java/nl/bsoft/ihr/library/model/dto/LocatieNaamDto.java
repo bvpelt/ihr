@@ -1,7 +1,10 @@
 package nl.bsoft.ihr.library.model.dto;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -31,10 +34,12 @@ public class LocatieNaamDto {
         LocatieNaamDto that = (LocatieNaamDto) o;
         return Objects.equals(naam, that.naam);
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(naam);
     }
+
     @Override
     public String toString() {
         return "LocatieNaamDto{" +

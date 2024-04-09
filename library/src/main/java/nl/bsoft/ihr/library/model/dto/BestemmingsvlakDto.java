@@ -1,9 +1,11 @@
 package nl.bsoft.ihr.library.model.dto;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -41,20 +43,20 @@ public class BestemmingsvlakDto {
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE) // owns the relation
     @JoinTable(name = "bestemmingsvlak_bestemmingsfunctie",
             joinColumns = {
-            @JoinColumn(name = "bestemmingsvlak_id", referencedColumnName = "id")
+                    @JoinColumn(name = "bestemmingsvlak_id", referencedColumnName = "id")
             },
             inverseJoinColumns = {
-            @JoinColumn(name = "bestemmingsfunctie_id", referencedColumnName = "id")
+                    @JoinColumn(name = "bestemmingsfunctie_id", referencedColumnName = "id")
             })
     private Set<BestemmingFunctieDto> bestemmingsfuncties = new HashSet<BestemmingFunctieDto>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE) // owns the relation
     @JoinTable(name = "bestemmingsvlak_tekstref",
             joinColumns = {
-            @JoinColumn(name = "bestemmingsvlak_id", referencedColumnName = "id")
+                    @JoinColumn(name = "bestemmingsvlak_id", referencedColumnName = "id")
             },
             inverseJoinColumns = {
-            @JoinColumn(name = "tekstref_id", referencedColumnName = "id")
+                    @JoinColumn(name = "tekstref_id", referencedColumnName = "id")
             })
     private Set<TekstRefDto> verwijzingNaarTekst = new HashSet<TekstRefDto>();
 
@@ -63,6 +65,7 @@ public class BestemmingsvlakDto {
         bestemmingFunctie.getBestemmingsvlakken().add(this);
 
     }
+
     public void removeBestemmingsfunctie(BestemmingFunctieDto bestemmingFunctie) {
         this.bestemmingsfuncties.remove(bestemmingFunctie);
         bestemmingFunctie.getBestemmingsvlakken().remove(this);
@@ -72,6 +75,7 @@ public class BestemmingsvlakDto {
         this.verwijzingNaarTekst.add(tekstRef);
         tekstRef.getBestemmingsvlakken().add(this);
     }
+
     public void removeVerwijzingNaarTekst(TekstRefDto tekstRef) {
         this.verwijzingNaarTekst.remove(tekstRef);
         tekstRef.getBestemmingsvlakken().remove(this);
@@ -89,6 +93,7 @@ public class BestemmingsvlakDto {
     public int hashCode() {
         return Objects.hash(planidentificatie, identificatie, type, naam, bestemmingshoofdgroep, bestemmingsfuncties, artikelnummer, verwijzingNaarTekst, labelInfo, md5hash);
     }
+
     @Override
     public String toString() {
         return "BestemmingsvlakDto{" +

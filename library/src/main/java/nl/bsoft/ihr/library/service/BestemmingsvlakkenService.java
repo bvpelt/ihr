@@ -14,10 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Optional;
-import java.util.Set;
 
 @Slf4j
 @Service

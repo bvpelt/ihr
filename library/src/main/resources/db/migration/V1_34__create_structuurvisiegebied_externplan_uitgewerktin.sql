@@ -1,13 +1,13 @@
---  table structuurvisiegebied_externplan_uittewerkenin
+-- table structuurvisiegebied_externplan_uitgewerktin
 create table structuurvisiegebied_externplan_uitgewerktin
 (
     id                      bigint not null primary key,
     structuurvisiegebied_id bigint,
-    externplan_id bigint
+    externplan_id           bigint
 );
 
-create index structuurvisiegebied_externplan_uittewerkenin_structuur_idx on structuurvisiegebied_externplan_uitgewerktin (structuurvisiegebied_id);
-create index structuurvisiegebied_externplan_uittewerkenin_externplan_idx on structuurvisiegebied_externplan_uitgewerktin (externplan_id);
+create index structuurvisiegebied_externplan_uitgewerktin_structuur_idx on structuurvisiegebied_externplan_uitgewerktin (structuurvisiegebied_id);
+create index structuurvisiegebied_externplan_uitgewerktin_externplan_idx on structuurvisiegebied_externplan_uitgewerktin (externplan_id);
 
 ALTER TABLE structuurvisiegebied_externplan_uitgewerktin
     OWNER TO testuser;

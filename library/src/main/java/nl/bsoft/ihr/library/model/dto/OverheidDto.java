@@ -1,10 +1,11 @@
 package nl.bsoft.ihr.library.model.dto;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -39,10 +40,12 @@ public class OverheidDto {
         OverheidDto that = (OverheidDto) o;
         return Objects.equals(type, that.type) && Objects.equals(code, that.code) && Objects.equals(naam, that.naam);
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(type, code, naam);
     }
+
     @Override
     public String toString() {
         return "OverheidDto{" +

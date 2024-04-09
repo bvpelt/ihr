@@ -2,7 +2,6 @@ package nl.bsoft.ihr.library.mapper;
 
 import lombok.Setter;
 import nl.bsoft.ihr.generated.model.*;
-import nl.bsoft.ihr.library.model.dto.LocatieNaamDto;
 import nl.bsoft.ihr.library.model.dto.OverheidDto;
 import nl.bsoft.ihr.library.model.dto.PlanDto;
 import org.locationtech.jts.io.ParseException;
@@ -11,7 +10,6 @@ import org.openapitools.jackson.nullable.JsonNullable;
 
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Setter

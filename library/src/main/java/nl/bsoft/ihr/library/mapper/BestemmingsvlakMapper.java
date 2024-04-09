@@ -57,9 +57,10 @@ public abstract class BestemmingsvlakMapper {
         });
         return bestemmingFunctieDtos;
     }
+
     @Named("toTekstRef")
     protected Set<TekstRefDto> toVerwijzingNaarTekst(List<String> verwijzing) {
-        Set<TekstRefDto>  tekstRefDtoSet = new HashSet<>();
+        Set<TekstRefDto> tekstRefDtoSet = new HashSet<>();
 
         verwijzing.forEach(tekstref -> {
             TekstRefDto tekstRefDto = new TekstRefDto();
@@ -69,6 +70,7 @@ public abstract class BestemmingsvlakMapper {
 
         return tekstRefDtoSet;
     }
+
     @Named("toJsonNullableString")
     protected String toJsonNullableString(JsonNullable<String> jsonNullable) {
         if (jsonNullable.isPresent()) {

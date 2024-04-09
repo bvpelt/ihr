@@ -1,7 +1,10 @@
 package nl.bsoft.ihr.library.model.dto;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -35,12 +38,12 @@ public class TekstRefDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TekstRefDto that = (TekstRefDto) o;
-        return Objects.equals(referentie, that.referentie);
+        return Objects.equals(referentie, that.referentie) && Objects.equals(bestemmingsvlakken, that.bestemmingsvlakken) && Objects.equals(gebiedsaanwijzingen, that.gebiedsaanwijzingen) && Objects.equals(verwijzingNaarTekst, that.verwijzingNaarTekst);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(referentie);
+        return Objects.hash(referentie, bestemmingsvlakken, gebiedsaanwijzingen, verwijzingNaarTekst);
     }
 
     @Override
@@ -50,7 +53,7 @@ public class TekstRefDto {
                 ", referentie='" + referentie + '\'' +
                 ", bestemmingsvlakken=" + bestemmingsvlakken +
                 ", gebiedsaanwijzingen=" + gebiedsaanwijzingen +
-                ", structuurvisiegebied=" + structuurvisiegebied +
+                ", verwijzingNaarTekst=" + verwijzingNaarTekst +
                 '}';
     }
 }

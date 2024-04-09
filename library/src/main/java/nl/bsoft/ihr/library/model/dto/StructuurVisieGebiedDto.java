@@ -108,23 +108,38 @@ public class StructuurVisieGebiedDto {
             })
     private Set<ExternPlanDto> externeplan_uitgewerktin;
 
-    @OneToMany(mappedBy = "structuurvisiegebied")
-    private Set<TekstRefDto> cartografieinfo;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE) // owns the relation
+    @JoinTable(name = "structuurvisiegebied_cartografieinfo",
+            joinColumns = {
+                    @JoinColumn(name = "structuurvisiegebied_id", referencedColumnName = "id")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "cartografieinfo_id", referencedColumnName = "id")
+            })
+    private Set<CartografieInfoDto> cartografieinfo;
 
-    @Column(name = "md5hash", nullable = false)
-    private String md5hash;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE) // owns the relation
+    @JoinTable(name = "structuurvisiegebied_locatie",
+            joinColumns = {
+                    @JoinColumn(name = "structuurvisiegebied_id", referencedColumnName = "id")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "locatie_id", referencedColumnName = "id")
+            })
+    private Set<LocatieDto> locaties = new HashSet<>();
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         StructuurVisieGebiedDto that = (StructuurVisieGebiedDto) o;
-        return Objects.equals(planidentificatie, that.planidentificatie) && Objects.equals(identificatie, that.identificatie) && Objects.equals(naam, that.naam) && Objects.equals(thema, that.thema) && Objects.equals(beleid, that.beleid) && Objects.equals(verwijzingNaarTekst, that.verwijzingNaarTekst) && Objects.equals(illustraties, that.illustraties) && Objects.equals(externeplannen, that.externeplannen) && Objects.equals(cartografieinfo, that.cartografieinfo) && Objects.equals(md5hash, that.md5hash);
+        return Objects.equals(planidentificatie, that.planidentificatie) && Objects.equals(identificatie, that.identificatie) && Objects.equals(naam, that.naam) && Objects.equals(themas, that.themas) && Objects.equals(beleid, that.beleid) && Objects.equals(verwijzingNaarTekst, that.verwijzingNaarTekst) && Objects.equals(illustraties, that.illustraties) && Objects.equals(externeplan_tengevolgevan, that.externeplan_tengevolgevan) && Objects.equals(externeplan_gebruiktinformatieuit, that.externeplan_gebruiktinformatieuit) && Objects.equals(externeplan_uittewerkenin, that.externeplan_uittewerkenin) && Objects.equals(externeplan_uitgewerktin, that.externeplan_uitgewerktin) && Objects.equals(cartografieinfo, that.cartografieinfo) && Objects.equals(locaties, that.locaties);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(planidentificatie, identificatie, naam, thema, beleid, verwijzingNaarTekst, illustraties, externeplannen, cartografieinfo, md5hash);
+        return Objects.hash(planidentificatie, identificatie, naam, themas, beleid, verwijzingNaarTekst, illustraties, externeplan_tengevolgevan, externeplan_gebruiktinformatieuit, externeplan_uittewerkenin, externeplan_uitgewerktin, cartografieinfo, locaties);
     }
 
     @Override
@@ -134,13 +149,16 @@ public class StructuurVisieGebiedDto {
                 ", planidentificatie='" + planidentificatie + '\'' +
                 ", identificatie='" + identificatie + '\'' +
                 ", naam='" + naam + '\'' +
-                ", thema=" + thema +
+                ", themas=" + themas +
                 ", beleid=" + beleid +
                 ", verwijzingNaarTekst=" + verwijzingNaarTekst +
                 ", illustraties=" + illustraties +
-                ", externeplannen=" + externeplannen +
+                ", externeplan_tengevolgevan=" + externeplan_tengevolgevan +
+                ", externeplan_gebruiktinformatieuit=" + externeplan_gebruiktinformatieuit +
+                ", externeplan_uittewerkenin=" + externeplan_uittewerkenin +
+                ", externeplan_uitgewerktin=" + externeplan_uitgewerktin +
                 ", cartografieinfo=" + cartografieinfo +
-                ", md5hash='" + md5hash + '\'' +
+                ", locaties=" + locaties +
                 '}';
     }
 }

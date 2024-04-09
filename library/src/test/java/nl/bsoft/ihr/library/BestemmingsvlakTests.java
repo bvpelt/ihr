@@ -3,16 +3,13 @@ package nl.bsoft.ihr.library;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import nl.bsoft.ihr.generated.model.Bestemmingsvlak;
-import nl.bsoft.ihr.generated.model.Plan;
-import nl.bsoft.ihr.generated.model.Structuurvisiegebied;
-import nl.bsoft.ihr.generated.model.Tekst;
-import nl.bsoft.ihr.library.mapper.*;
-import nl.bsoft.ihr.library.model.dto.*;
+import nl.bsoft.ihr.library.mapper.BestemmingsvlakMapper;
+import nl.bsoft.ihr.library.mapper.BestemmingsvlakMapperImpl;
+import nl.bsoft.ihr.library.model.dto.BestemmingsvlakDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.util.Assert;
 
 import java.io.File;
 
@@ -29,6 +26,7 @@ public class BestemmingsvlakTests {
     private ResourceLoader resourceLoader = null;
     @Autowired
     private ObjectMapper objectMapper;
+
     @Test
     public void mapBestemmingsvlakDto() {
         Bestemmingsvlak bestemmingsvlak;
@@ -47,6 +45,7 @@ public class BestemmingsvlakTests {
         }
         log.info("End   tekst.json");
     }
+
     @Test
     public void mapBestemmingsvlakDto_01() {
         Bestemmingsvlak bestemmingsvlak;
@@ -65,6 +64,7 @@ public class BestemmingsvlakTests {
         }
         log.info("End   tekst.json");
     }
+
     @Test
     public void mapBestemmingsvlakDto_02() {
         Bestemmingsvlak bestemmingsvlak;
@@ -83,6 +83,7 @@ public class BestemmingsvlakTests {
         }
         log.info("End   tekst.json");
     }
+
     @Test
     public void mapBestemmingsvlakDto_03() {
         Bestemmingsvlak bestemmingsvlak;
@@ -101,6 +102,7 @@ public class BestemmingsvlakTests {
         }
         log.info("End   tekst.json");
     }
+
     @Test
     public void mapBestemmingsvlakDto_04() {
         Bestemmingsvlak bestemmingsvlak;

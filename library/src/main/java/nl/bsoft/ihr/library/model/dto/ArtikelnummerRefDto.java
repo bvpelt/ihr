@@ -1,7 +1,10 @@
 package nl.bsoft.ihr.library.model.dto;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -22,7 +25,7 @@ public class ArtikelnummerRefDto {
     @Column(name = "artikel")
     private String artikel;
 
-    @ManyToMany(mappedBy = "artikelnummers" , fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "artikelnummers", fetch = FetchType.LAZY)
     private Set<GebiedsaanduidingDto> gebiedsaanduidingen = new HashSet<GebiedsaanduidingDto>();
 
     @Override

@@ -3,7 +3,7 @@ create table structuurvisiegebied_externplan_uittewerkenin
 (
     id                      bigint not null primary key,
     structuurvisiegebied_id bigint,
-    externplan_id bigint
+    externplan_id           bigint
 );
 
 create index structuurvisiegebied_externplan_uittewerkenin_structuur_idx on structuurvisiegebied_externplan_uittewerkenin (structuurvisiegebied_id);

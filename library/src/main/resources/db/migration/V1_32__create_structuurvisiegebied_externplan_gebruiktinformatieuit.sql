@@ -1,9 +1,9 @@
---  table structuurvisiegebied_externplan_gebruiktinformatieuit
+-- table structuurvisiegebied_externplan_gebruiktinformatieuit
 create table structuurvisiegebied_externplan_gebruiktinformatieuit
 (
     id                      bigint not null primary key,
     structuurvisiegebied_id bigint,
-    externplan_id bigint
+    externplan_id           bigint
 );
 
 create index structuurvisiegebied_externplan_informatieuit_structuur_idx on structuurvisiegebied_externplan_gebruiktinformatieuit (structuurvisiegebied_id);

@@ -1,8 +1,8 @@
 -- table structuurvisiegebied_thema
 create table structuurvisiegebied_thema
 (
-    id                      bigint not null primary key,
-    structuurvisiegebied_id bigint,
+    id                           bigint not null primary key,
+    structuurvisiegebied_id      bigint,
     structuurvisiegebiedthema_id bigint
 );
 

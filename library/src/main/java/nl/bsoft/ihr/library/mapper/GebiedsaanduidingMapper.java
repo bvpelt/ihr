@@ -31,10 +31,12 @@ public abstract class GebiedsaanduidingMapper implements JsonNullableMapper {
     @Mapping(target = "labelinfo", source = "labelInfo", qualifiedByName = "toJsonNullableString")
     @Mapping(target = "bestemmingfuncties", source = "bestemmingsfuncties", qualifiedByName = "toBestemmingsfunctie")
     public abstract GebiedsaanduidingDto toGebiedsaanduiding(Gebiedsaanduiding gebiedsaanduiding) throws ParseException;
+
     @Named("toIdentificatie")
     protected String toIdentificatie(String id) {
         return id;
     }
+
     @Named("toLabelInfo")
     protected String toLabelInfo(Gebiedsaanduiding gebiedsaanduiding) {
         if (gebiedsaanduiding.getLabelInfo().isPresent()) {
@@ -43,6 +45,7 @@ public abstract class GebiedsaanduidingMapper implements JsonNullableMapper {
             return null;
         }
     }
+
     @Named("toThemaListString")
     protected Set<ThemaDto> toThemaListString(List<String> themas) {
         final Set<ThemaDto> themaDtos = new HashSet<>();
@@ -56,6 +59,7 @@ public abstract class GebiedsaanduidingMapper implements JsonNullableMapper {
         }
         return themaDtos;
     }
+
     @Named("toArtikelnummers")
     protected Set<ArtikelnummerRefDto> toArtikelnummers(List<String> artikelen) {
         final Set<ArtikelnummerRefDto> artkelRefs = new HashSet<>();
@@ -69,6 +73,7 @@ public abstract class GebiedsaanduidingMapper implements JsonNullableMapper {
         }
         return artkelRefs;
     }
+
     @Named("toVerwijzingNaarTekst")
     protected Set<TekstRefDto> toVerwijzingNaarTekst(List<String> verwijzingen) {
         final Set<TekstRefDto> tekstRefDtos = new HashSet<>();
@@ -82,6 +87,7 @@ public abstract class GebiedsaanduidingMapper implements JsonNullableMapper {
         }
         return tekstRefDtos;
     }
+
     @Named("toBestemmingsfunctie")
     protected Set<BestemmingFunctieDto> toBestemmingsfuncties(List<BaseBestemmingsvlakBestemmingsfunctiesInner> bestemmingsfuncties) {
         final Set<BestemmingFunctieDto> bestemmingFunctieDtos = new HashSet<>();
@@ -96,6 +102,7 @@ public abstract class GebiedsaanduidingMapper implements JsonNullableMapper {
         }
         return bestemmingFunctieDtos;
     }
+
     @Named("toJsonNullableString")
     protected String toJsonNullableString(JsonNullable<String> jsonNullable) {
         if (jsonNullable.isPresent()) {

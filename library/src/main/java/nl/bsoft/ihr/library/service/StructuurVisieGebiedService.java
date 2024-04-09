@@ -12,12 +12,10 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.wololo.geojson.GeoJSON;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -104,19 +102,27 @@ public class StructuurVisieGebiedService {
             StructuurVisieGebiedDto current = structuurVisieGebiedMapper.toStructuurVisieGebied(structuurvisie);
             current.setPlanidentificatie(planidentificatie);
 
+            Set<LocatieDto> geolocaties = new HashSet<>();
             if (structuurvisie.getGeometrie() != null) {
-                String md5hash = DigestUtils.md5Hex(structuurvisie.getGeometrie().toString().toUpperCase());
-                current.setMd5hash(md5hash);
-
-                Optional<LocatieDto> optionalLocatieDto = locatieRepository.findByMd5hash(md5hash);
-                if (!optionalLocatieDto.isPresent()) {
-                    LocatieDto locatieDto = locatieMapper.toLocatieDto(structuurvisie);
-                    locatieDto.setMd5hash(md5hash);
-                    locatieDto.setRegistratie(LocalDateTime.now());
-                    locatieRepository.save(locatieDto);
-                    log.debug("Added locatie: {}", md5hash);
-                }
+                List<GeoJSON> geometrieen = structuurvisie.getGeometrie();
+                geometrieen.forEach(geometrie -> {
+                    String md5hash = DigestUtils.md5Hex(structuurvisie.getGeometrie().toString().toUpperCase());
+                    //current.setMd5hash(md5hash);
+                    //[TODO]
+                    Optional<LocatieDto> optionalLocatieDto = locatieRepository.findByMd5hash(md5hash);
+                    if (!optionalLocatieDto.isPresent()) {
+                        LocatieDto locatieDto = new LocatieDto();
+                        locatieDto.setMd5hash(md5hash);
+                        locatieDto.setRegistratie(LocalDateTime.now());
+                        locatieRepository.save(locatieDto);
+                        log.debug("Added locatie: {}", md5hash);
+                        geolocaties.add(locatieDto);
+                    } else {
+                        geolocaties.add(optionalLocatieDto.get());
+                    }
+                });
             }
+            current.setLocaties(geolocaties);
 
             Optional<StructuurVisieGebiedDto> optionalFound = structuurvisieGebiedRepository.findByPlanidentificatieAndIdentificatie(current.getPlanidentificatie(), current.getIdentificatie());
 
@@ -127,7 +133,7 @@ public class StructuurVisieGebiedService {
                     updateCounter.skipped();
                 } else {                     // changed
                     found.setNaam(current.getNaam());
-                    found.setMd5hash(current.getMd5hash());
+                    found.setLocaties(current.getLocaties());
 
                     StructuurVisieGebiedDto updated = optionalFound.get();
                     updated.setNaam(current.getNaam());
@@ -137,32 +143,32 @@ public class StructuurVisieGebiedService {
 
                     savedStructuurVisieGebiedDto = structuurvisieGebiedRepository.save(updated);
 
-                    Set<BeleidDto>  structuurVisieGebiedBeleidDtoSet = saveStructuurVisieBeleid(savedStructuurVisieGebiedDto, current.getBeleid());
+                    Set<BeleidDto> structuurVisieGebiedBeleidDtoSet = saveStructuurVisieBeleid(savedStructuurVisieGebiedDto, current.getBeleid());
                     updated.setBeleid(structuurVisieGebiedBeleidDtoSet);
-                    Set<ThemaDto> structuurVisieGebiedThemaDtoSet = saveStructuurVisieThema(savedStructuurVisieGebiedDto, current.getThema());
-                    updated.setThema(structuurVisieGebiedThemaDtoSet);
+                    Set<ThemaDto> structuurVisieGebiedThemaDtoSet = saveStructuurVisieThema(savedStructuurVisieGebiedDto, current.getThemas());
+                    updated.setThemas(structuurVisieGebiedThemaDtoSet);
 
                     savedStructuurVisieGebiedDto = structuurvisieGebiedRepository.save(updated);
                 }
             } else {
                 updateCounter.add();
                 Set<BeleidDto> newBeleid = current.getBeleid();
-                Set<ThemaDto> newThema = current.getThema();
+                Set<ThemaDto> newThema = current.getThemas();
                 Set<TekstRefDto> newTeksref = current.getVerwijzingNaarTekst();
 
                 current.setBeleid(null);
-                current.setThema(null);
+                current.setThemas(null);
                 current.setVerwijzingNaarTekst(null);
                 savedStructuurVisieGebiedDto = structuurvisieGebiedRepository.save(current);
 
-                Set<BeleidDto>  structuurVisieGebiedBeleidDtoSet = saveStructuurVisieBeleid(savedStructuurVisieGebiedDto, newBeleid);
+                Set<BeleidDto> structuurVisieGebiedBeleidDtoSet = saveStructuurVisieBeleid(savedStructuurVisieGebiedDto, newBeleid);
                 savedStructuurVisieGebiedDto.setBeleid(structuurVisieGebiedBeleidDtoSet);
 
                 Set<ThemaDto> structuurVisieGebiedThemaDtoSet = saveStructuurVisieThema(savedStructuurVisieGebiedDto, newThema);
-                savedStructuurVisieGebiedDto.setThema(structuurVisieGebiedThemaDtoSet);
+                savedStructuurVisieGebiedDto.setThemas(structuurVisieGebiedThemaDtoSet);
 
 
-                Set<TekstRefDto>  tekstRefDtos = saveTekstRefs(savedStructuurVisieGebiedDto,newTeksref );
+                Set<TekstRefDto> tekstRefDtos = saveTekstRefs(savedStructuurVisieGebiedDto, newTeksref);
                 savedStructuurVisieGebiedDto.setVerwijzingNaarTekst(tekstRefDtos);
 
                 savedStructuurVisieGebiedDto = structuurvisieGebiedRepository.save(savedStructuurVisieGebiedDto);
@@ -174,8 +180,8 @@ public class StructuurVisieGebiedService {
         return savedStructuurVisieGebiedDto;
     }
 
-    private Set<TekstRefDto> saveTekstRefs(StructuurVisieGebiedDto savedStructuurVisieGebiedDto, Set<TekstRefDto>  teksref) {
-        Set<TekstRefDto>  savedTekstref = new HashSet<>();
+    private Set<TekstRefDto> saveTekstRefs(StructuurVisieGebiedDto savedStructuurVisieGebiedDto, Set<TekstRefDto> teksref) {
+        Set<TekstRefDto> savedTekstref = new HashSet<>();
 
         Iterator<TekstRefDto> tekstRefDtoIterator = teksref.iterator();
 
@@ -186,10 +192,10 @@ public class StructuurVisieGebiedService {
             TekstRefDto currentTekstRef = null;
             if (found.isPresent()) {
                 currentTekstRef = found.get();
-                currentTekstRef.setStructuurvisiegebied(savedStructuurVisieGebiedDto);
+                currentTekstRef.getVerwijzingNaarTekst().add(savedStructuurVisieGebiedDto);
                 currentTekstRef = tekstRefRepository.save(currentTekstRef);
             } else {
-                current.setStructuurvisiegebied(savedStructuurVisieGebiedDto);
+                current.getVerwijzingNaarTekst().add(savedStructuurVisieGebiedDto);
                 currentTekstRef = tekstRefRepository.save(current);
             }
             savedTekstref.add(currentTekstRef);
@@ -209,10 +215,10 @@ public class StructuurVisieGebiedService {
             ThemaDto currentStructuurVisieGebiedThemaDto = null;
             if (found.isPresent()) {
                 currentStructuurVisieGebiedThemaDto = found.get();
-                currentStructuurVisieGebiedThemaDto.setStructuurVisieGebied(savedStructuurVisieGebiedDto);
+                currentStructuurVisieGebiedThemaDto.getStructuurVisieGebieden().add(savedStructuurVisieGebiedDto);
                 currentStructuurVisieGebiedThemaDto = structuurvisieGebiedThemaRepository.save(currentStructuurVisieGebiedThemaDto);
             } else {
-                current.setStructuurVisieGebied(savedStructuurVisieGebiedDto);
+                current.getStructuurVisieGebieden().add(savedStructuurVisieGebiedDto);
                 currentStructuurVisieGebiedThemaDto = structuurvisieGebiedThemaRepository.save(current);
             }
             savedThema.add(currentStructuurVisieGebiedThemaDto);
@@ -220,10 +226,10 @@ public class StructuurVisieGebiedService {
         return savedThema;
     }
 
-    private Set<BeleidDto>  saveStructuurVisieBeleid(StructuurVisieGebiedDto savedStructuurVisieGebiedDto, Set<BeleidDto> beleid) {
+    private Set<BeleidDto> saveStructuurVisieBeleid(StructuurVisieGebiedDto savedStructuurVisieGebiedDto, Set<BeleidDto> beleid) {
         Set<BeleidDto> savedBeleid = new HashSet<>();
 
-        Iterator<BeleidDto> structuurVisieGebiedDtoIterator= beleid.iterator();
+        Iterator<BeleidDto> structuurVisieGebiedDtoIterator = beleid.iterator();
 
         while (structuurVisieGebiedDtoIterator.hasNext()) {
             BeleidDto current = structuurVisieGebiedDtoIterator.next();
@@ -232,10 +238,10 @@ public class StructuurVisieGebiedService {
             BeleidDto currentStructuurVisieGebiedBeleid = null;
             if (found.isPresent()) {
                 currentStructuurVisieGebiedBeleid = found.get();
-                currentStructuurVisieGebiedBeleid.setStructuurVisieGebied(savedStructuurVisieGebiedDto);
+                currentStructuurVisieGebiedBeleid.getStructuurVisieGebied().add(savedStructuurVisieGebiedDto);
                 currentStructuurVisieGebiedBeleid = structuurvisieGebiedBeleidRepository.save(currentStructuurVisieGebiedBeleid);
             } else {
-                current.setStructuurVisieGebied(savedStructuurVisieGebiedDto);
+                current.getStructuurVisieGebied().add(savedStructuurVisieGebiedDto);
                 currentStructuurVisieGebiedBeleid = structuurvisieGebiedBeleidRepository.save(current);
             }
             savedBeleid.add(currentStructuurVisieGebiedBeleid);

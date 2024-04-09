@@ -1,9 +1,9 @@
---  table structuurvisiegebied_externplan_tengevolgevan
+-- table structuurvisiegebied_externplan_tengevolgevan
 create table structuurvisiegebied_externplan_tengevolgevan
 (
     id                      bigint not null primary key,
     structuurvisiegebied_id bigint,
-    externplan_id bigint
+    externplan_id           bigint
 );
 
 create index structuurvisiegebied_externplan_tengevolgevan_structuur_idx on structuurvisiegebied_externplan_tengevolgevan (structuurvisiegebied_id);

@@ -1,7 +1,10 @@
 package nl.bsoft.ihr.library.model.dto;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -26,11 +29,11 @@ public class PlanDto {
     private String plantype;
 
     @ManyToOne
-    @JoinColumn(name="beleidsmatigeoverheid_id", nullable=false, referencedColumnName = "id")
+    @JoinColumn(name = "beleidsmatigeoverheid_id", nullable = false, referencedColumnName = "id")
     private OverheidDto beleidsmatigeoverheid;
 
     @ManyToOne
-    @JoinColumn(name="publicerendeoverheid_id", nullable=false, referencedColumnName = "id")
+    @JoinColumn(name = "publicerendeoverheid_id", nullable = false, referencedColumnName = "id")
     private OverheidDto publicerendeoverheid;
 
     @Column(name = "naam")
@@ -42,11 +45,11 @@ public class PlanDto {
             joinColumns = {
                     @JoinColumn(name = "plan_id", referencedColumnName = "id")
             },
-                    //nullable = false, updatable = false),
+            //nullable = false, updatable = false),
             inverseJoinColumns = {
                     @JoinColumn(name = "locatienaam_id", referencedColumnName = "id")
             })
-                    //nullable = false, updatable = false))
+    //nullable = false, updatable = false))
     private Set<LocatieNaamDto> locaties = new HashSet<>();
 
     @Column(name = "planstatus")

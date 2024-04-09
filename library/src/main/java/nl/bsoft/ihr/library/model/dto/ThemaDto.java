@@ -1,7 +1,10 @@
 package nl.bsoft.ihr.library.model.dto;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Objects;
 import java.util.Set;
@@ -14,15 +17,13 @@ import java.util.Set;
 @Table(name = "thema", schema = "public", catalog = "ihr")
 public class ThemaDto {
     private static final long serialVersionUID = 10L;
-
+    @ManyToMany(mappedBy = "themas", fetch = FetchType.LAZY)
+    Set<StructuurVisieGebiedDto> structuurVisieGebieden;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "thema")
     private String thema;
-
-    @ManyToMany(mappedBy = "themas", fetch = FetchType.LAZY)
-    Set<StructuurVisieGebiedDto> structuurVisieGebieden;
 
     @Override
     public boolean equals(Object o) {

@@ -52,9 +52,9 @@ public abstract class StructuurVisieGebiedMapper {
     }
 
     @Named("toIllustraties")
-    protected Set<IllustratieDto>  toIllustraties(List<IllustratieReferentie> illustraties) {
+    protected Set<IllustratieDto> toIllustraties(List<IllustratieReferentie> illustraties) {
 
-        final Set<IllustratieDto>  illustratieDtos = new HashSet<>();
+        final Set<IllustratieDto> illustratieDtos = new HashSet<>();
 
         if ((illustraties != null) && (illustraties.size() > 0)) {
             illustraties.forEach(illustratie -> {

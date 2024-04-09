@@ -3,11 +3,12 @@ package nl.bsoft.ihr.library;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import nl.bsoft.ihr.generated.model.Plan;
-import nl.bsoft.ihr.generated.model.Tekst;
-import nl.bsoft.ihr.library.mapper.*;
+import nl.bsoft.ihr.library.mapper.LocatieMapper;
+import nl.bsoft.ihr.library.mapper.LocatieMapperImpl;
+import nl.bsoft.ihr.library.mapper.PlanMapper;
+import nl.bsoft.ihr.library.mapper.PlanMapperImpl;
 import nl.bsoft.ihr.library.model.dto.LocatieDto;
 import nl.bsoft.ihr.library.model.dto.PlanDto;
-import nl.bsoft.ihr.library.model.dto.TekstDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,6 +27,7 @@ public class PlanTests {
     private ResourceLoader resourceLoader = null;
     @Autowired
     private ObjectMapper objectMapper;
+
     @Test
     public void mapPlanDto() {
         Plan plan;
@@ -48,6 +50,7 @@ public class PlanTests {
         }
         log.info("End   plan.json");
     }
+
     @Test
     public void mapPlan01Dto() {
         Plan plan;

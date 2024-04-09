@@ -1,8 +1,8 @@
 -- table structuurvisiegebied_beleid
 create table structuurvisiegebied_beleid
 (
-    id                      bigint not null primary key,
-    structuurvisiegebied_id bigint,
+    id                            bigint not null primary key,
+    structuurvisiegebied_id       bigint,
     structuurvisiegebiedbeleid_id bigint
 );
 

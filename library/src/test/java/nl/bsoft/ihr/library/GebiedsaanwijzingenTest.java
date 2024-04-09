@@ -2,9 +2,10 @@ package nl.bsoft.ihr.library;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import nl.bsoft.ihr.generated.model.*;
-import nl.bsoft.ihr.library.mapper.*;
-import nl.bsoft.ihr.library.model.dto.*;
+import nl.bsoft.ihr.generated.model.Gebiedsaanduiding;
+import nl.bsoft.ihr.library.mapper.GebiedsaanduidingMapper;
+import nl.bsoft.ihr.library.mapper.GebiedsaanduidingMapperImpl;
+import nl.bsoft.ihr.library.model.dto.GebiedsaanduidingDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,6 +23,7 @@ public class GebiedsaanwijzingenTest {
     private ResourceLoader resourceLoader = null;
     @Autowired
     private ObjectMapper objectMapper;
+
     @Test
     public void mapGebiedsaanwijzing_00() {
         Gebiedsaanduiding gebiedsaanduiding;
@@ -41,6 +43,7 @@ public class GebiedsaanwijzingenTest {
         }
         log.info("End   gebiedsaanwijzing-00.json");
     }
+
     @Test
     public void mapGebiedsaanwijzing_01() {
         Gebiedsaanduiding gebiedsaanduiding;
@@ -60,6 +63,7 @@ public class GebiedsaanwijzingenTest {
         }
         log.info("End   gebiedsaanwijzing-01.json");
     }
+
     @Test
     public void mapGebiedsaanwijzing_02() {
         Gebiedsaanduiding gebiedsaanduiding;
@@ -79,6 +83,7 @@ public class GebiedsaanwijzingenTest {
         }
         log.info("End   gebiedsaanwijzing-02.json");
     }
+
     @Test
     public void mapGebiedsaanwijzing_03() {
         Gebiedsaanduiding gebiedsaanduiding;
@@ -98,6 +103,7 @@ public class GebiedsaanwijzingenTest {
         }
         log.info("End   gebiedsaanwijzing-03.json");
     }
+
     @Test
     public void mapGebiedsaanwijzing_04() {
         Gebiedsaanduiding gebiedsaanduiding;
@@ -117,6 +123,7 @@ public class GebiedsaanwijzingenTest {
         }
         log.info("End   gebiedsaanwijzing-04.json");
     }
+
     @Test
     public void mapGebiedsaanwijzing_05() {
         Gebiedsaanduiding gebiedsaanduiding;
