@@ -100,5 +100,8 @@ from plan_locatienaam l1_0
 ```bash
 pushd library/src/main/resource/db/migration
 grep -e '-- table' *.sql | sed -e 's/[^-]*-- table \(.*\)/drop table if exists \1;/'
+
+grep -e '-- table' *.sql | sed -e 's/[^-]*-- table \(.*\)/\1;/' | sort | sed -e 's/^\(.*\);/select count\(*\) from \1;/'
+
 popd
 ```
