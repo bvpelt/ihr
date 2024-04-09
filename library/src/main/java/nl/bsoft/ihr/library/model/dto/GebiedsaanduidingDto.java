@@ -59,12 +59,12 @@ public class GebiedsaanduidingDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GebiedsaanduidingDto that = (GebiedsaanduidingDto) o;
-        return Objects.equals(identificatie, that.identificatie) && Objects.equals(naam, that.naam) && Objects.equals(gebiedsaanduidinggroep, that.gebiedsaanduidinggroep) && Objects.equals(labelinfo, that.labelinfo) && Objects.equals(md5hash, that.md5hash) && Objects.equals(artikelnummers, that.artikelnummers) && Objects.equals(verwijzingNaarTekst, that.verwijzingNaarTekst);
+        return Objects.equals(identificatie, that.identificatie) && Objects.equals(naam, that.naam) && Objects.equals(gebiedsaanduidinggroep, that.gebiedsaanduidinggroep) && Objects.equals(labelinfo, that.labelinfo) && Objects.equals(md5hash, that.md5hash);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(identificatie, naam, gebiedsaanduidinggroep, labelinfo, md5hash, artikelnummers, verwijzingNaarTekst);
+        return Objects.hash(identificatie, naam, gebiedsaanduidinggroep, labelinfo, md5hash);
     }
 
     @Override
@@ -76,9 +76,6 @@ public class GebiedsaanduidingDto {
                 ", gebiedsaanduidinggroep='" + gebiedsaanduidinggroep + '\'' +
                 ", labelinfo='" + labelinfo + '\'' +
                 ", md5hash='" + md5hash + '\'' +
-                ", artikelnummers=" + artikelnummers +
-                ", verwijzingNaarTekst=" + verwijzingNaarTekst +
-                ", bestermmingsfuncties=" + bestemmingfuncties +
                 '}';
     }
 }

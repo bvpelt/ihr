@@ -3,7 +3,7 @@ create table structuurvisiegebied_cartografieinfo
 (
     id                      bigint not null primary key,
     structuurvisiegebied_id bigint,
-    cartografieinfo_id             bigint
+    cartografieinfo_id      bigint
 );
 
 create index structuurvisiegebied_cartografieinfo_structuurvisiegebied_idx on structuurvisiegebied_cartografieinfo (structuurvisiegebied_id);

@@ -36,12 +36,12 @@ public class BeleidDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BeleidDto beleidDto = (BeleidDto) o;
-        return Objects.equals(belang, beleidDto.belang) && Objects.equals(rol, beleidDto.rol) && Objects.equals(instrument, beleidDto.instrument) && Objects.equals(structuurVisieGebied, beleidDto.structuurVisieGebied);
+        return Objects.equals(belang, beleidDto.belang) && Objects.equals(rol, beleidDto.rol) && Objects.equals(instrument, beleidDto.instrument);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(belang, rol, instrument, structuurVisieGebied);
+        return Objects.hash(belang, rol, instrument);
     }
 
     @Override
@@ -51,7 +51,6 @@ public class BeleidDto {
                 ", belang='" + belang + '\'' +
                 ", rol='" + rol + '\'' +
                 ", instrument='" + instrument + '\'' +
-                ", structuurVisieGebied=" + structuurVisieGebied +
                 '}';
     }
 }

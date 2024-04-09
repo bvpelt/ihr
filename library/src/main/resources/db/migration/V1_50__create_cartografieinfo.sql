@@ -1,9 +1,9 @@
 -- table cartografieinfo
 create table cartografieinfo
 (
-    id          bigint      not null primary key,
+    id          bigint not null primary key,
     kaartnummer text,
-    kaartnaam text,
+    kaartnaam   text,
     symboolcode text
 );
 

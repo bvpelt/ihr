@@ -39,12 +39,12 @@ public class BestemmingFunctieDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BestemmingFunctieDto that = (BestemmingFunctieDto) o;
-        return Objects.equals(bestemmingsfunctie, that.bestemmingsfunctie) && Objects.equals(functieniveau, that.functieniveau) && Objects.equals(bestemmingsvlakken, that.bestemmingsvlakken);
+        return Objects.equals(bestemmingsfunctie, that.bestemmingsfunctie) && Objects.equals(functieniveau, that.functieniveau);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(bestemmingsfunctie, functieniveau, bestemmingsvlakken);
+        return Objects.hash(bestemmingsfunctie, functieniveau);
     }
 
     @Override
@@ -53,7 +53,6 @@ public class BestemmingFunctieDto {
                 "id=" + id +
                 ", bestemmingsfunctie='" + bestemmingsfunctie + '\'' +
                 ", functieniveau='" + functieniveau + '\'' +
-                ", bestemmingsvlakken=" + bestemmingsvlakken +
                 '}';
     }
 }

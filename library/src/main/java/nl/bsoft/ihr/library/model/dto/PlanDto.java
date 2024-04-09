@@ -78,12 +78,12 @@ public class PlanDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PlanDto planDto = (PlanDto) o;
-        return Objects.equals(identificatie, planDto.identificatie) && Objects.equals(plantype, planDto.plantype) && Objects.equals(beleidsmatigeoverheid, planDto.beleidsmatigeoverheid) && Objects.equals(publicerendeoverheid, planDto.publicerendeoverheid) && Objects.equals(naam, planDto.naam) && Objects.equals(locaties, planDto.locaties) && Objects.equals(planstatus, planDto.planstatus) && Objects.equals(planstatusdate, planDto.planstatusdate) && Objects.equals(besluitNummer, planDto.besluitNummer) && Objects.equals(regelstatus, planDto.regelstatus) && Objects.equals(dossierid, planDto.dossierid) && Objects.equals(dossierstatus, planDto.dossierstatus) && Objects.equals(isParapluPlan, planDto.isParapluPlan) && Objects.equals(beroepEnBezwaar, planDto.beroepEnBezwaar) && Objects.equals(md5hash, planDto.md5hash);
+        return Objects.equals(identificatie, planDto.identificatie) && Objects.equals(plantype, planDto.plantype) && Objects.equals(beleidsmatigeoverheid, planDto.beleidsmatigeoverheid) && Objects.equals(publicerendeoverheid, planDto.publicerendeoverheid) && Objects.equals(naam, planDto.naam) && Objects.equals(planstatus, planDto.planstatus) && Objects.equals(planstatusdate, planDto.planstatusdate) && Objects.equals(besluitNummer, planDto.besluitNummer) && Objects.equals(regelstatus, planDto.regelstatus) && Objects.equals(dossierid, planDto.dossierid) && Objects.equals(dossierstatus, planDto.dossierstatus) && Objects.equals(isParapluPlan, planDto.isParapluPlan) && Objects.equals(beroepEnBezwaar, planDto.beroepEnBezwaar) && Objects.equals(md5hash, planDto.md5hash);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(identificatie, plantype, beleidsmatigeoverheid, publicerendeoverheid, naam, locaties, planstatus, planstatusdate, besluitNummer, regelstatus, dossierid, dossierstatus, isParapluPlan, beroepEnBezwaar, md5hash);
+        return Objects.hash(identificatie, plantype, beleidsmatigeoverheid, publicerendeoverheid, naam, planstatus, planstatusdate, besluitNummer, regelstatus, dossierid, dossierstatus, isParapluPlan, beroepEnBezwaar, md5hash);
     }
 
     @Override
@@ -95,7 +95,6 @@ public class PlanDto {
                 ", beleidsmatigeoverheid=" + beleidsmatigeoverheid +
                 ", publicerendeoverheid=" + publicerendeoverheid +
                 ", naam='" + naam + '\'' +
-                ", locaties=" + locaties +
                 ", planstatus='" + planstatus + '\'' +
                 ", planstatusdate=" + planstatusdate +
                 ", besluitNummer='" + besluitNummer + '\'' +

@@ -37,12 +37,12 @@ public class IllustratieDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         IllustratieDto that = (IllustratieDto) o;
-        return Objects.equals(href, that.href) && Objects.equals(type, that.type) && Objects.equals(naam, that.naam) && Objects.equals(legendanaam, that.legendanaam) && Objects.equals(structuurvisiegebied, that.structuurvisiegebied);
+        return Objects.equals(href, that.href) && Objects.equals(type, that.type) && Objects.equals(naam, that.naam) && Objects.equals(legendanaam, that.legendanaam);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(href, type, naam, legendanaam, structuurvisiegebied);
+        return Objects.hash(href, type, naam, legendanaam);
     }
 
     @Override
@@ -53,7 +53,6 @@ public class IllustratieDto {
                 ", type='" + type + '\'' +
                 ", naam='" + naam + '\'' +
                 ", legendanaam='" + legendanaam + '\'' +
-                ", structuurvisiegebied=" + structuurvisiegebied +
                 '}';
     }
 }

@@ -57,12 +57,14 @@ public class TekstenService {
                     teksten.getEmbedded().getTeksten().forEach(tekst -> {
                         addTekst(identificatie, tekst, updateCounter);
 
-                        List<TekstReferentie> tekstReferentieList = tekst.getLinks().getChildren();
-                        if (tekstReferentieList != null) {
-                            tekstReferentieList.forEach(tekstReferentie -> {
-                                String href = tekstReferentie.getHref();
-                                procesTekstRef(identificatie, href, 1, updateCounter);
-                            });
+                        if (tekst.getLinks() != null) {
+                            List<TekstReferentie> tekstReferentieList = tekst.getLinks().getChildren();
+                            if (tekstReferentieList != null) {
+                                tekstReferentieList.forEach(tekstReferentie -> {
+                                    String href = tekstReferentie.getHref();
+                                    procesTekstRef(identificatie, href, 1, updateCounter);
+                                });
+                            }
                         }
                     });
 
@@ -81,9 +83,10 @@ public class TekstenService {
         try {
             teksten = getTekstRef(href, page);
 
-
             if (teksten != null) {
                 saveText(identificatie, page, teksten, updateCounter);
+            } else {
+                log.error("teksten is null");
             }
         } catch (Exception e) {
             log.error("Expected tekstref: {}, error: {}", identificatie, e);

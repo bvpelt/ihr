@@ -38,12 +38,12 @@ public class TekstRefDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TekstRefDto that = (TekstRefDto) o;
-        return Objects.equals(referentie, that.referentie) && Objects.equals(bestemmingsvlakken, that.bestemmingsvlakken) && Objects.equals(gebiedsaanwijzingen, that.gebiedsaanwijzingen) && Objects.equals(verwijzingNaarTekst, that.verwijzingNaarTekst);
+        return Objects.equals(referentie, that.referentie);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(referentie, bestemmingsvlakken, gebiedsaanwijzingen, verwijzingNaarTekst);
+        return Objects.hash(referentie);
     }
 
     @Override
@@ -51,9 +51,6 @@ public class TekstRefDto {
         return "TekstRefDto{" +
                 "id=" + id +
                 ", referentie='" + referentie + '\'' +
-                ", bestemmingsvlakken=" + bestemmingsvlakken +
-                ", gebiedsaanwijzingen=" + gebiedsaanwijzingen +
-                ", verwijzingNaarTekst=" + verwijzingNaarTekst +
                 '}';
     }
 }

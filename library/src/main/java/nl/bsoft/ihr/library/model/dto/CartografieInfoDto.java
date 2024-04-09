@@ -30,7 +30,7 @@ public class CartografieInfoDto {
     @Column(name = "symboolcode")
     private String symboolcode;
 
-    @ManyToMany(mappedBy ="cartografieinfo", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "cartografieinfo", fetch = FetchType.LAZY)
     private Set<StructuurVisieGebiedDto> structuurvisiegebied = new HashSet<>();
 
     @Override
@@ -43,7 +43,7 @@ public class CartografieInfoDto {
 
     @Override
     public int hashCode() {
-        return Objects.hash(kaartnummer, kaartnaam, symboolcode, structuurvisiegebied);
+        return Objects.hash(kaartnummer, kaartnaam, symboolcode);
     }
 
     @Override
@@ -53,7 +53,6 @@ public class CartografieInfoDto {
                 ", kaartnummer='" + kaartnummer + '\'' +
                 ", kaartnaam='" + kaartnaam + '\'' +
                 ", symboolcode='" + symboolcode + '\'' +
-                ", structuurvisiegebied=" + structuurvisiegebied +
                 '}';
     }
 }

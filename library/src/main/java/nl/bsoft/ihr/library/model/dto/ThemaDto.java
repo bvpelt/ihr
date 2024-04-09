@@ -30,12 +30,12 @@ public class ThemaDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ThemaDto themaDto = (ThemaDto) o;
-        return Objects.equals(thema, themaDto.thema) && Objects.equals(structuurVisieGebieden, themaDto.structuurVisieGebieden);
+        return Objects.equals(thema, themaDto.thema);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(thema, structuurVisieGebieden);
+        return Objects.hash(thema);
     }
 
     @Override
@@ -43,7 +43,6 @@ public class ThemaDto {
         return "ThemaDto{" +
                 "id=" + id +
                 ", thema='" + thema + '\'' +
-                ", structuurVisieGebieden=" + structuurVisieGebieden +
                 '}';
     }
 }

@@ -128,18 +128,17 @@ public class StructuurVisieGebiedDto {
             })
     private Set<LocatieDto> locaties = new HashSet<>();
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         StructuurVisieGebiedDto that = (StructuurVisieGebiedDto) o;
-        return Objects.equals(planidentificatie, that.planidentificatie) && Objects.equals(identificatie, that.identificatie) && Objects.equals(naam, that.naam) && Objects.equals(themas, that.themas) && Objects.equals(beleid, that.beleid) && Objects.equals(verwijzingNaarTekst, that.verwijzingNaarTekst) && Objects.equals(illustraties, that.illustraties) && Objects.equals(externeplan_tengevolgevan, that.externeplan_tengevolgevan) && Objects.equals(externeplan_gebruiktinformatieuit, that.externeplan_gebruiktinformatieuit) && Objects.equals(externeplan_uittewerkenin, that.externeplan_uittewerkenin) && Objects.equals(externeplan_uitgewerktin, that.externeplan_uitgewerktin) && Objects.equals(cartografieinfo, that.cartografieinfo) && Objects.equals(locaties, that.locaties);
+        return Objects.equals(planidentificatie, that.planidentificatie) && Objects.equals(identificatie, that.identificatie) && Objects.equals(naam, that.naam);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(planidentificatie, identificatie, naam, themas, beleid, verwijzingNaarTekst, illustraties, externeplan_tengevolgevan, externeplan_gebruiktinformatieuit, externeplan_uittewerkenin, externeplan_uitgewerktin, cartografieinfo, locaties);
+        return Objects.hash(planidentificatie, identificatie, naam);
     }
 
     @Override
@@ -149,16 +148,6 @@ public class StructuurVisieGebiedDto {
                 ", planidentificatie='" + planidentificatie + '\'' +
                 ", identificatie='" + identificatie + '\'' +
                 ", naam='" + naam + '\'' +
-                ", themas=" + themas +
-                ", beleid=" + beleid +
-                ", verwijzingNaarTekst=" + verwijzingNaarTekst +
-                ", illustraties=" + illustraties +
-                ", externeplan_tengevolgevan=" + externeplan_tengevolgevan +
-                ", externeplan_gebruiktinformatieuit=" + externeplan_gebruiktinformatieuit +
-                ", externeplan_uittewerkenin=" + externeplan_uittewerkenin +
-                ", externeplan_uitgewerktin=" + externeplan_uitgewerktin +
-                ", cartografieinfo=" + cartografieinfo +
-                ", locaties=" + locaties +
                 '}';
     }
 }

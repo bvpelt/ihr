@@ -86,12 +86,12 @@ public class BestemmingsvlakDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BestemmingsvlakDto that = (BestemmingsvlakDto) o;
-        return Objects.equals(planidentificatie, that.planidentificatie) && Objects.equals(identificatie, that.identificatie) && Objects.equals(type, that.type) && Objects.equals(naam, that.naam) && Objects.equals(bestemmingshoofdgroep, that.bestemmingshoofdgroep) && Objects.equals(bestemmingsfuncties, that.bestemmingsfuncties) && Objects.equals(artikelnummer, that.artikelnummer) && Objects.equals(verwijzingNaarTekst, that.verwijzingNaarTekst) && Objects.equals(labelInfo, that.labelInfo) && Objects.equals(md5hash, that.md5hash);
+        return Objects.equals(planidentificatie, that.planidentificatie) && Objects.equals(identificatie, that.identificatie) && Objects.equals(type, that.type) && Objects.equals(naam, that.naam) && Objects.equals(bestemmingshoofdgroep, that.bestemmingshoofdgroep) && Objects.equals(artikelnummer, that.artikelnummer) && Objects.equals(labelInfo, that.labelInfo) && Objects.equals(md5hash, that.md5hash);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(planidentificatie, identificatie, type, naam, bestemmingshoofdgroep, bestemmingsfuncties, artikelnummer, verwijzingNaarTekst, labelInfo, md5hash);
+        return Objects.hash(planidentificatie, identificatie, type, naam, bestemmingshoofdgroep, artikelnummer, labelInfo, md5hash);
     }
 
     @Override
@@ -103,9 +103,7 @@ public class BestemmingsvlakDto {
                 ", type='" + type + '\'' +
                 ", naam='" + naam + '\'' +
                 ", bestemmingshoofdgroep='" + bestemmingshoofdgroep + '\'' +
-                ", bestemmingsfuncties=" + bestemmingsfuncties +
                 ", artikelnummer='" + artikelnummer + '\'' +
-                ", verwijzingNaarTekst=" + verwijzingNaarTekst +
                 ", labelInfo='" + labelInfo + '\'' +
                 ", md5hash='" + md5hash + '\'' +
                 '}';
