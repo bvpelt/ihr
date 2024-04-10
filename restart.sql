@@ -29,8 +29,11 @@ drop table if exists plan_locatienaam;
 drop table if exists structuurvisiegebied_illustratie;
 drop table if exists structuurvisiegebied_locatie;
 drop table if exists structuurvisiegebied_thema;
-
+drop table if exists cartografieinfo;
+drop table if exists structuurvisiegebied_cartografieinfo;
+drop table if exists structuurvisiegebied_externplan_uittewerkenin;
+drop table if exists planstatus;
+drop table if exists plan_verwijzingnorm;
 
 delete from flyway_schema_history;
-
 

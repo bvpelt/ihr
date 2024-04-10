@@ -4,6 +4,7 @@ import lombok.Setter;
 import nl.bsoft.ihr.generated.model.*;
 import nl.bsoft.ihr.library.model.dto.OverheidDto;
 import nl.bsoft.ihr.library.model.dto.PlanDto;
+import nl.bsoft.ihr.library.model.dto.PlanStatusDto;
 import org.locationtech.jts.io.ParseException;
 import org.mapstruct.*;
 import org.openapitools.jackson.nullable.JsonNullable;
@@ -24,16 +25,15 @@ public abstract class PlanMapper {
 
     @Mapping(target = "id", source = "id", ignore = true)
     @Mapping(target = "identificatie", source = "id", qualifiedByName = "toId")
-    @Mapping(target = "plantype", source = "type", qualifiedByName = "toPlanType")
+    @Mapping(target = "plantype", source = "type") //, qualifiedByName = "toPlanType")
     @Mapping(target = "naam", source = "naam")
-    @Mapping(target = "planstatus", source = "planstatusInfo.planstatus", qualifiedByName = "toPlanStatus")
-    @Mapping(target = "planstatusdate", source = ".", qualifiedByName = "toPlanStatusDate")
-    @Mapping(target = "besluitNummer", source = "besluitnummer", qualifiedByName = "toJsonNullableString")
+    @Mapping(target = "besluitnummer", source = "besluitnummer", qualifiedByName = "toJsonNullableString")
     @Mapping(target = "regelstatus", source = "regelStatus", qualifiedByName = "toJsonNullableString")
+    @Mapping(target = "planstatus", source = "planstatusInfo", qualifiedByName = "toPlanStatusInfo")
     @Mapping(target = "dossierid", source = "dossier", qualifiedByName = "toDossierId")
     @Mapping(target = "dossierstatus", source = "dossier", qualifiedByName = "toDossierStatus")
-    @Mapping(target = "isParapluPlan", source = "isParapluplan")
-    @Mapping(target = "beroepEnBezwaar", source = "beroepEnBezwaar", qualifiedByName = "toBeroepEnBezwaar")
+    @Mapping(target = "isparapluplan", source = "isParapluplan")
+    @Mapping(target = "beroepenbezwaar", source = "beroepEnBezwaar", qualifiedByName = "toBeroepEnBezwaar")
     public abstract PlanDto toPlan(Plan plan) throws ParseException;
 
     @Named("toId")
@@ -41,11 +41,6 @@ public abstract class PlanMapper {
         return id;
     }
 
-    @Named("toIsParapluePlan")
-    protected Boolean toPlanType(Boolean isParapluePlan) {
-
-        return isParapluePlan;
-    }
 
     @Named("toPlanType")
     protected String toPlanType(PlanType planType) {
@@ -107,21 +102,15 @@ public abstract class PlanMapper {
         return overheidDtoSet;
     }
 
-    @Named("toPlanStatusDate")
-    protected LocalDate toPlanStatusDate(Plan plan) {
-        LocalDate planStatusDate;
+    @Named("toPlanStatusInfo")
+    protected PlanStatusDto toPlanStatusInfo(PlanstatusInfo planstatusInfo) {
+        PlanStatusDto planStatusDto = new PlanStatusDto();
 
-        planStatusDate = plan.getPlanstatusInfo().getDatum();
-        return planStatusDate;
-    }
+        LocalDate date = planstatusInfo.getDatum();
+        planStatusDto.setDatum(date);
+        planStatusDto.setStatus(planstatusInfo.getPlanstatus().getValue());
 
-    @Named("toPlanStatus")
-    protected String toPlanStatus(PlanstatusInfo.PlanstatusEnum planstatusEnum) {
-        String planStatus = null;
-
-        planStatus = planstatusEnum.getValue();
-
-        return planStatus;
+        return planStatusDto;
     }
 
     @Named("toDossierId")

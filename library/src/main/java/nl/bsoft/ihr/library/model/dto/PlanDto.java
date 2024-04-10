@@ -50,12 +50,27 @@ public class PlanDto {
             })
     private Set<LocatieNaamDto> locaties = new HashSet<>();
 
-    @Column(name = "planstatus")
-    private String planstatus;
-    @Column(name = "planstatusdate")
-    private LocalDate planstatusdate;
+    @ManyToOne
+    @JoinColumn(name="planstatus_id", nullable = false, referencedColumnName = "id")
+    private PlanStatusDto planstatus;
+
+    @Column(name ="verwijzingnaarvaststelling")
+    private String verwijzingnaarvaststelling;
+    @Column(name ="verwijzingnaargml")
+    private String verwijzingnaargml;
     @Column(name = "besluitnummer")
-    private String besluitNummer;
+    private String besluitnummer;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL) // owning site
+    @JoinTable(
+            name = "plan_verwijzingnorm",
+            joinColumns = {
+                    @JoinColumn(name = "plan_id", referencedColumnName = "id")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "verwijzingnorm_id", referencedColumnName = "id")
+            })
+    private Set<VerwijzingNormDto> verwijzingnormen = new HashSet<>();
     @Column(name = "regelstatus")
     private String regelstatus;
     @Column(name = "dossierid")
@@ -64,9 +79,9 @@ public class PlanDto {
     private String dossierstatus;
 
     @Column(name = "isparapluplan")
-    private Boolean isParapluPlan;
+    private Boolean isparapluplan;
     @Column(name = "beroepenbezwaar")
-    private String beroepEnBezwaar;
+    private String beroepenbezwaar;
 
     @Column(name = "md5hash", nullable = false)
     private String md5hash;
@@ -76,12 +91,12 @@ public class PlanDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PlanDto planDto = (PlanDto) o;
-        return Objects.equals(identificatie, planDto.identificatie) && Objects.equals(plantype, planDto.plantype) && Objects.equals(beleidsmatigeoverheid, planDto.beleidsmatigeoverheid) && Objects.equals(publicerendeoverheid, planDto.publicerendeoverheid) && Objects.equals(naam, planDto.naam) && Objects.equals(planstatus, planDto.planstatus) && Objects.equals(planstatusdate, planDto.planstatusdate) && Objects.equals(besluitNummer, planDto.besluitNummer) && Objects.equals(regelstatus, planDto.regelstatus) && Objects.equals(dossierid, planDto.dossierid) && Objects.equals(dossierstatus, planDto.dossierstatus) && Objects.equals(isParapluPlan, planDto.isParapluPlan) && Objects.equals(beroepEnBezwaar, planDto.beroepEnBezwaar) && Objects.equals(md5hash, planDto.md5hash);
+        return Objects.equals(identificatie, planDto.identificatie) && Objects.equals(plantype, planDto.plantype) && Objects.equals(beleidsmatigeoverheid, planDto.beleidsmatigeoverheid) && Objects.equals(publicerendeoverheid, planDto.publicerendeoverheid) && Objects.equals(naam, planDto.naam) && Objects.equals(planstatus, planDto.planstatus) && Objects.equals(verwijzingnaarvaststelling, planDto.verwijzingnaarvaststelling) && Objects.equals(verwijzingnaargml, planDto.verwijzingnaargml) && Objects.equals(besluitnummer, planDto.besluitnummer) && Objects.equals(regelstatus, planDto.regelstatus) && Objects.equals(dossierid, planDto.dossierid) && Objects.equals(dossierstatus, planDto.dossierstatus) && Objects.equals(isparapluplan, planDto.isparapluplan) && Objects.equals(beroepenbezwaar, planDto.beroepenbezwaar) && Objects.equals(md5hash, planDto.md5hash);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(identificatie, plantype, beleidsmatigeoverheid, publicerendeoverheid, naam, planstatus, planstatusdate, besluitNummer, regelstatus, dossierid, dossierstatus, isParapluPlan, beroepEnBezwaar, md5hash);
+        return Objects.hash(identificatie, plantype, beleidsmatigeoverheid, publicerendeoverheid, naam, planstatus, verwijzingnaarvaststelling, verwijzingnaargml, besluitnummer, regelstatus, dossierid, dossierstatus, isparapluplan, beroepenbezwaar, md5hash);
     }
 
     @Override
@@ -93,14 +108,15 @@ public class PlanDto {
                 ", beleidsmatigeoverheid=" + beleidsmatigeoverheid +
                 ", publicerendeoverheid=" + publicerendeoverheid +
                 ", naam='" + naam + '\'' +
-                ", planstatus='" + planstatus + '\'' +
-                ", planstatusdate=" + planstatusdate +
-                ", besluitNummer='" + besluitNummer + '\'' +
+                ", planstatus=" + planstatus +
+                ", verwijzingnaarvaststelling='" + verwijzingnaarvaststelling + '\'' +
+                ", verwijzingnaargml='" + verwijzingnaargml + '\'' +
+                ", besluitnummer='" + besluitnummer + '\'' +
                 ", regelstatus='" + regelstatus + '\'' +
                 ", dossierid='" + dossierid + '\'' +
                 ", dossierstatus='" + dossierstatus + '\'' +
-                ", isParapluPlan=" + isParapluPlan +
-                ", beroepEnBezwaar='" + beroepEnBezwaar + '\'' +
+                ", isparapluplan=" + isparapluplan +
+                ", beroepenbezwaar='" + beroepenbezwaar + '\'' +
                 ", md5hash='" + md5hash + '\'' +
                 '}';
     }

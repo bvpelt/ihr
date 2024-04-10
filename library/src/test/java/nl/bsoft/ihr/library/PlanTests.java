@@ -9,6 +9,7 @@ import nl.bsoft.ihr.library.mapper.PlanMapper;
 import nl.bsoft.ihr.library.mapper.PlanMapperImpl;
 import nl.bsoft.ihr.library.model.dto.LocatieDto;
 import nl.bsoft.ihr.library.model.dto.PlanDto;
+import nl.bsoft.ihr.library.model.dto.PlanStatusDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -45,6 +46,7 @@ public class PlanTests {
 
             LocatieDto locatieDto = locatieMapper.toLocatieDto(plan);
             log.info("locatieDto: \n{}", locatieDto.toString());
+
         } catch (Exception e) {
             log.error("Error in mapPlanDto test: {}", e);
         }

@@ -30,6 +30,7 @@ public class PlannenService {
     private final ImroLoadRepository imroLoadRepository;
     private final LocatieRepository locatieRepository;
     private final LocatieNaamRepository locatieNaamRepository;
+    private final PlanStatusRepository planStatusRepository;
     private final OverheidRepository overheidRepository;
     private final PlanMapper planMapper;
     private final LocatieMapper locatieMapper;
@@ -45,7 +46,8 @@ public class PlannenService {
                           LocatieNaamRepository locatieNaamRepository,
                           OverheidRepository overheidRepository,
                           PlanMapper planMapper,
-                          LocatieMapper locatieMapper
+                          LocatieMapper locatieMapper,
+                          PlanStatusRepository planStatusRepository
     ) {
         this.APIService = APIService;
         this.tekstenService = tekstenService;
@@ -58,6 +60,7 @@ public class PlannenService {
         this.overheidRepository = overheidRepository;
         this.planMapper = planMapper;
         this.locatieMapper = locatieMapper;
+        this.planStatusRepository = planStatusRepository;
         this.MAX_PAGE_SIZE = APIService.getMAX_PAGE_SIZE();
     }
 
@@ -146,14 +149,17 @@ public class PlannenService {
                 }
             }
 
+            Optional<PlanStatusDto> optionalPlanStatusDto = planStatusRepository.findByStatusAndDatum(plan.getPlanstatusInfo().getPlanstatus().getValue(), plan.getPlanstatusInfo().getDatum());
+            PlanStatusDto currentPlanStatus = null;
+            if (!optionalPlanStatusDto.isPresent()) {
+                currentPlanStatus = planStatusRepository.save(planDto.getPlanstatus());
+            } else {
+                currentPlanStatus = optionalPlanStatusDto.get();
+            }
+            currentPlanStatus.getPlannen().add(planDto);
+
             PlanBeleidsmatigVerantwoordelijkeOverheid beleidsmatigeOverheid = plan.getBeleidsmatigVerantwoordelijkeOverheid();
 
-
-            // if not found
-            //   save
-            // else
-            //   do nothing
-            //
             if (beleidsmatigeOverheid.getCode().isPresent()) {
                 Optional<OverheidDto> OptionalBeleidsmatigOverheid = overheidRepository.findByCode(beleidsmatigeOverheid.getCode().get());
                 OverheidDto currentBeleidsMatigeOverheid = null;
@@ -282,13 +288,12 @@ public class PlannenService {
         original.setNaam(planDto.getNaam());
         original.setLocaties(planDto.getLocaties());
         original.setPlanstatus(planDto.getPlanstatus());
-        original.setPlanstatusdate(planDto.getPlanstatusdate());
-        original.setBesluitNummer(planDto.getBesluitNummer());
+        original.setBesluitnummer(planDto.getBesluitnummer());
         original.setRegelstatus(planDto.getRegelstatus());
         original.setDossierid(planDto.getDossierid());
         original.setDossierstatus(planDto.getDossierstatus());
-        original.setIsParapluPlan(planDto.getIsParapluPlan());
-        original.setBeroepEnBezwaar(planDto.getBeroepEnBezwaar());
+        original.setIsparapluplan(planDto.getIsparapluplan());
+        original.setBeroepenbezwaar(planDto.getBeroepenbezwaar());
         original.setMd5hash(planDto.getMd5hash());
 
         return original;
