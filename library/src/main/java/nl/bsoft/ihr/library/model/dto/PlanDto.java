@@ -45,11 +45,9 @@ public class PlanDto {
             joinColumns = {
                     @JoinColumn(name = "plan_id", referencedColumnName = "id")
             },
-            //nullable = false, updatable = false),
             inverseJoinColumns = {
                     @JoinColumn(name = "locatienaam_id", referencedColumnName = "id")
             })
-    //nullable = false, updatable = false))
     private Set<LocatieNaamDto> locaties = new HashSet<>();
 
     @Column(name = "planstatus")
