@@ -40,15 +40,18 @@ public class APIService extends ExternalRequestService {
     @Value("${nl.bsoft.ihr.library.config.ihr.rest.api.coordinatereferencesystem}")
     private String coordinateReferenceSystem;
 
+    private Duration requestDuration;
+
     @Autowired
     public APIService(ObjectMapper objectMapper, HttpClient httpClient, Duration requestDuration) {
         super(objectMapper, httpClient, requestDuration);
-        log.debug("Started IHRService with apiUrl: {}, apkKey: {}, CRS: {}", apiUrl, apiKey, coordinateReferenceSystem);
+        this.requestDuration = requestDuration;
+        log.debug("Started IHRService with apiUrl: {}, apkKey: {}, CRS: {}, requestDuration: {}", apiUrl, apiKey, coordinateReferenceSystem, requestDuration.toString());
     }
 
     @Override
     public HttpRequest.Builder request(URI uri) {
-        log.debug("Started IHRService building request with apiUrl: {}, apkKey: {}, CRS: {}", apiUrl, apiKey, coordinateReferenceSystem);
+        log.debug("Started IHRService building request with apiUrl: {}, apkKey: {}, CRS: {}, requestDuration: {}", apiUrl, apiKey, coordinateReferenceSystem, requestDuration);
         HttpRequest.Builder request =
                 super.request(uri)
                         .header("Content-Crs", coordinateReferenceSystem)

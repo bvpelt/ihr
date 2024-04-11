@@ -8,6 +8,7 @@ import nl.bsoft.ihr.library.model.dto.*;
 import nl.bsoft.ihr.library.repository.*;
 import nl.bsoft.ihr.library.util.UpdateCounter;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.geolatte.geom.V;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,7 @@ public class PlannenService {
     private final LocatieNaamRepository locatieNaamRepository;
     private final PlanStatusRepository planStatusRepository;
     private final OverheidRepository overheidRepository;
+    private final VerwijzingNormRepository verwijzingNormRepository;
     private final PlanMapper planMapper;
     private final LocatieMapper locatieMapper;
 
@@ -47,7 +49,8 @@ public class PlannenService {
                           OverheidRepository overheidRepository,
                           PlanMapper planMapper,
                           LocatieMapper locatieMapper,
-                          PlanStatusRepository planStatusRepository
+                          PlanStatusRepository planStatusRepository,
+                          VerwijzingNormRepository verwijzingNormRepository
     ) {
         this.APIService = APIService;
         this.tekstenService = tekstenService;
@@ -61,6 +64,7 @@ public class PlannenService {
         this.planMapper = planMapper;
         this.locatieMapper = locatieMapper;
         this.planStatusRepository = planStatusRepository;
+        this.verwijzingNormRepository = verwijzingNormRepository;
         this.MAX_PAGE_SIZE = APIService.getMAX_PAGE_SIZE();
     }
 
@@ -148,7 +152,7 @@ public class PlannenService {
                     planDto = updatePlanDto(foundPlanDto, planDto);
                 }
             }
-            
+
             Optional<PlanStatusDto> optionalPlanStatusDto = planStatusRepository.findByStatusAndDatum(plan.getPlanstatusInfo().getPlanstatus().getValue(), plan.getPlanstatusInfo().getDatum());
             PlanStatusDto currentPlanStatus = null;
             if (optionalPlanStatusDto.isPresent()) {
@@ -187,11 +191,6 @@ public class PlannenService {
 
             JsonNullable<PlanPublicerendBevoegdGezag> puOverheidDto = plan.getPublicerendBevoegdGezag();
 
-            // if not found
-            //   save
-            // else
-            //   do nothing
-            //
             if (puOverheidDto.isPresent()) {
                 if (puOverheidDto.get().getCode().isPresent()) {
                     Optional<OverheidDto> optionalPublicerendeOverheid = overheidRepository.findByCode(puOverheidDto.get().getCode().get());
@@ -213,20 +212,31 @@ public class PlannenService {
                 }
             }
 
-            planRepository.save(planDto); // reference for locatie
+            planRepository.save(planDto); // reference for locatienamen
 
-
+            List<String> verwijzingNormen = plan.getVerwijzingNorm();
+            Iterator<String> verwijzingNormIterable = verwijzingNormen.iterator();
+            while (verwijzingNormIterable.hasNext()) {
+                String verwijzing = verwijzingNormIterable.next();
+                Optional<VerwijzingNormDto> optionalVerwijzingNormDto = verwijzingNormRepository.findByNorm(verwijzing);
+                VerwijzingNormDto current = null;
+                if (optionalVerwijzingNormDto.isPresent()) {
+                    current = optionalVerwijzingNormDto.get();
+                    current.getPlannen().add(planDto);
+                } else {
+                    current = new VerwijzingNormDto();
+                    current.setNorm(verwijzing);
+                    current.getPlannen().add(planDto);
+                }
+                current = verwijzingNormRepository.save(current);
+                planDto.getVerwijzingnormen().add(current);
+            }
 
             List<String> locatieNaamDtoSet = plan.getLocatienamen();
             Iterator<String> locatieDtoIterable = locatieNaamDtoSet.iterator();
             while (locatieDtoIterable.hasNext()) {
                 String puLocatieNaam = locatieDtoIterable.next();
 
-                // if not found
-                //   save
-                // else
-                //   do nothing
-                //
                 Optional<LocatieNaamDto> optionalOverheidDto = locatieNaamRepository.findByNaam(puLocatieNaam);
                 LocatieNaamDto current = null;
                 if (optionalOverheidDto.isPresent()) {

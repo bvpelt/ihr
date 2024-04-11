@@ -34,6 +34,7 @@ drop table if exists structuurvisiegebied_cartografieinfo;
 drop table if exists structuurvisiegebied_externplan_uittewerkenin;
 drop table if exists planstatus;
 drop table if exists plan_verwijzingnorm;
+drop table if exists verwijzingnorm;
 
 delete from flyway_schema_history;
 

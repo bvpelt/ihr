@@ -5,7 +5,7 @@ create table locatienaam
     naam text
 );
 
-create index locatienaam_naam_idx on locatienaam (naam);
+create unique index locatienaam_naam_idx on locatienaam (naam);
 
 ALTER TABLE locatienaam
     OWNER TO testuser;

@@ -5,7 +5,7 @@ create table verwijzingnorm
     norm text
 );
 
-create index verwijzingnorm_norm_idx on verwijzingnorm (norm);
+create unique index verwijzingnorm_norm_idx on verwijzingnorm (norm);
 
 
 ALTER TABLE verwijzingnorm

@@ -16,7 +16,7 @@ import java.util.concurrent.Executors;
 @Slf4j
 @Configuration
 public class HttpClientConfig {
-    public static final long DEFAULT_DURATION_REQUEST_SECONDS = 20;
+    public static final long DEFAULT_DURATION_REQUEST_SECONDS = 480;
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final HttpClient httpClient =
             HttpClient.newBuilder()
