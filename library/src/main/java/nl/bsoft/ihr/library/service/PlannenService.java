@@ -148,15 +148,22 @@ public class PlannenService {
                     planDto = updatePlanDto(foundPlanDto, planDto);
                 }
             }
-
+            
             Optional<PlanStatusDto> optionalPlanStatusDto = planStatusRepository.findByStatusAndDatum(plan.getPlanstatusInfo().getPlanstatus().getValue(), plan.getPlanstatusInfo().getDatum());
             PlanStatusDto currentPlanStatus = null;
-            if (!optionalPlanStatusDto.isPresent()) {
-                currentPlanStatus = planStatusRepository.save(planDto.getPlanstatus());
-            } else {
+            if (optionalPlanStatusDto.isPresent()) {
                 currentPlanStatus = optionalPlanStatusDto.get();
+                currentPlanStatus.getPlannen().add(planDto);
+            } else {
+                currentPlanStatus = new PlanStatusDto();
+                currentPlanStatus.setStatus(plan.getPlanstatusInfo().getPlanstatus().getValue());
+                currentPlanStatus.setDatum(plan.getPlanstatusInfo().getDatum());
+                currentPlanStatus.getPlannen().add(planDto);
             }
-            currentPlanStatus.getPlannen().add(planDto);
+            currentPlanStatus = planStatusRepository.save(currentPlanStatus);
+            planDto.setPlanstatus(currentPlanStatus);
+            log.info("Planstatus: {}", currentPlanStatus.toString());
+
 
             PlanBeleidsmatigVerantwoordelijkeOverheid beleidsmatigeOverheid = plan.getBeleidsmatigVerantwoordelijkeOverheid();
 
@@ -207,6 +214,8 @@ public class PlannenService {
             }
 
             planRepository.save(planDto); // reference for locatie
+
+
 
             List<String> locatieNaamDtoSet = plan.getLocatienamen();
             Iterator<String> locatieDtoIterable = locatieNaamDtoSet.iterator();
