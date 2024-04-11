@@ -33,6 +33,8 @@ public abstract class PlanMapper {
     @Mapping(target = "dossierid", source = "dossier", qualifiedByName = "toDossierId")
     @Mapping(target = "dossierstatus", source = "dossier", qualifiedByName = "toDossierStatus")
     @Mapping(target = "isparapluplan", source = "isParapluplan")
+    @Mapping(target = "verwijzingnaarvaststelling", source = "verwijzingNaarVaststellingsbesluit", qualifiedByName = "toJsonNullableString")
+    @Mapping(target = "verwijzingnaargml", source = "verwijzingNaarGml")
     @Mapping(target = "beroepenbezwaar", source = "beroepEnBezwaar", qualifiedByName = "toBeroepEnBezwaar")
     public abstract PlanDto toPlan(Plan plan) throws ParseException;
 
@@ -41,7 +43,6 @@ public abstract class PlanMapper {
         return id;
     }
 
-
     @Named("toPlanType")
     protected String toPlanType(PlanType planType) {
         String type = null;
@@ -49,7 +50,7 @@ public abstract class PlanMapper {
         type = planType.getValue();
         return type;
     }
-
+/*
     @Named("toBeleidType")
     protected Set<OverheidDto> toBeleidType(PlanBeleidsmatigVerantwoordelijkeOverheid publicerendBevoegdGezag) {
         Set<OverheidDto> overheidDtoSet = new HashSet<>();
@@ -73,7 +74,9 @@ public abstract class PlanMapper {
 
         return overheidDtoSet;
     }
+*/
 
+    /*
     @Named("toPublicerendType")
     protected Set<OverheidDto> toPublicerendType(JsonNullable<PlanPublicerendBevoegdGezag> publicerendBevoegdGezag) {
         Set<OverheidDto> overheidDtoSet = null;
@@ -101,7 +104,7 @@ public abstract class PlanMapper {
 
         return overheidDtoSet;
     }
-
+*/
     @Named("toPlanStatusInfo")
     protected PlanStatusDto toPlanStatusInfo(PlanstatusInfo planstatusInfo) {
         PlanStatusDto planStatusDto = new PlanStatusDto();
@@ -114,14 +117,14 @@ public abstract class PlanMapper {
     }
 
     @Named("toDossierId")
-    protected String toDossierId(JsonNullable<PlanDossier> planDossierJsonNullable) {
+    protected String toDossierId(JsonNullable<PlanDossier> planDossier) {
         String dossierid = null;
 
-        if (planDossierJsonNullable != null) {
-            if (planDossierJsonNullable.isPresent()) {
-                if (planDossierJsonNullable.get() != null) {
-                    if (planDossierJsonNullable.get().getId() != null) {
-                        dossierid = planDossierJsonNullable.get().getId();
+        if (planDossier != null) {
+            if (planDossier.isPresent()) {
+                if (planDossier.get() != null) {
+                    if (planDossier.get().getId() != null) {
+                        dossierid = planDossier.get().getId();
                     }
                 }
             }
@@ -130,14 +133,14 @@ public abstract class PlanMapper {
     }
 
     @Named("toDossierStatus")
-    protected String toDossierStatus(JsonNullable<PlanDossier> planDossierJsonNullable) {
+    protected String toDossierStatus(JsonNullable<PlanDossier> planDossier) {
         String dossierstatus = null;
 
-        if (planDossierJsonNullable != null) {
-            if (planDossierJsonNullable.isPresent()) {
-                if (planDossierJsonNullable.get() != null) {
-                    if (planDossierJsonNullable.get().getStatus().isPresent()) {
-                        dossierstatus = planDossierJsonNullable.get().getStatus().get();
+        if (planDossier != null) {
+            if (planDossier.isPresent()) {
+                if (planDossier.get() != null) {
+                    if (planDossier.get().getStatus().isPresent()) {
+                        dossierstatus = planDossier.get().getStatus().get();
                     }
                 }
             }
@@ -147,9 +150,12 @@ public abstract class PlanMapper {
 
     @Named("toBeroepEnBezwaar")
     protected String toBeroepEnBezwaar(JsonNullable<Plan.BeroepEnBezwaarEnum> value) {
-        if (value.isPresent()) {
-            if (value.get() != null) {
-                return value.get().getValue();
+
+        if (value != null) {
+            if (value.isPresent()) {
+                if (value.get() != null) {
+                    return value.get().getValue();
+                }
             }
         }
         return null;

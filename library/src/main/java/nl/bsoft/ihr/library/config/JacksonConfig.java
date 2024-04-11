@@ -11,12 +11,13 @@ import com.fasterxml.jackson.datatype.jsr310.deser.key.OffsetDateTimeKeyDeserial
 import com.fasterxml.jackson.datatype.jsr310.ser.OffsetDateTimeSerializer;
 import org.openapitools.jackson.nullable.JsonNullableModule;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Controller;
 
 import java.time.OffsetDateTime;
 
-@Controller
+@Configuration
 public class JacksonConfig {
 
     @Bean
@@ -26,13 +27,19 @@ public class JacksonConfig {
         mapper.registerModule(getTimeModule());
         mapper.registerModule(new JsonNullableModule());
         mapper.registerModule(new JtsModule());
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+//        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
+        mapper.setSerializationInclusion(JsonInclude.Include.ALWAYS);
+
         mapper.setAnnotationIntrospector(new JacksonAnnotationIntrospector());
         mapper.setDateFormat(new StdDateFormat());
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         return mapper;
     }
-
+    @Bean
+    public JsonNullableModule jsonNullableModule() {
+        return new JsonNullableModule();
+    }
     private JavaTimeModule getTimeModule() {
         JavaTimeModule javaTimeModule = new JavaTimeModule();
         javaTimeModule.addDeserializer(OffsetDateTime.class, new OffsetDateTimeDeserializer());

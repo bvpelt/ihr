@@ -17,6 +17,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.Assert;
 
 import java.io.File;
+import java.io.InputStream;
 
 @Slf4j
 @SpringBootTest
@@ -70,5 +71,24 @@ public class PlanTests {
             log.error("Error in mapPlanDto test: {}", e);
         }
         log.info("End   plan-01.json");
+    }
+
+    @Test
+    public void mapPlan02Dto() {
+        Plan plan;
+        log.info("Start plan-02.json");
+        try {
+            File dataFile = resourceLoader.getResource("classpath:plan-02.json").getFile();
+
+            plan = objectMapper.readValue(dataFile, Plan.class);
+            log.info("plan: \n{}", plan.toString());
+
+            PlanDto planDto = planMapper.toPlan(plan);
+            log.info("plandto: \n{}", planDto.toString());
+
+        } catch (Exception e) {
+            log.error("Error in mapPlanDto test: {}", e);
+        }
+        log.info("End   plan-02.json");
     }
 }
