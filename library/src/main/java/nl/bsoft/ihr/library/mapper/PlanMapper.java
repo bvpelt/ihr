@@ -50,61 +50,7 @@ public abstract class PlanMapper {
         type = planType.getValue();
         return type;
     }
-/*
-    @Named("toBeleidType")
-    protected Set<OverheidDto> toBeleidType(PlanBeleidsmatigVerantwoordelijkeOverheid publicerendBevoegdGezag) {
-        Set<OverheidDto> overheidDtoSet = new HashSet<>();
-        OverheidDto overheidDto = new OverheidDto();
-        String type;
-        String code = null;
-        String naam = null;
 
-        type = publicerendBevoegdGezag.getType().getValue();
-        if (publicerendBevoegdGezag.getCode().isPresent()) {
-            code = publicerendBevoegdGezag.getCode().get();
-        }
-        if (publicerendBevoegdGezag.getNaam().isPresent()) {
-            naam = publicerendBevoegdGezag.getNaam().get();
-        }
-
-        overheidDto.setType(type);
-        overheidDto.setCode(code);
-        overheidDto.setNaam(naam);
-        overheidDtoSet.add(overheidDto);
-
-        return overheidDtoSet;
-    }
-*/
-
-    /*
-    @Named("toPublicerendType")
-    protected Set<OverheidDto> toPublicerendType(JsonNullable<PlanPublicerendBevoegdGezag> publicerendBevoegdGezag) {
-        Set<OverheidDto> overheidDtoSet = null;
-
-        if (publicerendBevoegdGezag.isPresent()) {
-            String type;
-            String code = null;
-            String naam = null;
-            overheidDtoSet = new HashSet<>();
-            type = publicerendBevoegdGezag.get().getType().getValue();
-
-            if (publicerendBevoegdGezag.get().getCode().isPresent()) {
-                code = publicerendBevoegdGezag.get().getCode().get();
-            }
-            if (publicerendBevoegdGezag.get().getNaam().isPresent()) {
-                naam = publicerendBevoegdGezag.get().getNaam().get();
-            }
-            OverheidDto overheidDto = new OverheidDto();
-            overheidDto.setType(type);
-            overheidDto.setCode(code);
-            overheidDto.setNaam(naam);
-
-            overheidDtoSet.add(overheidDto);
-        }
-
-        return overheidDtoSet;
-    }
-*/
     @Named("toPlanStatusInfo")
     protected PlanStatusDto toPlanStatusInfo(PlanstatusInfo planstatusInfo) {
         PlanStatusDto planStatusDto = new PlanStatusDto();
