@@ -71,6 +71,29 @@ public class PlanDto {
                     @JoinColumn(name = "verwijzingnorm_id", referencedColumnName = "id")
             })
     private Set<VerwijzingNormDto> verwijzingnormen = new HashSet<>();
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL) // owning site
+    @JoinTable(
+            name = "plan_normadressant",
+            joinColumns = {
+                    @JoinColumn(name = "plan_id", referencedColumnName = "id")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "normadressant_id", referencedColumnName = "id")
+            })
+    private Set<NormadressantDto> normadressanten = new HashSet<>();
+
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL) // owning site
+    @JoinTable(
+            name = "plan_ondergrond",
+            joinColumns = {
+                    @JoinColumn(name = "plan_id", referencedColumnName = "id")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "ondergrond_id", referencedColumnName = "id")
+            })
+    private Set<OndergrondDto> ondergronden = new HashSet<>();
+
     @Column(name = "regelstatus")
     private String regelstatus;
     @Column(name = "dossierid")

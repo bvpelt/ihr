@@ -24,6 +24,7 @@ import java.time.LocalDate;
 public abstract class PlanMapper {
 
     @Mapping(target = "id", source = "id", ignore = true)
+    @Mapping(target = "ondergronden", source = "ondergronden", ignore = true)
     @Mapping(target = "identificatie", source = "id", qualifiedByName = "toId")
     @Mapping(target = "plantype", source = "type") //, qualifiedByName = "toPlanType")
     @Mapping(target = "naam", source = "naam")
@@ -118,3 +119,4 @@ public abstract class PlanMapper {
         }
     }
 }
+
