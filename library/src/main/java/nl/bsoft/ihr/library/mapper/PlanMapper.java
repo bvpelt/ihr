@@ -1,8 +1,10 @@
 package nl.bsoft.ihr.library.mapper;
 
 import lombok.Setter;
-import nl.bsoft.ihr.generated.model.*;
-import nl.bsoft.ihr.library.model.dto.OverheidDto;
+import nl.bsoft.ihr.generated.model.Plan;
+import nl.bsoft.ihr.generated.model.PlanDossier;
+import nl.bsoft.ihr.generated.model.PlanType;
+import nl.bsoft.ihr.generated.model.PlanstatusInfo;
 import nl.bsoft.ihr.library.model.dto.PlanDto;
 import nl.bsoft.ihr.library.model.dto.PlanStatusDto;
 import org.locationtech.jts.io.ParseException;
@@ -10,8 +12,6 @@ import org.mapstruct.*;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 @Setter
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
@@ -149,8 +149,8 @@ public abstract class PlanMapper {
     }
 
     @Named("toBeroepEnBezwaar")
-    protected String toBeroepEnBezwaar(JsonNullable<Plan.BeroepEnBezwaarEnum> value) {
-
+    protected String toBeroepEnBezwaar(JsonNullable<String> value) {
+/* Enum implementation
         if (value != null) {
             if (value.isPresent()) {
                 if (value.get() != null) {
@@ -158,7 +158,9 @@ public abstract class PlanMapper {
                 }
             }
         }
-        return null;
+
+ */
+        return toJsonNullableString(value);
     }
 
     @Named("toJsonNullableString")

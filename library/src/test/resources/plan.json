@@ -1,156 +1,333 @@
 {
-  "_links": {
-    "self": {
-      "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0268.FBPGeluidzoneWink-VG01"
-    }
-  },
-  "relatiesVanuitExternePlannen": {
-    "tenGevolgeVan": [],
-    "gedeeltelijkeHerzieningVan": [],
-    "uitTeWerkenIn": [],
-    "vervangt": [],
-    "uitgewerktIn": [],
-    "gebruiktInformatieUit": [],
-    "muteert": []
-  },
-  "regelStatus": "geldend",
-  "ondergronden": [
-    {
-      "datum": "2022-07-26",
-      "type": "other: basisregistratie grootschalige topografie (BGT) en Digitale Kadastrale Kaart (DKK)"
-    }
-  ],
-  "normadressant": [],
-  "heeftOnderdelen": [
-    {
-      "type": "regels",
-      "heeftObjectgerichteTeksten": [
-        {
-          "titel": "Regels",
-          "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0268.FBPGeluidzoneWink-VG01/teksten/NL.IMRO.PT.regels.s4",
-          "type": "regels"
-        }
-      ],
-      "externeReferenties": [
-        "https://www.ruimtelijkeplannen.nl/documents/NL.IMRO.0268.FBPGeluidzoneWink-VG01/r_NL.IMRO.0268.FBPGeluidzoneWink-VG01.html"
-      ]
-    },
-    {
-      "type": "toelichting",
-      "heeftObjectgerichteTeksten": [
-        {
-          "titel": "Toelichting",
-          "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0268.FBPGeluidzoneWink-VG01/teksten/NL.IMRO.PT.toelichting.s1",
-          "type": "toelichting"
-        },
-        {
-          "titel": "Bijlagen bij toelichting",
-          "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0268.FBPGeluidzoneWink-VG01/teksten/NL.IMRO.PT.toelichting.Bijlagenbijtoelichting",
-          "type": "bijlagen bij toelichting"
-        }
-      ],
-      "externeReferenties": [
-        "https://www.ruimtelijkeplannen.nl/documents/NL.IMRO.0268.FBPGeluidzoneWink-VG01/t_NL.IMRO.0268.FBPGeluidzoneWink-VG01.html"
-      ]
-    }
-  ],
+  "id": "NL.IMRO.0200.bp1253-vas1",
   "type": "bestemmingsplan",
-  "verwijzingNaarGml": "https://www.ruimtelijkeplannen.nl/documents/NL.IMRO.0268.FBPGeluidzoneWink-VG01/NL.IMRO.0268.FBPGeluidzoneWink-VG01.gml",
-  "planstatusInfo": {
-    "datum": "2023-07-12",
-    "planstatus": "vastgesteld"
-  },
   "beleidsmatigVerantwoordelijkeOverheid": {
-    "code": "0268",
     "type": "gemeentelijke overheid",
-    "naam": "Gemeente Nijmegen"
+    "code": "0200",
+    "naam": "gemeente Apeldoorn"
   },
+  "publicerendBevoegdGezag": {
+    "type": "gemeentelijke overheid",
+    "code": "0200",
+    "naam": "gemeente Apeldoorn"
+  },
+  "naam": "Woningbouwlocatie Laan van Westenenk 501-701",
+  "locatienamen": [
+    "Voormalig TNO-terrein"
+  ],
+  "planstatusInfo": {
+    "planstatus": "vastgesteld",
+    "datum": "2024-04-12"
+  },
+  "verwijzingNaarVaststellingsbesluit": "https://ruimtelijkeplannen.nl/documents/NL.IMRO.0200.bp1253-vas1/vb_NL.IMRO.0200.bp1253-vas1.pdf",
+  "verwijzingNaarGml": "https://ruimtelijkeplannen.nl/documents/NL.IMRO.0200.bp1253-vas1/NL.IMRO.0200.bp1253-vas1.gml",
+  "besluitnummer": "3-2016",
   "verwijzingNorm": [
     "IMRO2012",
     "PRBP2012",
     "PRABPK2012"
   ],
+  "normadressant": [
+    "niet nader aangeduid"
+  ],
+  "ondergronden": [
+    {
+      "type": "grootschalige basiskaart (GBK)",
+      "datum": "2015-03-25"
+    }
+  ],
   "relatiesMetExternePlannen": {
-    "tenGevolgeVan": [],
-    "gedeeltelijkeHerzieningVan": [],
-    "uitTeWerkenIn": [],
     "vervangt": [
       {
-        "dossier": {
-          "status": "geheel in werking"
-        },
-        "id": "NL.IMRO.0268.BPa4000-VG01",
-        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0268.BPa4000-VG01",
-        "naam": "Nijmegen Dukenburg 2021",
+        "naam": "Malkenschoten-Kayersmolen",
+        "id": "NL.IMRO.0200.bp1002-ont1",
         "planstatusInfo": {
-          "datum": "2022-03-09",
-          "planstatus": "vastgesteld"
-        }
+          "planstatus": "string",
+          "datum": "string"
+        },
+        "dossier": {
+          "status": "string"
+        },
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1"
       }
     ],
-    "uitgewerktIn": [],
-    "gebruiktInformatieUit": [],
+    "tenGevolgeVan": [
+      {
+        "naam": "Malkenschoten-Kayersmolen",
+        "id": "NL.IMRO.0200.bp1002-ont1",
+        "planstatusInfo": {
+          "planstatus": "string",
+          "datum": "string"
+        },
+        "dossier": {
+          "status": "string"
+        },
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1"
+      }
+    ],
     "muteert": [
       {
-        "dossier": {
-          "status": "geheel onherroepelijk in werking"
-        },
-        "id": "NL.IMRO.0268.BPa12001-VG01",
-        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0268.BPa12001-VG01",
-        "naam": "Nijmegen Goffert Winkelsteeg 2017 - 1 (Weg door Jonkerbos 55)",
+        "naam": "Malkenschoten-Kayersmolen",
+        "id": "NL.IMRO.0200.bp1002-ont1",
         "planstatusInfo": {
-          "datum": "2022-03-09",
-          "planstatus": "vastgesteld"
-        }
-      },
+          "planstatus": "string",
+          "datum": "string"
+        },
+        "dossier": {
+          "status": "string"
+        },
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1"
+      }
+    ],
+    "gebruiktInformatieUit": [
       {
-        "dossier": {
-          "status": "geheel onherroepelijk in werking"
-        },
-        "id": "NL.IMRO.0268.BPa12000-VG01",
-        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0268.BPa12000-VG01",
-        "naam": "Nijmegen Goffert-Winkelsteeg 2017",
+        "naam": "Malkenschoten-Kayersmolen",
+        "id": "NL.IMRO.0200.bp1002-ont1",
         "planstatusInfo": {
-          "datum": "2019-01-30",
-          "planstatus": "vastgesteld"
-        }
-      },
+          "planstatus": "string",
+          "datum": "string"
+        },
+        "dossier": {
+          "status": "string"
+        },
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1"
+      }
+    ],
+    "gedeeltelijkeHerzieningVan": [
       {
-        "dossier": {
-          "status": "deels onherroepelijk in werking"
-        },
-        "id": "NL.IMRO.0268.BP11000-VG02",
-        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0268.BP11000-VG02",
-        "naam": "Nijmegen West",
+        "naam": "Malkenschoten-Kayersmolen",
+        "id": "NL.IMRO.0200.bp1002-ont1",
         "planstatusInfo": {
-          "datum": "2013-10-23",
-          "planstatus": "vastgesteld"
-        }
+          "planstatus": "string",
+          "datum": "string"
+        },
+        "dossier": {
+          "status": "string"
+        },
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1"
+      }
+    ],
+    "uitTeWerkenIn": [
+      {
+        "naam": "Malkenschoten-Kayersmolen",
+        "id": "NL.IMRO.0200.bp1002-ont1",
+        "planstatusInfo": {
+          "planstatus": "string",
+          "datum": "string"
+        },
+        "dossier": {
+          "status": "string"
+        },
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1"
+      }
+    ],
+    "uitgewerktIn": [
+      {
+        "naam": "Malkenschoten-Kayersmolen",
+        "id": "NL.IMRO.0200.bp1002-ont1",
+        "planstatusInfo": {
+          "planstatus": "string",
+          "datum": "string"
+        },
+        "dossier": {
+          "status": "string"
+        },
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1"
       }
     ]
   },
-  "id": "NL.IMRO.0268.FBPGeluidzoneWink-VG01",
-  "besluitnummer": "66/2023",
-  "verwijzingNaarVaststellingsbesluit": "https://www.ruimtelijkeplannen.nl/documents/NL.IMRO.0268.FBPGeluidzoneWink-VG01/vb_NL.IMRO.0268.FBPGeluidzoneWink-VG01.pdf",
-  "locatienamen": [
-    "Nijmegen"
+  "relatiesVanuitExternePlannen": {
+    "vervangt": [
+      {
+        "naam": "Malkenschoten-Kayersmolen",
+        "id": "NL.IMRO.0200.bp1002-ont1",
+        "planstatusInfo": {
+          "planstatus": "string",
+          "datum": "string"
+        },
+        "dossier": {
+          "status": "string"
+        },
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1"
+      }
+    ],
+    "tenGevolgeVan": [
+      {
+        "naam": "Malkenschoten-Kayersmolen",
+        "id": "NL.IMRO.0200.bp1002-ont1",
+        "planstatusInfo": {
+          "planstatus": "string",
+          "datum": "string"
+        },
+        "dossier": {
+          "status": "string"
+        },
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1"
+      }
+    ],
+    "muteert": [
+      {
+        "naam": "Malkenschoten-Kayersmolen",
+        "id": "NL.IMRO.0200.bp1002-ont1",
+        "planstatusInfo": {
+          "planstatus": "string",
+          "datum": "string"
+        },
+        "dossier": {
+          "status": "string"
+        },
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1"
+      }
+    ],
+    "gebruiktInformatieUit": [
+      {
+        "naam": "Malkenschoten-Kayersmolen",
+        "id": "NL.IMRO.0200.bp1002-ont1",
+        "planstatusInfo": {
+          "planstatus": "string",
+          "datum": "string"
+        },
+        "dossier": {
+          "status": "string"
+        },
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1"
+      }
+    ],
+    "gedeeltelijkeHerzieningVan": [
+      {
+        "naam": "Malkenschoten-Kayersmolen",
+        "id": "NL.IMRO.0200.bp1002-ont1",
+        "planstatusInfo": {
+          "planstatus": "string",
+          "datum": "string"
+        },
+        "dossier": {
+          "status": "string"
+        },
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1"
+      }
+    ],
+    "uitTeWerkenIn": [
+      {
+        "naam": "Malkenschoten-Kayersmolen",
+        "id": "NL.IMRO.0200.bp1002-ont1",
+        "planstatusInfo": {
+          "planstatus": "string",
+          "datum": "string"
+        },
+        "dossier": {
+          "status": "string"
+        },
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1"
+      }
+    ],
+    "uitgewerktIn": [
+      {
+        "naam": "Malkenschoten-Kayersmolen",
+        "id": "NL.IMRO.0200.bp1002-ont1",
+        "planstatusInfo": {
+          "planstatus": "string",
+          "datum": "string"
+        },
+        "dossier": {
+          "status": "string"
+        },
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1002-ont1"
+      }
+    ]
+  },
+  "illustraties": [
+    {
+      "href": "https://ruimtelijkeplannen.nl/documents/NL.IMRO.0200.sv1002-vas1/i_NL.IMRO.0200.sv1002-vas1_1.pdf",
+      "type": "kaart",
+      "naam": "Regionale Structuurvisie Stedendriehoek 2030",
+      "legendanaam": "Beleidskaart"
+    }
   ],
+  "heeftOnderdelen": [
+    {
+      "externeReferenties": [
+        "https://ruimtelijkeplannen.nl/documents/NL.IMRO.0200.bp1253-vas1/r_NL.IMRO.0200.bp1253-vas1.html"
+      ],
+      "type": "regels",
+      "heeftObjectgerichteTeksten": [
+        {
+          "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1/teksten/NL.IMRO.PT.regels.s93",
+          "titel": "Regels",
+          "type": "regels"
+        }
+      ]
+    }
+  ],
+  "regelStatus": "geldend",
+  "regelBinding": "burgerbindend",
   "dossier": {
-    "id": "NL.IMRO.0268.FBPGeluidzoneWink",
+    "id": "NL.IMRO.0200.bp1253",
     "status": "geheel onherroepelijk in werking"
   },
-  "naam": "Facetbestemmingsplan Geluidzone Winkelsteeg",
-  "regelBinding": "burgerbindend",
-  "isTamPlan": false,
-  "beroepEnBezwaar": "nee",
-  "isHistorisch": false,
-  "verwijderdOp": null,
+  "isHistorisch": true,
+  "verwijderdOp": "2024-04-12T05:55:58.274Z",
+  "isTamPlan": true,
+  "eindeRechtsgeldigheid": "2024-04-12",
+  "geometrie": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          5.955381012,
+          52.179015422
+        ],
+        [
+          5.955381012,
+          52.183396603
+        ],
+        [
+          5.96179731,
+          52.183396603
+        ],
+        [
+          5.96179731,
+          52.179015422
+        ],
+        [
+          5.955381012,
+          52.179015422
+        ]
+      ]
+    ]
+  },
+  "bbox": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          5.955381012,
+          52.179015422
+        ],
+        [
+          5.955381012,
+          52.183396603
+        ],
+        [
+          5.96179731,
+          52.183396603
+        ],
+        [
+          5.96179731,
+          52.179015422
+        ],
+        [
+          5.955381012,
+          52.179015422
+        ]
+      ]
+    ]
+  },
   "isParapluplan": true,
-  "illustraties": [],
-  "eindeRechtsgeldigheid": null,
-  "publicerendBevoegdGezag": {
-    "code": "0268",
-    "type": "gemeentelijke overheid",
-    "naam": "gemeente Nijmegen"
+  "beroepEnBezwaar": "Ja",
+  "_links": {
+    "self": {
+      "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0200.bp1253-vas1"
+    }
   }
 }
