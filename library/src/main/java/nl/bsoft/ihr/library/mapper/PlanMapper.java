@@ -1,8 +1,10 @@
 package nl.bsoft.ihr.library.mapper;
 
 import lombok.Setter;
-import nl.bsoft.ihr.generated.model.*;
-import nl.bsoft.ihr.library.model.dto.OverheidDto;
+import nl.bsoft.ihr.generated.model.Plan;
+import nl.bsoft.ihr.generated.model.PlanDossier;
+import nl.bsoft.ihr.generated.model.PlanType;
+import nl.bsoft.ihr.generated.model.PlanstatusInfo;
 import nl.bsoft.ihr.library.model.dto.PlanDto;
 import nl.bsoft.ihr.library.model.dto.PlanStatusDto;
 import org.locationtech.jts.io.ParseException;
@@ -10,8 +12,6 @@ import org.mapstruct.*;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 @Setter
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
@@ -27,15 +27,15 @@ public abstract class PlanMapper {
     @Mapping(target = "identificatie", source = "id", qualifiedByName = "toId")
     @Mapping(target = "plantype", source = "type") //, qualifiedByName = "toPlanType")
     @Mapping(target = "naam", source = "naam")
+    @Mapping(target = "planstatus", source = "planstatusInfo", qualifiedByName = "toPlanStatusInfo")
+    @Mapping(target = "verwijzingnaarvaststelling", source = "verwijzingNaarVaststellingsbesluit", qualifiedByName = "toJsonNullableString")
+    @Mapping(target = "verwijzingnaargml", source = "verwijzingNaarGml")
     @Mapping(target = "besluitnummer", source = "besluitnummer", qualifiedByName = "toJsonNullableString")
     @Mapping(target = "regelstatus", source = "regelStatus", qualifiedByName = "toJsonNullableString")
-    @Mapping(target = "planstatus", source = "planstatusInfo", qualifiedByName = "toPlanStatusInfo")
     @Mapping(target = "dossierid", source = "dossier", qualifiedByName = "toDossierId")
     @Mapping(target = "dossierstatus", source = "dossier", qualifiedByName = "toDossierStatus")
     @Mapping(target = "isparapluplan", source = "isParapluplan")
-    @Mapping(target = "verwijzingnaarvaststelling", source = "verwijzingNaarVaststellingsbesluit", qualifiedByName = "toJsonNullableString")
-    @Mapping(target = "verwijzingnaargml", source = "verwijzingNaarGml")
-    @Mapping(target = "beroepenbezwaar", source = "beroepEnBezwaar", qualifiedByName = "toBeroepEnBezwaar")
+    @Mapping(target = "beroepenbezwaar", source = "beroepEnBezwaar", qualifiedByName = "toJsonNullableString")
     public abstract PlanDto toPlan(Plan plan) throws ParseException;
 
     @Named("toId")
@@ -50,7 +50,21 @@ public abstract class PlanMapper {
         type = planType.getValue();
         return type;
     }
-/*
+
+    /*
+    @Named("toNormAdressant")
+    protected Set<NormadressantDto> toNormAdressanten(List<String> value) {
+        Set<NormadressantDto> normadressantDtos = new HashSet<>();
+        if (value != null) {
+            value.forEach(norm -> {
+                NormadressantDto normadressantDto = new NormadressantDto();
+                normadressantDto.setNorm(norm);
+                normadressantDtos.add(normadressantDto);
+            });
+        }
+        return normadressantDtos;
+    }
+
     @Named("toBeleidType")
     protected Set<OverheidDto> toBeleidType(PlanBeleidsmatigVerantwoordelijkeOverheid publicerendBevoegdGezag) {
         Set<OverheidDto> overheidDtoSet = new HashSet<>();
@@ -148,8 +162,9 @@ public abstract class PlanMapper {
         return dossierstatus;
     }
 
+    /*
     @Named("toBeroepEnBezwaar")
-    protected String toBeroepEnBezwaar(JsonNullable<Plan.BeroepEnBezwaarEnum> value) {
+    protected String toBeroepEnBezwaar(JsonNullable<String> value) {
 
         if (value != null) {
             if (value.isPresent()) {
@@ -158,9 +173,11 @@ public abstract class PlanMapper {
                 }
             }
         }
-        return null;
-    }
 
+
+        return toJsonNullableString(value);
+    }
+*/
     @Named("toJsonNullableString")
     protected String toJsonNullableString(JsonNullable<String> jsonNullable) {
         if (jsonNullable.isPresent()) {

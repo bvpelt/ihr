@@ -9,7 +9,6 @@ import nl.bsoft.ihr.library.mapper.PlanMapper;
 import nl.bsoft.ihr.library.mapper.PlanMapperImpl;
 import nl.bsoft.ihr.library.model.dto.LocatieDto;
 import nl.bsoft.ihr.library.model.dto.PlanDto;
-import nl.bsoft.ihr.library.model.dto.PlanStatusDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,7 +16,6 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.Assert;
 
 import java.io.File;
-import java.io.InputStream;
 
 @Slf4j
 @SpringBootTest

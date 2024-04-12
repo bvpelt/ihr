@@ -9,6 +9,7 @@ import nl.bsoft.ihr.library.repository.*;
 import nl.bsoft.ihr.library.util.UpdateCounter;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.geolatte.geom.V;
+import org.locationtech.jts.io.ParseException;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,9 @@ public class PlannenService {
     private final PlanStatusRepository planStatusRepository;
     private final OverheidRepository overheidRepository;
     private final VerwijzingNormRepository verwijzingNormRepository;
+
+    private final NormadressantRepository normadressantRepository;
+    private final OndergrondRepository ondergrondRepository;
     private final PlanMapper planMapper;
     private final LocatieMapper locatieMapper;
 
@@ -50,7 +54,9 @@ public class PlannenService {
                           PlanMapper planMapper,
                           LocatieMapper locatieMapper,
                           PlanStatusRepository planStatusRepository,
-                          VerwijzingNormRepository verwijzingNormRepository
+                          VerwijzingNormRepository verwijzingNormRepository,
+                          NormadressantRepository normadressantRepository,
+                          OndergrondRepository ondergrondRepository
     ) {
         this.APIService = APIService;
         this.tekstenService = tekstenService;
@@ -65,6 +71,8 @@ public class PlannenService {
         this.locatieMapper = locatieMapper;
         this.planStatusRepository = planStatusRepository;
         this.verwijzingNormRepository = verwijzingNormRepository;
+        this.normadressantRepository = normadressantRepository;
+        this.ondergrondRepository = ondergrondRepository;
         this.MAX_PAGE_SIZE = APIService.getMAX_PAGE_SIZE();
     }
 
@@ -126,14 +134,7 @@ public class PlannenService {
             String md5hash = DigestUtils.md5Hex(plan.getGeometrie().toString().toUpperCase());
             planDto.setMd5hash(md5hash);
 
-            Optional<LocatieDto> optionalLocatieDto = locatieRepository.findByMd5hash(md5hash);
-            if (!optionalLocatieDto.isPresent()) {
-                LocatieDto locatieDto = locatieMapper.toLocatieDto(plan);
-                locatieDto.setMd5hash(md5hash);
-                locatieDto.setRegistratie(LocalDateTime.now());
-                locatieRepository.save(locatieDto);
-                log.debug("Added locatie: {}", md5hash);
-            }
+            extractLocation(plan, md5hash);
 
             Optional<PlanDto> optionalFoundPlanDto = planRepository.findByIdentificatie(planDto.getIdentificatie());
 
@@ -153,104 +154,23 @@ public class PlannenService {
                 }
             }
 
-            Optional<PlanStatusDto> optionalPlanStatusDto = planStatusRepository.findByStatusAndDatum(plan.getPlanstatusInfo().getPlanstatus().getValue(), plan.getPlanstatusInfo().getDatum());
-            PlanStatusDto currentPlanStatus = null;
-            if (optionalPlanStatusDto.isPresent()) {
-                currentPlanStatus = optionalPlanStatusDto.get();
-                currentPlanStatus.getPlannen().add(planDto);
-            } else {
-                currentPlanStatus = new PlanStatusDto();
-                currentPlanStatus.setStatus(plan.getPlanstatusInfo().getPlanstatus().getValue());
-                currentPlanStatus.setDatum(plan.getPlanstatusInfo().getDatum());
-                currentPlanStatus.getPlannen().add(planDto);
-            }
-            currentPlanStatus = planStatusRepository.save(currentPlanStatus);
-            planDto.setPlanstatus(currentPlanStatus);
-            log.info("Planstatus: {}", currentPlanStatus.toString());
+            // onetomany relations
+            extractPlanStatus(plan, planDto);
 
+            extractBeleidsmatigeOverheid(plan, planDto);
 
-            PlanBeleidsmatigVerantwoordelijkeOverheid beleidsmatigeOverheid = plan.getBeleidsmatigVerantwoordelijkeOverheid();
-
-            if (beleidsmatigeOverheid.getCode().isPresent()) {
-                Optional<OverheidDto> OptionalBeleidsmatigOverheid = overheidRepository.findByCode(beleidsmatigeOverheid.getCode().get());
-                OverheidDto currentBeleidsMatigeOverheid = null;
-                if (OptionalBeleidsmatigOverheid.isPresent()) {
-                    currentBeleidsMatigeOverheid = OptionalBeleidsmatigOverheid.get();
-                    currentBeleidsMatigeOverheid.getBeleidsmatig().add(planDto);
-                } else {
-                    currentBeleidsMatigeOverheid = new OverheidDto();
-                    currentBeleidsMatigeOverheid.setNaam(beleidsmatigeOverheid.getNaam().get());
-                    currentBeleidsMatigeOverheid.setCode(beleidsmatigeOverheid.getCode().get());
-                    currentBeleidsMatigeOverheid.setType(beleidsmatigeOverheid.getType().getValue());
-                    currentBeleidsMatigeOverheid.getBeleidsmatig().add(planDto);
-                }
-                currentBeleidsMatigeOverheid = overheidRepository.save(currentBeleidsMatigeOverheid);
-                planDto.setBeleidsmatigeoverheid(currentBeleidsMatigeOverheid);
-                log.debug("beleidsmatige overheid: {}", currentBeleidsMatigeOverheid);
-            }
-
-            JsonNullable<PlanPublicerendBevoegdGezag> puOverheidDto = plan.getPublicerendBevoegdGezag();
-
-            if (puOverheidDto.isPresent()) {
-                if (puOverheidDto.get().getCode().isPresent()) {
-                    Optional<OverheidDto> optionalPublicerendeOverheid = overheidRepository.findByCode(puOverheidDto.get().getCode().get());
-                    OverheidDto currentPublicerendeOverheid = null;
-                    if (optionalPublicerendeOverheid.isPresent()) {
-                        currentPublicerendeOverheid = optionalPublicerendeOverheid.get();
-                        currentPublicerendeOverheid.getBeleidsmatig().add(planDto);
-                    } else {
-                        currentPublicerendeOverheid = new OverheidDto();
-                        currentPublicerendeOverheid.setNaam(puOverheidDto.get().getNaam().get());
-                        currentPublicerendeOverheid.setCode(puOverheidDto.get().getCode().get());
-                        currentPublicerendeOverheid.setType(puOverheidDto.get().getType().getValue());
-                        currentPublicerendeOverheid.getBeleidsmatig().add(planDto);
-                    }
-                    currentPublicerendeOverheid = overheidRepository.save(currentPublicerendeOverheid);
-
-                    planDto.setPublicerendeoverheid(currentPublicerendeOverheid);
-                    log.debug("publicerende overheid: {}", currentPublicerendeOverheid);
-                }
-            }
+            extractPublicerendeOverheid(plan, planDto);
 
             planRepository.save(planDto); // reference for locatienamen
 
-            List<String> verwijzingNormen = plan.getVerwijzingNorm();
-            Iterator<String> verwijzingNormIterable = verwijzingNormen.iterator();
-            while (verwijzingNormIterable.hasNext()) {
-                String verwijzing = verwijzingNormIterable.next();
-                Optional<VerwijzingNormDto> optionalVerwijzingNormDto = verwijzingNormRepository.findByNorm(verwijzing);
-                VerwijzingNormDto current = null;
-                if (optionalVerwijzingNormDto.isPresent()) {
-                    current = optionalVerwijzingNormDto.get();
-                    current.getPlannen().add(planDto);
-                } else {
-                    current = new VerwijzingNormDto();
-                    current.setNorm(verwijzing);
-                    current.getPlannen().add(planDto);
-                }
-                current = verwijzingNormRepository.save(current);
-                planDto.getVerwijzingnormen().add(current);
-            }
+            // manytomany relations
+            extractNormadressant(plan, planDto);
 
-            List<String> locatieNaamDtoSet = plan.getLocatienamen();
-            Iterator<String> locatieDtoIterable = locatieNaamDtoSet.iterator();
-            while (locatieDtoIterable.hasNext()) {
-                String puLocatieNaam = locatieDtoIterable.next();
+            extractVerwijzingNorm(plan, planDto);
 
-                Optional<LocatieNaamDto> optionalOverheidDto = locatieNaamRepository.findByNaam(puLocatieNaam);
-                LocatieNaamDto current = null;
-                if (optionalOverheidDto.isPresent()) {
-                    current = optionalOverheidDto.get();
-                    current.getPlannen().add(planDto);
-                } else {
-                    current = new LocatieNaamDto();
-                    current.setNaam(puLocatieNaam);
-                    current.getPlannen().add(planDto);
-                }
-                current = locatieNaamRepository.save(current);
-                planDto.getLocaties().add(current);
-                log.debug("locatie: {}", current);
-            }
+            extractLocatieNamen(plan, planDto);
+
+            extractOndergrond(plan, planDto);
 
             savedPlan = planRepository.save(planDto);
 
@@ -297,6 +217,158 @@ public class PlannenService {
             log.error("Error converting plan\n{}", e);
         }
         return savedPlan;
+    }
+
+    private void extractLocatieNamen(Plan plan, PlanDto planDto) {
+        List<String> locatieNaamDtoSet = plan.getLocatienamen();
+        Iterator<String> locatieNaamIterator = locatieNaamDtoSet.iterator();
+        while (locatieNaamIterator.hasNext()) {
+            String puLocatieNaam = locatieNaamIterator.next();
+
+            Optional<LocatieNaamDto> optionalOverheidDto = locatieNaamRepository.findByNaam(puLocatieNaam);
+            LocatieNaamDto current = null;
+            if (optionalOverheidDto.isPresent()) {
+                current = optionalOverheidDto.get();
+                current.getPlannen().add(planDto);
+            } else {
+                current = new LocatieNaamDto();
+                current.setNaam(puLocatieNaam);
+                current.getPlannen().add(planDto);
+            }
+            current = locatieNaamRepository.save(current);
+            planDto.getLocaties().add(current);
+            log.debug("locatie: {}", current);
+        }
+    }
+
+    private void extractOndergrond(Plan plan, PlanDto planDto) {
+        List<PlanOndergrondenInner> ondergronden = plan.getOndergronden();
+        Iterator<PlanOndergrondenInner> ondergrondenIterator = ondergronden.iterator();
+        while (ondergrondenIterator.hasNext()) {
+            PlanOndergrondenInner planOndergrondenInner = ondergrondenIterator.next();
+            String type = planOndergrondenInner.getType().isPresent()? planOndergrondenInner.getType().get(): null;
+            String datum = planOndergrondenInner.getDatum().isPresent()? planOndergrondenInner.getDatum().get(): null;
+            Optional<OndergrondDto> optionalOndergrondDto = ondergrondRepository.findByTypeAndDatum(type, datum);
+            OndergrondDto current = null;
+            if (optionalOndergrondDto.isPresent()) {
+                current = optionalOndergrondDto.get();
+            } else {
+                current = new OndergrondDto();
+                current.setType(type);
+                current.setDatum(datum);
+            }
+            current.getPlannen().add(planDto);
+            current = ondergrondRepository.save(current);
+            planDto.getOndergronden().add(current);
+        }
+    }
+    private void extractVerwijzingNorm(Plan plan, PlanDto planDto) {
+        List<String> verwijzingNormen = plan.getVerwijzingNorm();
+        Iterator<String> verwijzingNormIterable = verwijzingNormen.iterator();
+        while (verwijzingNormIterable.hasNext()) {
+            String verwijzing = verwijzingNormIterable.next();
+            Optional<VerwijzingNormDto> optionalVerwijzingNormDto = verwijzingNormRepository.findByNorm(verwijzing);
+            VerwijzingNormDto current = null;
+            if (optionalVerwijzingNormDto.isPresent()) {
+                current = optionalVerwijzingNormDto.get();
+            } else {
+                current = new VerwijzingNormDto();
+                current.setNorm(verwijzing);
+            }
+            current.getPlannen().add(planDto);
+            current = verwijzingNormRepository.save(current);
+            planDto.getVerwijzingnormen().add(current);
+        }
+    }
+
+    public void extractNormadressant(Plan plan, PlanDto planDto) {
+        List<String> normadressanten = plan.getNormadressant();
+        Iterator<String> normadressantIterator = normadressanten.iterator();
+        while (normadressantIterator.hasNext()) {
+            String normadressant = normadressantIterator.next();
+            Optional<NormadressantDto> optionalNormadressantDto = normadressantRepository.findByNorm(normadressant);
+            NormadressantDto current = null;
+            if (optionalNormadressantDto.isPresent()) {
+                current = optionalNormadressantDto.get();
+            } else {
+                current = new NormadressantDto();
+                current.setNorm(normadressant);
+            }
+            current.getPlannen().add(planDto);
+            current = normadressantRepository.save(current);
+            planDto.getNormadressanten().add(current);
+        }
+    }
+
+    private void extractPublicerendeOverheid(Plan plan, PlanDto planDto) {
+        JsonNullable<PlanPublicerendBevoegdGezag> puOverheidDto = plan.getPublicerendBevoegdGezag();
+
+        if (puOverheidDto.isPresent()) {
+            if (puOverheidDto.get().getCode().isPresent()) {
+                Optional<OverheidDto> optionalPublicerendeOverheid = overheidRepository.findByCode(puOverheidDto.get().getCode().get());
+                OverheidDto currentPublicerendeOverheid = null;
+                if (optionalPublicerendeOverheid.isPresent()) {
+                    currentPublicerendeOverheid = optionalPublicerendeOverheid.get();
+                } else {
+                    currentPublicerendeOverheid = new OverheidDto();
+                    currentPublicerendeOverheid.setNaam(puOverheidDto.get().getNaam().get());
+                    currentPublicerendeOverheid.setCode(puOverheidDto.get().getCode().get());
+                    currentPublicerendeOverheid.setType(puOverheidDto.get().getType().getValue());
+                }
+                currentPublicerendeOverheid.getBeleidsmatig().add(planDto);
+                currentPublicerendeOverheid = overheidRepository.save(currentPublicerendeOverheid);
+
+                planDto.setPublicerendeoverheid(currentPublicerendeOverheid);
+                log.debug("publicerende overheid: {}", currentPublicerendeOverheid);
+            }
+        }
+    }
+    private void extractBeleidsmatigeOverheid(Plan plan, PlanDto planDto) {
+        PlanBeleidsmatigVerantwoordelijkeOverheid beleidsmatigeOverheid = plan.getBeleidsmatigVerantwoordelijkeOverheid();
+
+        if (beleidsmatigeOverheid.getCode().isPresent()) {
+            Optional<OverheidDto> OptionalBeleidsmatigOverheid = overheidRepository.findByCode(beleidsmatigeOverheid.getCode().get());
+            OverheidDto currentBeleidsMatigeOverheid = null;
+            if (OptionalBeleidsmatigOverheid.isPresent()) {
+                currentBeleidsMatigeOverheid = OptionalBeleidsmatigOverheid.get();
+            } else {
+                currentBeleidsMatigeOverheid = new OverheidDto();
+                currentBeleidsMatigeOverheid.setNaam(beleidsmatigeOverheid.getNaam().get());
+                currentBeleidsMatigeOverheid.setCode(beleidsmatigeOverheid.getCode().get());
+                currentBeleidsMatigeOverheid.setType(beleidsmatigeOverheid.getType().getValue());
+            }
+            currentBeleidsMatigeOverheid.getBeleidsmatig().add(planDto);
+            currentBeleidsMatigeOverheid = overheidRepository.save(currentBeleidsMatigeOverheid);
+            planDto.setBeleidsmatigeoverheid(currentBeleidsMatigeOverheid);
+            log.debug("beleidsmatige overheid: {}", currentBeleidsMatigeOverheid);
+        }
+    }
+
+    private void extractPlanStatus(Plan plan, PlanDto planDto) {
+        Optional<PlanStatusDto> optionalPlanStatusDto = planStatusRepository.findByStatusAndDatum(plan.getPlanstatusInfo().getPlanstatus().getValue(), plan.getPlanstatusInfo().getDatum());
+        PlanStatusDto currentPlanStatus = null;
+        if (optionalPlanStatusDto.isPresent()) {
+            currentPlanStatus = optionalPlanStatusDto.get();
+        } else {
+            currentPlanStatus = new PlanStatusDto();
+            currentPlanStatus.setStatus(plan.getPlanstatusInfo().getPlanstatus().getValue());
+            currentPlanStatus.setDatum(plan.getPlanstatusInfo().getDatum());
+        }
+        currentPlanStatus.getPlannen().add(planDto);
+        currentPlanStatus = planStatusRepository.save(currentPlanStatus);
+        planDto.setPlanstatus(currentPlanStatus);
+        log.info("Planstatus: {}", currentPlanStatus.toString());
+    }
+
+    private void extractLocation(Plan plan, String md5hash) throws ParseException {
+        Optional<LocatieDto> optionalLocatieDto = locatieRepository.findByMd5hash(md5hash);
+        if (!optionalLocatieDto.isPresent()) {
+            LocatieDto locatieDto = locatieMapper.toLocatieDto(plan);
+            locatieDto.setMd5hash(md5hash);
+            locatieDto.setRegistratie(LocalDateTime.now());
+            locatieRepository.save(locatieDto);
+            log.debug("Added locatie: {}", md5hash);
+        }
     }
 
     private PlanDto updatePlanDto(PlanDto original, PlanDto planDto) {
