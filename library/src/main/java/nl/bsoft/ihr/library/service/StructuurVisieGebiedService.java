@@ -1,9 +1,7 @@
 package nl.bsoft.ihr.library.service;
 
 import lombok.extern.slf4j.Slf4j;
-import nl.bsoft.ihr.generated.model.BaseStructuurvisiegebiedBeleidInner;
-import nl.bsoft.ihr.generated.model.Structuurvisiegebied;
-import nl.bsoft.ihr.generated.model.StructuurvisiegebiedCollectie;
+import nl.bsoft.ihr.generated.model.*;
 import nl.bsoft.ihr.library.mapper.LocatieMapper;
 import nl.bsoft.ihr.library.mapper.StructuurVisieGebiedMapper;
 import nl.bsoft.ihr.library.model.dto.*;
@@ -30,6 +28,8 @@ public class StructuurVisieGebiedService {
     private final BeleidRepository beleidRepository;
     private final ThemaRepository themaRepository;
     private final LocatieRepository locatieRepository;
+    private final CartografieRepository cartografieRepository;
+    private final IllustratieRepository illustratieRepository;
     private final StructuurVisieGebiedMapper structuurVisieGebiedMapper;
     private final LocatieMapper locatieMapper;
 
@@ -46,7 +46,9 @@ public class StructuurVisieGebiedService {
                                        ThemaRepository themaRepository,
                                        LocatieRepository locatieRepository,
                                        StructuurVisieGebiedMapper structuurVisieGebiedMapper,
-                                       LocatieMapper locatieMapper) {
+                                       CartografieRepository cartografieRepository,
+                                       LocatieMapper locatieMapper,
+                                       IllustratieRepository illustratieRepository) {
         this.APIService = APIService;
         this.imroLoadRepository = imroLoadRepository;
         this.structuurvisieGebiedRepository = structuurvisieGebiedRepository;
@@ -57,7 +59,9 @@ public class StructuurVisieGebiedService {
         this.themaRepository = themaRepository;
         this.locatieRepository = locatieRepository;
         this.structuurVisieGebiedMapper = structuurVisieGebiedMapper;
+        this.cartografieRepository = cartografieRepository;
         this.locatieMapper = locatieMapper;
+        this.illustratieRepository = illustratieRepository;
     }
 
     public UpdateCounter loadTekstenFromList() {
@@ -131,8 +135,6 @@ public class StructuurVisieGebiedService {
             }
             current.setLocaties(geolocaties);
 
-            //structuurvisieGebiedRepository.save(current);
-
             Optional<StructuurVisieGebiedDto> optionalFound = structuurvisieGebiedRepository.findByPlanidentificatieAndIdentificatie(current.getPlanidentificatie(), current.getIdentificatie());
 
             if (optionalFound.isPresent()) { // existing entry
@@ -147,42 +149,10 @@ public class StructuurVisieGebiedService {
 
                     savedStructuurVisieGebiedDto = structuurvisieGebiedRepository.save(updated);
                     updateCounter.updated();
-
-                    /*
-                    Set<BeleidDto> structuurVisieGebiedBeleidDtoSet = saveStructuurVisieBeleid(savedStructuurVisieGebiedDto, current.getBeleid());
-                    updated.setBeleid(structuurVisieGebiedBeleidDtoSet);
-                    Set<ThemaDto> structuurVisieGebiedThemaDtoSet = saveStructuurVisieThema(savedStructuurVisieGebiedDto, current.getThemas());
-                    updated.setThemas(structuurVisieGebiedThemaDtoSet);
-
-                    savedStructuurVisieGebiedDto = structuurvisieGebiedRepository.save(updated);
-                     */
                 }
             } else { // new
                 savedStructuurVisieGebiedDto = structuurvisieGebiedRepository.save(current);
                 updateCounter.add();
-                /*
-                Set<BeleidDto> newBeleid = current.getBeleid();
-                Set<ThemaDto> newThema = current.getThemas();
-                Set<TekstRefDto> newTeksref = current.getVerwijzingNaarTekst();
-
-                current.setBeleid(null);
-                current.setThemas(null);
-                current.setVerwijzingNaarTekst(null);
-                savedStructuurVisieGebiedDto = structuurvisieGebiedRepository.save(current);
-
-                Set<BeleidDto> structuurVisieGebiedBeleidDtoSet = saveStructuurVisieBeleid(savedStructuurVisieGebiedDto, newBeleid);
-                savedStructuurVisieGebiedDto.setBeleid(structuurVisieGebiedBeleidDtoSet);
-
-                Set<ThemaDto> structuurVisieGebiedThemaDtoSet = saveStructuurVisieThema(savedStructuurVisieGebiedDto, newThema);
-                savedStructuurVisieGebiedDto.setThemas(structuurVisieGebiedThemaDtoSet);
-
-
-                Set<TekstRefDto> tekstRefDtos = saveTekstRefs(savedStructuurVisieGebiedDto, newTeksref);
-                savedStructuurVisieGebiedDto.setVerwijzingNaarTekst(tekstRefDtos);
-
-                savedStructuurVisieGebiedDto = structuurvisieGebiedRepository.save(savedStructuurVisieGebiedDto);
-
-                 */
             }
 
             // add/update themas
@@ -194,12 +164,13 @@ public class StructuurVisieGebiedService {
             // add/update verwijzingNaarTekst
             extractedVerwijzingnaarTekst(structuurvisie, savedStructuurVisieGebiedDto);
 
-            // [TODO] add/update illustraties
+            extractedIllustraties(structuurvisie, savedStructuurVisieGebiedDto);
             // [TODO] add/update externeplan_tengevolgevan
             // [TODO] add/update externeplan_gebruiktinformatieuit
             // [TODO] add/update externeplan_uittewerkenin
             // [TODO] add/update externeplan_uitgewerktin
-            // [TODO] add/update cartografieinfo
+
+            extractedCartografieInfo(structuurvisie, savedStructuurVisieGebiedDto);
             // [TODO] add/update locaties
 
             savedStructuurVisieGebiedDto = structuurvisieGebiedRepository.save(savedStructuurVisieGebiedDto);
@@ -208,6 +179,56 @@ public class StructuurVisieGebiedService {
             log.error("Error while processing: {} in processing: {}", structuurvisie, e);
         }
         return savedStructuurVisieGebiedDto;
+    }
+
+    private void extractedCartografieInfo(Structuurvisiegebied structuurvisie, StructuurVisieGebiedDto savedStructuurVisieGebiedDto) {
+        List<CartografieInfo> cartografieInfos = structuurvisie.getCartografieInfo();
+        Iterator<CartografieInfo> cartografieInfoIterator = cartografieInfos.iterator();
+        while (cartografieInfoIterator.hasNext()) {
+            CartografieInfo cartografieInfo = cartografieInfoIterator.next();
+
+            int kaartnummer = cartografieInfo.getKaartnummer();
+            String kaartnaam = cartografieInfo.getKaartnaam();
+            String symboolcode = cartografieInfo.getSymboolCode().isPresent() ? cartografieInfo.getSymboolCode().get() : null;
+            Optional<CartografieInfoDto> optionalCartografieInfoDto = cartografieRepository.findByKaartnummerAndKaartnaamAndSymboolcode(kaartnummer, kaartnaam, symboolcode);
+            CartografieInfoDto current = null;
+            if (optionalCartografieInfoDto.isPresent()) {
+                current = optionalCartografieInfoDto.get();
+            } else {
+                current = new CartografieInfoDto();
+                current.setKaartnummer(kaartnummer);
+                current.setKaartnaam(kaartnaam);
+                current.setSymboolcode(symboolcode);
+            }
+            current.getStructuurvisiegebied().add(savedStructuurVisieGebiedDto);
+            current = cartografieRepository.save(current);
+            savedStructuurVisieGebiedDto.getCartografieinfo().add(current);
+        }
+    }
+    private void  extractedIllustraties(Structuurvisiegebied structuurvisie, StructuurVisieGebiedDto savedStructuurVisieGebiedDto) {
+        List<IllustratieReferentie> illustratieReferenties = structuurvisie.getIllustraties();
+        Iterator<IllustratieReferentie> illustraties = illustratieReferenties.iterator();
+        while (illustraties.hasNext()) {
+            IllustratieReferentie illustratieReferentie = illustraties.next();
+            String href = illustratieReferentie.getHref();
+            String type = illustratieReferentie.getType();
+            String naam = illustratieReferentie.getNaam().isPresent() ? illustratieReferentie.getNaam().get() : null;
+            String legendanaam = illustratieReferentie.getLegendanaam().isPresent() ? illustratieReferentie.getLegendanaam().get() : null;
+            Optional<IllustratieDto> optionalIllustratieDto = illustratieRepository.findByHrefAndTypeAndNaamAndLegendanaam(href, type, naam, legendanaam);
+            IllustratieDto current = null;
+            if (optionalIllustratieDto.isPresent()) {
+                current = optionalIllustratieDto.get();
+            } else {
+                current = new IllustratieDto();
+                current.setHref(href);
+                current.setType(type);
+                current.setNaam(naam);
+                current.setLegendanaam(legendanaam);
+            }
+            current.getStructuurvisiegebied().add(savedStructuurVisieGebiedDto);
+            current = illustratieRepository.save(current);
+            savedStructuurVisieGebiedDto.getIllustraties().add(current);
+        }
     }
 
     private void extractedThema(Structuurvisiegebied structuurvisie, StructuurVisieGebiedDto savedStructuurVisieGebiedDto) {
@@ -271,77 +292,4 @@ public class StructuurVisieGebiedService {
             current = tekstRefRepository.save(current);
             savedStructuurVisieGebiedDto.getVerwijzingNaarTekst().add(current);
         }
-    }
-    /*
-    private Set<TekstRefDto> saveTekstRefs(StructuurVisieGebiedDto savedStructuurVisieGebiedDto, Set<TekstRefDto> teksref) {
-        Set<TekstRefDto> savedTekstref = new HashSet<>();
-
-        Iterator<TekstRefDto> tekstRefDtoIterator = teksref.iterator();
-
-        while (tekstRefDtoIterator.hasNext()) {
-            TekstRefDto current = tekstRefDtoIterator.next();
-
-            Optional<TekstRefDto> found = tekstRefRepository.findByReferentie(current.getReferentie());
-            TekstRefDto currentTekstRef = null;
-            if (found.isPresent()) {
-                currentTekstRef = found.get();
-                currentTekstRef.getVerwijzingNaarTekst().add(savedStructuurVisieGebiedDto);
-                currentTekstRef = tekstRefRepository.save(currentTekstRef);
-            } else {
-                current.getVerwijzingNaarTekst().add(savedStructuurVisieGebiedDto);
-                currentTekstRef = tekstRefRepository.save(current);
-            }
-            savedTekstref.add(currentTekstRef);
-        }
-        return savedTekstref;
-    }
-
-    private Set<ThemaDto> saveStructuurVisieThema(StructuurVisieGebiedDto savedStructuurVisieGebiedDto, Set<ThemaDto> thema) {
-        Set<ThemaDto> savedThema = new HashSet<>();
-
-        Iterator<ThemaDto> structuurVisieGebiedThemaDtoIterator = thema.iterator();
-
-        while (structuurVisieGebiedThemaDtoIterator.hasNext()) {
-            ThemaDto current = structuurVisieGebiedThemaDtoIterator.next();
-
-            Optional<ThemaDto> found = structuurvisieGebiedThemaRepository.findByThema(current.getThema());
-            ThemaDto currentStructuurVisieGebiedThemaDto = null;
-            if (found.isPresent()) {
-                currentStructuurVisieGebiedThemaDto = found.get();
-                currentStructuurVisieGebiedThemaDto.getStructuurVisieGebieden().add(savedStructuurVisieGebiedDto);
-                currentStructuurVisieGebiedThemaDto = structuurvisieGebiedThemaRepository.save(currentStructuurVisieGebiedThemaDto);
-            } else {
-                ThemaDto newThema = new ThemaDto();
-                newThema.setThema(current.getThema());
-                newThema.getStructuurVisieGebieden().add(savedStructuurVisieGebiedDto);
-                currentStructuurVisieGebiedThemaDto = structuurvisieGebiedThemaRepository.save(newThema);
-            }
-            savedThema.add(currentStructuurVisieGebiedThemaDto);
-        }
-        return savedThema;
-    }
-
-    private Set<BeleidDto> saveStructuurVisieBeleid(StructuurVisieGebiedDto savedStructuurVisieGebiedDto, Set<BeleidDto> beleid) {
-        Set<BeleidDto> savedBeleid = new HashSet<>();
-
-        Iterator<BeleidDto> structuurVisieGebiedDtoIterator = beleid.iterator();
-
-        while (structuurVisieGebiedDtoIterator.hasNext()) {
-            BeleidDto current = structuurVisieGebiedDtoIterator.next();
-
-            Optional<BeleidDto> found = structuurvisieGebiedBeleidRepository.findByBelangAndRolAndInstrument(current.getBelang(), current.getRol(), current.getInstrument());
-            BeleidDto currentStructuurVisieGebiedBeleid = null;
-            if (found.isPresent()) {
-                currentStructuurVisieGebiedBeleid = found.get();
-                currentStructuurVisieGebiedBeleid.getStructuurVisieGebied().add(savedStructuurVisieGebiedDto);
-                currentStructuurVisieGebiedBeleid = structuurvisieGebiedBeleidRepository.save(currentStructuurVisieGebiedBeleid);
-            } else {
-                current.getStructuurVisieGebied().add(savedStructuurVisieGebiedDto);
-                currentStructuurVisieGebiedBeleid = structuurvisieGebiedBeleidRepository.save(current);
-            }
-            savedBeleid.add(currentStructuurVisieGebiedBeleid);
-        }
-        return savedBeleid;
-    }
-     */
-}
+    }}

@@ -10,6 +10,7 @@ create table illustratie
 
 create index illustratie_type_idx on illustratie (type);
 create index illustratie_naam_idx on illustratie (naam);
+create unique index illustratie_href_type_naam_legenda_idx on illustratie (href, type, naam, legendanaam);
 
 ALTER TABLE illustratie
     OWNER TO testuser;

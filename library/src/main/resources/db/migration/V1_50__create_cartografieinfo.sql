@@ -2,10 +2,12 @@
 create table cartografieinfo
 (
     id          bigint not null primary key,
-    kaartnummer text,
+    kaartnummer int,
     kaartnaam   text,
     symboolcode text
 );
+
+create unique index cartografieinfo_kaartnummer_kaartnaam_symboolcode_idx on cartografieinfo (kaartnummer, kaartnaam, symboolcode);
 
 ALTER TABLE cartografieinfo
     OWNER TO testuser;

@@ -36,5 +36,11 @@ drop table if exists planstatus;
 drop table if exists plan_verwijzingnorm;
 drop table if exists verwijzingnorm;
 
+drop table if exists normadressant;
+drop table if exists ondergrond;
+drop table if exists plan_normadressant;
+drop table if exists plan_ondergrond;
+
+
 delete from flyway_schema_history;
 

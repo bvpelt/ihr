@@ -7,6 +7,8 @@ create table beleid
     instrument text
 );
 
+create unique index beleid_belang_rol_instrument_idx on beleid (belang, rol, instrument);
+
 ALTER TABLE beleid
     OWNER TO testuser;
 

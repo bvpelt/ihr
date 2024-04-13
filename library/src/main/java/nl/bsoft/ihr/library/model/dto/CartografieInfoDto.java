@@ -24,7 +24,7 @@ public class CartografieInfoDto {
     private Long id;
 
     @Column(name = "kaartnummer")
-    private String kaartnummer;
+    private Integer kaartnummer;
     @Column(name = "kaartnaam")
     private String kaartnaam;
     @Column(name = "symboolcode")
