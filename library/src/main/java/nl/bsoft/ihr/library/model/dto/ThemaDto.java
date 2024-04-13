@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -25,7 +26,7 @@ public class ThemaDto {
     private String thema;
 
     @ManyToMany(mappedBy = "themas", fetch = FetchType.LAZY)
-    Set<StructuurVisieGebiedDto> structuurVisieGebieden;
+    Set<StructuurVisieGebiedDto> structuurVisieGebieden = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {
