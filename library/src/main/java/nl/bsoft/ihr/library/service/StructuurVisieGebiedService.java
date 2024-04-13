@@ -1,6 +1,7 @@
 package nl.bsoft.ihr.library.service;
 
 import lombok.extern.slf4j.Slf4j;
+import nl.bsoft.ihr.generated.model.BaseStructuurvisiegebiedBeleidInner;
 import nl.bsoft.ihr.generated.model.Structuurvisiegebied;
 import nl.bsoft.ihr.generated.model.StructuurvisiegebiedCollectie;
 import nl.bsoft.ihr.library.mapper.LocatieMapper;
@@ -26,6 +27,8 @@ public class StructuurVisieGebiedService {
     private final ThemaRepository structuurvisieGebiedThemaRepository;
     private final StructuurvisieGebiedBeleidRepository structuurvisieGebiedBeleidRepository;
     private final TekstRefRepository tekstRefRepository;
+    private final BeleidRepository beleidRepository;
+    private final ThemaRepository themaRepository;
     private final LocatieRepository locatieRepository;
     private final StructuurVisieGebiedMapper structuurVisieGebiedMapper;
     private final LocatieMapper locatieMapper;
@@ -39,6 +42,8 @@ public class StructuurVisieGebiedService {
                                        ThemaRepository structuurvisieGebiedThemaRepository,
                                        StructuurvisieGebiedBeleidRepository structuurvisieGebiedBeleidRepository,
                                        TekstRefRepository tekstRefRepository,
+                                       BeleidRepository beleidRepositor,
+                                       ThemaRepository themaRepository,
                                        LocatieRepository locatieRepository,
                                        StructuurVisieGebiedMapper structuurVisieGebiedMapper,
                                        LocatieMapper locatieMapper) {
@@ -48,6 +53,8 @@ public class StructuurVisieGebiedService {
         this.structuurvisieGebiedBeleidRepository = structuurvisieGebiedBeleidRepository;
         this.structuurvisieGebiedThemaRepository = structuurvisieGebiedThemaRepository;
         this.tekstRefRepository = tekstRefRepository;
+        this.beleidRepository = beleidRepositor;
+        this.themaRepository = themaRepository;
         this.locatieRepository = locatieRepository;
         this.structuurVisieGebiedMapper = structuurVisieGebiedMapper;
         this.locatieMapper = locatieMapper;
@@ -124,6 +131,8 @@ public class StructuurVisieGebiedService {
             }
             current.setLocaties(geolocaties);
 
+            //structuurvisieGebiedRepository.save(current);
+
             Optional<StructuurVisieGebiedDto> optionalFound = structuurvisieGebiedRepository.findByPlanidentificatieAndIdentificatie(current.getPlanidentificatie(), current.getIdentificatie());
 
             if (optionalFound.isPresent()) { // existing entry
@@ -132,26 +141,26 @@ public class StructuurVisieGebiedService {
                     savedStructuurVisieGebiedDto = found;
                     updateCounter.skipped();
                 } else {                     // changed
-                    found.setNaam(current.getNaam());
-                    found.setLocaties(current.getLocaties());
-
                     StructuurVisieGebiedDto updated = optionalFound.get();
                     updated.setNaam(current.getNaam());
-
-                    updated.setVerwijzingNaarTekst(current.getVerwijzingNaarTekst());
-                    updateCounter.updated();
+                    updated.setLocaties(current.getLocaties());
 
                     savedStructuurVisieGebiedDto = structuurvisieGebiedRepository.save(updated);
+                    updateCounter.updated();
 
+                    /*
                     Set<BeleidDto> structuurVisieGebiedBeleidDtoSet = saveStructuurVisieBeleid(savedStructuurVisieGebiedDto, current.getBeleid());
                     updated.setBeleid(structuurVisieGebiedBeleidDtoSet);
                     Set<ThemaDto> structuurVisieGebiedThemaDtoSet = saveStructuurVisieThema(savedStructuurVisieGebiedDto, current.getThemas());
                     updated.setThemas(structuurVisieGebiedThemaDtoSet);
 
                     savedStructuurVisieGebiedDto = structuurvisieGebiedRepository.save(updated);
+                     */
                 }
-            } else {
+            } else { // new
+                savedStructuurVisieGebiedDto = structuurvisieGebiedRepository.save(current);
                 updateCounter.add();
+                /*
                 Set<BeleidDto> newBeleid = current.getBeleid();
                 Set<ThemaDto> newThema = current.getThemas();
                 Set<TekstRefDto> newTeksref = current.getVerwijzingNaarTekst();
@@ -173,13 +182,97 @@ public class StructuurVisieGebiedService {
 
                 savedStructuurVisieGebiedDto = structuurvisieGebiedRepository.save(savedStructuurVisieGebiedDto);
 
+                 */
             }
+
+            // add/update themas
+            extractedThema(structuurvisie, savedStructuurVisieGebiedDto);
+
+            // add/update beleid
+            extractedBeleid(structuurvisie, savedStructuurVisieGebiedDto);
+
+            // add/update verwijzingNaarTekst
+            extractedVerwijzingnaarTekst(structuurvisie, savedStructuurVisieGebiedDto);
+
+            // [TODO] add/update illustraties
+            // [TODO] add/update externeplan_tengevolgevan
+            // [TODO] add/update externeplan_gebruiktinformatieuit
+            // [TODO] add/update externeplan_uittewerkenin
+            // [TODO] add/update externeplan_uitgewerktin
+            // [TODO] add/update cartografieinfo
+            // [TODO] add/update locaties
+
+            savedStructuurVisieGebiedDto = structuurvisieGebiedRepository.save(savedStructuurVisieGebiedDto);
+
         } catch (Exception e) {
             log.error("Error while processing: {} in processing: {}", structuurvisie, e);
         }
         return savedStructuurVisieGebiedDto;
     }
 
+    private void extractedThema(Structuurvisiegebied structuurvisie, StructuurVisieGebiedDto savedStructuurVisieGebiedDto) {
+        List<String> themas = structuurvisie.getThema();
+        Iterator<String> themaDtoIterator = themas.iterator();
+        while (themaDtoIterator.hasNext()) {
+            String thema = themaDtoIterator.next();
+            Optional<ThemaDto> optionalThemaDto = themaRepository.findByThema(thema);
+            ThemaDto current = null;
+            if (optionalThemaDto.isPresent()) {
+                current = optionalThemaDto.get();
+            } else {
+                current = new ThemaDto();
+                current.setThema(thema);
+            }
+            current.getStructuurVisieGebieden().add(savedStructuurVisieGebiedDto);
+            current = themaRepository.save(current);
+            savedStructuurVisieGebiedDto.getThemas().add(current);
+        }
+    }
+
+    private void extractedBeleid(Structuurvisiegebied structuurvisie, StructuurVisieGebiedDto savedStructuurVisieGebiedDto) {
+        List<BaseStructuurvisiegebiedBeleidInner> beleiden = structuurvisie.getBeleid();
+
+        Iterator<BaseStructuurvisiegebiedBeleidInner> beleidIterator = beleiden.iterator();
+        while (beleidIterator.hasNext()) {
+            BaseStructuurvisiegebiedBeleidInner beleid = beleidIterator.next();
+            String belang = beleid.getBelang().isPresent() ? beleid.getBelang().get() : null;
+            String rol = beleid.getRol().isPresent() ? beleid.getRol().get() : null;
+            String instrument = beleid.getInstrument().isPresent() ? beleid.getInstrument().get() : null;
+            Optional<BeleidDto> optionalBeleidDto = beleidRepository.findByBelangAndRolAndInstrument(belang, rol, instrument);
+            BeleidDto current = null;
+            if (optionalBeleidDto.isPresent()) {
+                current = optionalBeleidDto.get();
+            } else {
+                current = new BeleidDto();
+                current.setBelang(belang);
+                current.setRol(rol);
+                current.setInstrument(instrument);
+            }
+            current.getStructuurVisieGebied().add(savedStructuurVisieGebiedDto);
+            current = beleidRepository.save(current);
+            savedStructuurVisieGebiedDto.getBeleid().add(current);
+        }
+    }
+
+    private void extractedVerwijzingnaarTekst(Structuurvisiegebied structuurvisie, StructuurVisieGebiedDto savedStructuurVisieGebiedDto) {
+        List<String> verwijzingNaarTeksten = structuurvisie.getVerwijzingNaarTekst();
+        Iterator<String> verwijzingNaarTekstenIterator = verwijzingNaarTeksten.iterator();
+        while (verwijzingNaarTekstenIterator.hasNext()) {
+            String verwijzingnaartekst = verwijzingNaarTekstenIterator.next();
+            Optional<TekstRefDto> optionalTekstRefDto = tekstRefRepository.findByReferentie(verwijzingnaartekst);
+            TekstRefDto current = null;
+            if (optionalTekstRefDto.isPresent()) {
+                current = optionalTekstRefDto.get();
+            }else {
+                current = new TekstRefDto();
+                current.setReferentie(verwijzingnaartekst);
+            }
+            current.getVerwijzingNaarTekst().add(savedStructuurVisieGebiedDto);
+            current = tekstRefRepository.save(current);
+            savedStructuurVisieGebiedDto.getVerwijzingNaarTekst().add(current);
+        }
+    }
+    /*
     private Set<TekstRefDto> saveTekstRefs(StructuurVisieGebiedDto savedStructuurVisieGebiedDto, Set<TekstRefDto> teksref) {
         Set<TekstRefDto> savedTekstref = new HashSet<>();
 
@@ -218,8 +311,10 @@ public class StructuurVisieGebiedService {
                 currentStructuurVisieGebiedThemaDto.getStructuurVisieGebieden().add(savedStructuurVisieGebiedDto);
                 currentStructuurVisieGebiedThemaDto = structuurvisieGebiedThemaRepository.save(currentStructuurVisieGebiedThemaDto);
             } else {
-                current.getStructuurVisieGebieden().add(savedStructuurVisieGebiedDto);
-                currentStructuurVisieGebiedThemaDto = structuurvisieGebiedThemaRepository.save(current);
+                ThemaDto newThema = new ThemaDto();
+                newThema.setThema(current.getThema());
+                newThema.getStructuurVisieGebieden().add(savedStructuurVisieGebiedDto);
+                currentStructuurVisieGebiedThemaDto = structuurvisieGebiedThemaRepository.save(newThema);
             }
             savedThema.add(currentStructuurVisieGebiedThemaDto);
         }
@@ -248,5 +343,5 @@ public class StructuurVisieGebiedService {
         }
         return savedBeleid;
     }
-
+     */
 }

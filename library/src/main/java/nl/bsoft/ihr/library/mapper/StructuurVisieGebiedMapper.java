@@ -26,10 +26,13 @@ public abstract class StructuurVisieGebiedMapper {
     @Mapping(target = "id", source = "id", ignore = true)
     @Mapping(target = "identificatie", source = "id", qualifiedByName = "toIdentificatie")
     @Mapping(target = "naam", source = "naam")
-    @Mapping(target = "themas", source = "thema", qualifiedByName = "toThemaListString")
-    @Mapping(target = "beleid", source = "beleid", qualifiedByName = "toBeleidListString")
-    @Mapping(target = "verwijzingNaarTekst", source = "verwijzingNaarTekst", qualifiedByName = "toVerwijzingNaarTekstListString")
-    @Mapping(target = "illustraties", source = "illustraties", qualifiedByName = "toIllustraties")
+    @Mapping(target = "beleid", source = "beleid", ignore = true)
+    @Mapping(target = "verwijzingNaarTekst", source = "verwijzingNaarTekst", ignore = true)
+            @Mapping(target = "illustraties", source = "illustraties", ignore = true)
+//    @Mapping(target = "themas", source = "thema", qualifiedByName = "toThemaListString")
+//    @Mapping(target = "beleid", source = "beleid", qualifiedByName = "toBeleidListString")
+//    @Mapping(target = "verwijzingNaarTekst", source = "verwijzingNaarTekst", qualifiedByName = "toVerwijzingNaarTekstListString")
+//    @Mapping(target = "illustraties", source = "illustraties", qualifiedByName = "toIllustraties")
     public abstract StructuurVisieGebiedDto toStructuurVisieGebied(Structuurvisiegebied structuurvisiegebied) throws ParseException;
 
     @Named("toIdentificatie")
@@ -37,6 +40,7 @@ public abstract class StructuurVisieGebiedMapper {
         return id;
     }
 
+    /*
     @Named("toThemaListString")
     protected Set<ThemaDto> toThemaListString(List<String> themas) {
         final Set<ThemaDto> themaDtos = new HashSet<>();
@@ -50,7 +54,8 @@ public abstract class StructuurVisieGebiedMapper {
         }
         return themaDtos;
     }
-
+*/
+    /*
     @Named("toIllustraties")
     protected Set<IllustratieDto> toIllustraties(List<IllustratieReferentie> illustraties) {
 
@@ -103,6 +108,7 @@ public abstract class StructuurVisieGebiedMapper {
         return beleidDtos;
     }
 
+     */
     @Named("toJsonNullableString")
     protected String toJsonNullableString(JsonNullable<String> jsonNullable) {
         if (jsonNullable.isPresent()) {

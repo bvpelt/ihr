@@ -14,4 +14,6 @@ public interface TekstRepository extends PagingAndSortingRepository<TekstDto, Lo
         JpaSpecificationExecutor<TekstDto> {
 
     Optional<TekstDto> findByPlanidentificatieAndTekstidentificatie(String planidentificatie, String tekstIdentificatie);
+
+
 }
