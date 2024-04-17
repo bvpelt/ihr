@@ -1,19 +1,23 @@
 package nl.bsoft.ihr.library.service;
 
 import lombok.extern.slf4j.Slf4j;
+import nl.bsoft.ihr.generated.model.Kruimel;
 import nl.bsoft.ihr.generated.model.Tekst;
 import nl.bsoft.ihr.generated.model.TekstCollectie;
 import nl.bsoft.ihr.generated.model.TekstReferentie;
 import nl.bsoft.ihr.library.mapper.TekstMapper;
 import nl.bsoft.ihr.library.model.dto.ImroLoadDto;
+import nl.bsoft.ihr.library.model.dto.KruimelDto;
 import nl.bsoft.ihr.library.model.dto.TekstDto;
 import nl.bsoft.ihr.library.repository.ImroLoadRepository;
+import nl.bsoft.ihr.library.repository.KruimelRepository;
 import nl.bsoft.ihr.library.repository.TekstRepository;
 import nl.bsoft.ihr.library.util.UpdateCounter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +27,7 @@ public class TekstenService {
     private final APIService APIService;
     private final ImroLoadRepository imroLoadRepository;
     private final TekstRepository tekstRepository;
+    private final KruimelRepository kruimelRepository;
     private final TekstMapper tekstMapper;
     private final int MAXTEKSTSIZE = 100;
 
@@ -30,10 +35,12 @@ public class TekstenService {
     public TekstenService(APIService APIService,
                           ImroLoadRepository imroLoadRepository,
                           TekstRepository tekstRepository,
+                          KruimelRepository kruimelRepository,
                           TekstMapper tekstMapper) {
         this.APIService = APIService;
         this.imroLoadRepository = imroLoadRepository;
         this.tekstRepository = tekstRepository;
+        this.kruimelRepository = kruimelRepository;
         this.tekstMapper = tekstMapper;
     }
 
@@ -142,6 +149,29 @@ public class TekstenService {
             } else { // new occurrence
                 updateCounter.add();
                 savedTekst = tekstRepository.save(current);
+            }
+
+            List<Kruimel> kruimels = tekst.getKruimelpad();
+            Iterator<Kruimel> kruimelIterator = kruimels.iterator();
+            while (kruimelIterator.hasNext()) {
+                Kruimel kruimel = kruimelIterator.next();
+
+                String identificatie = kruimel.getId();
+                String titel = kruimel.getTitel().isPresent() ? kruimel.getTitel().get() : null;
+                Integer volgnummer = kruimel.getVolgnummer();
+                Optional<KruimelDto> optionalKruimelDto = kruimelRepository.findByIdentificatieAndTitelAndVolgnummer(identificatie, titel, volgnummer);
+
+                KruimelDto currentKruimel = null;
+                if (optionalKruimelDto.isPresent()) {
+                    currentKruimel = optionalKruimelDto.get();
+                } else {
+                    currentKruimel = new KruimelDto();
+                    currentKruimel.setIdentificatie(identificatie);
+                    currentKruimel.setTitel(titel);
+                    currentKruimel.setVolgnummer(volgnummer);
+                }
+                currentKruimel.setKruimelpad(savedTekst);
+                kruimelRepository.save(currentKruimel);
             }
         } catch (Exception e) {
             log.error("Error while processing: {} in tekst processing: {}", tekst, e);

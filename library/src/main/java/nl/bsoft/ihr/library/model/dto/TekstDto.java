@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -35,6 +37,9 @@ public class TekstDto {
     private String externHRef;
     @Column(name = "externlabel")
     private String externLabel;
+
+    @OneToMany(mappedBy = "kruimelpad")
+    private Set<KruimelDto> kruimelpad = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {

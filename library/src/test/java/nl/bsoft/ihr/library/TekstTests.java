@@ -40,4 +40,23 @@ public class TekstTests {
         }
         log.info("End   tekst.json");
     }
+
+    @Test
+    public void mapTekstDto_01() {
+        Tekst tekst;
+        log.info("Start tekst-01.json");
+        try {
+            File dataFile = resourceLoader.getResource("classpath:tekst-01.json").getFile();
+
+            tekst = objectMapper.readValue(dataFile, Tekst.class);
+            log.info("tekst: \n{}", tekst.toString());
+
+            TekstDto tekstDto = tekstMapper.toTekst(tekst);
+            log.info("tekstDto: \n{}", tekstDto.toString());
+
+        } catch (Exception e) {
+            log.error("Error in mapTekstDto test: {}", e);
+        }
+        log.info("End   tekst-01.json");
+    }
 }

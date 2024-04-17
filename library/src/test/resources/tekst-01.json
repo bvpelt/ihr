@@ -1,0 +1,164 @@
+{
+  "inhoud": null,
+  "titel": "Artikel 1 Begrippen",
+  "externeReferentie": null,
+  "_links": {
+    "figuren": [],
+    "structuurvisieverklaringen": [],
+    "structuurvisiegebieden": [],
+    "lettertekenaanduidingen": [],
+    "besluitvlakken": [],
+    "maatvoeringen": [],
+    "children": [
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.70A71BE4-149E-4014-A14F-2BB4F07A419A"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.09164C8B-E223-4C49-B11C-7F644F5CF50C"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.B1839A0C-1508-4FAB-BFC0-E4931A0BBDA7"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.3E22A69A-92B3-4FA1-B6A2-C6B70A19DFBE"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.1392D87A-56C7-4471-BADE-5EAF7A427423"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.D2C1BA55-6282-47B5-967B-D3E5C919867C"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.EA334279-34E6-4ED1-B8C8-773380F239AA"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.81F9EDBD-312A-4C2D-8F2E-F77CF42CB6E0"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.9CD706D1-D940-44E2-BAA1-508E2EF607A8"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.F415120D-426A-402E-A38A-D0E195482AE7"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.573B890D-E152-4FE9-9F62-542068724F14"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.328EA934-192D-437F-9D22-75089D4F4A42"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.541BA5C3-9B8C-4DCE-AD1A-43B3425EA33B"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.C101507A-2BCF-4C38-AEE1-3C24B0AD4B26"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.B1BAAA60-8090-4E40-9AB4-9127AB5104C1"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.CDB7C4EF-0B08-4156-B3C3-962430AE24F1"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.590D0648-3639-4191-B99B-46711AABAE22"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.0D1ACAFD-F0F4-4610-AF16-5A1DDB4CCD79"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.4600C2F5-9E16-49A5-95DB-A7A6AAF0C5E8"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.DCBC8B9F-D1C3-4892-BB4D-71CAD1DDF513"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.62CBA58E-D6C4-4CE2-9C55-ADC6F0D4C9AA"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.93B8A013-3B8D-4C6C-A9DB-D5E40BA26870"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.56C2676A-65CC-4667-997D-D35AEEE6301E"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.AE283778-EDCC-4C76-B65B-2E2829ED7C34"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.99ED294A-8A44-4BFD-9AF3-D32A9C119043"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.D62408B1-4B62-4EF3-B98A-E0E32E29DEFF"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.07B5A362-529F-453A-BECD-F95AE3C8F7C3"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.2E9A389F-1BFF-4135-B320-BB7E3A8C4ED7"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.F9E9DCA1-C5E6-4579-B020-3E7142EB154F"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.BD00E837-D4C2-4220-8000-0DA77282AE2C"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.2B7336E6-7E97-4A30-80E3-EFEEC1BC2CAE"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.0430FBEC-009F-49F6-8F32-1775C4ED88C1"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.39671560-FE96-4F8E-933C-ADB27C906E63"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.F19479CA-2471-45AD-8CF0-09BB3872703B"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.CC30969B-A220-4E00-8158-DAEF8534643B"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.08EF3D97-FE59-4685-935E-F67E202BFEB3"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.1AD2C0BF-75E2-4BF4-952F-686BA3F3AA28"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.A52A9028-DBE2-44CD-96C2-9E05477F4356"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.F5D6D1D2-96AE-46A4-8935-CBA30D5567E1"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.E415C637-D3CB-49A2-993E-0F19C81BB437"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.AC599C2E-FF14-42CC-88E1-63C9424C9DEA"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.2CECB2A7-A375-4BB5-AFF0-A6929BDAB825"
+      }
+    ],
+    "bouwaanduidingen": [],
+    "besluitsubvlakken": [],
+    "self": {
+      "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0758.BP2018214006-VG01/teksten/NL.IMRO.PT.regels.1D9EF997-DB26-40B3-9A38-59F218C87123"
+    },
+    "structuurvisiecomplexen": [],
+    "functieaanduidingen": [],
+    "bestemmingsvlakken": [],
+    "gebiedsaanduidingen": []
+  },
+  "volgnummer": 4,
+  "id": "NL.IMRO.PT.regels.1D9EF997-DB26-40B3-9A38-59F218C87123",
+  "kruimelpad": [
+    {
+      "titel": "Regels",
+      "volgnummer": 2,
+      "id": "NL.IMRO.PT.regels.2B4AEA34-9308-4046-88FB-160024902A10"
+    },
+    {
+      "titel": "HOOFDSTUK 1 Inleidende regels",
+      "volgnummer": 3,
+      "id": "NL.IMRO.PT.regels.74256331-64AF-4D4D-ACCB-8A67C7A4D841"
+    }
+  ]
+}
