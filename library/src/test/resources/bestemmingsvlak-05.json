@@ -1,0 +1,37 @@
+{
+  "bestemmingshoofdgroep": "waarde",
+  "labelInfo": "WR-A-1",
+  "_links": {
+    "figuren": [
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0014.BP506Ebbingekwarti-oh01/figuren/NL.IMRO.0014.ID39183-00"
+      },
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0014.BP506Ebbingekwarti-oh01/figuren/NL.IMRO.0014.ID39230-00"
+      }
+    ],
+    "maatvoeringen": [],
+    "teksten": [
+      {
+        "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0014.BP506Ebbingekwarti-oh01/teksten/NL.IMRO.PT.regels.s220"
+      }
+    ],
+    "bouwaanduidingen": [],
+    "self": {
+      "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0014.BP506Ebbingekwarti-oh01/bestemmingsvlakken/NL.IMRO.0014.DP1229699208-00"
+    },
+    "lettertekenaanduidingen": [],
+    "functieaanduidingen": [],
+    "bouwvlakken": [],
+    "gebiedsaanduidingen": []
+  },
+  "styleId": "dubbelbestemming_waarde",
+  "verwijzingNaarTekst": [
+    "https://ruimtelijkeplannen.nl/documents/NL.IMRO.0014.BP506Ebbingekwarti-oh01/r_NL.IMRO.0014.BP506Ebbingekwarti-oh01_2.8.html"
+  ],
+  "bestemmingsfuncties": [],
+  "id": "NL.IMRO.0014.DP1229699208-00",
+  "type": "dubbelbestemming",
+  "naam": "Waarde - Archeologie 1",
+  "artikelnummer": "8"
+}

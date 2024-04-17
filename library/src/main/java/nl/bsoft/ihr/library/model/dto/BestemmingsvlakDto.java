@@ -37,6 +37,8 @@ public class BestemmingsvlakDto {
     private String artikelnummer;
     @Column(name = "labelinfo")
     private String labelInfo;
+    @Column(name = "stileid")
+    private String stileid;
     @Column(name = "md5hash")
     private String md5hash;
 

@@ -122,4 +122,23 @@ public class BestemmingsvlakTests {
         log.info("End   tekst.json");
     }
 
+    @Test
+    public void mapBestemmingsvlakDto_05() {
+        Bestemmingsvlak bestemmingsvlak;
+        log.info("Start bestemmingsvlak-05.json");
+        try {
+            File dataFile = resourceLoader.getResource("classpath:bestemmingsvlak-05.json").getFile();
+
+            bestemmingsvlak = objectMapper.readValue(dataFile, Bestemmingsvlak.class);
+            log.info("tekst: \n{}", bestemmingsvlak.toString());
+
+            BestemmingsvlakDto bestemmingsvlakDto = bestemmingsvlakMapper.toBestemmingsvlak(bestemmingsvlak);
+            log.info("bestemmingsvlakDto: \n{}", bestemmingsvlakDto.toString());
+
+        } catch (Exception e) {
+            log.error("Error in mapBestemmingsvlakDto test: {}", e);
+        }
+        log.info("End   bestemmingsvlak-05.json");
+    }
+
 }

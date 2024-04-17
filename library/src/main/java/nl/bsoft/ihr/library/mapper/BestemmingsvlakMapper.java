@@ -33,6 +33,7 @@ public abstract class BestemmingsvlakMapper {
     @Mapping(target = "artikelnummer", source = "artikelnummer", qualifiedByName = "toJsonNullableString")
     @Mapping(target = "verwijzingNaarTekst", source = "verwijzingNaarTekst", qualifiedByName = "toTekstRef")
     @Mapping(target = "labelInfo", source = "labelInfo", qualifiedByName = "toJsonNullableString")
+    @Mapping(target = "stileid", source = "styleId", qualifiedByName = "toJsonNullableString")
     public abstract BestemmingsvlakDto toBestemmingsvlak(Bestemmingsvlak bestemmingsvlak) throws ParseException;
 
     @Named("toId")
