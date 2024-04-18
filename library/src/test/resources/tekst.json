@@ -327,9 +327,7 @@
       {
         "id": "NL.IMRO.c16e4c5b356b4b958c3e52b899e8dea6",
         "naam": "plat dak",
-        "labelInfo": [
-          "pd"
-        ],
+        "labelInfo": "pd",
         "verwijzingNaarTekst": "https://ruimtelijkeplannen.nl/documents/NL.IMRO.0200.bp1253-vas1/r_NL.IMRO.0200.bp1253-vas1.html#_3_Bos",
         "_links": {
           "self": {
@@ -656,7 +654,7 @@
       {
         "id": "NL.IMRO.9925PRIMA201200000001122",
         "naam": "Waterveiligheid tot 2015",
-        "thema": "waterkwantiteit",
+        "thema": ["waterkwantiteit"],
         "beleid": [
           {
             "belang": "blijvend te beschermen tegen overstromingen vanuit de (grote) rivieren en de Veluwerandmeren.",

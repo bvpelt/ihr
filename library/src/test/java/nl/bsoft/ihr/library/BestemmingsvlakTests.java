@@ -7,25 +7,49 @@ import nl.bsoft.ihr.library.mapper.BestemmingsvlakMapper;
 import nl.bsoft.ihr.library.mapper.BestemmingsvlakMapperImpl;
 import nl.bsoft.ihr.library.model.dto.BestemmingsvlakDto;
 import org.junit.jupiter.api.Test;
+import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.util.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ResourceLoader;
 
 import java.io.File;
+import java.io.IOException;
 
 @Slf4j
 @SpringBootTest
 public class BestemmingsvlakTests {
-    //private final PlanMapper planMapper = new PlanMapperImpl();
-    //private final TekstMapper tekstMapper = new TekstMapperImpl();
-    //private final LocatieMapper locatieMapper = new LocatieMapperImpl();
     private final BestemmingsvlakMapper bestemmingsvlakMapper = new BestemmingsvlakMapperImpl();
-    //private final StructuurVisieGebiedMapper structuurVisieGebiedMapper = new StructuurVisieGebiedMapperImpl();
 
     @Autowired
     private ResourceLoader resourceLoader = null;
     @Autowired
     private ObjectMapper objectMapper;
+
+    private static void checkResult(BestemmingsvlakDto bestemmingsvlakDto, Bestemmingsvlak bestemmingsvlak) {
+        // check result
+        Assert.equals(bestemmingsvlakDto.getIdentificatie(), bestemmingsvlak.getId());
+        Assert.equals(bestemmingsvlakDto.getType(), bestemmingsvlak.getType().getValue());
+        Assert.equals(bestemmingsvlakDto.getNaam(), bestemmingsvlak.getNaam());
+        if (bestemmingsvlak.getBestemmingshoofdgroep().isPresent()) {
+            Assert.equals(bestemmingsvlakDto.getBestemmingshoofdgroep(), bestemmingsvlak.getBestemmingshoofdgroep().get());
+        } else {
+            Assert.isTrue(bestemmingsvlakDto.getBestemmingshoofdgroep() == null);
+        }
+        if (bestemmingsvlak.getArtikelnummer().isPresent()) {
+            Assert.equals(bestemmingsvlakDto.getArtikelnummer(), bestemmingsvlak.getArtikelnummer().get());
+        } else {
+            Assert.isTrue(bestemmingsvlakDto.getArtikelnummer() == null);
+        }
+        if (bestemmingsvlak.getLabelInfo().isPresent()) {
+            Assert.equals(bestemmingsvlakDto.getLabelInfo(), bestemmingsvlak.getLabelInfo().get());
+        } else {
+            Assert.isTrue(bestemmingsvlak.getLabelInfo() == null);
+        }
+        if (bestemmingsvlak.getStyleId().isPresent()) {
+            Assert.equals(bestemmingsvlakDto.getStileid(), bestemmingsvlak.getStyleId().get());
+        }
+    }
 
     @Test
     public void mapBestemmingsvlakDto() {
@@ -40,8 +64,12 @@ public class BestemmingsvlakTests {
             BestemmingsvlakDto bestemmingsvlakDto = bestemmingsvlakMapper.toBestemmingsvlak(bestemmingsvlak);
             log.info("bestemmingsvlakDto: \n{}", bestemmingsvlakDto.toString());
 
-        } catch (Exception e) {
-            log.error("Error in mapBestemmingsvlakDto test: {}", e);
+            checkResult(bestemmingsvlakDto, bestemmingsvlak);
+
+        } catch (IOException e) {
+            log.error("IO Error in mapBestemmingsvlakDto test: {}", e);
+        } catch (ParseException e) {
+            log.error("Parse Error in mapBestemmingsvlakDto test: {}", e);
         }
         log.info("End   tekst.json");
     }
@@ -59,8 +87,11 @@ public class BestemmingsvlakTests {
             BestemmingsvlakDto bestemmingsvlakDto = bestemmingsvlakMapper.toBestemmingsvlak(bestemmingsvlak);
             log.info("bestemmingsvlakDto: \n{}", bestemmingsvlakDto.toString());
 
-        } catch (Exception e) {
-            log.error("Error in mapBestemmingsvlakDto test: {}", e);
+            checkResult(bestemmingsvlakDto, bestemmingsvlak);
+        } catch (IOException e) {
+            log.error("IO Error in mapBestemmingsvlakDto test: {}", e);
+        } catch (ParseException e) {
+            log.error("Parse Error in mapBestemmingsvlakDto test: {}", e);
         }
         log.info("End   tekst.json");
     }
@@ -78,8 +109,11 @@ public class BestemmingsvlakTests {
             BestemmingsvlakDto bestemmingsvlakDto = bestemmingsvlakMapper.toBestemmingsvlak(bestemmingsvlak);
             log.info("bestemmingsvlakDto: \n{}", bestemmingsvlakDto.toString());
 
-        } catch (Exception e) {
-            log.error("Error in mapBestemmingsvlakDto test: {}", e);
+            checkResult(bestemmingsvlakDto, bestemmingsvlak);
+        } catch (IOException e) {
+            log.error("IO Error in mapBestemmingsvlakDto test: {}", e);
+        } catch (ParseException e) {
+            log.error("Parse Error in mapBestemmingsvlakDto test: {}", e);
         }
         log.info("End   tekst.json");
     }
@@ -97,8 +131,11 @@ public class BestemmingsvlakTests {
             BestemmingsvlakDto bestemmingsvlakDto = bestemmingsvlakMapper.toBestemmingsvlak(bestemmingsvlak);
             log.info("bestemmingsvlakDto: \n{}", bestemmingsvlakDto.toString());
 
-        } catch (Exception e) {
-            log.error("Error in mapBestemmingsvlakDto test: {}", e);
+            checkResult(bestemmingsvlakDto, bestemmingsvlak);
+        } catch (IOException e) {
+            log.error("IO Error in mapBestemmingsvlakDto test: {}", e);
+        } catch (ParseException e) {
+            log.error("Parse Error in mapBestemmingsvlakDto test: {}", e);
         }
         log.info("End   tekst.json");
     }
@@ -116,8 +153,11 @@ public class BestemmingsvlakTests {
             BestemmingsvlakDto bestemmingsvlakDto = bestemmingsvlakMapper.toBestemmingsvlak(bestemmingsvlak);
             log.info("bestemmingsvlakDto: \n{}", bestemmingsvlakDto.toString());
 
-        } catch (Exception e) {
-            log.error("Error in mapBestemmingsvlakDto test: {}", e);
+            checkResult(bestemmingsvlakDto, bestemmingsvlak);
+        } catch (IOException e) {
+            log.error("IO Error in mapBestemmingsvlakDto test: {}", e);
+        } catch (ParseException e) {
+            log.error("Parse Error in mapBestemmingsvlakDto test: {}", e);
         }
         log.info("End   tekst.json");
     }
@@ -135,10 +175,12 @@ public class BestemmingsvlakTests {
             BestemmingsvlakDto bestemmingsvlakDto = bestemmingsvlakMapper.toBestemmingsvlak(bestemmingsvlak);
             log.info("bestemmingsvlakDto: \n{}", bestemmingsvlakDto.toString());
 
-        } catch (Exception e) {
-            log.error("Error in mapBestemmingsvlakDto test: {}", e);
+            checkResult(bestemmingsvlakDto, bestemmingsvlak);
+        } catch (IOException e) {
+            log.error("IO Error in mapBestemmingsvlakDto test: {}", e);
+        } catch (ParseException e) {
+            log.error("Parse Error in mapBestemmingsvlakDto test: {}", e);
         }
         log.info("End   bestemmingsvlak-05.json");
     }
-
 }

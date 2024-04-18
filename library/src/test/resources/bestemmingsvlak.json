@@ -91,9 +91,7 @@
       {
         "id": "NL.IMRO.c16e4c5b356b4b958c3e52b899e8dea6",
         "naam": "plat dak",
-        "labelInfo": [
-          "pd"
-        ],
+        "labelInfo": "pd",
         "verwijzingNaarTekst": "https://ruimtelijkeplannen.nl/documents/NL.IMRO.0200.bp1253-vas1/r_NL.IMRO.0200.bp1253-vas1.html#_3_Bos",
         "_links": {
           "self": {

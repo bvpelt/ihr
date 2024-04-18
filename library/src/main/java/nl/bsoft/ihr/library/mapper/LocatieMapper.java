@@ -19,7 +19,7 @@ import org.wololo.geojson.GeoJSON;
                 JsonNullableMapper.class
         },
         nullValueIterableMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
-public abstract class LocatieMapper {
+public abstract class LocatieMapper  implements JsonNullableMapper {
     @Mapping(target = "id", source = "id", ignore = true)
     @Mapping(target = "geometrie", source = "geometrie", qualifiedByName = "toGeometrie")
     public abstract LocatieDto toLocatieDto(Plan plan) throws ParseException;

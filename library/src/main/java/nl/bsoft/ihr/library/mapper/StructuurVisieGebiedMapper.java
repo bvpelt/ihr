@@ -21,7 +21,7 @@ import java.util.Set;
                 JsonNullableMapper.class
         },
         nullValueIterableMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
-public abstract class StructuurVisieGebiedMapper {
+public abstract class StructuurVisieGebiedMapper  implements JsonNullableMapper {
 
     @Mapping(target = "id", source = "id", ignore = true)
     @Mapping(target = "identificatie", source = "id", qualifiedByName = "toIdentificatie")

@@ -16,7 +16,7 @@ import org.openapitools.jackson.nullable.JsonNullable;
                 JsonNullableMapper.class
         },
         nullValueIterableMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
-public abstract class TekstMapper {
+public abstract class TekstMapper implements JsonNullableMapper {
 
     @Mapping(target = "id", source = "id", ignore = true)
     @Mapping(target = "tekstidentificatie", source = "id", qualifiedByName = "toId")
@@ -25,6 +25,7 @@ public abstract class TekstMapper {
     @Mapping(target = "volgNummer", source = "volgnummer")
     @Mapping(target = "externHRef", source = "externeReferentie", qualifiedByName = "toExternalHref")
     @Mapping(target = "externLabel", source = "externeReferentie", qualifiedByName = "toExternalLabel")
+    @Mapping(target = "kruimelpad", source = "kruimelpad", ignore = true)
     public abstract TekstDto toTekst(Tekst tekst) throws ParseException;
 
     @Named("toId")

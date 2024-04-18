@@ -21,7 +21,7 @@ import java.time.LocalDate;
                 JsonNullableMapper.class
         },
         nullValueIterableMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
-public abstract class PlanMapper {
+public abstract class PlanMapper  implements JsonNullableMapper {
 
     @Mapping(target = "id", source = "id", ignore = true)
     @Mapping(target = "ondergronden", source = "ondergronden", ignore = true)
