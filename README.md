@@ -1,13 +1,15 @@
 # ihr
+IHR Informatie Huis Ruimte
 
-IHR
+# Postgres
+- fuzzy search https://www.freecodecamp.org/news/fuzzy-string-matching-with-postgresql/
 
-# Import data
+## Import data
 In postgresql (psql) connected with the database
 ```sql
 \copy imroload (identificatie) from data-1708678385058.csv with CSV HEADER;
 ```
-# Usefull Queries
+## Usefull Queries
 
 ```sql
 
@@ -42,33 +44,11 @@ select p.identificatie, l.naam, o.* from plan_locatienaam pl, plan p, locatienaa
 -- last loaded plan
 select * from imroload where id = (select max(id) from imroload where loaded = true);
 
-
+-- (re)load test data
 select distinct(identificatie) into bart from imroload;
 delete from imroload;
 insert into imroload (identificatie) select identificatie from bart;
-
-
-drop table artikel;
-drop table auditlog;
-drop table bestemmingsvlak;
-drop table bestemmingsvlak_bestemmingsfunctie;
-drop table bestemmingsvlak_tekstref;
-drop table gebiedsaanduiding;
-drop table imroload;
-drop table locatie;
-drop table plan;
-drop table structuurvisiegebied;
-drop table structuurvisiegebiedbeleid;
-drop table structuurvisiegebiedthema;
-drop table tekst;
-drop table tekstref;
-
-delete from flyway_schema_history;
 ```
-# ManyToMany
-Example https://attacomsian.com/blog/spring-data-jpa-many-to-many-mapping
-
-- https://www.youtube.com/watch?v=jCYonZey5dY
 
 # Check
 ```bash
@@ -79,11 +59,15 @@ curl -X 'GET' \
   -H 'Accept-Crs: epsg:28992'
   ```
 # JPA Releations
-See 
+
+## OneToMany 
 - https://www.baeldung.com/hibernate-one-to-many
+
+## ManyToMany
+Example https://attacomsian.com/blog/spring-data-jpa-many-to-many-mapping
+
+- https://www.youtube.com/watch?v=jCYonZey5dY
 - https://www.baeldung.com/jpa-many-to-many
-
-
 
 ```sql
 
@@ -100,8 +84,6 @@ from plan_locatienaam l1_0
 ```bash
 pushd library/src/main/resource/db/migration
 grep -e '-- table' *.sql | sed -e 's/[^-]*-- table \(.*\)/drop table if exists \1;/'
-
 grep -e '-- table' *.sql | sed -e 's/[^-]*-- table \(.*\)/\1;/' | sort | sed -e 's/^\(.*\);/select count\(*\) from \1;/'
-
 popd
 ```

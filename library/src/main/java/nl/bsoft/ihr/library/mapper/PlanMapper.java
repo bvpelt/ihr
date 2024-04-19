@@ -26,7 +26,7 @@ public abstract class PlanMapper  implements JsonNullableMapper {
     @Mapping(target = "id", source = "id", ignore = true)
     @Mapping(target = "ondergronden", source = "ondergronden", ignore = true)
     @Mapping(target = "identificatie", source = "id", qualifiedByName = "toId")
-    @Mapping(target = "plantype", source = "type") //, qualifiedByName = "toPlanType")
+    @Mapping(target = "plantype", source = "type", qualifiedByName = "toPlanType")
     @Mapping(target = "naam", source = "naam")
     @Mapping(target = "besluitnummer", source = "besluitnummer", qualifiedByName = "toJsonNullableString")
     @Mapping(target = "regelstatus", source = "regelStatus", qualifiedByName = "toJsonNullableString")
