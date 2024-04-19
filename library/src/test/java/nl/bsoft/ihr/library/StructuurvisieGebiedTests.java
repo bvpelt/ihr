@@ -7,11 +7,14 @@ import nl.bsoft.ihr.library.mapper.StructuurVisieGebiedMapper;
 import nl.bsoft.ihr.library.mapper.StructuurVisieGebiedMapperImpl;
 import nl.bsoft.ihr.library.model.dto.StructuurVisieGebiedDto;
 import org.junit.jupiter.api.Test;
+import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.util.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ResourceLoader;
 
 import java.io.File;
+import java.io.IOException;
 
 @Slf4j
 @SpringBootTest
@@ -22,6 +25,11 @@ public class StructuurvisieGebiedTests {
     private ResourceLoader resourceLoader = null;
     @Autowired
     private ObjectMapper objectMapper;
+
+    private static void checkResult(StructuurVisieGebiedDto structuurVisieGebiedDto, Structuurvisiegebied structuurvisiegebied) {
+        Assert.isTrue(structuurVisieGebiedDto.getIdentificatie().equals(structuurvisiegebied.getId()), "identification not equal");
+        Assert.isTrue(structuurVisieGebiedDto.getNaam().equals(structuurvisiegebied.getNaam()), "naam not equal");
+    }
 
     @Test
     public void mapStructuurVisieGebiedDto() {
@@ -35,12 +43,17 @@ public class StructuurvisieGebiedTests {
 
             StructuurVisieGebiedDto structuurVisieGebiedDto = structuurVisieGebiedMapper.toStructuurVisieGebied(structuurvisiegebied);
             log.info("structuurVisieGebiedDto: \n{}", structuurVisieGebiedDto.toString());
+            checkResult(structuurVisieGebiedDto, structuurvisiegebied);
 
-        } catch (Exception e) {
-            log.error("Error in map structuurVisieGebiedDto test: {}", e);
+
+        } catch (IOException e) {
+            log.error("IOError in map structuurVisieGebiedDto test: {}", e);
+        } catch (ParseException e) {
+            log.error("ParseError in map structuurVisieGebiedDto test: {}", e);
         }
         log.info("End   structuurvisiegebied.json");
     }
+
 
     @Test
     public void mapStructuurVisieGebiedDto_01() {
@@ -54,6 +67,7 @@ public class StructuurvisieGebiedTests {
 
             StructuurVisieGebiedDto structuurVisieGebiedDto = structuurVisieGebiedMapper.toStructuurVisieGebied(structuurvisiegebied);
             log.info("structuurVisieGebiedDto: \n{}", structuurVisieGebiedDto.toString());
+            checkResult(structuurVisieGebiedDto, structuurvisiegebied);
 
         } catch (Exception e) {
             log.error("Error in map structuurVisieGebiedDto test: {}", e);
@@ -73,6 +87,7 @@ public class StructuurvisieGebiedTests {
 
             StructuurVisieGebiedDto structuurVisieGebiedDto = structuurVisieGebiedMapper.toStructuurVisieGebied(structuurvisiegebied);
             log.info("structuurVisieGebiedDto: \n{}", structuurVisieGebiedDto.toString());
+            checkResult(structuurVisieGebiedDto, structuurvisiegebied);
 
         } catch (Exception e) {
             log.error("Error in map structuurVisieGebiedDto test: {}", e);

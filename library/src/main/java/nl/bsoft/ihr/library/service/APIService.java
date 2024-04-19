@@ -3,7 +3,9 @@ package nl.bsoft.ihr.library.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micrometer.common.util.StringUtils;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import nl.bsoft.ihr.library.exception.InternalServerErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,7 @@ import java.util.stream.Stream;
 
 @Slf4j
 @Getter
+@Setter
 @Service
 public class APIService extends ExternalRequestService {
 

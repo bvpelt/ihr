@@ -28,7 +28,7 @@ public class GebiedsaanduidingTest {
 
     private static void checkResult(GebiedsaanduidingDto gebiedsaanduidingDto, Gebiedsaanduiding gebiedsaanduiding) {
         Assert.isTrue(gebiedsaanduidingDto.getIdentificatie().equals(gebiedsaanduiding.getId()), "Identification not equal");
-        if (gebiedsaanduiding.getNaam()!= null) {
+        if (gebiedsaanduiding.getNaam() != null) {
             Assert.isTrue(gebiedsaanduidingDto.getNaam().equals(gebiedsaanduiding.getNaam()), "Naam not equal");
         }
         if (gebiedsaanduiding.getGebiedsaanduidinggroep().isPresent() && gebiedsaanduiding.getGebiedsaanduidinggroep().get() != null) {
@@ -38,6 +38,7 @@ public class GebiedsaanduidingTest {
             Assert.isTrue(gebiedsaanduidingDto.getLabelinfo().equals(gebiedsaanduiding.getLabelInfo().get()), "Gebiedsaanduidinggroep not equal");
         }
     }
+
     @Test
     public void mapGebiedsaanduiding_00() {
         Gebiedsaanduiding gebiedsaanduiding;
@@ -58,7 +59,6 @@ public class GebiedsaanduidingTest {
         }
         log.info("End   gebiedsaanduiding-00.json");
     }
-
 
 
     @Test

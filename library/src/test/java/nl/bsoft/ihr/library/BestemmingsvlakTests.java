@@ -6,21 +6,28 @@ import nl.bsoft.ihr.generated.model.Bestemmingsvlak;
 import nl.bsoft.ihr.library.mapper.BestemmingsvlakMapper;
 import nl.bsoft.ihr.library.mapper.BestemmingsvlakMapperImpl;
 import nl.bsoft.ihr.library.model.dto.BestemmingsvlakDto;
+import nl.bsoft.ihr.library.service.APIService;
+
 import org.junit.jupiter.api.Test;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.util.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.http.HttpClient;
+import java.time.Duration;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 
 @Slf4j
 @SpringBootTest
 public class BestemmingsvlakTests {
     private final BestemmingsvlakMapper bestemmingsvlakMapper = new BestemmingsvlakMapperImpl();
-
     @Autowired
     private ResourceLoader resourceLoader = null;
     @Autowired
@@ -183,4 +190,5 @@ public class BestemmingsvlakTests {
         }
         log.info("End   bestemmingsvlak-05.json");
     }
+
 }
