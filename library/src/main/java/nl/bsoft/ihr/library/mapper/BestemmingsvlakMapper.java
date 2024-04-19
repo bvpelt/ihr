@@ -25,7 +25,7 @@ import java.util.Set;
 public abstract class BestemmingsvlakMapper  implements JsonNullableMapper {
 
     @Mapping(target = "id", source = "id", ignore = true)
-    @Mapping(target = "identificatie", source = "id", qualifiedByName = "toId")
+    @Mapping(target = "identificatie", source = "id", qualifiedByName = "toBestemmingsvlakId")
     @Mapping(target = "type", source = "type", qualifiedByName = "toType")
     @Mapping(target = "naam", source = "naam")
     @Mapping(target = "bestemmingshoofdgroep", source = "bestemmingshoofdgroep", qualifiedByName = "toJsonNullableString")
@@ -33,11 +33,11 @@ public abstract class BestemmingsvlakMapper  implements JsonNullableMapper {
     @Mapping(target = "artikelnummer", source = "artikelnummer", qualifiedByName = "toJsonNullableString")
     @Mapping(target = "verwijzingNaarTekst", source = "verwijzingNaarTekst", qualifiedByName = "toTekstRef")
     @Mapping(target = "labelInfo", source = "labelInfo", qualifiedByName = "toJsonNullableString")
-    @Mapping(target = "stileid", source = "styleId", qualifiedByName = "toJsonNullableString")
+    @Mapping(target = "styleid", source = "styleId", qualifiedByName = "toJsonNullableString")
     public abstract BestemmingsvlakDto toBestemmingsvlak(Bestemmingsvlak bestemmingsvlak) throws ParseException;
 
-    @Named("toId")
-    protected String toPlanStatusDate(String id) {
+    @Named("toBestemmingsvlakId")
+    protected String toBestemmingsvlakId(String id) {
         return id;
     }
 
@@ -72,6 +72,7 @@ public abstract class BestemmingsvlakMapper  implements JsonNullableMapper {
         return tekstRefDtoSet;
     }
 
+
     @Named("toJsonNullableString")
     protected String toJsonNullableString(JsonNullable<String> jsonNullable) {
         if (jsonNullable.isPresent()) {
@@ -80,5 +81,7 @@ public abstract class BestemmingsvlakMapper  implements JsonNullableMapper {
             return null;
         }
     }
+
+
 }
 

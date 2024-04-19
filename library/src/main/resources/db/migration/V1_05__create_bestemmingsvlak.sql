@@ -9,7 +9,7 @@ create table bestemmingsvlak
     bestemmingshoofdgroep text,
     artikelnummer         text,
     labelinfo             text,
-    stileid               text,
+    styleid               text,
     md5hash               text
 );
 

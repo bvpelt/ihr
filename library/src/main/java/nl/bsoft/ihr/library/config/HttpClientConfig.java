@@ -16,7 +16,7 @@ import java.util.concurrent.Executors;
 @Slf4j
 @Configuration
 public class HttpClientConfig {
-    public static final long DEFAULT_DURATION_REQUEST_SECONDS = 480;
+    public static final long DEFAULT_DURATION_REQUEST_SECONDS = 480L;
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final HttpClient httpClient =
             HttpClient.newBuilder()
@@ -37,7 +37,7 @@ public class HttpClientConfig {
     public Duration getDurationInSeconds() {
         if (isRunningTest()) {
             log.info("Is running in test mode.");
-            return Duration.ofMillis(1);
+            return Duration.ofMillis(100000);
         }
         return Duration.ofSeconds(DEFAULT_DURATION_REQUEST_SECONDS);
     }

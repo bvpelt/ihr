@@ -37,8 +37,8 @@ public class BestemmingsvlakDto {
     private String artikelnummer;
     @Column(name = "labelinfo")
     private String labelInfo;
-    @Column(name = "stileid")
-    private String stileid;
+    @Column(name = "styleid")
+    private String styleid;
     @Column(name = "md5hash")
     private String md5hash;
 
@@ -88,12 +88,12 @@ public class BestemmingsvlakDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BestemmingsvlakDto that = (BestemmingsvlakDto) o;
-        return Objects.equals(planidentificatie, that.planidentificatie) && Objects.equals(identificatie, that.identificatie) && Objects.equals(type, that.type) && Objects.equals(naam, that.naam) && Objects.equals(bestemmingshoofdgroep, that.bestemmingshoofdgroep) && Objects.equals(artikelnummer, that.artikelnummer) && Objects.equals(labelInfo, that.labelInfo) && Objects.equals(md5hash, that.md5hash);
+        return Objects.equals(planidentificatie, that.planidentificatie) && Objects.equals(identificatie, that.identificatie) && Objects.equals(type, that.type) && Objects.equals(naam, that.naam) && Objects.equals(bestemmingshoofdgroep, that.bestemmingshoofdgroep) && Objects.equals(artikelnummer, that.artikelnummer) && Objects.equals(labelInfo, that.labelInfo) && Objects.equals(styleid, that.styleid) && Objects.equals(md5hash, that.md5hash);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(planidentificatie, identificatie, type, naam, bestemmingshoofdgroep, artikelnummer, labelInfo, md5hash);
+        return Objects.hash(planidentificatie, identificatie, type, naam, bestemmingshoofdgroep, artikelnummer, labelInfo, styleid, md5hash);
     }
 
     @Override
@@ -107,6 +107,7 @@ public class BestemmingsvlakDto {
                 ", bestemmingshoofdgroep='" + bestemmingshoofdgroep + '\'' +
                 ", artikelnummer='" + artikelnummer + '\'' +
                 ", labelInfo='" + labelInfo + '\'' +
+                ", styleid='" + styleid + '\'' +
                 ", md5hash='" + md5hash + '\'' +
                 '}';
     }
