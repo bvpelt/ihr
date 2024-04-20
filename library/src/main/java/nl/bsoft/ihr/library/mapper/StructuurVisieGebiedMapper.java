@@ -1,17 +1,11 @@
 package nl.bsoft.ihr.library.mapper;
 
 import lombok.Setter;
-import nl.bsoft.ihr.generated.model.BaseStructuurvisiegebiedBeleidInner;
-import nl.bsoft.ihr.generated.model.IllustratieReferentie;
 import nl.bsoft.ihr.generated.model.Structuurvisiegebied;
-import nl.bsoft.ihr.library.model.dto.*;
+import nl.bsoft.ihr.library.model.dto.StructuurVisieGebiedDto;
 import org.locationtech.jts.io.ParseException;
 import org.mapstruct.*;
 import org.openapitools.jackson.nullable.JsonNullable;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Setter
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
@@ -21,14 +15,14 @@ import java.util.Set;
                 JsonNullableMapper.class
         },
         nullValueIterableMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
-public abstract class StructuurVisieGebiedMapper  implements JsonNullableMapper {
+public abstract class StructuurVisieGebiedMapper implements JsonNullableMapper {
 
     @Mapping(target = "id", source = "id", ignore = true)
     @Mapping(target = "identificatie", source = "id", qualifiedByName = "toIdentificatie")
     @Mapping(target = "naam", source = "naam")
     @Mapping(target = "beleid", source = "beleid", ignore = true)
     @Mapping(target = "verwijzingNaarTekst", source = "verwijzingNaarTekst", ignore = true)
-            @Mapping(target = "illustraties", source = "illustraties", ignore = true)
+    @Mapping(target = "illustraties", source = "illustraties", ignore = true)
 //    @Mapping(target = "themas", source = "thema", qualifiedByName = "toThemaListString")
 //    @Mapping(target = "beleid", source = "beleid", qualifiedByName = "toBeleidListString")
 //    @Mapping(target = "verwijzingNaarTekst", source = "verwijzingNaarTekst", qualifiedByName = "toVerwijzingNaarTekstListString")

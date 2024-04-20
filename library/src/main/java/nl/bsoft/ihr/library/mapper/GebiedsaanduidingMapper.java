@@ -29,6 +29,7 @@ public abstract class GebiedsaanduidingMapper implements JsonNullableMapper {
     @Mapping(target = "artikelnummers", source = "artikelnummers", qualifiedByName = "toArtikelnummers")
     @Mapping(target = "verwijzingNaarTekst", source = "verwijzingNaarTekst", qualifiedByName = "toVerwijzingNaarTekst")
     @Mapping(target = "labelinfo", source = "labelInfo", qualifiedByName = "toJsonNullableString")
+    @Mapping(target = "styleid", source = "styleId", qualifiedByName = "toJsonNullableString")
     @Mapping(target = "bestemmingfuncties", source = "bestemmingsfuncties", qualifiedByName = "toBestemmingsfunctie")
     public abstract GebiedsaanduidingDto toGebiedsaanduiding(Gebiedsaanduiding gebiedsaanduiding) throws ParseException;
 

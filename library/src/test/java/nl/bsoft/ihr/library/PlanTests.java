@@ -2,6 +2,7 @@ package nl.bsoft.ihr.library;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import nl.bsoft.ihr.generated.model.Gebiedsaanduiding;
 import nl.bsoft.ihr.generated.model.Plan;
 import nl.bsoft.ihr.library.mapper.LocatieMapper;
 import nl.bsoft.ihr.library.mapper.LocatieMapperImpl;
@@ -9,26 +10,35 @@ import nl.bsoft.ihr.library.mapper.PlanMapper;
 import nl.bsoft.ihr.library.mapper.PlanMapperImpl;
 import nl.bsoft.ihr.library.model.dto.LocatieDto;
 import nl.bsoft.ihr.library.model.dto.PlanDto;
-import org.junit.jupiter.api.Test;
+import nl.bsoft.ihr.library.service.APIService;
+import org.junit.jupiter.api.*;
 import org.locationtech.jts.io.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.Assert;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.File;
 import java.io.IOException;
 
 @Slf4j
+@ComponentScan("nl.bsoft.ihr.library")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
 public class PlanTests {
     private final PlanMapper planMapper = new PlanMapperImpl();
     private final LocatieMapper locatieMapper = new LocatieMapperImpl();
-
+    private final nl.bsoft.ihr.library.service.APIService APIService;
     @Autowired
     private ResourceLoader resourceLoader = null;
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    public PlanTests(APIService apiService) {
+        this.APIService = apiService;
+    }
 
     private static void checkResult(PlanDto planDto, Plan plan) {
         Assert.isTrue(planDto.getIdentificatie().equals(plan.getId()), "Identification not equal");
@@ -83,9 +93,11 @@ public class PlanTests {
     }
 
     @Test
-    public void mapPlan01Dto() {
+    public void mapPlan01Dto(TestInfo testInfo) {
+
+        log.info("Start test: {}", testInfo.getDisplayName());
         Plan plan;
-        log.info("Start plan-01.json");
+
         try {
             File dataFile = resourceLoader.getResource("classpath:plan-01.json").getFile();
 
@@ -105,9 +117,11 @@ public class PlanTests {
     }
 
     @Test
-    public void mapPlan02Dto() {
+    public void mapPlan02Dto(TestInfo testInfo) {
+
+        log.info("Start test: {}", testInfo.getDisplayName());
         Plan plan;
-        log.info("Start plan-02.json");
+
         try {
             File dataFile = resourceLoader.getResource("classpath:plan-02.json").getFile();
 
@@ -124,5 +138,30 @@ public class PlanTests {
             log.error("Error in mapPlanDto test: {}", e);
         }
         log.info("End   plan-02.json");
+    }
+
+
+    @Test
+    @Order(1)
+    public void mytest() {
+        String planidentificatie = "NL.IMRO.0200.bp1253-vas1";
+
+        try {
+            Plan plan = getPlan(planidentificatie);
+            PlanDto planDto = planMapper.toPlan(plan);
+            log.info("plandto: \n{}", planDto.toString());
+            checkResult(planDto, plan);
+
+        } catch (ParseException e) {
+            log.error("Error in mapPlanDto test: {}", e);
+        }
+    }
+    private Plan getPlan(String planidentificatie) {
+        Plan plan = null;
+        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(APIService.getApiUrl() + "/plannen/" + planidentificatie);
+
+        log.info("using url: {}", uriComponentsBuilder.build().toUri());
+        plan = APIService.getDirectly(uriComponentsBuilder.build().toUri(), Plan.class);
+        return plan;
     }
 }

@@ -1,6 +1,8 @@
 package nl.bsoft.ihr.library.service;
 
 import lombok.extern.slf4j.Slf4j;
+import nl.bsoft.ihr.generated.model.Bestemmingsvlak;
+import nl.bsoft.ihr.generated.model.Gebiedsaanduiding;
 import nl.bsoft.ihr.library.mapper.BestemmingsvlakMapper;
 import nl.bsoft.ihr.library.mapper.LocatieMapper;
 import nl.bsoft.ihr.library.repository.GebeidsaanduidingRepository;
@@ -8,6 +10,8 @@ import nl.bsoft.ihr.library.repository.ImroLoadRepository;
 import nl.bsoft.ihr.library.repository.LocatieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Slf4j
 @Service

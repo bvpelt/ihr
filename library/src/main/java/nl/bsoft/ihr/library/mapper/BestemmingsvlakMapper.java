@@ -22,7 +22,7 @@ import java.util.Set;
                 JsonNullableMapper.class
         },
         nullValueIterableMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
-public abstract class BestemmingsvlakMapper  implements JsonNullableMapper {
+public abstract class BestemmingsvlakMapper implements JsonNullableMapper {
 
     @Mapping(target = "id", source = "id", ignore = true)
     @Mapping(target = "identificatie", source = "id", qualifiedByName = "toBestemmingsvlakId")

@@ -1,8 +1,8 @@
 -- table plan_normadressant
 create table plan_normadressant
 (
-    id   bigint not null primary key,
-    plan_id           bigint,
+    id               bigint not null primary key,
+    plan_id          bigint,
     normadressant_id bigint
 );
 

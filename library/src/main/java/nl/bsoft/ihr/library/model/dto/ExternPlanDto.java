@@ -34,6 +34,64 @@ public class ExternPlanDto {
     @Column(name = "href")
     private String href;
 
+    // relatiesMetExternePlannen
+    @ManyToOne
+    @JoinColumn(name = "vervangtmetplan_id", nullable = false, referencedColumnName = "id")
+    private PlanDto vervangtmetplan;
+
+    @ManyToOne
+    @JoinColumn(name = "tengevolgevanmetplan_id", nullable = false, referencedColumnName = "id")
+    private PlanDto tengevolgevanmetplan;
+
+    @ManyToOne
+    @JoinColumn(name = "muteertmetplan_id", nullable = false, referencedColumnName = "id")
+    private PlanDto muteertmetplan;
+
+    @ManyToOne
+    @JoinColumn(name = "gebruiktinfouitmetplan_id", nullable = false, referencedColumnName = "id")
+    private PlanDto gebruiktinfouitmetplan;
+
+    @ManyToOne
+    @JoinColumn(name = "gedeeltelijkeherzieningmetplan_id", nullable = false, referencedColumnName = "id")
+    private PlanDto gedeeltelijkeherzieningmetplan;
+
+    @ManyToOne
+    @JoinColumn(name = "uittewerkinginmetplan_id", nullable = false, referencedColumnName = "id")
+    private PlanDto uittewerkinginmetplan;
+
+    @ManyToOne
+    @JoinColumn(name = "uitgewerktinmetplan_id", nullable = false, referencedColumnName = "id")
+    private PlanDto uitgewerktinmetplan;
+
+    // relatiesVanuitExternePlannen
+    @ManyToOne
+    @JoinColumn(name = "vervangtvanuitplan_id", nullable = false, referencedColumnName = "id")
+    private PlanDto vervangtvanuitplan;
+
+    @ManyToOne
+    @JoinColumn(name = "tegevolgevanvanuitplan_id", nullable = false, referencedColumnName = "id")
+    private PlanDto tegevolgevanvanuitplan;
+
+    @ManyToOne
+    @JoinColumn(name = "muteertvanuitplan_id", nullable = false, referencedColumnName = "id")
+    private PlanDto muteertvanuitplan;
+
+    @ManyToOne
+    @JoinColumn(name = "gebruiktinforuitvanuitplan_id", nullable = false, referencedColumnName = "id")
+    private PlanDto gebruiktinforuitvanuitplan;
+
+    @ManyToOne
+    @JoinColumn(name = "gedeeltelijkeherzieningvanuitplan_id", nullable = false, referencedColumnName = "id")
+    private PlanDto gedeeltelijkeherzieningvanuitplan;
+
+    @ManyToOne
+    @JoinColumn(name = "uittewerkinginvanuitplan_id", nullable = false, referencedColumnName = "id")
+    private PlanDto uittewerkinginvanuitplan;
+
+    @ManyToOne
+    @JoinColumn(name = "uitgewerktinvanuitplan_id", nullable = false, referencedColumnName = "id")
+    private PlanDto uitgewerktinvanuitplan;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

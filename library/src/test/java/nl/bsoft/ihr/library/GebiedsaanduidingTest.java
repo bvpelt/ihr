@@ -6,25 +6,35 @@ import nl.bsoft.ihr.generated.model.Gebiedsaanduiding;
 import nl.bsoft.ihr.library.mapper.GebiedsaanduidingMapper;
 import nl.bsoft.ihr.library.mapper.GebiedsaanduidingMapperImpl;
 import nl.bsoft.ihr.library.model.dto.GebiedsaanduidingDto;
-import org.junit.jupiter.api.Test;
+import nl.bsoft.ihr.library.service.APIService;
+import org.junit.jupiter.api.*;
 import org.locationtech.jts.io.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.Assert;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.File;
 import java.io.IOException;
 
 @Slf4j
+@ComponentScan("nl.bsoft.ihr.library")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
 public class GebiedsaanduidingTest {
     private final GebiedsaanduidingMapper gebiedsaanduidingMapper = new GebiedsaanduidingMapperImpl();
-
+    private final APIService APIService;
     @Autowired
     private ResourceLoader resourceLoader = null;
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    public GebiedsaanduidingTest(APIService apiService) {
+        this.APIService = apiService;
+    }
 
     private static void checkResult(GebiedsaanduidingDto gebiedsaanduidingDto, Gebiedsaanduiding gebiedsaanduiding) {
         Assert.isTrue(gebiedsaanduidingDto.getIdentificatie().equals(gebiedsaanduiding.getId()), "Identification not equal");
@@ -37,12 +47,128 @@ public class GebiedsaanduidingTest {
         if (gebiedsaanduiding.getLabelInfo().isPresent() && gebiedsaanduiding.getLabelInfo().get() != null) {
             Assert.isTrue(gebiedsaanduidingDto.getLabelinfo().equals(gebiedsaanduiding.getLabelInfo().get()), "Gebiedsaanduidinggroep not equal");
         }
+        if (gebiedsaanduiding.getStyleId().isPresent() && gebiedsaanduiding.getStyleId().get() != null) {
+            Assert.isTrue(gebiedsaanduidingDto.getStyleid().equals(gebiedsaanduiding.getStyleId().get()), "gebiedsaanduiding not equal");
+        }
     }
 
     @Test
-    public void mapGebiedsaanduiding_00() {
+    @Order(1)
+    public void gebiedsAanduidingTest_01(TestInfo testInfo) {
+        log.info("Start test: {}", testInfo.getDisplayName());
+        String planidentificatie = "NL.IMRO.0765.02BP00012010-0401";
+        String gebiedsaanduidingidentificatie = "NL.IMRO.0765.GP2264677251-00";
+        try {
+            Gebiedsaanduiding gebiedsaanduiding = getGebiedsaanduiding(planidentificatie, gebiedsaanduidingidentificatie);
+            log.info("plan: \n{}", gebiedsaanduiding.toString());
+
+            GebiedsaanduidingDto gebiedsaanduidingDto = gebiedsaanduidingMapper.toGebiedsaanduiding(gebiedsaanduiding);
+            log.info("gebiedsaanduidingDto: \n{}", gebiedsaanduidingDto.toString());
+            checkResult(gebiedsaanduidingDto, gebiedsaanduiding);
+        } catch (ParseException e) {
+            log.error("ParseError in mapGebiedsaanduidingDto test: {}", e);
+        }
+    }
+
+    @Test
+    @Order(2)
+    public void gebiedsAanduidingTest_02(TestInfo testInfo) {
+        log.info("Start test: {}", testInfo.getDisplayName());
+        String planidentificatie = "NL.IMRO.0765.02BP00012010-0401";
+        String gebiedsaanduidingidentificatie = "NL.IMRO.0765.GP1191602860-00";
+        try {
+            Gebiedsaanduiding gebiedsaanduiding = getGebiedsaanduiding(planidentificatie, gebiedsaanduidingidentificatie);
+            log.info("plan: \n{}", gebiedsaanduiding.toString());
+
+            GebiedsaanduidingDto gebiedsaanduidingDto = gebiedsaanduidingMapper.toGebiedsaanduiding(gebiedsaanduiding);
+            log.info("gebiedsaanduidingDto: \n{}", gebiedsaanduidingDto.toString());
+            checkResult(gebiedsaanduidingDto, gebiedsaanduiding);
+        } catch (ParseException e) {
+            log.error("ParseError in mapGebiedsaanduidingDto test: {}", e);
+        }
+    }
+
+    @Test
+    @Order(3)
+    public void gebiedsAanduidingTest_03(TestInfo testInfo) {
+        log.info("Start test: {}", testInfo.getDisplayName());
+        String planidentificatie = "NL.IMRO.0765.02BP00012010-0401";
+        String gebiedsaanduidingidentificatie = "NL.IMRO.0765.GP1218555973-00";
+        try {
+            Gebiedsaanduiding gebiedsaanduiding = getGebiedsaanduiding(planidentificatie, gebiedsaanduidingidentificatie);
+            log.info("plan: \n{}", gebiedsaanduiding.toString());
+
+            GebiedsaanduidingDto gebiedsaanduidingDto = gebiedsaanduidingMapper.toGebiedsaanduiding(gebiedsaanduiding);
+            log.info("gebiedsaanduidingDto: \n{}", gebiedsaanduidingDto.toString());
+            checkResult(gebiedsaanduidingDto, gebiedsaanduiding);
+        } catch (ParseException e) {
+            log.error("ParseError in mapGebiedsaanduidingDto test: {}", e);
+        }
+    }
+
+    @Test
+    @Order(4)
+    public void gebiedsAanduidingTest_04(TestInfo testInfo) {
+
+        log.info("Start test: {}", testInfo.getDisplayName());
+        String planidentificatie = "NL.IMRO.0765.02BP00012010-0401";
+        String gebiedsaanduidingidentificatie = "NL.IMRO.0765.GP1264677249-00";
+        try {
+            Gebiedsaanduiding gebiedsaanduiding = getGebiedsaanduiding(planidentificatie, gebiedsaanduidingidentificatie);
+            log.info("plan: \n{}", gebiedsaanduiding.toString());
+
+            GebiedsaanduidingDto gebiedsaanduidingDto = gebiedsaanduidingMapper.toGebiedsaanduiding(gebiedsaanduiding);
+            log.info("gebiedsaanduidingDto: \n{}", gebiedsaanduidingDto.toString());
+            checkResult(gebiedsaanduidingDto, gebiedsaanduiding);
+        } catch (ParseException e) {
+            log.error("ParseError in mapGebiedsaanduidingDto test: {}", e);
+        }
+    }
+
+    @Test
+    @Order(5)
+    public void gebiedsAanduidingTest_05(TestInfo testInfo) {
+
+        log.info("Start test: {}", testInfo.getDisplayName());
+        String planidentificatie = "NL.IMRO.0765.02BP00012010-0401";
+        String gebiedsaanduidingidentificatie = "NL.IMRO.0765.GP2218556402-00";
+        try {
+            Gebiedsaanduiding gebiedsaanduiding = getGebiedsaanduiding(planidentificatie, gebiedsaanduidingidentificatie);
+            log.info("plan: \n{}", gebiedsaanduiding.toString());
+
+            GebiedsaanduidingDto gebiedsaanduidingDto = gebiedsaanduidingMapper.toGebiedsaanduiding(gebiedsaanduiding);
+            log.info("gebiedsaanduidingDto: \n{}", gebiedsaanduidingDto.toString());
+            checkResult(gebiedsaanduidingDto, gebiedsaanduiding);
+        } catch (ParseException e) {
+            log.error("ParseError in mapGebiedsaanduidingDto test: {}", e);
+        }
+    }
+
+    @Test
+    @Order(6)
+    public void gebiedsAanduidingTest_06(TestInfo testInfo) {
+
+        log.info("Start test: {}", testInfo.getDisplayName());
+        String planidentificatie = "NL.IMRO.0765.02BP00012010-0401";
+        String gebiedsaanduidingidentificatie = "NL.IMRO.0765.GP22264251766-00";
+        try {
+            Gebiedsaanduiding gebiedsaanduiding = getGebiedsaanduiding(planidentificatie, gebiedsaanduidingidentificatie);
+            log.info("plan: \n{}", gebiedsaanduiding.toString());
+
+            GebiedsaanduidingDto gebiedsaanduidingDto = gebiedsaanduidingMapper.toGebiedsaanduiding(gebiedsaanduiding);
+            log.info("gebiedsaanduidingDto: \n{}", gebiedsaanduidingDto.toString());
+            checkResult(gebiedsaanduidingDto, gebiedsaanduiding);
+        } catch (ParseException e) {
+            log.error("ParseError in mapGebiedsaanduidingDto test: {}", e);
+        }
+    }
+
+
+    @Test
+    public void mapGebiedsaanduiding_00(TestInfo testInfo) {
+        log.info("Start test: {}", testInfo.getDisplayName());
         Gebiedsaanduiding gebiedsaanduiding;
-        log.info("Start gebiedsaanduiding-00.json");
+
         try {
             File dataFile = resourceLoader.getResource("classpath:gebiedsaanduiding-00.json").getFile();
 
@@ -62,9 +188,10 @@ public class GebiedsaanduidingTest {
 
 
     @Test
-    public void mapGebiedsaanduiding_01() {
+    public void mapGebiedsaanduiding_01(TestInfo testInfo) {
+        log.info("Start test: {}", testInfo.getDisplayName());
         Gebiedsaanduiding gebiedsaanduiding;
-        log.info("Start gebiedsaanduiding-01.json");
+
         try {
             File dataFile = resourceLoader.getResource("classpath:gebiedsaanduiding-01.json").getFile();
 
@@ -84,9 +211,10 @@ public class GebiedsaanduidingTest {
     }
 
     @Test
-    public void mapGebiedsaanduiding_02() {
+    public void mapGebiedsaanduiding_02(TestInfo testInfo) {
+        log.info("Start test: {}", testInfo.getDisplayName());
         Gebiedsaanduiding gebiedsaanduiding;
-        log.info("Start gebiedsaanduiding-02.json");
+
         try {
             File dataFile = resourceLoader.getResource("classpath:gebiedsaanduiding-02.json").getFile();
 
@@ -106,9 +234,10 @@ public class GebiedsaanduidingTest {
     }
 
     @Test
-    public void mapGebiedsaanduiding_03() {
+    public void mapGebiedsaanduiding_03(TestInfo testInfo) {
+        log.info("Start test: {}", testInfo.getDisplayName());
         Gebiedsaanduiding gebiedsaanduiding;
-        log.info("Start gebiedsaanduiding-03.json");
+
         try {
             File dataFile = resourceLoader.getResource("classpath:gebiedsaanduiding-03.json").getFile();
 
@@ -128,9 +257,10 @@ public class GebiedsaanduidingTest {
     }
 
     @Test
-    public void mapGebiedsaanduiding_04() {
+    public void mapGebiedsaanduiding_04(TestInfo testInfo) {
+        log.info("Start test: {}", testInfo.getDisplayName());
         Gebiedsaanduiding gebiedsaanduiding;
-        log.info("Start gebiedsaanduiding-04.json");
+
         try {
             File dataFile = resourceLoader.getResource("classpath:gebiedsaanduiding-04.json").getFile();
 
@@ -150,9 +280,10 @@ public class GebiedsaanduidingTest {
     }
 
     @Test
-    public void mapGebiedsaanduiding_05() {
+    public void mapGebiedsaanduiding_05(TestInfo testInfo) {
+        log.info("Start test: {}", testInfo.getDisplayName());
         Gebiedsaanduiding gebiedsaanduiding;
-        log.info("Start gebiedsaanduiding-05.json");
+
         try {
             File dataFile = resourceLoader.getResource("classpath:gebiedsaanduiding-05.json").getFile();
 
@@ -169,5 +300,14 @@ public class GebiedsaanduidingTest {
             log.error("ParseError in mapGebiedsaanduidingDto test: {}", e);
         }
         log.info("End   gebiedsaanduiding-05.json");
+    }
+
+    private Gebiedsaanduiding getGebiedsaanduiding(String planidentificatie, String gebiedsaanduidingidentificatie) {
+        Gebiedsaanduiding gebiedsaanduiding = null;
+        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(APIService.getApiUrl() + "/plannen/" + planidentificatie + "/gebiedsaanduidingen/" + gebiedsaanduidingidentificatie);
+
+        log.info("using url: {}", uriComponentsBuilder.build().toUri());
+        gebiedsaanduiding = APIService.getDirectly(uriComponentsBuilder.build().toUri(), Gebiedsaanduiding.class);
+        return gebiedsaanduiding;
     }
 }

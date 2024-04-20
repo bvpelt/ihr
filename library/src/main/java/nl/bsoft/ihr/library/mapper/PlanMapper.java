@@ -1,10 +1,8 @@
 package nl.bsoft.ihr.library.mapper;
 
 import lombok.Setter;
-import nl.bsoft.ihr.generated.model.Plan;
-import nl.bsoft.ihr.generated.model.PlanDossier;
-import nl.bsoft.ihr.generated.model.PlanType;
-import nl.bsoft.ihr.generated.model.PlanstatusInfo;
+import nl.bsoft.ihr.generated.model.*;
+import nl.bsoft.ihr.library.model.dto.ExternPlanDto;
 import nl.bsoft.ihr.library.model.dto.PlanDto;
 import nl.bsoft.ihr.library.model.dto.PlanStatusDto;
 import org.locationtech.jts.io.ParseException;
@@ -12,6 +10,8 @@ import org.mapstruct.*;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
 
 @Setter
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
@@ -21,7 +21,7 @@ import java.time.LocalDate;
                 JsonNullableMapper.class
         },
         nullValueIterableMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
-public abstract class PlanMapper  implements JsonNullableMapper {
+public abstract class PlanMapper implements JsonNullableMapper {
 
     @Mapping(target = "id", source = "id", ignore = true)
     @Mapping(target = "ondergronden", source = "ondergronden", ignore = true)

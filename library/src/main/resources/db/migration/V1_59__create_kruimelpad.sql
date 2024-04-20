@@ -1,11 +1,11 @@
 -- table kruimelpad
 create table kruimelpad
 (
-    id   bigint not null primary key,
+    id            bigint not null primary key,
     identificatie text,
-    titel text,
-    volgnummer int,
-    tekst_id bigint
+    titel         text,
+    volgnummer    int,
+    tekst_id      bigint
 );
 
 create index kruimelpad_identificatie_idx on kruimelpad (identificatie);

@@ -3,15 +3,11 @@ package nl.bsoft.ihr.library;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import nl.bsoft.ihr.generated.model.Bestemmingsvlak;
-import nl.bsoft.ihr.generated.model.BestemmingsvlakCollectie;
 import nl.bsoft.ihr.generated.model.InfoGet200Response;
 import nl.bsoft.ihr.library.mapper.BestemmingsvlakMapper;
 import nl.bsoft.ihr.library.mapper.BestemmingsvlakMapperImpl;
 import nl.bsoft.ihr.library.model.dto.BestemmingsvlakDto;
 import nl.bsoft.ihr.library.service.APIService;
-
-import org.apiguardian.api.API;
-import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.*;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.util.Assert;
@@ -27,11 +23,11 @@ import java.util.LinkedHashMap;
 
 @Slf4j
 @ComponentScan("nl.bsoft.ihr.library")
-@SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@SpringBootTest
 public class BestemmingsvlakTests {
     private final BestemmingsvlakMapper bestemmingsvlakMapper = new BestemmingsvlakMapperImpl();
-    private  APIService APIService;
+    private final APIService APIService;
 
     @Autowired
     private ResourceLoader resourceLoader = null;
@@ -76,7 +72,7 @@ public class BestemmingsvlakTests {
         InfoGet200Response info = getInfo();
         String app = info.getApp().toString();
 
-        LinkedHashMap<String, String> keyValue = (LinkedHashMap<String, String>)info.getApp();
+        LinkedHashMap<String, String> keyValue = (LinkedHashMap<String, String>) info.getApp();
 
         String version = keyValue.get("version");
         log.info("version: {}", version);

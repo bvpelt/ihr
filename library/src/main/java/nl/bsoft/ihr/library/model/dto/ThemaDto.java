@@ -18,15 +18,13 @@ import java.util.Set;
 @Table(name = "thema", schema = "public", catalog = "ihr")
 public class ThemaDto {
     private static final long serialVersionUID = 10L;
-
+    @ManyToMany(mappedBy = "themas", fetch = FetchType.LAZY)
+    Set<StructuurVisieGebiedDto> structuurVisieGebieden = new HashSet<>();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "thema")
     private String thema;
-
-    @ManyToMany(mappedBy = "themas", fetch = FetchType.LAZY)
-    Set<StructuurVisieGebiedDto> structuurVisieGebieden = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {

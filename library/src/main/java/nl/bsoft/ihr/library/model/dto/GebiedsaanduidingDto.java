@@ -30,6 +30,8 @@ public class GebiedsaanduidingDto {
     private String gebiedsaanduidinggroep;
     @Column(name = "labelinfo")
     private String labelinfo;
+    @Column(name = "styleid")
+    private String styleid;
     @Column(name = "md5hash", nullable = false)
     private String md5hash;
 

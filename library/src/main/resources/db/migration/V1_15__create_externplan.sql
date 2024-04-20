@@ -1,17 +1,46 @@
 -- table externplan
 create table externplan
 (
-    id             bigint not null primary key,
-    naam           text,
-    identificatie  text,
-    planstatus     text,
-    planstatusdate text,
-    dossier        text,
-    href           text
+    id                                   bigint not null primary key,
+    naam                                 text,
+    identificatie                        text,
+    planstatus                           text,
+    planstatusdate                       text,
+    dossier                              text,
+    href                                 text,
+    vervangtmetplan_id                   bigint,
+    tengevolgevanmetplan_id              bigint,
+    muteertmetplan_id                    bigint,
+    gebruiktinfouitmetplan_id            bigint,
+    gedeeltelijkeherzieningmetplan_id    bigint,
+    uittewerkinginmetplan_id             bigint,
+    uitgewerktinmetplan_id               bigint,
+    vervangtvanuitplan_id                bigint,
+    tegevolgevanvanuitplan_id            bigint,
+    muteertvanuitplan_id                 bigint,
+    gebruiktinforuitvanuitplan_id        bigint,
+    gedeeltelijkeherzieningvanuitplan_id bigint,
+    uittewerkinginvanuitplan_id          bigint,
+    uitgewerktinvanuitplan_id            bigint
 );
 
+create unique index externplan_idx on externplan (naam, identificatie, planstatus, planstatusdate, dossier, href);
 create index externplan_planstatus_idx on externplan (planstatus);
 create index externplan_dossier_idx on externplan (dossier);
+create index externplan_vervangtmetplan_idx on externplan(vervangtmetplan_id);
+create index externplan_tengevolgevanmetplan_idx on externplan( tengevolgevanmetplan_id);
+create index externplan_muteertmetplan_idx on externplan(muteertmetplan_id );
+create index externplan_gebruiktinfouitmetplan_idx on externplan(gebruiktinfouitmetplan_id);
+create index externplan_gedeeltelijkeherzieningmetplan_idx on externplan(gedeeltelijkeherzieningmetplan_id);
+create index externplan_uittewerkinginmetplan_idx on externplan(uittewerkinginmetplan_id);
+create index externplan_uitgewerktinmetplan_idx on externplan(uitgewerktinmetplan_id);
+create index externplan_vervangtvanuitplan_idx on externplan(vervangtvanuitplan_id);
+create index externplan_tegevolgevanvanuitplan_idx on externplan(tegevolgevanvanuitplan_id);
+create index externplan_muteertvanuitplan_idx on externplan(muteertvanuitplan_id);
+create index externplan_gebruiktinforuitvanuitplan_idx on externplan(gebruiktinforuitvanuitplan_id);
+create index externplan_gedeeltelijkeherzieningvanuitplan_idx on externplan(gedeeltelijkeherzieningvanuitplan_id);
+create index externplan_uittewerkinginvanuitplan_idx on externplan(uittewerkinginvanuitplan_id);
+create index externplan_uitgewerktinvanuitplan_idx on externplan(uitgewerktinvanuitplan_id);
 
 ALTER TABLE externplan
     OWNER TO testuser;

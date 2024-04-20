@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -19,7 +18,36 @@ import java.util.Set;
 @Table(name = "plan", schema = "public", catalog = "ihr")
 public class PlanDto {
     private static final long serialVersionUID = 4L;
-
+    // relatiesMetExternePlannen
+    @OneToMany(mappedBy = "vervangtmetplan")
+    Set<ExternPlanDto> vervangtMetPlannen = new HashSet<>();
+    @OneToMany(mappedBy = "tengevolgevanmetplan")
+    Set<ExternPlanDto> tengevolgeVanMetPlannen = new HashSet<>();
+    @OneToMany(mappedBy = "muteertmetplan")
+    Set<ExternPlanDto> muteertMetPlannen = new HashSet<>();
+    @OneToMany(mappedBy = "gebruiktinfouitmetplan")
+    Set<ExternPlanDto> gebruiktInfoUitMetPlannen = new HashSet<>();
+    @OneToMany(mappedBy = "gedeeltelijkeherzieningmetplan")
+    Set<ExternPlanDto> gedeeltelijkeHerzieningMetPlannen = new HashSet<>();
+    @OneToMany(mappedBy = "uittewerkinginmetplan")
+    Set<ExternPlanDto> uitTeWerkenInMetPlannen = new HashSet<>();
+    @OneToMany(mappedBy = "uitgewerktinmetplan")
+    Set<ExternPlanDto> uitgewerktInMetPlannen = new HashSet<>();
+    // relatiesVanuitExternePlannen
+    @OneToMany(mappedBy = "vervangtvanuitplan")
+    Set<ExternPlanDto> vervangtVanuitPlannen = new HashSet<>();
+    @OneToMany(mappedBy = "tegevolgevanvanuitplan")
+    Set<ExternPlanDto> tengevolgeVanVanuitPlannen = new HashSet<>();
+    @OneToMany(mappedBy = "muteertvanuitplan")
+    Set<ExternPlanDto> muteertVanuitPlannen = new HashSet<>();
+    @OneToMany(mappedBy = "gebruiktinforuitvanuitplan")
+    Set<ExternPlanDto> gebruiktInfoUitVanuitPlannen = new HashSet<>();
+    @OneToMany(mappedBy = "gedeeltelijkeherzieningvanuitplan")
+    Set<ExternPlanDto> gedeeltelijkeHerzieningVanuitPlannen = new HashSet<>();
+    @OneToMany(mappedBy = "uittewerkinginvanuitplan")
+    Set<ExternPlanDto> uitTeWerkenInVanuitPlannen = new HashSet<>();
+    @OneToMany(mappedBy = "uitgewerktinvanuitplan")
+    Set<ExternPlanDto> uitgewerktInVanuitPlannen = new HashSet<>();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,18 +55,14 @@ public class PlanDto {
     private String identificatie;
     @Column(name = "plantype")
     private String plantype;
-
     @ManyToOne
     @JoinColumn(name = "beleidsmatigeoverheid_id", nullable = false, referencedColumnName = "id")
     private OverheidDto beleidsmatigeoverheid;
-
     @ManyToOne
     @JoinColumn(name = "publicerendeoverheid_id", nullable = false, referencedColumnName = "id")
     private OverheidDto publicerendeoverheid;
-
     @Column(name = "naam")
     private String naam;
-
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL) // owning site
     @JoinTable(
             name = "plan_locatienaam",
@@ -49,18 +73,15 @@ public class PlanDto {
                     @JoinColumn(name = "locatienaam_id", referencedColumnName = "id")
             })
     private Set<LocatieNaamDto> locaties = new HashSet<>();
-
     @ManyToOne
-    @JoinColumn(name="planstatus_id", nullable = false, referencedColumnName = "id")
+    @JoinColumn(name = "planstatus_id", nullable = false, referencedColumnName = "id")
     private PlanStatusDto planstatus;
-
-    @Column(name ="verwijzingnaarvaststelling")
+    @Column(name = "verwijzingnaarvaststelling")
     private String verwijzingnaarvaststelling;
-    @Column(name ="verwijzingnaargml")
+    @Column(name = "verwijzingnaargml")
     private String verwijzingnaargml;
     @Column(name = "besluitnummer")
     private String besluitnummer;
-
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL) // owning site
     @JoinTable(
             name = "plan_verwijzingnorm",
@@ -81,8 +102,6 @@ public class PlanDto {
                     @JoinColumn(name = "normadressant_id", referencedColumnName = "id")
             })
     private Set<NormadressantDto> normadressanten = new HashSet<>();
-
-
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL) // owning site
     @JoinTable(
             name = "plan_ondergrond",
@@ -93,7 +112,6 @@ public class PlanDto {
                     @JoinColumn(name = "ondergrond_id", referencedColumnName = "id")
             })
     private Set<OndergrondDto> ondergronden = new HashSet<>();
-
     @Column(name = "regelstatus")
     private String regelstatus;
     @Column(name = "dossierid")

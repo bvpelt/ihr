@@ -1,8 +1,8 @@
 -- table plan_ondergrond
 create table plan_ondergrond
 (
-    id   bigint not null primary key,
-    plan_id bigint,
+    id            bigint not null primary key,
+    plan_id       bigint,
     ondergrond_id bigint
 );
 

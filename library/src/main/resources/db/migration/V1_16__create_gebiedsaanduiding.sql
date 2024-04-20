@@ -6,6 +6,7 @@ create table gebiedsaanduiding
     naam                   text,
     gebiedsaanduidinggroep text,
     labelinfo              text,
+    styleid                text,
     md5hash                text
 );
 

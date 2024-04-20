@@ -1,8 +1,8 @@
 -- table ondergrond
 create table ondergrond
 (
-    id   bigint not null primary key,
-    type text,
+    id    bigint not null primary key,
+    type  text,
     datum text
 );
 
