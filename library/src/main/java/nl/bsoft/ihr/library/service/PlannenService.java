@@ -164,9 +164,11 @@ public class PlannenService {
             extractPublicerendeOverheid(plan, planDto);
 
             extractRelatiesMetExternePlannen(plan, planDto);
-            extractRelatiesVanuitExternePlannen(plan, planDto);
+
 
             planRepository.save(planDto); // reference for locatienamen
+
+            extractRelatiesVanuitExternePlannen(plan, planDto);
 
             // manytomany relations
             extractNormadressant(plan, planDto);
@@ -355,7 +357,7 @@ public class PlannenService {
             String naam = element.getNaam().isPresent() ? element.getNaam().get() : null;
             String identificatie = element.getId().isPresent() ? element.getId().get() : null;
             String planstatus = element.getPlanstatusInfo().isPresent() ? element.getPlanstatusInfo().get().getPlanstatus() :null;
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-mm-dd");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate planstatusdate = element.getPlanstatusInfo().isPresent() ? LocalDate.parse(element.getPlanstatusInfo().get().getDatum(), formatter) : null;
             String dossier = element.getDossier().isPresent() ? element.getDossier().get().getStatus() : null;
             String href = element.getHref().isPresent() ? element.getHref().get() : null;
