@@ -165,10 +165,11 @@ public class PlannenService {
 
             extractRelatiesMetExternePlannen(plan, planDto);
 
+            extractRelatiesVanuitExternePlannen(plan, planDto);
 
             planRepository.save(planDto); // reference for locatienamen
 
-            extractRelatiesVanuitExternePlannen(plan, planDto);
+
 
             // manytomany relations
             extractNormadressant(plan, planDto);
@@ -350,7 +351,7 @@ public class PlannenService {
             log.debug("beleidsmatige overheid: {}", currentBeleidsMatigeOverheid);
         }
     }
-    Set<ExternPlanDto> findPlanRef(List<RelatieMetExternPlanReferentie>  vervangtList) {
+    Set<ExternPlanDto> findPlanRef(List<RelatieMetExternPlanReferentie>  vervangtList, PlanDto plan, String field) {
         Set<ExternPlanDto> planSet = new HashSet<>();
 
         vervangtList.forEach(element -> {
@@ -363,105 +364,146 @@ public class PlannenService {
             String href = element.getHref().isPresent() ? element.getHref().get() : null;
 
             Optional<ExternPlanDto> optionalExternPlanDto = externalPlanRepository.findByNaamAndIdentificatieAndPlanstatusAndPlanstatusdateAndDossierAndHref(naam, identificatie, planstatus, planstatusdate, dossier, href);
+            ExternPlanDto currentPlan = null;
             if (optionalExternPlanDto.isPresent()) {
-                planSet.add(optionalExternPlanDto.get());
+                log.debug("Found externalplan: {}", optionalExternPlanDto.get());
+                currentPlan = optionalExternPlanDto.get();
+                updatePlan(plan, field, currentPlan);
+
             } else {
-                ExternPlanDto newPlan = new ExternPlanDto();
-                newPlan.setIdentificatie(identificatie);
-                newPlan.setNaam(naam);
-                newPlan.setPlanstatus(planstatus);
-                newPlan.setPlanstatusdate(planstatusdate);
-                newPlan.setDossier(dossier);
-                newPlan.setHref(href);
-                newPlan = externalPlanRepository.save(newPlan);
-                planSet.add(newPlan);
+                currentPlan = new ExternPlanDto();
+                currentPlan.setIdentificatie(identificatie);
+                currentPlan.setNaam(naam);
+                currentPlan.setPlanstatus(planstatus);
+                currentPlan.setPlanstatusdate(planstatusdate);
+                currentPlan.setDossier(dossier);
+                currentPlan.setHref(href);
+                updatePlan(plan, field, currentPlan);
+                log.debug("New externalplan: {}", currentPlan);
+                currentPlan = externalPlanRepository.save(currentPlan);
             }
+            planSet.add(currentPlan);
         });
         return planSet;
     }
+
+    private static void updatePlan(PlanDto plan, String field, ExternPlanDto currentPlan) {
+        switch (field) {
+            case "VervangtMet": currentPlan.setVervangtmetplan(plan);
+            break;
+            case "TengevolgeVanMet": currentPlan.setTengevolgevanmetplan(plan);
+            break;
+            case "MuteertMet": currentPlan.setMuteertmetplan(plan);
+            break;
+            case "GebruiktInformatieUitMet": currentPlan.setGebruiktinfouitmetplan(plan);
+            break;
+            case "GedeeltelijkeHerzieningMet": currentPlan.setGedeeltelijkeherzieningmetplan(plan);
+            break;
+            case "UitTeWerkenInMet": currentPlan.setUittewerkinginmetplan(plan);
+            break;
+            case "UitgewerktInMet": currentPlan.setUitgewerktinmetplan(plan);
+            break;
+            case "VervangtVanuit": currentPlan.setVervangtvanuitplan(plan);
+            break;
+            case "TenGevolgeVanVanuit": currentPlan.setTegevolgevanvanuitplan(plan);
+            break;
+            case "MuteertVanuit": currentPlan.setMuteertvanuitplan(plan);
+            break;
+            case "GebruiktInformatieUitVanuit": currentPlan.setGebruiktinforuitvanuitplan(plan);
+            break;
+            case "GedeeltelijkeHerzieningVanuit": currentPlan.setGedeeltelijkeherzieningvanuitplan(plan);
+            break;
+            case "UitTeWerkenInVanuit": currentPlan.setUittewerkinginvanuitplan(plan);
+            break;
+            case "UitgewerkintInVanuit": currentPlan.setUitgewerktinvanuitplan(plan);
+            break;
+            default: log.error("Field {} not found", field);
+        }
+    }
+
     private void extractRelatiesMetExternePlannen(Plan plan, PlanDto planDto) {
         List<RelatieMetExternPlanReferentie> planList = plan.getRelatiesMetExternePlannen().getVervangt();
         if (planList != null && planList.size() > 0) {
-            Set<ExternPlanDto> vervangSet = findPlanRef(planList);
+            Set<ExternPlanDto> vervangSet = findPlanRef(planList, planDto, "VervangtMet");
             planDto.setVervangtMetPlannen(vervangSet);
         }
 
         planList = plan.getRelatiesMetExternePlannen().getTenGevolgeVan();
         if (planList != null && planList.size() > 0) {
-            Set<ExternPlanDto> vervangSet = findPlanRef(planList);
+            Set<ExternPlanDto> vervangSet = findPlanRef(planList,planDto, "TengevolgeVanMet");
             planDto.setTengevolgeVanMetPlannen(vervangSet);
         }
 
         planList = plan.getRelatiesMetExternePlannen().getMuteert();
         if (planList != null && planList.size() > 0) {
-            Set<ExternPlanDto> vervangSet = findPlanRef(planList);
+            Set<ExternPlanDto> vervangSet = findPlanRef(planList, planDto, "MuteertMet");
             planDto.setMuteertMetPlannen(vervangSet);
         }
 
         planList = plan.getRelatiesMetExternePlannen().getGebruiktInformatieUit();
         if (planList != null && planList.size() > 0) {
-            Set<ExternPlanDto> vervangSet = findPlanRef(planList);
+            Set<ExternPlanDto> vervangSet = findPlanRef(planList, planDto, "GebruiktInformatieUitMet");
             planDto.setGebruiktInfoUitMetPlannen(vervangSet);
         }
 
         planList = plan.getRelatiesMetExternePlannen().getGedeeltelijkeHerzieningVan();
         if (planList != null && planList.size() > 0) {
-            Set<ExternPlanDto> vervangSet = findPlanRef(planList);
+            Set<ExternPlanDto> vervangSet = findPlanRef(planList, planDto, "GedeeltelijkeHerzieningMet");
             planDto.setGedeeltelijkeHerzieningMetPlannen(vervangSet);
         }
 
         planList = plan.getRelatiesMetExternePlannen().getUitTeWerkenIn();
         if (planList != null && planList.size() > 0) {
-            Set<ExternPlanDto> vervangSet = findPlanRef(planList);
+            Set<ExternPlanDto> vervangSet = findPlanRef(planList, planDto, "UitTeWerkenInMet");
             planDto.setUitTeWerkenInMetPlannen(vervangSet);
         }
 
         planList = plan.getRelatiesMetExternePlannen().getUitgewerktIn();
         if (planList != null && planList.size() > 0) {
-            Set<ExternPlanDto> vervangSet = findPlanRef(planList);
+            Set<ExternPlanDto> vervangSet = findPlanRef(planList, planDto, "UitgewerktInMet");
             planDto.setUitgewerktInMetPlannen(vervangSet);
         }
     }
     private void extractRelatiesVanuitExternePlannen(Plan plan, PlanDto planDto) {
         List<RelatieMetExternPlanReferentie> planList = plan.getRelatiesVanuitExternePlannen().getVervangt();
         if (planList != null && planList.size() > 0) {
-            Set<ExternPlanDto> vervangSet = findPlanRef(planList);
+            Set<ExternPlanDto> vervangSet = findPlanRef(planList, planDto, "VervangtVanuit");
             planDto.setVervangtVanuitPlannen(vervangSet);
         }
 
         planList = plan.getRelatiesVanuitExternePlannen().getTenGevolgeVan();
         if (planList != null && planList.size() > 0) {
-            Set<ExternPlanDto> vervangSet = findPlanRef(planList);
+            Set<ExternPlanDto> vervangSet = findPlanRef(planList, planDto, "TenGevolgeVanVanuit");
             planDto.setTengevolgeVanVanuitPlannen(vervangSet);
         }
 
         planList = plan.getRelatiesVanuitExternePlannen().getMuteert();
         if (planList != null && planList.size() > 0) {
-            Set<ExternPlanDto> vervangSet = findPlanRef(planList);
+            Set<ExternPlanDto> vervangSet = findPlanRef(planList, planDto, "MuteertVanuit");
             planDto.setMuteertVanuitPlannen(vervangSet);
         }
 
         planList = plan.getRelatiesVanuitExternePlannen().getGebruiktInformatieUit();
         if (planList != null && planList.size() > 0) {
-            Set<ExternPlanDto> vervangSet = findPlanRef(planList);
+            Set<ExternPlanDto> vervangSet = findPlanRef(planList, planDto, "GebruiktInformatieUitVanuit");
             planDto.setGebruiktInfoUitVanuitPlannen(vervangSet);
         }
 
         planList = plan.getRelatiesVanuitExternePlannen().getGedeeltelijkeHerzieningVan();
         if (planList != null && planList.size() > 0) {
-            Set<ExternPlanDto> vervangSet = findPlanRef(planList);
+            Set<ExternPlanDto> vervangSet = findPlanRef(planList, planDto, "GedeeltelijkeHerzieningVanuit");
             planDto.setGedeeltelijkeHerzieningVanuitPlannen(vervangSet);
         }
 
         planList = plan.getRelatiesVanuitExternePlannen().getUitTeWerkenIn();
         if (planList != null && planList.size() > 0) {
-            Set<ExternPlanDto> vervangSet = findPlanRef(planList);
+            Set<ExternPlanDto> vervangSet = findPlanRef(planList, planDto, "UitTeWerkenInVanuit");
             planDto.setUitTeWerkenInVanuitPlannen(vervangSet);
         }
 
         planList = plan.getRelatiesVanuitExternePlannen().getUitgewerktIn();
         if (planList != null && planList.size() > 0) {
-            Set<ExternPlanDto> vervangSet = findPlanRef(planList);
+            Set<ExternPlanDto> vervangSet = findPlanRef(planList, planDto, "UitgewerkintInVanuit");
             planDto.setUitgewerktInVanuitPlannen(vervangSet);
         }
     }
