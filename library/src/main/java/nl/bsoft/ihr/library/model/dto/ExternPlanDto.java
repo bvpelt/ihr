@@ -36,60 +36,60 @@ public class ExternPlanDto {
 
     // relatiesMetExternePlannen
     @ManyToOne
-    @JoinColumn(name = "vervangtmetplan_id", nullable = false, referencedColumnName = "id")
+    @JoinColumn(name = "vervangtmetplan_id", nullable = true, referencedColumnName = "id")
     private PlanDto vervangtmetplan;
 
     @ManyToOne
-    @JoinColumn(name = "tengevolgevanmetplan_id", nullable = false, referencedColumnName = "id")
+    @JoinColumn(name = "tengevolgevanmetplan_id", nullable = true, referencedColumnName = "id")
     private PlanDto tengevolgevanmetplan;
 
     @ManyToOne
-    @JoinColumn(name = "muteertmetplan_id", nullable = false, referencedColumnName = "id")
+    @JoinColumn(name = "muteertmetplan_id", nullable = true, referencedColumnName = "id")
     private PlanDto muteertmetplan;
 
     @ManyToOne
-    @JoinColumn(name = "gebruiktinfouitmetplan_id", nullable = false, referencedColumnName = "id")
+    @JoinColumn(name = "gebruiktinfouitmetplan_id", nullable = true, referencedColumnName = "id")
     private PlanDto gebruiktinfouitmetplan;
 
     @ManyToOne
-    @JoinColumn(name = "gedeeltelijkeherzieningmetplan_id", nullable = false, referencedColumnName = "id")
+    @JoinColumn(name = "gedeeltelijkeherzieningmetplan_id", nullable = true, referencedColumnName = "id")
     private PlanDto gedeeltelijkeherzieningmetplan;
 
     @ManyToOne
-    @JoinColumn(name = "uittewerkinginmetplan_id", nullable = false, referencedColumnName = "id")
+    @JoinColumn(name = "uittewerkinginmetplan_id", nullable = true, referencedColumnName = "id")
     private PlanDto uittewerkinginmetplan;
 
     @ManyToOne
-    @JoinColumn(name = "uitgewerktinmetplan_id", nullable = false, referencedColumnName = "id")
+    @JoinColumn(name = "uitgewerktinmetplan_id", nullable = true, referencedColumnName = "id")
     private PlanDto uitgewerktinmetplan;
 
     // relatiesVanuitExternePlannen
     @ManyToOne
-    @JoinColumn(name = "vervangtvanuitplan_id", nullable = false, referencedColumnName = "id")
+    @JoinColumn(name = "vervangtvanuitplan_id", nullable = true, referencedColumnName = "id")
     private PlanDto vervangtvanuitplan;
 
     @ManyToOne
-    @JoinColumn(name = "tegevolgevanvanuitplan_id", nullable = false, referencedColumnName = "id")
+    @JoinColumn(name = "tegevolgevanvanuitplan_id", nullable = true, referencedColumnName = "id")
     private PlanDto tegevolgevanvanuitplan;
 
     @ManyToOne
-    @JoinColumn(name = "muteertvanuitplan_id", nullable = false, referencedColumnName = "id")
+    @JoinColumn(name = "muteertvanuitplan_id", nullable = true, referencedColumnName = "id")
     private PlanDto muteertvanuitplan;
 
     @ManyToOne
-    @JoinColumn(name = "gebruiktinforuitvanuitplan_id", nullable = false, referencedColumnName = "id")
+    @JoinColumn(name = "gebruiktinforuitvanuitplan_id", nullable = true, referencedColumnName = "id")
     private PlanDto gebruiktinforuitvanuitplan;
 
     @ManyToOne
-    @JoinColumn(name = "gedeeltelijkeherzieningvanuitplan_id", nullable = false, referencedColumnName = "id")
+    @JoinColumn(name = "gedeeltelijkeherzieningvanuitplan_id", nullable = true, referencedColumnName = "id")
     private PlanDto gedeeltelijkeherzieningvanuitplan;
 
     @ManyToOne
-    @JoinColumn(name = "uittewerkinginvanuitplan_id", nullable = false, referencedColumnName = "id")
+    @JoinColumn(name = "uittewerkinginvanuitplan_id", nullable = true, referencedColumnName = "id")
     private PlanDto uittewerkinginvanuitplan;
 
     @ManyToOne
-    @JoinColumn(name = "uitgewerktinvanuitplan_id", nullable = false, referencedColumnName = "id")
+    @JoinColumn(name = "uitgewerktinvanuitplan_id", nullable = true, referencedColumnName = "id")
     private PlanDto uitgewerktinvanuitplan;
 
     @Override
