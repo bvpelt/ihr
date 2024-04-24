@@ -96,7 +96,7 @@ public class TekstenService {
                 log.error("teksten is null");
             }
         } catch (Exception e) {
-            log.error("Expected tekstref: {}, error: {}", identificatie, e);
+            log.error("Expected tekstref plan: {} href: {}, error: {}", identificatie, e);
         }
     }
 
