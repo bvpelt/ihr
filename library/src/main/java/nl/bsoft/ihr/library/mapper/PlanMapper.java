@@ -10,6 +10,8 @@ import org.mapstruct.*;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -24,6 +26,7 @@ import java.util.Set;
 public abstract class PlanMapper implements JsonNullableMapper {
 
     @Mapping(target = "id", source = "id", ignore = true)
+    @Mapping(target = "illustraties", source = "illustraties", ignore = true)
     @Mapping(target = "ondergronden", source = "ondergronden", ignore = true)
     @Mapping(target = "identificatie", source = "id", qualifiedByName = "toId")
     @Mapping(target = "plantype", source = "type", qualifiedByName = "toPlanType")
@@ -33,7 +36,11 @@ public abstract class PlanMapper implements JsonNullableMapper {
     @Mapping(target = "planstatus", source = "planstatusInfo", qualifiedByName = "toPlanStatusInfo")
     @Mapping(target = "dossierid", source = "dossier", qualifiedByName = "toDossierId")
     @Mapping(target = "dossierstatus", source = "dossier", qualifiedByName = "toDossierStatus")
+    @Mapping(target = "ishistorisch", source = "isHistorisch")
+    @Mapping(target = "verwijderdop", source = "verwijderdOp", qualifiedByName = "toIsVerwijderdOp")
     @Mapping(target = "isparapluplan", source = "isParapluplan")
+    @Mapping(target = "istamplan", source = "isTamPlan")
+    @Mapping(target = "einderechtsgeldigheid", source = "eindeRechtsgeldigheid", qualifiedByName = "toEindeRechtsgeldigheid")
     @Mapping(target = "verwijzingnaarvaststelling", source = "verwijzingNaarVaststellingsbesluit", qualifiedByName = "toJsonNullableString")
     @Mapping(target = "verwijzingnaargml", source = "verwijzingNaarGml")
     @Mapping(target = "beroepenbezwaar", source = "beroepEnBezwaar", qualifiedByName = "toBeroepEnBezwaar")
@@ -52,6 +59,28 @@ public abstract class PlanMapper implements JsonNullableMapper {
         return type;
     }
 
+    @Named("toIsVerwijderdOp")
+    protected LocalDateTime toIsVerwijderdOp(JsonNullable<OffsetDateTime> date) {
+        LocalDateTime ldate = null;
+        if (date != null) {
+            if (date.isPresent()) {
+                OffsetDateTime odt = date.get();
+                if (odt != null) {
+                    ldate = odt.toLocalDateTime();
+                }
+            }
+        }
+        return ldate;
+    }
+
+    @Named("toEindeRechtsgeldigheid")
+    protected LocalDate toEindeRechtsgeldigheid (JsonNullable<LocalDate> date) {
+        LocalDate ldate = null;
+        if (date.isPresent()) {
+            ldate = date.get();
+        }
+        return ldate;
+    }
     @Named("toPlanStatusInfo")
     protected PlanStatusDto toPlanStatusInfo(PlanstatusInfo planstatusInfo) {
         PlanStatusDto planStatusDto = new PlanStatusDto();

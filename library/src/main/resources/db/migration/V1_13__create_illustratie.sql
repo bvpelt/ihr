@@ -5,11 +5,13 @@ create table illustratie
     href        text,
     type        text,
     naam        text,
-    legendanaam text
+    legendanaam text,
+    plan_id     bigint
 );
 
 create index illustratie_type_idx on illustratie (type);
 create index illustratie_naam_idx on illustratie (naam);
+create index illustratie_plan_idx on illustratie (plan_id);
 create unique index illustratie_href_type_naam_legenda_idx on illustratie (href, type, naam, legendanaam);
 
 ALTER TABLE illustratie

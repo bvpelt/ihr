@@ -16,6 +16,10 @@ create table plan
     dossierstatus              text,
     isparapluplan              boolean,
     beroepenbezwaar            text,
+    ishistorisch               boolean,
+    verwijderdop               timestamp,
+    istamplan                  boolean,
+    einderechtsgeldigheid      date,
     md5hash                    text
 );
 

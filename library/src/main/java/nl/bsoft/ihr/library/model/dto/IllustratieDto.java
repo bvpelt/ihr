@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -30,7 +31,10 @@ public class IllustratieDto {
     @Column(name = "legendanaam")
     private String legendanaam;
     @ManyToMany(mappedBy = "illustraties", fetch = FetchType.LAZY)
-    private Set<StructuurVisieGebiedDto> structuurvisiegebied;
+    private Set<StructuurVisieGebiedDto> structuurvisiegebied = new HashSet<>();
+    @ManyToOne()
+    @JoinColumn(name = "plan_id", nullable = true, referencedColumnName = "id")
+    private PlanDto plan;
 
     @Override
     public boolean equals(Object o) {
