@@ -42,7 +42,6 @@ public class PlanTests {
 
     private static void checkResult(PlanDto planDto, Plan plan) {
         Assert.isTrue(planDto.getIdentificatie().equals(plan.getId()), "Identification not equal");
-        Assert.isTrue(planDto.getNaam().equals(plan.getNaam()), "Naam not equal");
         Assert.isTrue(planDto.getPlantype().equals(plan.getType().getValue()), "plantype not equal");
         Assert.isTrue(planDto.getNaam().equals(plan.getNaam()), "naam not equal");
         if (plan.getVerwijzingNaarVaststellingsbesluit().isPresent()) {
@@ -60,6 +59,18 @@ public class PlanTests {
         }
         if (plan.getDossier().isPresent() && plan.getDossier().get() != null && plan.getDossier().get().getStatus().isPresent()) {
             Assert.isTrue(planDto.getDossierstatus().equals(plan.getDossier().get().getStatus().get()), "dossierstatus not equal");
+        }
+        Assert.isTrue(planDto.getIshistorisch().equals(plan.getIsHistorisch()), "is historisch nog equal");
+        if (plan.getVerwijderdOp().isPresent()) {
+            if (plan.getVerwijderdOp().get() != null) {
+                Assert.isTrue(planDto.getVerwijderdop().equals(plan.getVerwijderdOp().get().toLocalDateTime()), "verwijderd op not equal");
+            }
+        }
+        Assert.isTrue(planDto.getIstamplan().equals(plan.getIsTamPlan()), "is tamplan not equal");
+        if (plan.getEindeRechtsgeldigheid().isPresent()) {
+            if (plan.getEindeRechtsgeldigheid().get() != null) {
+                Assert.isTrue(planDto.getEinderechtsgeldigheid().equals(plan.getEindeRechtsgeldigheid().get()), "einderechtsgeldigheid not equal");
+            }
         }
         Assert.isTrue(planDto.getIsparapluplan().equals(plan.getIsParapluplan()), "isparapluplan not equal");
         if (plan.getBeroepEnBezwaar().isPresent()) {

@@ -187,7 +187,7 @@
                         </goals>
                         <configuration>
 
-                            <inputSpec>${project.basedir}/src/main/resources/ihr.4.0.3-revised.yaml</inputSpec>
+                            <inputSpec>${project.basedir}/src/main/resources/ihr.4.0.4-revised.yaml</inputSpec>
 
                             <!--
                             <inputSpec>https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4</inputSpec>

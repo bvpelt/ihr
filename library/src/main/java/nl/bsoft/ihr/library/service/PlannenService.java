@@ -1,5 +1,6 @@
 package nl.bsoft.ihr.library.service;
 
+
 import lombok.extern.slf4j.Slf4j;
 import nl.bsoft.ihr.generated.model.*;
 import nl.bsoft.ihr.library.mapper.LocatieMapper;
@@ -8,11 +9,11 @@ import nl.bsoft.ihr.library.model.dto.*;
 import nl.bsoft.ihr.library.repository.*;
 import nl.bsoft.ihr.library.util.UpdateCounter;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.geolatte.geom.V;
 import org.locationtech.jts.io.ParseException;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDate;
@@ -136,6 +137,7 @@ public class PlannenService {
         return updateCounter;
     }
 
+    @Transactional
     public PlanDto addPlan(Plan plan, ImroLoadDto imroPlan, UpdateCounter updateCounter) {
         PlanDto savedPlan = null;
 

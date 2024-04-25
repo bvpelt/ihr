@@ -120,6 +120,9 @@ public class StructuurVisieGebiedDto {
             })
     private Set<CartografieInfoDto> cartografieinfo;
 
+    @Column(name = "styleid")
+    private String styleid;
+
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE) // owns the relation
     @JoinTable(name = "structuurvisiegebied_locatie",
             joinColumns = {
@@ -135,12 +138,12 @@ public class StructuurVisieGebiedDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         StructuurVisieGebiedDto that = (StructuurVisieGebiedDto) o;
-        return Objects.equals(planidentificatie, that.planidentificatie) && Objects.equals(identificatie, that.identificatie) && Objects.equals(naam, that.naam);
+        return Objects.equals(planidentificatie, that.planidentificatie) && Objects.equals(identificatie, that.identificatie) && Objects.equals(naam, that.naam) && Objects.equals(styleid, that.styleid);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(planidentificatie, identificatie, naam);
+        return Objects.hash(planidentificatie, identificatie, naam, styleid);
     }
 
     @Override
@@ -150,6 +153,7 @@ public class StructuurVisieGebiedDto {
                 ", planidentificatie='" + planidentificatie + '\'' +
                 ", identificatie='" + identificatie + '\'' +
                 ", naam='" + naam + '\'' +
+                ", styleid='" + styleid + '\'' +
                 '}';
     }
 }

@@ -5,6 +5,7 @@ create table structuurvisiegebied
     planidentificatie text,
     identificatie     text,
     naam              text,
+    styleid           text,
     md5hash           text
 );
 

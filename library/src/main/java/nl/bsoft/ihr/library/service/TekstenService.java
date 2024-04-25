@@ -15,6 +15,7 @@ import nl.bsoft.ihr.library.repository.TekstRepository;
 import nl.bsoft.ihr.library.util.UpdateCounter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Iterator;
@@ -121,7 +122,8 @@ public class TekstenService {
         return APIService.getDirectly(uriComponentsBuilder.build().toUri(), TekstCollectie.class);
     }
 
-    private TekstDto addTekst(String planidentificatie, Tekst tekst, UpdateCounter updateCounter) {
+    @Transactional
+    protected TekstDto addTekst(String planidentificatie, Tekst tekst, UpdateCounter updateCounter) {
         TekstDto savedTekst = null;
 
         try {
