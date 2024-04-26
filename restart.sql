@@ -36,6 +36,7 @@ drop table if exists planstatus;
 drop table if exists plan_verwijzingnorm;
 drop table if exists verwijzingnorm;
 drop table if exists kruimelpad;
+drop table if exists bouwvlak;
 
 drop table if exists normadressant;
 drop table if exists ondergrond;

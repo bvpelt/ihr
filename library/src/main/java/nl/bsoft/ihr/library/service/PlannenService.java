@@ -42,6 +42,7 @@ public class PlannenService {
     private final APIService APIService;
     private final TekstenService tekstenService;
     private final BestemmingsvlakkenService bestemmingsvlakkenService;
+    private final BouwvlakkenService bouwvlakkenService;
     private final StructuurVisieGebiedService structuurVisieGebiedService;
     private final PlanRepository planRepository;
     private final ImroLoadRepository imroLoadRepository;
@@ -61,6 +62,7 @@ public class PlannenService {
     public PlannenService(APIService APIService,
                           TekstenService tekstenService,
                           BestemmingsvlakkenService bestemmingsvlakkenService,
+                          BouwvlakkenService bouwvlakkenService,
                           StructuurVisieGebiedService structuurVisieGebiedService,
                           PlanRepository planRepository,
                           ImroLoadRepository imroLoadRepository,
@@ -79,6 +81,7 @@ public class PlannenService {
         this.APIService = APIService;
         this.tekstenService = tekstenService;
         this.bestemmingsvlakkenService = bestemmingsvlakkenService;
+        this.bouwvlakkenService = bouwvlakkenService;
         this.structuurVisieGebiedService = structuurVisieGebiedService;
         this.planRepository = planRepository;
         this.imroLoadRepository = imroLoadRepository;
@@ -223,6 +226,16 @@ public class PlannenService {
             log.info("processed bestemmingsvlak: {}", bestemmingsvlakCounter);
             if (imroPlan != null) {
                 if (bestemmingsvlakCounter.getProcessed() > 0) {
+                    imroPlan.setBestemmingsvlakkenloaded(true);
+                }
+            }
+
+            UpdateCounter bouwvlakCounter = new UpdateCounter();
+            bouwvlakkenService.procesBouwvlak(savedPlan.getIdentificatie(), 1, bouwvlakCounter);
+            log.info("processed bouwvlak: {}", bouwvlakCounter);
+            if (imroPlan != null) {
+                if (bouwvlakCounter.getProcessed() > 0) {
+                    // [TODO bouwvalkken counter]
                     imroPlan.setBestemmingsvlakkenloaded(true);
                 }
             }

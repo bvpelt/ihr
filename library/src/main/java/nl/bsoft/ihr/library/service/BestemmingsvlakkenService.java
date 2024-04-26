@@ -61,6 +61,21 @@ public class BestemmingsvlakkenService {
         return updateCounter;
     }
 
+    public void procesBestemmingsvlak(String planidentificatie, int page, UpdateCounter updateCounter) {
+        BestemmingsvlakCollectie bestemmingsvlakCollectie = getBestemmingsvlakkenForId(planidentificatie, page);
+        if (bestemmingsvlakCollectie != null) {
+            saveBestemmingsvlakken(planidentificatie, page, bestemmingsvlakCollectie, updateCounter);
+        }
+    }
+
+    private BestemmingsvlakCollectie getBestemmingsvlakkenForId(String planidentificatie, int page) {
+        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(APIService.getApiUrl() + "/plannen/" + planidentificatie + "/bestemmingsvlakken");
+        uriComponentsBuilder.queryParam("pageSize", MAXBESTEMMINGSVLAKKEN);
+        uriComponentsBuilder.queryParam("page", page);
+        log.trace("using url: {}", uriComponentsBuilder.build().toUri());
+        return APIService.getDirectly(uriComponentsBuilder.build().toUri(), BestemmingsvlakCollectie.class);
+    }
+
     private void saveBestemmingsvlakken(String planidentificatie, int page, BestemmingsvlakCollectie bestemmingsvlakken, UpdateCounter updateCounter) {
         if (bestemmingsvlakken != null) {
 
@@ -77,21 +92,6 @@ public class BestemmingsvlakkenService {
                 }
             }
         }
-    }
-
-    public void procesBestemmingsvlak(String planidentificatie, int page, UpdateCounter updateCounter) {
-        BestemmingsvlakCollectie bestemmingsvlakCollectie = getBestemmingsvlakkenForId(planidentificatie, page);
-        if (bestemmingsvlakCollectie != null) {
-            saveBestemmingsvlakken(planidentificatie, page, bestemmingsvlakCollectie, updateCounter);
-        }
-    }
-
-    private BestemmingsvlakCollectie getBestemmingsvlakkenForId(String planidentificatie, int page) {
-        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(APIService.getApiUrl() + "/plannen/" + planidentificatie + "/bestemmingsvlakken");
-        uriComponentsBuilder.queryParam("pageSize", MAXBESTEMMINGSVLAKKEN);
-        uriComponentsBuilder.queryParam("page", page);
-        log.trace("using url: {}", uriComponentsBuilder.build().toUri());
-        return APIService.getDirectly(uriComponentsBuilder.build().toUri(), BestemmingsvlakCollectie.class);
     }
 
     @Transactional
@@ -159,7 +159,6 @@ public class BestemmingsvlakkenService {
                     }
                 });
 
-
                 current.getVerwijzingNaarTekst().forEach(tekstRef -> {
                     Optional<TekstRefDto> optionalTekstRef = tekstRefRepository.findByReferentie(tekstRef.getReferentie());
                     if (optionalTekstRef.isPresent()) {
@@ -181,37 +180,4 @@ public class BestemmingsvlakkenService {
         }
         return savedBestemmingsvlak;
     }
-
-    /*
-    private Set<BestemmingFunctieDto> deepCopyBestemmingsfuncties(Set<BestemmingFunctieDto> bestemmingsfuncties) {
-        Set<BestemmingFunctieDto> newBestemmingsfuncties = new HashSet<>();
-
-        bestemmingsfuncties.forEach(bestemmingFunctie -> {
-            BestemmingFunctieDto newBestemmingsfunctie = new BestemmingFunctieDto();
-            newBestemmingsfunctie.setId(bestemmingFunctie.getId());
-            newBestemmingsfunctie.setBestemmingsfunctie(bestemmingFunctie.getBestemmingsfunctie());
-            newBestemmingsfunctie.setFunctieniveau(bestemmingFunctie.getFunctieniveau());
-            newBestemmingsfunctie.setBestemmingsvlakken(bestemmingFunctie.getBestemmingsvlakken());
-            newBestemmingsfunctie.setGebiedsaanduidingen(bestemmingFunctie.getGebiedsaanduidingen());
-        } );
-        return newBestemmingsfuncties;
-    }
-
-    private Set<TekstRefDto> deepCopyTekstRefs(Set<TekstRefDto> verwijzingNaarTekst) {
-        Set<TekstRefDto> newTekstRef = new HashSet<>();
-
-        verwijzingNaarTekst.forEach(tekstRefDto -> {
-            TekstRefDto refDto = new TekstRefDto();
-            refDto.setId(tekstRefDto.getId());
-            refDto.setReferentie(tekstRefDto.getReferentie());
-                    refDto.setBestemmingsvlakken(tekstRefDto.getBestemmingsvlakken());
-                    refDto.setGebiedsaanwijzingen(tekstRefDto.getGebiedsaanwijzingen());
-                    refDto.setStructuurvisiegebied(tekstRefDto.getStructuurvisiegebied());
-
-                    newTekstRef.add(refDto);
-        });
-
-        return newTekstRef;
-    }
-    */
 }

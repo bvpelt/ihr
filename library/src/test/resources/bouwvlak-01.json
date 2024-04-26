@@ -1,0 +1,14 @@
+{
+  "_links": {
+    "figuren": [],
+    "maatvoeringen": [],
+    "bouwaanduidingen": [],
+    "self": {
+      "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0177.BPW20190008-ON01/bouwvlakken/NL.IMRO.56b1e57ba4c14a3594868999f3ed6389"
+    },
+    "lettertekenaanduidingen": []
+  },
+  "styleId": "bouwvlak",
+  "id": "NL.IMRO.56b1e57ba4c14a3594868999f3ed6389",
+  "naam": "bouwvlak"
+}

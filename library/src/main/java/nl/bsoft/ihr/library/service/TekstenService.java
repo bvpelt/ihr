@@ -57,6 +57,22 @@ public class TekstenService {
         return updateCounter;
     }
 
+
+    public void procesTekst(String planidentificatie, int page, UpdateCounter updateCounter) {
+        TekstCollectie teksten = getTekstenForId(planidentificatie, page);
+        if (teksten != null) {
+            saveText(planidentificatie, page, teksten, updateCounter);
+        }
+    }
+
+    private TekstCollectie getTekstenForId(String planidentificatie, int page) {
+        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(APIService.getApiUrl() + "/plannen/" + planidentificatie + "/teksten");
+        uriComponentsBuilder.queryParam("pageSize", MAXTEKSTSIZE);
+        uriComponentsBuilder.queryParam("page", page);
+        log.trace("using url: {}", uriComponentsBuilder.build().toUri());
+        return APIService.getDirectly(uriComponentsBuilder.build().toUri(), TekstCollectie.class);
+    }
+
     private void saveText(String identificatie, int page, TekstCollectie teksten, UpdateCounter updateCounter) {
         if (teksten != null) {
             if (teksten.getEmbedded() != null) {
@@ -83,43 +99,6 @@ public class TekstenService {
                 }
             }
         }
-    }
-
-    public void procesTekstRef(String identificatie, String href, int page, UpdateCounter updateCounter) {
-        TekstCollectie teksten = null;
-
-        try {
-            teksten = getTekstRef(href, page);
-
-            if (teksten != null) {
-                saveText(identificatie, page, teksten, updateCounter);
-            } else {
-                log.error("teksten is null");
-            }
-        } catch (Exception e) {
-            log.error("Expected tekstref plan: {} href: {}, error: {}", identificatie, e);
-        }
-    }
-
-    public void procesTekst(String planidentificatie, int page, UpdateCounter updateCounter) {
-        TekstCollectie teksten = getTekstenForId(planidentificatie, page);
-        if (teksten != null) {
-            saveText(planidentificatie, page, teksten, updateCounter);
-        }
-    }
-
-    private TekstCollectie getTekstRef(String ref, int page) {
-        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(ref);
-        log.trace("using url: {}", uriComponentsBuilder.build().toUri());
-        return APIService.getDirectly(uriComponentsBuilder.build().toUri(), TekstCollectie.class);
-    }
-
-    private TekstCollectie getTekstenForId(String planidentificatie, int page) {
-        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(APIService.getApiUrl() + "/plannen/" + planidentificatie + "/teksten");
-        uriComponentsBuilder.queryParam("pageSize", MAXTEKSTSIZE);
-        uriComponentsBuilder.queryParam("page", page);
-        log.trace("using url: {}", uriComponentsBuilder.build().toUri());
-        return APIService.getDirectly(uriComponentsBuilder.build().toUri(), TekstCollectie.class);
     }
 
     @Transactional
@@ -180,4 +159,27 @@ public class TekstenService {
         }
         return savedTekst;
     }
+
+    public void procesTekstRef(String identificatie, String href, int page, UpdateCounter updateCounter) {
+        TekstCollectie teksten = null;
+
+        try {
+            teksten = getTekstRef(href, page);
+
+            if (teksten != null) {
+                saveText(identificatie, page, teksten, updateCounter);
+            } else {
+                log.error("teksten is null");
+            }
+        } catch (Exception e) {
+            log.error("Expected tekstref plan: {} href: {}, error: {}", identificatie, e);
+        }
+    }
+
+    private TekstCollectie getTekstRef(String ref, int page) {
+        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(ref);
+        log.trace("using url: {}", uriComponentsBuilder.build().toUri());
+        return APIService.getDirectly(uriComponentsBuilder.build().toUri(), TekstCollectie.class);
+    }
+
 }

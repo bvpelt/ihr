@@ -84,6 +84,15 @@ public class StructuurVisieGebiedService {
         }
     }
 
+
+    private StructuurvisiegebiedCollectie getStructuurvisiegebiedForId(String planidentificatie, int page) {
+        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(APIService.getApiUrl() + "/plannen/" + planidentificatie + "/structuurvisiegebieden");
+        uriComponentsBuilder.queryParam("pageSize", MAXBESTEMMINGSVLAKKEN);
+        uriComponentsBuilder.queryParam("page", page);
+        log.trace("using url: {}", uriComponentsBuilder.build().toUri());
+        return APIService.getDirectly(uriComponentsBuilder.build().toUri(), StructuurvisiegebiedCollectie.class);
+    }
+
     private void saveStructuurvisiegebieden(String planidentificatie, int page, StructuurvisiegebiedCollectie structuurvisies, UpdateCounter updateCounter) {
         if (structuurvisies != null) {
             if (structuurvisies.getEmbedded() != null) {
@@ -98,14 +107,6 @@ public class StructuurVisieGebiedService {
                 }
             }
         }
-    }
-
-    private StructuurvisiegebiedCollectie getStructuurvisiegebiedForId(String planidentificatie, int page) {
-        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(APIService.getApiUrl() + "/plannen/" + planidentificatie + "/structuurvisiegebieden");
-        uriComponentsBuilder.queryParam("pageSize", MAXBESTEMMINGSVLAKKEN);
-        uriComponentsBuilder.queryParam("page", page);
-        log.trace("using url: {}", uriComponentsBuilder.build().toUri());
-        return APIService.getDirectly(uriComponentsBuilder.build().toUri(), StructuurvisiegebiedCollectie.class);
     }
 
     @Transactional
@@ -294,4 +295,5 @@ public class StructuurVisieGebiedService {
             current = tekstRefRepository.save(current);
             savedStructuurVisieGebiedDto.getVerwijzingNaarTekst().add(current);
         }
-    }}
+    }
+}
