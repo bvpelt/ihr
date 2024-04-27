@@ -132,7 +132,7 @@ public class BouwvlakkenService {
             }
         } catch (Exception e) {
             updateCounter.skipped();
-            log.error("Error while processing: {} in tekst processing: {}", bouwvlak, e);
+            log.error("Error while processing: {} in bouwvlakken processing: {}", bouwvlak, e);
         }
         return savedBouwvlak;
     }

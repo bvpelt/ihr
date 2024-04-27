@@ -1,0 +1,13 @@
+{
+  "labelInfo": "(sa-sc)",
+  "_links": {
+    "teksten": [],
+    "self": {
+      "href": "https://ruimte.omgevingswet.overheid.nl/ruimtelijke-plannen/api/opvragen/v4/plannen/NL.IMRO.0153.R20190037-0002/functieaanduidingen/NL.IMRO.2341be8a6f924deea395f6eb62dcbf68"
+    }
+  },
+  "styleId": "functieaanduiding_vlak",
+  "verwijzingNaarTekst": null,
+  "id": "NL.IMRO.2341be8a6f924deea395f6eb62dcbf68",
+  "naam": "specifieke vorm van agrarisch - schuur"
+}

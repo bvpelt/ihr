@@ -81,11 +81,11 @@ public class BestemmingsvlakkenService {
 
             if (bestemmingsvlakken.getEmbedded() != null) {
                 if (bestemmingsvlakken.getEmbedded().getBestemmingsvlakken() != null) {
-                    // add each found text
+                    // add each found bestemmingsvlak
                     bestemmingsvlakken.getEmbedded().getBestemmingsvlakken().forEach(bestemmingsvlak -> {
                         addBestemmingsvlak(planidentificatie, bestemmingsvlak, updateCounter);
                     });
-                    // while maximum number of teksten retrieved, get next page
+                    // while maximum number of bestemmingsvlakken retrieved, get next page
                     if (bestemmingsvlakken.getEmbedded().getBestemmingsvlakken().size() == MAXBESTEMMINGSVLAKKEN) {
                         procesBestemmingsvlak(planidentificatie, page + 1, updateCounter);
                     }
@@ -176,7 +176,7 @@ public class BestemmingsvlakkenService {
             }
         } catch (Exception e) {
             updateCounter.skipped();
-            log.error("Error while processing: {} in tekst processing: {}", bestemmingsvlak, e);
+            log.error("Error while processing: {} in bestemmingsvlak processing: {}", bestemmingsvlak, e);
         }
         return savedBestemmingsvlak;
     }

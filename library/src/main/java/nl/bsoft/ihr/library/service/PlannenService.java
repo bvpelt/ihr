@@ -43,6 +43,8 @@ public class PlannenService {
     private final TekstenService tekstenService;
     private final BestemmingsvlakkenService bestemmingsvlakkenService;
     private final BouwvlakkenService bouwvlakkenService;
+    private final FunctieaanduidingService functieaanduidingService;
+    private final BouwaanduidingService bouwaanduidingService;
     private final StructuurVisieGebiedService structuurVisieGebiedService;
     private final PlanRepository planRepository;
     private final ImroLoadRepository imroLoadRepository;
@@ -63,6 +65,8 @@ public class PlannenService {
                           TekstenService tekstenService,
                           BestemmingsvlakkenService bestemmingsvlakkenService,
                           BouwvlakkenService bouwvlakkenService,
+                          FunctieaanduidingService functieaanduidingService,
+                          BouwaanduidingService bouwaanduidingService,
                           StructuurVisieGebiedService structuurVisieGebiedService,
                           PlanRepository planRepository,
                           ImroLoadRepository imroLoadRepository,
@@ -82,6 +86,8 @@ public class PlannenService {
         this.tekstenService = tekstenService;
         this.bestemmingsvlakkenService = bestemmingsvlakkenService;
         this.bouwvlakkenService = bouwvlakkenService;
+        this.functieaanduidingService = functieaanduidingService;
+        this.bouwaanduidingService = bouwaanduidingService;
         this.structuurVisieGebiedService = structuurVisieGebiedService;
         this.planRepository = planRepository;
         this.imroLoadRepository = imroLoadRepository;
@@ -214,7 +220,7 @@ public class PlannenService {
 
             UpdateCounter tekstCounter = new UpdateCounter();
             tekstenService.procesTekst(savedPlan.getIdentificatie(), 1, tekstCounter);
-            log.info("processed tekst: {}", tekstCounter);
+            log.info("processed teksten: {}", tekstCounter);
             if (imroPlan != null) {
                 if (tekstCounter.getProcessed() > 0) {
                     imroPlan.setTekstenLoaded(true);
@@ -223,7 +229,7 @@ public class PlannenService {
 
             UpdateCounter bestemmingsvlakCounter = new UpdateCounter();
             bestemmingsvlakkenService.procesBestemmingsvlak(savedPlan.getIdentificatie(), 1, bestemmingsvlakCounter);
-            log.info("processed bestemmingsvlak: {}", bestemmingsvlakCounter);
+            log.info("processed bestemmingsvlakken: {}", bestemmingsvlakCounter);
             if (imroPlan != null) {
                 if (bestemmingsvlakCounter.getProcessed() > 0) {
                     imroPlan.setBestemmingsvlakkenloaded(true);
@@ -232,11 +238,28 @@ public class PlannenService {
 
             UpdateCounter bouwvlakCounter = new UpdateCounter();
             bouwvlakkenService.procesBouwvlak(savedPlan.getIdentificatie(), 1, bouwvlakCounter);
-            log.info("processed bouwvlak: {}", bouwvlakCounter);
+            log.info("processed bouwvlakken: {}", bouwvlakCounter);
             if (imroPlan != null) {
                 if (bouwvlakCounter.getProcessed() > 0) {
-                    // [TODO bouwvalkken counter]
-                    imroPlan.setBestemmingsvlakkenloaded(true);
+                    imroPlan.setBouwvlakkenloaded(true);
+                }
+            }
+
+            UpdateCounter functieaanduidingCounter = new UpdateCounter();
+            functieaanduidingService.procesFunctieaanduiding(savedPlan.getIdentificatie(), 1, functieaanduidingCounter);
+            log.info("processed functieaanduidingen: {}", functieaanduidingCounter);
+            if (imroPlan != null) {
+                if (functieaanduidingCounter.getProcessed() > 0) {
+                    imroPlan.setFunctieaanduidingloaded(true);
+                }
+            }
+
+            UpdateCounter bouwaanduidingCounter = new UpdateCounter();
+            bouwaanduidingService.procesBouwaanduiding(savedPlan.getIdentificatie(), 1, bouwaanduidingCounter);
+            log.info("processed bouwaanduidingen: {}", bouwaanduidingCounter);
+            if (imroPlan != null) {
+                if (bouwaanduidingCounter.getProcessed() > 0) {
+                    imroPlan.setBouwaanduidingloaded(true);
                 }
             }
 

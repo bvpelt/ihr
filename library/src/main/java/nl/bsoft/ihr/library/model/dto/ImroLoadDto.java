@@ -28,6 +28,12 @@ public class ImroLoadDto {
     private Boolean tekstenLoaded;
     @Column(name = "bestemmingsvlakkenloaded")
     private Boolean bestemmingsvlakkenloaded;
+    @Column(name = "bouwvlakkenloaded")
+    private Boolean bouwvlakkenloaded;
+    @Column(name = "functieaanduidingloaded")
+    private Boolean functieaanduidingloaded;
+    @Column(name = "bouwaanduidingloaded")
+    private Boolean bouwaanduidingloaded;
     @Column(name = "structuurvisiegebiedloaded")
     private Boolean structuurvisiegebiedloaded;
 
@@ -41,12 +47,12 @@ public class ImroLoadDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ImroLoadDto that = (ImroLoadDto) o;
-        return Objects.equals(identificatie, that.identificatie) && Objects.equals(loaded, that.loaded);
+        return Objects.equals(identificatie, that.identificatie) && Objects.equals(loaded, that.loaded) && Objects.equals(tekstenLoaded, that.tekstenLoaded) && Objects.equals(bestemmingsvlakkenloaded, that.bestemmingsvlakkenloaded) && Objects.equals(bouwvlakkenloaded, that.bouwvlakkenloaded) && Objects.equals(functieaanduidingloaded, that.functieaanduidingloaded) && Objects.equals(bouwaanduidingloaded, that.bouwaanduidingloaded) && Objects.equals(structuurvisiegebiedloaded, that.structuurvisiegebiedloaded);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(identificatie, loaded);
+        return Objects.hash(identificatie, loaded, tekstenLoaded, bestemmingsvlakkenloaded, bouwvlakkenloaded, functieaanduidingloaded, bouwaanduidingloaded, structuurvisiegebiedloaded);
     }
 
     @Override
@@ -55,6 +61,12 @@ public class ImroLoadDto {
                 "id=" + id +
                 ", identificatie='" + identificatie + '\'' +
                 ", loaded=" + loaded +
+                ", tekstenLoaded=" + tekstenLoaded +
+                ", bestemmingsvlakkenloaded=" + bestemmingsvlakkenloaded +
+                ", bouwvlakkenloaded=" + bouwvlakkenloaded +
+                ", functieaanduidingloaded=" + functieaanduidingloaded +
+                ", bouwanduidingloaded=" + bouwaanduidingloaded +
+                ", structuurvisiegebiedloaded=" + structuurvisiegebiedloaded +
                 '}';
     }
 }
