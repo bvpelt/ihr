@@ -4,10 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import nl.bsoft.ihr.generated.model.*;
 import nl.bsoft.ihr.library.mapper.LettertekenaanduidingMapper;
 import nl.bsoft.ihr.library.mapper.LocatieMapper;
-import nl.bsoft.ihr.library.model.dto.BouwaanduidingDto;
-import nl.bsoft.ihr.library.model.dto.ImroLoadDto;
-import nl.bsoft.ihr.library.model.dto.LettertekenaanduidingDto;
-import nl.bsoft.ihr.library.model.dto.LocatieDto;
+import nl.bsoft.ihr.library.model.dto.*;
+import nl.bsoft.ihr.library.repository.BestemmingFunctieRepository;
 import nl.bsoft.ihr.library.repository.ImroLoadRepository;
 import nl.bsoft.ihr.library.repository.LettertekenaanduidingRepository;
 import nl.bsoft.ihr.library.repository.LocatieRepository;
@@ -28,6 +26,7 @@ public class LettertekenaanduidingService {
     private final APIService APIService;
     private final ImroLoadRepository imroLoadRepository;
     private final LettertekenaanduidingRepository lettertekenaanduidingRepository;
+    private final BestemmingFunctieRepository bestemmingFunctieRepository;
     private final LocatieRepository locatieRepository;
     private final LettertekenaanduidingMapper lettertekenaanduidingMapper;
     private final LocatieMapper locatieMapper;
@@ -36,12 +35,14 @@ public class LettertekenaanduidingService {
     @Autowired
     public LettertekenaanduidingService(APIService APIService,
                                         ImroLoadRepository imroLoadRepository,
+                                        BestemmingFunctieRepository bestemmingFunctieRepository,
                                         LettertekenaanduidingRepository lettertekenaanduidingRepository,
                                         LocatieRepository locatieRepository,
                                         LettertekenaanduidingMapper lettertekenaanduidingMapper,
                                         LocatieMapper locatieMapper) {
         this.APIService = APIService;
         this.imroLoadRepository = imroLoadRepository;
+        this.bestemmingFunctieRepository = bestemmingFunctieRepository;
         this.lettertekenaanduidingRepository = lettertekenaanduidingRepository;
         this.locatieRepository = locatieRepository;
         this.lettertekenaanduidingMapper = lettertekenaanduidingMapper;
@@ -115,17 +116,6 @@ public class LettertekenaanduidingService {
                 }
             }
 
-            lettertekenaanduiding.getBestemmingsfuncties().forEach(bestemmingsfunctie -> {
-                String functie = bestemmingsfunctie.getBestemmingsfunctie();
-                String functieniveau = bestemmingsfunctie.getFunctieniveau();
-                // [TODO] 
-            });
-
-
-            String naam = lettertekenaanduiding.getNaam();
-            String labelInfo = lettertekenaanduiding.getLabelInfo().isPresent() ? lettertekenaanduiding.getLabelInfo().get() : null;
-            String styleid = lettertekenaanduiding.getStyleId().isPresent() ? lettertekenaanduiding.getStyleId().get() : null;
-
             Optional<LettertekenaanduidingDto> optionalFound = lettertekenaanduidingRepository.findByPlanidentificatieAndIdentificatie(current.getPlanidentificatie(), current.getIdentificatie());
 
             if (optionalFound.isPresent()) { // existing entry
@@ -134,15 +124,38 @@ public class LettertekenaanduidingService {
                     savedLettertekenaanduiding = found;
                     updateCounter.skipped();
                 } else {                     // changed
-                    found.setNaam(naam);
-                    found.setLabelinfo(labelInfo);
-
-                    found.setStyleid(styleid);
+                    found.setNaam(current.getNaam());
+                    found.setLabelinfo(current.getLabelinfo());
+                    found.setStyleid(current.getStyleid());
                     found.setMd5hash(md5hash);
+
+                    current.getBestemmingfuncties().forEach(bestemmingsfunctie -> {
+                        if (!found.getBestemmingfuncties().contains(bestemmingsfunctie)) {
+                            found.addBestemmingsfunctie(bestemmingsfunctie);
+                        }
+                    });
                     savedLettertekenaanduiding = lettertekenaanduidingRepository.save(found);
                     updateCounter.updated();
                 }
             } else { // new entry
+                lettertekenaanduiding.getBestemmingsfuncties().forEach(bestemmingsfunctie -> {
+                    String functie = bestemmingsfunctie.getBestemmingsfunctie();
+                    String functieniveau = bestemmingsfunctie.getFunctieniveau();
+
+                    Optional<BestemmingFunctieDto> optionalBestemmingFunctie = bestemmingFunctieRepository.findByBestemmingsfunctieAndFunctieniveau(functie, functieniveau);
+                    BestemmingFunctieDto foundBestemmingsFunctie = null;
+                    if (optionalBestemmingFunctie.isPresent()) {
+                        foundBestemmingsFunctie = optionalBestemmingFunctie.get();
+                        current.addBestemmingsfunctie(foundBestemmingsFunctie);
+                    } else {
+                        foundBestemmingsFunctie = new BestemmingFunctieDto();
+                        foundBestemmingsFunctie.setBestemmingsfunctie(bestemmingsfunctie.getBestemmingsfunctie());
+                        foundBestemmingsFunctie.setFunctieniveau(bestemmingsfunctie.getFunctieniveau());
+                        BestemmingFunctieDto savedBestemmingsfunctie = bestemmingFunctieRepository.save(foundBestemmingsFunctie);
+                        current.addBestemmingsfunctie(savedBestemmingsfunctie);
+                    }
+                });
+
                 savedLettertekenaanduiding = lettertekenaanduidingRepository.save(current);
                 updateCounter.add();
             }

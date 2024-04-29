@@ -43,6 +43,17 @@ public class LettertekenaanduidingDto {
             inverseJoinColumns = @JoinColumn(name = "bestemmingsfunctie_id"))
     private Set<BestemmingFunctieDto> bestemmingfuncties = new HashSet<>();
 
+    public void addBestemmingsfunctie(BestemmingFunctieDto bestemmingFunctie) {
+        this.bestemmingfuncties.add(bestemmingFunctie);
+        bestemmingFunctie.getLettertekenaanduidingen().add(this);
+
+    }
+
+    public void removeBestemmingsfunctie(BestemmingFunctieDto bestemmingFunctie) {
+        this.bestemmingfuncties.remove(bestemmingFunctie);
+        bestemmingFunctie.getLettertekenaanduidingen().remove(this);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

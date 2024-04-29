@@ -45,6 +45,8 @@ public class PlannenService {
     private final BouwvlakkenService bouwvlakkenService;
     private final FunctieaanduidingService functieaanduidingService;
     private final BouwaanduidingService bouwaanduidingService;
+
+    private final LettertekenaanduidingService lettertekenaanduidingService;
     private final StructuurVisieGebiedService structuurVisieGebiedService;
     private final PlanRepository planRepository;
     private final ImroLoadRepository imroLoadRepository;
@@ -67,6 +69,7 @@ public class PlannenService {
                           BouwvlakkenService bouwvlakkenService,
                           FunctieaanduidingService functieaanduidingService,
                           BouwaanduidingService bouwaanduidingService,
+                          LettertekenaanduidingService lettertekenaanduidingService,
                           StructuurVisieGebiedService structuurVisieGebiedService,
                           PlanRepository planRepository,
                           ImroLoadRepository imroLoadRepository,
@@ -88,6 +91,7 @@ public class PlannenService {
         this.bouwvlakkenService = bouwvlakkenService;
         this.functieaanduidingService = functieaanduidingService;
         this.bouwaanduidingService = bouwaanduidingService;
+        this.lettertekenaanduidingService = lettertekenaanduidingService;
         this.structuurVisieGebiedService = structuurVisieGebiedService;
         this.planRepository = planRepository;
         this.imroLoadRepository = imroLoadRepository;
@@ -260,6 +264,15 @@ public class PlannenService {
             if (imroPlan != null) {
                 if (bouwaanduidingCounter.getProcessed() > 0) {
                     imroPlan.setBouwaanduidingloaded(true);
+                }
+            }
+
+            UpdateCounter lettertekenaanduidingCounter = new UpdateCounter();
+            lettertekenaanduidingService.procesLettertekenaanduiding(savedPlan.getIdentificatie(), 1, lettertekenaanduidingCounter);
+            log.info("processed lettertekenaanduidingen: {}", lettertekenaanduidingCounter);
+            if (imroPlan != null) {
+                if (lettertekenaanduidingCounter.getProcessed() > 0) {
+                    imroPlan.setLettertekenaanduidingloaded(true);
                 }
             }
 
