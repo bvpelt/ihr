@@ -34,6 +34,8 @@ public class ImroLoadDto {
     private Boolean functieaanduidingloaded;
     @Column(name = "bouwaanduidingloaded")
     private Boolean bouwaanduidingloaded;
+    @Column(name = "lettertekenaanduidingloaded")
+    private Boolean lettertekenaanduidingloaded;
     @Column(name = "structuurvisiegebiedloaded")
     private Boolean structuurvisiegebiedloaded;
 
@@ -47,12 +49,12 @@ public class ImroLoadDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ImroLoadDto that = (ImroLoadDto) o;
-        return Objects.equals(identificatie, that.identificatie) && Objects.equals(loaded, that.loaded) && Objects.equals(tekstenLoaded, that.tekstenLoaded) && Objects.equals(bestemmingsvlakkenloaded, that.bestemmingsvlakkenloaded) && Objects.equals(bouwvlakkenloaded, that.bouwvlakkenloaded) && Objects.equals(functieaanduidingloaded, that.functieaanduidingloaded) && Objects.equals(bouwaanduidingloaded, that.bouwaanduidingloaded) && Objects.equals(structuurvisiegebiedloaded, that.structuurvisiegebiedloaded);
+        return Objects.equals(identificatie, that.identificatie) && Objects.equals(loaded, that.loaded) && Objects.equals(tekstenLoaded, that.tekstenLoaded) && Objects.equals(bestemmingsvlakkenloaded, that.bestemmingsvlakkenloaded) && Objects.equals(bouwvlakkenloaded, that.bouwvlakkenloaded) && Objects.equals(functieaanduidingloaded, that.functieaanduidingloaded) && Objects.equals(bouwaanduidingloaded, that.bouwaanduidingloaded) && Objects.equals(lettertekenaanduidingloaded, that.lettertekenaanduidingloaded) && Objects.equals(structuurvisiegebiedloaded, that.structuurvisiegebiedloaded);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(identificatie, loaded, tekstenLoaded, bestemmingsvlakkenloaded, bouwvlakkenloaded, functieaanduidingloaded, bouwaanduidingloaded, structuurvisiegebiedloaded);
+        return Objects.hash(identificatie, loaded, tekstenLoaded, bestemmingsvlakkenloaded, bouwvlakkenloaded, functieaanduidingloaded, bouwaanduidingloaded, lettertekenaanduidingloaded, structuurvisiegebiedloaded);
     }
 
     @Override
@@ -65,7 +67,8 @@ public class ImroLoadDto {
                 ", bestemmingsvlakkenloaded=" + bestemmingsvlakkenloaded +
                 ", bouwvlakkenloaded=" + bouwvlakkenloaded +
                 ", functieaanduidingloaded=" + functieaanduidingloaded +
-                ", bouwanduidingloaded=" + bouwaanduidingloaded +
+                ", bouwaanduidingloaded=" + bouwaanduidingloaded +
+                ", lettertekenaanduidingloaded=" + lettertekenaanduidingloaded +
                 ", structuurvisiegebiedloaded=" + structuurvisiegebiedloaded +
                 '}';
     }

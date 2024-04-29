@@ -34,6 +34,9 @@ public class BestemmingFunctieDto {
     @ManyToMany(mappedBy = "bestemmingfuncties", fetch = FetchType.LAZY)
     private Set<GebiedsaanduidingDto> gebiedsaanduidingen = new HashSet<>();
 
+    @ManyToMany(mappedBy = "bestemmingfuncties", fetch = FetchType.LAZY)
+    private Set<LettertekenaanduidingDto> lettertekenaanduidingen = new HashSet<>();
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
