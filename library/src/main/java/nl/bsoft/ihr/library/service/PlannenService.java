@@ -3,6 +3,7 @@ package nl.bsoft.ihr.library.service;
 
 import lombok.extern.slf4j.Slf4j;
 import nl.bsoft.ihr.generated.model.*;
+import nl.bsoft.ihr.library.mapper.ExternPlanMapper;
 import nl.bsoft.ihr.library.mapper.LocatieMapper;
 import nl.bsoft.ihr.library.mapper.PlanMapper;
 import nl.bsoft.ihr.library.model.dto.*;
@@ -61,6 +62,7 @@ public class PlannenService {
     private final IllustratieRepository illustratieRepository;
     private final PlanMapper planMapper;
     private final LocatieMapper locatieMapper;
+    private final ExternPlanMapper externPlanMapper;
 
     @Autowired
     public PlannenService(APIService APIService,
@@ -78,6 +80,7 @@ public class PlannenService {
                           OverheidRepository overheidRepository,
                           PlanMapper planMapper,
                           LocatieMapper locatieMapper,
+                          ExternPlanMapper externPlanMapper,
                           PlanStatusRepository planStatusRepository,
                           VerwijzingNormRepository verwijzingNormRepository,
                           NormadressantRepository normadressantRepository,
@@ -100,6 +103,7 @@ public class PlannenService {
         this.overheidRepository = overheidRepository;
         this.planMapper = planMapper;
         this.locatieMapper = locatieMapper;
+        this.externPlanMapper = externPlanMapper;
         this.planStatusRepository = planStatusRepository;
         this.verwijzingNormRepository = verwijzingNormRepository;
         this.normadressantRepository = normadressantRepository;
@@ -448,34 +452,38 @@ public class PlannenService {
         Set<ExternPlanDto> planSet = new HashSet<>();
 
         vervangtList.forEach(element -> {
-            String naam = element.getNaam().isPresent() ? element.getNaam().get() : null;
-            String identificatie = element.getId().isPresent() ? element.getId().get() : null;
-            String planstatus = element.getPlanstatusInfo().isPresent() ? element.getPlanstatusInfo().get().getPlanstatus() :null;
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            LocalDate planstatusdate = element.getPlanstatusInfo().isPresent() ? LocalDate.parse(element.getPlanstatusInfo().get().getDatum(), formatter) : null;
-            String dossier = element.getDossier().isPresent() ? element.getDossier().get().getStatus() : null;
-            String href = element.getHref().isPresent() ? element.getHref().get() : null;
+            try {
+                ExternPlanDto usedExternPlan = externPlanMapper.toExternPlan(element);
+                String naam = usedExternPlan.getNaam();
+                String identificatie = usedExternPlan.getIdentificatie();
+                String planstatus = usedExternPlan.getPlanstatus();
+                LocalDate planstatusdate = usedExternPlan.getPlanstatusdate();
+                String dossier = usedExternPlan.getDossier();
+                String href = usedExternPlan.getHref();
 
-            Optional<ExternPlanDto> optionalExternPlanDto = externalPlanRepository.findByNaamAndIdentificatieAndPlanstatusAndPlanstatusdateAndDossierAndHref(naam, identificatie, planstatus, planstatusdate, dossier, href);
-            ExternPlanDto currentPlan = null;
-            if (optionalExternPlanDto.isPresent()) {
-                log.debug("Found externalplan: {}", optionalExternPlanDto.get());
-                currentPlan = optionalExternPlanDto.get();
-                updatePlan(plan, field, currentPlan);
+                Optional<ExternPlanDto> optionalExternPlanDto = externalPlanRepository.findByNaamAndIdentificatieAndPlanstatusAndPlanstatusdateAndDossierAndHref(naam, identificatie, planstatus, planstatusdate, dossier, href);
+                ExternPlanDto currentPlan = null;
+                if (optionalExternPlanDto.isPresent()) {
+                    log.debug("Found externalplan: {}", optionalExternPlanDto.get());
+                    currentPlan = optionalExternPlanDto.get();
+                    updatePlan(plan, field, currentPlan);
 
-            } else {
-                currentPlan = new ExternPlanDto();
-                currentPlan.setIdentificatie(identificatie);
-                currentPlan.setNaam(naam);
-                currentPlan.setPlanstatus(planstatus);
-                currentPlan.setPlanstatusdate(planstatusdate);
-                currentPlan.setDossier(dossier);
-                currentPlan.setHref(href);
-                updatePlan(plan, field, currentPlan);
-                log.debug("New externalplan: {}", currentPlan);
-                currentPlan = externalPlanRepository.save(currentPlan);
+                } else {
+                    currentPlan = new ExternPlanDto();
+                    currentPlan.setIdentificatie(identificatie);
+                    currentPlan.setNaam(naam);
+                    currentPlan.setPlanstatus(planstatus);
+                    currentPlan.setPlanstatusdate(planstatusdate);
+                    currentPlan.setDossier(dossier);
+                    currentPlan.setHref(href);
+                    updatePlan(plan, field, currentPlan);
+                    log.debug("New externalplan: {}", currentPlan);
+                    currentPlan = externalPlanRepository.save(currentPlan);
+                }
+                planSet.add(currentPlan);
+            } catch (Exception e) {
+                log.error("Error converting current planref: {}",element );
             }
-            planSet.add(currentPlan);
         });
         return planSet;
     }
