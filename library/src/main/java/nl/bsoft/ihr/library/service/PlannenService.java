@@ -3,9 +3,7 @@ package nl.bsoft.ihr.library.service;
 
 import lombok.extern.slf4j.Slf4j;
 import nl.bsoft.ihr.generated.model.*;
-import nl.bsoft.ihr.library.mapper.ExternPlanMapper;
-import nl.bsoft.ihr.library.mapper.LocatieMapper;
-import nl.bsoft.ihr.library.mapper.PlanMapper;
+import nl.bsoft.ihr.library.mapper.*;
 import nl.bsoft.ihr.library.model.dto.*;
 import nl.bsoft.ihr.library.repository.*;
 import nl.bsoft.ihr.library.util.UpdateCounter;
@@ -63,6 +61,8 @@ public class PlannenService {
     private final PlanMapper planMapper;
     private final LocatieMapper locatieMapper;
     private final ExternPlanMapper externPlanMapper;
+    private final IllustratieMapper illustratieMapper;
+    private final OndergrondMapper ondergrondMapper;
 
     @Autowired
     public PlannenService(APIService APIService,
@@ -81,6 +81,8 @@ public class PlannenService {
                           PlanMapper planMapper,
                           LocatieMapper locatieMapper,
                           ExternPlanMapper externPlanMapper,
+                          IllustratieMapper illustratieMapper,
+                          OndergrondMapper ondergrondMapper,
                           PlanStatusRepository planStatusRepository,
                           VerwijzingNormRepository verwijzingNormRepository,
                           NormadressantRepository normadressantRepository,
@@ -104,6 +106,8 @@ public class PlannenService {
         this.planMapper = planMapper;
         this.locatieMapper = locatieMapper;
         this.externPlanMapper = externPlanMapper;
+        this.illustratieMapper = illustratieMapper;
+        this.ondergrondMapper = ondergrondMapper;
         this.planStatusRepository = planStatusRepository;
         this.verwijzingNormRepository = verwijzingNormRepository;
         this.normadressantRepository = normadressantRepository;
@@ -323,21 +327,24 @@ public class PlannenService {
         List<PlanOndergrondenInner> ondergronden = plan.getOndergronden();
         Iterator<PlanOndergrondenInner> ondergrondenIterator = ondergronden.iterator();
         while (ondergrondenIterator.hasNext()) {
-            PlanOndergrondenInner planOndergrondenInner = ondergrondenIterator.next();
-            String type = planOndergrondenInner.getType().isPresent()? planOndergrondenInner.getType().get(): null;
-            String datum = planOndergrondenInner.getDatum().isPresent()? planOndergrondenInner.getDatum().get(): null;
-            Optional<OndergrondDto> optionalOndergrondDto = ondergrondRepository.findByTypeAndDatum(type, datum);
-            OndergrondDto current = null;
-            if (optionalOndergrondDto.isPresent()) {
-                current = optionalOndergrondDto.get();
-            } else {
-                current = new OndergrondDto();
-                current.setType(type);
-                current.setDatum(datum);
+            try {
+                OndergrondDto usedOndergrond = ondergrondMapper.toOndergrond(ondergrondenIterator.next());
+
+                Optional<OndergrondDto> optionalOndergrondDto = ondergrondRepository.findByTypeAndDatum(usedOndergrond.getType(), usedOndergrond.getDatum());
+                OndergrondDto current = null;
+                if (optionalOndergrondDto.isPresent()) {
+                    current = optionalOndergrondDto.get();
+                } else {
+                    current = new OndergrondDto();
+                    current.setType(usedOndergrond.getType());
+                    current.setDatum(usedOndergrond.getDatum());
+                }
+                current.getPlannen().add(planDto);
+                current = ondergrondRepository.save(current);
+                planDto.getOndergronden().add(current);
+            } catch (Exception e) {
+                log.error("Error converting planondergrond plan: {}, exception: {}", plan.getId(), e);
             }
-            current.getPlannen().add(planDto);
-            current = ondergrondRepository.save(current);
-            planDto.getOndergronden().add(current);
         }
     }
     private void extractVerwijzingNorm(Plan plan, PlanDto planDto) {
@@ -382,26 +389,27 @@ public class PlannenService {
         List<IllustratieReferentie> illustratieReferenties = plan.getIllustraties();
 
         illustratieReferenties.forEach(illustratie -> {
-            String href = illustratie.getHref();
-            String type = illustratie.getType();
-            String naam = illustratie.getNaam().isPresent() ? illustratie.getNaam().get() : null;
-            String legendanaam = illustratie.getLegendanaam().isPresent() ? illustratie.getLegendanaam().get() : null;
+            try {
+                IllustratieDto usedIllustratie = illustratieMapper.toIllustratie(illustratie);
 
-            Optional<IllustratieDto> optionalIllustratieDto = illustratieRepository.findByHrefAndTypeAndNaamAndLegendanaam(href, type, naam, legendanaam);
-            IllustratieDto currentIllustratie = null;
-            if (optionalIllustratieDto.isPresent()) {
-                currentIllustratie = optionalIllustratieDto.get();
-            } else {
-                currentIllustratie = new IllustratieDto();
-                currentIllustratie.setHref(href);
-                currentIllustratie.setType(type);
-                currentIllustratie.setNaam(naam);
-                currentIllustratie.setLegendanaam(legendanaam);
+                Optional<IllustratieDto> optionalIllustratieDto = illustratieRepository.findByHrefAndTypeAndNaamAndLegendanaam(usedIllustratie.getHref(), usedIllustratie.getType(), usedIllustratie.getNaam(), usedIllustratie.getLegendanaam());
+                IllustratieDto currentIllustratie = null;
+                if (optionalIllustratieDto.isPresent()) {
+                    currentIllustratie = optionalIllustratieDto.get();
+                } else {
+                    currentIllustratie = new IllustratieDto();
+                    currentIllustratie.setHref(usedIllustratie.getHref());
+                    currentIllustratie.setType(usedIllustratie.getType());
+                    currentIllustratie.setNaam(usedIllustratie.getNaam());
+                    currentIllustratie.setLegendanaam(usedIllustratie.getLegendanaam());
+                }
+                currentIllustratie.setPlan(planDto);
+                currentIllustratie = illustratieRepository.save(currentIllustratie);
+                planDto.getIllustraties().add(currentIllustratie);
+                log.debug("illustratie: {}", illustratie);
+            } catch (Exception e) {
+                log.error("Error convering illustratie: plan {}, exception: {}", plan.getId(), e);
             }
-            currentIllustratie.setPlan(planDto);
-            currentIllustratie = illustratieRepository.save(currentIllustratie);
-            planDto.getIllustraties().add(currentIllustratie);
-            log.debug("illustratie: {}", illustratie);
         });
     }
 
@@ -454,14 +462,8 @@ public class PlannenService {
         vervangtList.forEach(element -> {
             try {
                 ExternPlanDto usedExternPlan = externPlanMapper.toExternPlan(element);
-                String naam = usedExternPlan.getNaam();
-                String identificatie = usedExternPlan.getIdentificatie();
-                String planstatus = usedExternPlan.getPlanstatus();
-                LocalDate planstatusdate = usedExternPlan.getPlanstatusdate();
-                String dossier = usedExternPlan.getDossier();
-                String href = usedExternPlan.getHref();
 
-                Optional<ExternPlanDto> optionalExternPlanDto = externalPlanRepository.findByNaamAndIdentificatieAndPlanstatusAndPlanstatusdateAndDossierAndHref(naam, identificatie, planstatus, planstatusdate, dossier, href);
+                Optional<ExternPlanDto> optionalExternPlanDto = externalPlanRepository.findByNaamAndIdentificatieAndPlanstatusAndPlanstatusdateAndDossierAndHref(usedExternPlan.getNaam(), usedExternPlan.getIdentificatie(), usedExternPlan.getPlanstatus(), usedExternPlan.getPlanstatusdate(), usedExternPlan.getDossier(), usedExternPlan.getHref());
                 ExternPlanDto currentPlan = null;
                 if (optionalExternPlanDto.isPresent()) {
                     log.debug("Found externalplan: {}", optionalExternPlanDto.get());
@@ -470,19 +472,19 @@ public class PlannenService {
 
                 } else {
                     currentPlan = new ExternPlanDto();
-                    currentPlan.setIdentificatie(identificatie);
-                    currentPlan.setNaam(naam);
-                    currentPlan.setPlanstatus(planstatus);
-                    currentPlan.setPlanstatusdate(planstatusdate);
-                    currentPlan.setDossier(dossier);
-                    currentPlan.setHref(href);
+                    currentPlan.setIdentificatie(usedExternPlan.getIdentificatie());
+                    currentPlan.setNaam(usedExternPlan.getNaam());
+                    currentPlan.setPlanstatus(usedExternPlan.getPlanstatus());
+                    currentPlan.setPlanstatusdate(usedExternPlan.getPlanstatusdate());
+                    currentPlan.setDossier(usedExternPlan.getDossier());
+                    currentPlan.setHref(usedExternPlan.getHref());
                     updatePlan(plan, field, currentPlan);
                     log.debug("New externalplan: {}", currentPlan);
                     currentPlan = externalPlanRepository.save(currentPlan);
                 }
                 planSet.add(currentPlan);
             } catch (Exception e) {
-                log.error("Error converting current planref: {}",element );
+                log.error("Error converting current planref: {}, plan: {}, field: {}",element, plan, field );
             }
         });
         return planSet;
