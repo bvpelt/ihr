@@ -46,6 +46,7 @@ public class PlannenService {
     private final BouwaanduidingService bouwaanduidingService;
     private final LettertekenaanduidingService lettertekenaanduidingService;
     private final MaatvoeringService maatvoeringService;
+    private final FiguurService figuurService;
     private final StructuurVisieGebiedService structuurVisieGebiedService;
     private final PlanRepository planRepository;
     private final ImroLoadRepository imroLoadRepository;
@@ -73,6 +74,7 @@ public class PlannenService {
                           BouwaanduidingService bouwaanduidingService,
                           LettertekenaanduidingService lettertekenaanduidingService,
                           MaatvoeringService maatvoeringService,
+                          FiguurService figuurService,
                           StructuurVisieGebiedService structuurVisieGebiedService,
                           PlanRepository planRepository,
                           ImroLoadRepository imroLoadRepository,
@@ -99,6 +101,7 @@ public class PlannenService {
         this.bouwaanduidingService = bouwaanduidingService;
         this.lettertekenaanduidingService = lettertekenaanduidingService;
         this.maatvoeringService = maatvoeringService;
+        this.figuurService = figuurService;
         this.structuurVisieGebiedService = structuurVisieGebiedService;
         this.planRepository = planRepository;
         this.imroLoadRepository = imroLoadRepository;
@@ -292,6 +295,15 @@ public class PlannenService {
             if (imroPlan != null) {
                 if (maatvoeringCounter.getProcessed() > 0) {
                     imroPlan.setMaatvoeringloaded(true);
+                }
+            }
+
+            UpdateCounter figuurCounter = new UpdateCounter();
+            figuurService.procesFiguur(savedPlan.getIdentificatie(), 1, figuurCounter);
+            log.info("processed figuren: {}", figuurCounter);
+            if (imroPlan != null) {
+                if (figuurCounter.getProcessed() > 0) {
+                    imroPlan.setFiguurloaded(true);
                 }
             }
 

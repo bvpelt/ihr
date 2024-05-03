@@ -3,12 +3,9 @@ package nl.bsoft.ihr.library.service;
 import lombok.extern.slf4j.Slf4j;
 import nl.bsoft.ihr.generated.model.Figuur;
 import nl.bsoft.ihr.generated.model.FiguurCollectie;
-import nl.bsoft.ihr.generated.model.Maatvoering;
-import nl.bsoft.ihr.generated.model.MaatvoeringCollectie;
 import nl.bsoft.ihr.library.mapper.FiguurMapper;
 import nl.bsoft.ihr.library.mapper.IllustratieMapper;
 import nl.bsoft.ihr.library.mapper.LocatieMapper;
-import nl.bsoft.ihr.library.mapper.MaatvoeringMapper;
 import nl.bsoft.ihr.library.model.dto.*;
 import nl.bsoft.ihr.library.repository.*;
 import nl.bsoft.ihr.library.util.UpdateCounter;
@@ -40,9 +37,9 @@ public class FiguurService {
     public FiguurService(APIService APIService,
                          ImroLoadRepository imroLoadRepository,
                          FiguurRepository figuurRepository,
-    ArtikelRepository artikelRepository,
-    TekstRefRepository tekstRefRepository,
-    IllustratieRepository illustratieRepository,
+                         ArtikelRepository artikelRepository,
+                         TekstRefRepository tekstRefRepository,
+                         IllustratieRepository illustratieRepository,
                          LocatieRepository locatieRepository,
                          FiguurMapper figuurMapper,
                          IllustratieMapper illustratieMapper,
@@ -193,28 +190,30 @@ public class FiguurService {
                 });
                 // illustratie
                 if (figuur.getIllustraties() != null) {
-                    figuur.getIllustraties().get().forEach(illustratie -> {
-                        try {
-                            IllustratieDto usedIllustratie = illustratieMapper.toIllustratie(illustratie);
-                            Optional<IllustratieDto> optionalIllustratie = illustratieRepository.findByHrefAndTypeAndNaamAndLegendanaam(usedIllustratie.getHref(), usedIllustratie.getType(), usedIllustratie.getNaam(), usedIllustratie.getLegendanaam());
-                            IllustratieDto foundIllustratie = null;
-                            if (optionalIllustratie.isPresent()) {
-                                foundIllustratie = optionalIllustratie.get();
-                                current.addIllustratie(foundIllustratie);
-                            } else {
-                                foundIllustratie = new IllustratieDto();
-                                foundIllustratie.setHref(usedIllustratie.getHref());
-                                foundIllustratie.setType(usedIllustratie.getType());
-                                foundIllustratie.setNaam(usedIllustratie.getNaam());
-                                foundIllustratie.setLegendanaam(usedIllustratie.getLegendanaam());
+                    if (figuur.getIllustraties().get() != null) {
+                        figuur.getIllustraties().get().forEach(illustratie -> {
+                            try {
+                                IllustratieDto usedIllustratie = illustratieMapper.toIllustratie(illustratie);
+                                Optional<IllustratieDto> optionalIllustratie = illustratieRepository.findByHrefAndTypeAndNaamAndLegendanaam(usedIllustratie.getHref(), usedIllustratie.getType(), usedIllustratie.getNaam(), usedIllustratie.getLegendanaam());
+                                IllustratieDto foundIllustratie = null;
+                                if (optionalIllustratie.isPresent()) {
+                                    foundIllustratie = optionalIllustratie.get();
+                                    current.addIllustratie(foundIllustratie);
+                                } else {
+                                    foundIllustratie = new IllustratieDto();
+                                    foundIllustratie.setHref(usedIllustratie.getHref());
+                                    foundIllustratie.setType(usedIllustratie.getType());
+                                    foundIllustratie.setNaam(usedIllustratie.getNaam());
+                                    foundIllustratie.setLegendanaam(usedIllustratie.getLegendanaam());
 
-                                IllustratieDto savedIllustratie = illustratieRepository.save(foundIllustratie);
-                                current.addIllustratie(savedIllustratie);
+                                    IllustratieDto savedIllustratie = illustratieRepository.save(foundIllustratie);
+                                    current.addIllustratie(savedIllustratie);
+                                }
+                            } catch (Exception e) {
+                                log.error("Error converting illustratie: {} for plan: {}, figuur: {}", illustratie, planidentificatie, figuur.getId());
                             }
-                        } catch (Exception e) {
-                            log.error("Error converting illustratie: {} for plan: {}, figuur: {}", illustratie, planidentificatie, figuur.getId());
-                        }
-                    });
+                        });
+                    }
                 }
                 savedFiguur = figuurRepository.save(current);
                 updateCounter.add();
