@@ -13,7 +13,6 @@ import org.openapitools.jackson.nullable.JsonNullableModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Controller;
 
 import java.time.OffsetDateTime;
 
@@ -36,10 +35,12 @@ public class JacksonConfig {
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         return mapper;
     }
+
     @Bean
     public JsonNullableModule jsonNullableModule() {
         return new JsonNullableModule();
     }
+
     private JavaTimeModule getTimeModule() {
         JavaTimeModule javaTimeModule = new JavaTimeModule();
         javaTimeModule.addDeserializer(OffsetDateTime.class, new OffsetDateTimeDeserializer());

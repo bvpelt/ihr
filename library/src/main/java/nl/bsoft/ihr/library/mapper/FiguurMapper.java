@@ -2,9 +2,7 @@ package nl.bsoft.ihr.library.mapper;
 
 import lombok.Setter;
 import nl.bsoft.ihr.generated.model.Figuur;
-import nl.bsoft.ihr.generated.model.Maatvoering;
 import nl.bsoft.ihr.library.model.dto.FiguurDto;
-import nl.bsoft.ihr.library.model.dto.MaatvoeringDto;
 import org.locationtech.jts.io.ParseException;
 import org.mapstruct.*;
 import org.openapitools.jackson.nullable.JsonNullable;

@@ -1,9 +1,7 @@
 package nl.bsoft.ihr.library.mapper;
 
 import lombok.Setter;
-import nl.bsoft.ihr.generated.model.Functieaanduiding;
 import nl.bsoft.ihr.generated.model.IllustratieReferentie;
-import nl.bsoft.ihr.library.model.dto.FunctieaanduidingDto;
 import nl.bsoft.ihr.library.model.dto.IllustratieDto;
 import org.locationtech.jts.io.ParseException;
 import org.mapstruct.*;
@@ -23,7 +21,7 @@ public abstract class IllustratieMapper implements JsonNullableMapper {
     @Mapping(target = "type", source = "type")
     @Mapping(target = "naam", source = "naam", qualifiedByName = "toJsonNullableString")
     @Mapping(target = "legendanaam", source = "legendanaam", qualifiedByName = "toJsonNullableString")
-    public abstract IllustratieDto toIllustratie(IllustratieReferentie illustratie)  throws ParseException;
+    public abstract IllustratieDto toIllustratie(IllustratieReferentie illustratie) throws ParseException;
 
     @Named("toJsonNullableString")
     protected String toJsonNullableString(JsonNullable<String> jsonNullable) {

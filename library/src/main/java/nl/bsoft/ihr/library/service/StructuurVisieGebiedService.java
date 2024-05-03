@@ -208,7 +208,8 @@ public class StructuurVisieGebiedService {
             savedStructuurVisieGebiedDto.getCartografieinfo().add(current);
         }
     }
-    private void  extractedIllustraties(Structuurvisiegebied structuurvisie, StructuurVisieGebiedDto savedStructuurVisieGebiedDto) {
+
+    private void extractedIllustraties(Structuurvisiegebied structuurvisie, StructuurVisieGebiedDto savedStructuurVisieGebiedDto) {
         List<IllustratieReferentie> illustratieReferenties = structuurvisie.getIllustraties();
         Iterator<IllustratieReferentie> illustraties = illustratieReferenties.iterator();
         while (illustraties.hasNext()) {
@@ -287,7 +288,7 @@ public class StructuurVisieGebiedService {
             TekstRefDto current = null;
             if (optionalTekstRefDto.isPresent()) {
                 current = optionalTekstRefDto.get();
-            }else {
+            } else {
                 current = new TekstRefDto();
                 current.setReferentie(verwijzingnaartekst);
             }

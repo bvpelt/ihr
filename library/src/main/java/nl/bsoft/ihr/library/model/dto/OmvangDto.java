@@ -30,6 +30,7 @@ public class OmvangDto {
 
     @ManyToMany(mappedBy = "omvangen", fetch = FetchType.LAZY)
     private Set<MaatvoeringDto> maatvoeringen = new HashSet<>();
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -37,10 +38,12 @@ public class OmvangDto {
         OmvangDto omvangDto = (OmvangDto) o;
         return Objects.equals(naam, omvangDto.naam) && Objects.equals(waarde, omvangDto.waarde);
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(naam, waarde);
     }
+
     @Override
     public String toString() {
         return "OmvangDto{" +

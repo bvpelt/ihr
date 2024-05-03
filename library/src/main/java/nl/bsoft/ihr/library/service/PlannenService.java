@@ -15,9 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Slf4j
@@ -120,6 +118,125 @@ public class PlannenService {
         this.externalPlanRepository = externalPlanRepository;
         this.illustratieRepository = illustratieRepository;
         this.MAX_PAGE_SIZE = APIService.getMAX_PAGE_SIZE();
+    }
+
+    private static void updatePlan(PlanDto plan, String field, ExternPlanDto currentPlan) {
+        switch (field) {
+            case VERVANGT_MET: {
+                if (currentPlan.getVervangtmetplan() == null) {
+                    currentPlan.setVervangtmetplan(plan);
+                } else {
+                    log.error("Vervangtmetplan plan: {} heeft al een waarde voor externplan {}", plan.getIdentificatie(), currentPlan.getIdentificatie());
+                }
+            }
+            break;
+            case TENGEVOLGE_VAN_MET: {
+                if (currentPlan.getTengevolgevanmetplan() == null) {
+                    currentPlan.setTengevolgevanmetplan(plan);
+                } else {
+                    log.error("Tengevolgevanmetplan plan: {} heeft al een waarde voor externplan {}", plan.getIdentificatie(), currentPlan.getIdentificatie());
+                }
+            }
+            break;
+            case MUTEERT_MET: {
+                if (currentPlan.getMuteertmetplan() == null) {
+                    currentPlan.setMuteertmetplan(plan);
+                } else {
+                    log.error("Muteertmetplan plan: {} heeft al een waarde voor externplan {}", plan.getIdentificatie(), currentPlan.getIdentificatie());
+                }
+            }
+            break;
+            case GEBRUIKT_INFORMATIE_UIT_MET: {
+                if (currentPlan.getGebruiktinfouitmetplan() == null) {
+                    currentPlan.setGebruiktinfouitmetplan(plan);
+                } else {
+                    log.error("Gebruiktinfouitmetplan plan: {} heeft al een waarde voor externplan {}", plan.getIdentificatie(), currentPlan.getIdentificatie());
+                }
+            }
+            break;
+            case GEDEELTELIJKE_HERZIENING_MET: {
+                if (currentPlan.getGedeeltelijkeherzieningmetplan() == null) {
+                    currentPlan.setGedeeltelijkeherzieningmetplan(plan);
+                } else {
+                    log.error("Gedeeltelijkeherzieningmetplan plan: {} heeft al een waarde voor externplan {}", plan.getIdentificatie(), currentPlan.getIdentificatie());
+                }
+            }
+            break;
+            case UIT_TE_WERKEN_IN_MET: {
+                if (currentPlan.getUittewerkinginmetplan() == null) {
+                    currentPlan.setUittewerkinginmetplan(plan);
+                } else {
+                    log.error("Uittewerkinginmetplan plan: {} heeft al een waarde voor externplan {}", plan.getIdentificatie(), currentPlan.getIdentificatie());
+                }
+            }
+            break;
+            case UITGEWERKT_IN_MET: {
+                if (currentPlan.getUitgewerktinmetplan() == null) {
+                    currentPlan.setUitgewerktinmetplan(plan);
+                } else {
+                    log.error("Uitgewerktinmetplan plan: {} heeft al een waarde voor externplan {}", plan.getIdentificatie(), currentPlan.getIdentificatie());
+                }
+            }
+            break;
+            case VERVANGT_VANUIT: {
+                if (currentPlan.getVervangtvanuitplan() == null) {
+                    currentPlan.setVervangtvanuitplan(plan);
+                } else {
+                    log.error("Vervangtvanuitplan plan: {} heeft al een waarde voor externplan {}", plan.getIdentificatie(), currentPlan.getIdentificatie());
+                }
+            }
+            break;
+            case TEN_GEVOLGE_VAN_VANUIT: {
+                if (currentPlan.getTegevolgevanvanuitplan() == null) {
+                    currentPlan.setTegevolgevanvanuitplan(plan);
+                } else {
+                    log.error("Tegevolgevanvanuitplan plan: {} heeft al een waarde voor externplan {}", plan.getIdentificatie(), currentPlan.getIdentificatie());
+                }
+            }
+            break;
+            case MUTEERT_VANUIT: {
+                if (currentPlan.getMuteertvanuitplan() == null) {
+                    currentPlan.setMuteertvanuitplan(plan);
+                } else {
+                    log.error("Muteertvanuitplan plan: {} heeft al een waarde voor externplan {}", plan.getIdentificatie(), currentPlan.getIdentificatie());
+                }
+            }
+            break;
+            case GEBRUIKT_INFORMATIE_UIT_VANUIT: {
+                if (currentPlan.getGebruiktinforuitvanuitplan() == null) {
+                    currentPlan.setGebruiktinforuitvanuitplan(plan);
+                } else {
+                    log.error("Gebruiktinforuitvanuitplan plan: {} heeft al een waarde voor externplan {}", plan.getIdentificatie(), currentPlan.getIdentificatie());
+                }
+            }
+            break;
+            case GEDEELTELIJKE_HERZIENING_VANUIT: {
+                if (currentPlan.getGedeeltelijkeherzieningvanuitplan() == null) {
+                    currentPlan.setGedeeltelijkeherzieningvanuitplan(plan);
+                } else {
+                    log.error("Gedeeltelijkeherzieningvanuitplan plan: {} heeft al een waarde voor externplan {}", plan.getIdentificatie(), currentPlan.getIdentificatie());
+                }
+            }
+            break;
+            case UIT_TE_WERKEN_IN_VANUIT: {
+                if (currentPlan.getUittewerkinginvanuitplan() == null) {
+                    currentPlan.setUittewerkinginvanuitplan(plan);
+                } else {
+                    log.error("Uittewerkinginvanuitplan plan: {} heeft al een waarde voor externplan {}", plan.getIdentificatie(), currentPlan.getIdentificatie());
+                }
+            }
+            break;
+            case UITGEWERKINT_IN_VANUIT: {
+                if (currentPlan.getUitgewerktinvanuitplan() == null) {
+                    currentPlan.setUitgewerktinvanuitplan(plan);
+                } else {
+                    log.error("Uitgewerktinvanuitplan plan: {} heeft al een waarde voor externplan {}", plan.getIdentificatie(), currentPlan.getIdentificatie());
+                }
+            }
+            break;
+            default:
+                log.error("Field {} not found for plan: {}", field, plan.getIdentificatie());
+        }
     }
 
     public PlanCollectie getPlannen(Integer page, Integer size) {
@@ -370,6 +487,7 @@ public class PlannenService {
             }
         }
     }
+
     private void extractVerwijzingNorm(Plan plan, PlanDto planDto) {
         List<String> verwijzingNormen = plan.getVerwijzingNorm();
         Iterator<String> verwijzingNormIterable = verwijzingNormen.iterator();
@@ -459,6 +577,7 @@ public class PlannenService {
             }
         }
     }
+
     private void extractBeleidsmatigeOverheid(Plan plan, PlanDto planDto) {
         PlanBeleidsmatigVerantwoordelijkeOverheid beleidsmatigeOverheid = plan.getBeleidsmatigVerantwoordelijkeOverheid();
 
@@ -479,7 +598,8 @@ public class PlannenService {
             log.debug("beleidsmatige overheid: {}", currentBeleidsMatigeOverheid);
         }
     }
-    Set<ExternPlanDto> findPlanRef(List<RelatieMetExternPlanReferentie>  vervangtList, PlanDto plan, String field) {
+
+    Set<ExternPlanDto> findPlanRef(List<RelatieMetExternPlanReferentie> vervangtList, PlanDto plan, String field) {
         Set<ExternPlanDto> planSet = new HashSet<>();
 
         vervangtList.forEach(element -> {
@@ -507,128 +627,10 @@ public class PlannenService {
                 }
                 planSet.add(currentPlan);
             } catch (Exception e) {
-                log.error("Error converting current planref: {}, plan: {}, field: {}",element, plan, field );
+                log.error("Error converting current planref: {}, plan: {}, field: {}", element, plan, field);
             }
         });
         return planSet;
-    }
-
-    private static void updatePlan(PlanDto plan, String field, ExternPlanDto currentPlan) {
-        switch (field) {
-            case VERVANGT_MET: {
-                if (currentPlan.getVervangtmetplan() == null) {
-                    currentPlan.setVervangtmetplan(plan);
-                } else {
-                    log.error("Vervangtmetplan plan: {} heeft al een waarde voor externplan {}", plan.getIdentificatie(), currentPlan.getIdentificatie());
-                }
-            }
-            break;
-            case TENGEVOLGE_VAN_MET: {
-                if (currentPlan.getTengevolgevanmetplan() == null) {
-                    currentPlan.setTengevolgevanmetplan(plan);
-                } else {
-                    log.error("Tengevolgevanmetplan plan: {} heeft al een waarde voor externplan {}", plan.getIdentificatie(), currentPlan.getIdentificatie());
-                }
-            }
-            break;
-            case MUTEERT_MET: {
-                if (currentPlan.getMuteertmetplan() == null) {
-                    currentPlan.setMuteertmetplan(plan);
-                } else {
-                    log.error("Muteertmetplan plan: {} heeft al een waarde voor externplan {}", plan.getIdentificatie(), currentPlan.getIdentificatie());
-                }
-            }
-            break;
-            case GEBRUIKT_INFORMATIE_UIT_MET: {
-                if (currentPlan.getGebruiktinfouitmetplan() == null) {
-                    currentPlan.setGebruiktinfouitmetplan(plan);
-                } else {
-                    log.error("Gebruiktinfouitmetplan plan: {} heeft al een waarde voor externplan {}", plan.getIdentificatie(), currentPlan.getIdentificatie());
-                }
-            }
-            break;
-            case GEDEELTELIJKE_HERZIENING_MET: {
-                if (currentPlan.getGedeeltelijkeherzieningmetplan() == null) {
-                    currentPlan.setGedeeltelijkeherzieningmetplan(plan);
-                } else {
-                    log.error("Gedeeltelijkeherzieningmetplan plan: {} heeft al een waarde voor externplan {}", plan.getIdentificatie(), currentPlan.getIdentificatie());
-                }
-            }
-            break;
-            case UIT_TE_WERKEN_IN_MET: {
-                if (currentPlan.getUittewerkinginmetplan() == null) {
-                    currentPlan.setUittewerkinginmetplan(plan);
-                } else {
-                    log.error("Uittewerkinginmetplan plan: {} heeft al een waarde voor externplan {}", plan.getIdentificatie(), currentPlan.getIdentificatie());
-                }
-            }
-            break;
-            case UITGEWERKT_IN_MET: {
-                if (currentPlan.getUitgewerktinmetplan() == null) {
-                    currentPlan.setUitgewerktinmetplan(plan);
-                } else {
-                    log.error("Uitgewerktinmetplan plan: {} heeft al een waarde voor externplan {}", plan.getIdentificatie(), currentPlan.getIdentificatie());
-                }
-            }
-            break;
-            case VERVANGT_VANUIT: {
-                if (currentPlan.getVervangtvanuitplan() == null) {
-                    currentPlan.setVervangtvanuitplan(plan);
-                } else {
-                    log.error("Vervangtvanuitplan plan: {} heeft al een waarde voor externplan {}", plan.getIdentificatie(), currentPlan.getIdentificatie());
-                }
-            }
-            break;
-            case TEN_GEVOLGE_VAN_VANUIT: {
-                if (currentPlan.getTegevolgevanvanuitplan() == null) {
-                    currentPlan.setTegevolgevanvanuitplan(plan);
-                } else {
-                    log.error("Tegevolgevanvanuitplan plan: {} heeft al een waarde voor externplan {}", plan.getIdentificatie(), currentPlan.getIdentificatie());
-                }
-            }
-            break;
-            case MUTEERT_VANUIT: {
-                if (currentPlan.getMuteertvanuitplan() == null) {
-                    currentPlan.setMuteertvanuitplan(plan);
-                } else {
-                    log.error("Muteertvanuitplan plan: {} heeft al een waarde voor externplan {}", plan.getIdentificatie(), currentPlan.getIdentificatie());
-                }
-            }
-            break;
-            case GEBRUIKT_INFORMATIE_UIT_VANUIT: {
-                if (currentPlan.getGebruiktinforuitvanuitplan() == null) {
-                    currentPlan.setGebruiktinforuitvanuitplan(plan);
-                } else {
-                    log.error("Gebruiktinforuitvanuitplan plan: {} heeft al een waarde voor externplan {}", plan.getIdentificatie(), currentPlan.getIdentificatie());
-                }
-            }
-            break;
-            case GEDEELTELIJKE_HERZIENING_VANUIT: {
-                if (currentPlan.getGedeeltelijkeherzieningvanuitplan() == null) {
-                    currentPlan.setGedeeltelijkeherzieningvanuitplan(plan);
-                } else {
-                    log.error("Gedeeltelijkeherzieningvanuitplan plan: {} heeft al een waarde voor externplan {}", plan.getIdentificatie(), currentPlan.getIdentificatie());
-                }
-            }
-            break;
-            case UIT_TE_WERKEN_IN_VANUIT: {
-                if (currentPlan.getUittewerkinginvanuitplan() == null) {
-                    currentPlan.setUittewerkinginvanuitplan(plan);
-                } else {
-                    log.error("Uittewerkinginvanuitplan plan: {} heeft al een waarde voor externplan {}", plan.getIdentificatie(), currentPlan.getIdentificatie());
-                }
-            }
-            break;
-            case UITGEWERKINT_IN_VANUIT: {
-                if (currentPlan.getUitgewerktinvanuitplan() == null) {
-                    currentPlan.setUitgewerktinvanuitplan(plan);
-                } else {
-                    log.error("Uitgewerktinvanuitplan plan: {} heeft al een waarde voor externplan {}", plan.getIdentificatie(), currentPlan.getIdentificatie());
-                }
-            }
-            break;
-            default: log.error("Field {} not found for plan: {}", field, plan.getIdentificatie());
-        }
     }
 
     private void extractRelatiesMetExternePlannen(Plan plan, PlanDto planDto) {
@@ -640,7 +642,7 @@ public class PlannenService {
 
         planList = plan.getRelatiesMetExternePlannen().getTenGevolgeVan();
         if (planList != null && planList.size() > 0) {
-            Set<ExternPlanDto> vervangSet = findPlanRef(planList,planDto, TENGEVOLGE_VAN_MET);
+            Set<ExternPlanDto> vervangSet = findPlanRef(planList, planDto, TENGEVOLGE_VAN_MET);
             planDto.setTengevolgeVanMetPlannen(vervangSet);
         }
 
@@ -674,6 +676,7 @@ public class PlannenService {
             planDto.setUitgewerktInMetPlannen(vervangSet);
         }
     }
+
     private void extractRelatiesVanuitExternePlannen(Plan plan, PlanDto planDto) {
         List<RelatieMetExternPlanReferentie> planList = plan.getRelatiesVanuitExternePlannen().getVervangt();
         if (planList != null && planList.size() > 0) {
@@ -731,7 +734,7 @@ public class PlannenService {
         currentPlanStatus.getPlannen().add(planDto);
         currentPlanStatus = planStatusRepository.save(currentPlanStatus);
         planDto.setPlanstatus(currentPlanStatus);
-        log.info("Planstatus: {}", currentPlanStatus.toString());
+        log.info("Planstatus: {}", currentPlanStatus);
     }
 
     private void extractLocation(Plan plan, String md5hash) throws ParseException {

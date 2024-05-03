@@ -66,26 +66,31 @@ public class FiguurDto {
         artikel.getFiguren().add(this);
 
     }
+
     public void removeArtikel(ArtikelDto artikel) {
         this.artikelnummers.remove(artikel);
         artikel.getFiguren().remove(this);
     }
+
     // tekst
     public void addVerwijzingNaarTekst(TekstRefDto tekst) {
         this.verwijzingnaartekst.add(tekst);
         tekst.getFiguren().add(this);
 
     }
+
     public void removeVerwijzingNaarTekst(TekstRefDto tekst) {
         this.verwijzingnaartekst.remove(tekst);
         tekst.getFiguren().remove(this);
     }
+
     // illustratie
     public void addIllustratie(IllustratieDto illustratie) {
         this.illustraties.add(illustratie);
         illustratie.getFiguren().add(this);
 
     }
+
     public void removeIllustratie(IllustratieDto illustratie) {
         this.illustraties.remove(illustratie);
         illustratie.getFiguren().remove(this);

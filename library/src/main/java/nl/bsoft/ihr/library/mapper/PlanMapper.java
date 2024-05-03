@@ -1,8 +1,10 @@
 package nl.bsoft.ihr.library.mapper;
 
 import lombok.Setter;
-import nl.bsoft.ihr.generated.model.*;
-import nl.bsoft.ihr.library.model.dto.ExternPlanDto;
+import nl.bsoft.ihr.generated.model.Plan;
+import nl.bsoft.ihr.generated.model.PlanDossier;
+import nl.bsoft.ihr.generated.model.PlanType;
+import nl.bsoft.ihr.generated.model.PlanstatusInfo;
 import nl.bsoft.ihr.library.model.dto.PlanDto;
 import nl.bsoft.ihr.library.model.dto.PlanStatusDto;
 import org.locationtech.jts.io.ParseException;
@@ -12,8 +14,6 @@ import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.util.List;
-import java.util.Set;
 
 @Setter
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
@@ -74,13 +74,14 @@ public abstract class PlanMapper implements JsonNullableMapper {
     }
 
     @Named("toEindeRechtsgeldigheid")
-    protected LocalDate toEindeRechtsgeldigheid (JsonNullable<LocalDate> date) {
+    protected LocalDate toEindeRechtsgeldigheid(JsonNullable<LocalDate> date) {
         LocalDate ldate = null;
         if (date.isPresent()) {
             ldate = date.get();
         }
         return ldate;
     }
+
     @Named("toPlanStatusInfo")
     protected PlanStatusDto toPlanStatusInfo(PlanstatusInfo planstatusInfo) {
         PlanStatusDto planStatusDto = new PlanStatusDto();

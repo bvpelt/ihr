@@ -1,11 +1,9 @@
 package nl.bsoft.ihr.library.mapper;
 
 import lombok.Setter;
-import nl.bsoft.ihr.generated.model.Bouwvlak;
 import nl.bsoft.ihr.generated.model.RelatieMetExternPlanReferentie;
 import nl.bsoft.ihr.generated.model.RelatieMetExternPlanReferentieDossier;
 import nl.bsoft.ihr.generated.model.RelatieMetExternPlanReferentiePlanstatusInfo;
-import nl.bsoft.ihr.library.model.dto.BouwvlakDto;
 import nl.bsoft.ihr.library.model.dto.ExternPlanDto;
 import org.locationtech.jts.io.ParseException;
 import org.mapstruct.*;
@@ -30,7 +28,7 @@ public abstract class ExternPlanMapper implements JsonNullableMapper {
     @Mapping(target = "planstatusdate", source = "planstatusInfo", qualifiedByName = "toPlanStatusDate")
     @Mapping(target = "dossier", source = "dossier", qualifiedByName = "toDossier")
     @Mapping(target = "href", source = "href", qualifiedByName = "toJsonNullableString")
-    public abstract ExternPlanDto toExternPlan(RelatieMetExternPlanReferentie relaties)  throws ParseException;
+    public abstract ExternPlanDto toExternPlan(RelatieMetExternPlanReferentie relaties) throws ParseException;
 
     @Named("toPlanStatus")
     protected String totoPlanStatus(JsonNullable<RelatieMetExternPlanReferentiePlanstatusInfo> planstatusinfo) {
@@ -54,7 +52,7 @@ public abstract class ExternPlanMapper implements JsonNullableMapper {
     }
 
     @Named("toDossier")
-    protected String toDossier(JsonNullable<RelatieMetExternPlanReferentieDossier>  dossier) {
+    protected String toDossier(JsonNullable<RelatieMetExternPlanReferentieDossier> dossier) {
         if (dossier.isPresent()) {
             if (dossier.get() != null) {
                 return dossier.get().getStatus();

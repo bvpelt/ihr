@@ -2,9 +2,7 @@ package nl.bsoft.ihr.library.mapper;
 
 import lombok.Setter;
 import nl.bsoft.ihr.generated.model.Bouwaanduiding;
-import nl.bsoft.ihr.generated.model.Functieaanduiding;
 import nl.bsoft.ihr.library.model.dto.BouwaanduidingDto;
-import nl.bsoft.ihr.library.model.dto.FunctieaanduidingDto;
 import org.locationtech.jts.io.ParseException;
 import org.mapstruct.*;
 import org.openapitools.jackson.nullable.JsonNullable;
@@ -25,7 +23,7 @@ public abstract class BouwaanduidingMapper implements JsonNullableMapper {
     @Mapping(target = "labelinfo", source = "labelInfo", qualifiedByName = "toJsonNullableString")
     @Mapping(target = "verwijzingnaartekst", source = "verwijzingNaarTekst", qualifiedByName = "toJsonNullableString")
     @Mapping(target = "styleid", source = "styleId", qualifiedByName = "toJsonNullableString")
-    public abstract BouwaanduidingDto toBouwaanduiding(Bouwaanduiding bouwaanduiding)  throws ParseException;
+    public abstract BouwaanduidingDto toBouwaanduiding(Bouwaanduiding bouwaanduiding) throws ParseException;
 
     @Named("toFunctieaanduidingId")
     protected String toFunctieaanduidingId(String id) {

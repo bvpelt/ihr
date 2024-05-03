@@ -1,17 +1,13 @@
 package nl.bsoft.ihr.library.service;
 
 import lombok.extern.slf4j.Slf4j;
-import nl.bsoft.ihr.generated.model.Bouwvlak;
 import nl.bsoft.ihr.generated.model.Functieaanduiding;
 import nl.bsoft.ihr.generated.model.FunctieaanduidingCollectie;
-import nl.bsoft.ihr.library.mapper.BouwvlakMapper;
 import nl.bsoft.ihr.library.mapper.FunctieaanduidingMapper;
 import nl.bsoft.ihr.library.mapper.LocatieMapper;
-import nl.bsoft.ihr.library.model.dto.BouwvlakDto;
 import nl.bsoft.ihr.library.model.dto.FunctieaanduidingDto;
 import nl.bsoft.ihr.library.model.dto.ImroLoadDto;
 import nl.bsoft.ihr.library.model.dto.LocatieDto;
-import nl.bsoft.ihr.library.repository.BouwvlakRepository;
 import nl.bsoft.ihr.library.repository.FunctieaanduidingRepository;
 import nl.bsoft.ihr.library.repository.ImroLoadRepository;
 import nl.bsoft.ihr.library.repository.LocatieRepository;

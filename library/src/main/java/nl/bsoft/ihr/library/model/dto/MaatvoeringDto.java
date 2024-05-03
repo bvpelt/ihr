@@ -41,15 +41,18 @@ public class MaatvoeringDto {
     private String styleid;
     @Column(name = "md5hash")
     private String md5hash;
+
     public void addOmvang(OmvangDto omvang) {
         this.omvangen.add(omvang);
         omvang.getMaatvoeringen().add(this);
 
     }
+
     public void removeOmvang(OmvangDto omvang) {
         this.omvangen.remove(omvang);
         omvang.getMaatvoeringen().remove(this);
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -57,10 +60,12 @@ public class MaatvoeringDto {
         MaatvoeringDto that = (MaatvoeringDto) o;
         return Objects.equals(planidentificatie, that.planidentificatie) && Objects.equals(identificatie, that.identificatie) && Objects.equals(naam, that.naam) && Objects.equals(verwijzingnaartekst, that.verwijzingnaartekst) && Objects.equals(styleid, that.styleid) && Objects.equals(md5hash, that.md5hash);
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(planidentificatie, identificatie, naam, verwijzingnaartekst, styleid, md5hash);
     }
+
     @Override
     public String toString() {
         return "MaatvoeringDto{" +

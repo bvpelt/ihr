@@ -1,6 +1,5 @@
 package nl.bsoft.ihr.library.repository;
 
-import nl.bsoft.ihr.library.model.dto.NormadressantDto;
 import nl.bsoft.ihr.library.model.dto.OndergrondDto;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;

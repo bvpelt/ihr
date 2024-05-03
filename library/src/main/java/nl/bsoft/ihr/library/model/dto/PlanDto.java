@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CollectionId;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,7 +20,38 @@ import java.util.Set;
 @Table(name = "plan", schema = "public", catalog = "ihr")
 public class PlanDto {
     private static final long serialVersionUID = 4L;
-
+    // relatiesMetExternePlannen
+    @OneToMany(mappedBy = "vervangtmetplan")
+    Set<ExternPlanDto> vervangtMetPlannen = new HashSet<>();
+    @OneToMany(mappedBy = "tengevolgevanmetplan")
+    Set<ExternPlanDto> tengevolgeVanMetPlannen = new HashSet<>();
+    @OneToMany(mappedBy = "muteertmetplan")
+    Set<ExternPlanDto> muteertMetPlannen = new HashSet<>();
+    @OneToMany(mappedBy = "gebruiktinfouitmetplan")
+    Set<ExternPlanDto> gebruiktInfoUitMetPlannen = new HashSet<>();
+    @OneToMany(mappedBy = "gedeeltelijkeherzieningmetplan")
+    Set<ExternPlanDto> gedeeltelijkeHerzieningMetPlannen = new HashSet<>();
+    @OneToMany(mappedBy = "uittewerkinginmetplan")
+    Set<ExternPlanDto> uitTeWerkenInMetPlannen = new HashSet<>();
+    @OneToMany(mappedBy = "uitgewerktinmetplan")
+    Set<ExternPlanDto> uitgewerktInMetPlannen = new HashSet<>();
+    // relatiesVanuitExternePlannen
+    @OneToMany(mappedBy = "vervangtvanuitplan")
+    Set<ExternPlanDto> vervangtVanuitPlannen = new HashSet<>();
+    @OneToMany(mappedBy = "tegevolgevanvanuitplan")
+    Set<ExternPlanDto> tengevolgeVanVanuitPlannen = new HashSet<>();
+    @OneToMany(mappedBy = "muteertvanuitplan")
+    Set<ExternPlanDto> muteertVanuitPlannen = new HashSet<>();
+    @OneToMany(mappedBy = "gebruiktinforuitvanuitplan")
+    Set<ExternPlanDto> gebruiktInfoUitVanuitPlannen = new HashSet<>();
+    @OneToMany(mappedBy = "gedeeltelijkeherzieningvanuitplan")
+    Set<ExternPlanDto> gedeeltelijkeHerzieningVanuitPlannen = new HashSet<>();
+    @OneToMany(mappedBy = "uittewerkinginvanuitplan")
+    Set<ExternPlanDto> uitTeWerkenInVanuitPlannen = new HashSet<>();
+    @OneToMany(mappedBy = "uitgewerktinvanuitplan")
+    Set<ExternPlanDto> uitgewerktInVanuitPlannen = new HashSet<>();
+    @OneToMany(mappedBy = "plan")
+    Set<IllustratieDto> illustraties = new HashSet<>();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -86,38 +116,6 @@ public class PlanDto {
                     @JoinColumn(name = "ondergrond_id", referencedColumnName = "id")
             })
     private Set<OndergrondDto> ondergronden = new HashSet<>();
-    // relatiesMetExternePlannen
-    @OneToMany(mappedBy = "vervangtmetplan")
-    Set<ExternPlanDto> vervangtMetPlannen = new HashSet<>();
-    @OneToMany(mappedBy = "tengevolgevanmetplan")
-    Set<ExternPlanDto> tengevolgeVanMetPlannen = new HashSet<>();
-    @OneToMany(mappedBy = "muteertmetplan")
-    Set<ExternPlanDto> muteertMetPlannen = new HashSet<>();
-    @OneToMany(mappedBy = "gebruiktinfouitmetplan")
-    Set<ExternPlanDto> gebruiktInfoUitMetPlannen = new HashSet<>();
-    @OneToMany(mappedBy = "gedeeltelijkeherzieningmetplan")
-    Set<ExternPlanDto> gedeeltelijkeHerzieningMetPlannen = new HashSet<>();
-    @OneToMany(mappedBy = "uittewerkinginmetplan")
-    Set<ExternPlanDto> uitTeWerkenInMetPlannen = new HashSet<>();
-    @OneToMany(mappedBy = "uitgewerktinmetplan")
-    Set<ExternPlanDto> uitgewerktInMetPlannen = new HashSet<>();
-    // relatiesVanuitExternePlannen
-    @OneToMany(mappedBy = "vervangtvanuitplan")
-    Set<ExternPlanDto> vervangtVanuitPlannen = new HashSet<>();
-    @OneToMany(mappedBy = "tegevolgevanvanuitplan")
-    Set<ExternPlanDto> tengevolgeVanVanuitPlannen = new HashSet<>();
-    @OneToMany(mappedBy = "muteertvanuitplan")
-    Set<ExternPlanDto> muteertVanuitPlannen = new HashSet<>();
-    @OneToMany(mappedBy = "gebruiktinforuitvanuitplan")
-    Set<ExternPlanDto> gebruiktInfoUitVanuitPlannen = new HashSet<>();
-    @OneToMany(mappedBy = "gedeeltelijkeherzieningvanuitplan")
-    Set<ExternPlanDto> gedeeltelijkeHerzieningVanuitPlannen = new HashSet<>();
-    @OneToMany(mappedBy = "uittewerkinginvanuitplan")
-    Set<ExternPlanDto> uitTeWerkenInVanuitPlannen = new HashSet<>();
-    @OneToMany(mappedBy = "uitgewerktinvanuitplan")
-    Set<ExternPlanDto> uitgewerktInVanuitPlannen = new HashSet<>();
-    @OneToMany(mappedBy = "plan")
-    Set<IllustratieDto> illustraties = new HashSet<>();
     @Column(name = "regelstatus")
     private String regelstatus;
     @Column(name = "dossierid")
