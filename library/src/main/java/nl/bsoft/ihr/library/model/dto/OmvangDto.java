@@ -15,37 +15,38 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "artikel", schema = "public", catalog = "ihr")
-public class ArtikelnummerRefDto {
-    private static final long serialVersionUID = 12L;
+@Table(name = "omvang", schema = "public", catalog = "ihr")
+public class OmvangDto {
+    private static final long serialVersionUID = 29L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "artikel")
-    private String artikel;
+    @Column(name = "naam")
+    private String naam;
+    @Column(name = "waarde")
+    private String waarde;
 
-    @ManyToMany(mappedBy = "artikelnummers", fetch = FetchType.LAZY)
-    private Set<GebiedsaanduidingDto> gebiedsaanduidingen = new HashSet<GebiedsaanduidingDto>();
-
+    @ManyToMany(mappedBy = "omvangen", fetch = FetchType.LAZY)
+    private Set<MaatvoeringDto> maatvoeringen = new HashSet<>();
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ArtikelnummerRefDto that = (ArtikelnummerRefDto) o;
-        return Objects.equals(artikel, that.artikel);
+        OmvangDto omvangDto = (OmvangDto) o;
+        return Objects.equals(naam, omvangDto.naam) && Objects.equals(waarde, omvangDto.waarde);
     }
-
     @Override
     public int hashCode() {
-        return Objects.hash(artikel);
+        return Objects.hash(naam, waarde);
     }
-
     @Override
     public String toString() {
-        return "ArtikelnummerRefDto{" +
+        return "OmvangDto{" +
                 "id=" + id +
-                ", artikel='" + artikel + '\'' +
+                ", naam='" + naam + '\'' +
+                ", waarde='" + waarde + '\'' +
                 '}';
     }
 }

@@ -33,6 +33,9 @@ public class TekstRefDto {
     @ManyToMany(mappedBy = "verwijzingNaarTekst", fetch = FetchType.LAZY)
     private Set<StructuurVisieGebiedDto> verwijzingNaarTekst;
 
+    @ManyToMany(mappedBy = "verwijzingnaartekst", fetch = FetchType.LAZY)
+    private Set<FiguurDto> figuren;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

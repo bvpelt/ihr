@@ -32,6 +32,8 @@ public class IllustratieDto {
     private String legendanaam;
     @ManyToMany(mappedBy = "illustraties", fetch = FetchType.LAZY)
     private Set<StructuurVisieGebiedDto> structuurvisiegebied = new HashSet<>();
+    @ManyToMany(mappedBy = "illustraties", fetch = FetchType.LAZY)
+    private Set<FiguurDto> figuren = new HashSet<>();
     @ManyToOne()
     @JoinColumn(name = "plan_id", nullable = true, referencedColumnName = "id")
     private PlanDto plan;

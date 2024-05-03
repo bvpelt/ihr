@@ -40,7 +40,7 @@ public class GebiedsaanduidingDto {
             name = "gebiedsaanduiding_artikel",
             joinColumns = @JoinColumn(name = "gebiedsaanduiding_id"),
             inverseJoinColumns = @JoinColumn(name = "artikel_id"))
-    private Set<ArtikelnummerRefDto> artikelnummers = new HashSet<>();
+    private Set<ArtikelDto> artikelnummers = new HashSet<>();
 
     @ManyToMany // owns relation
     @JoinTable(

@@ -44,8 +44,8 @@ public class PlannenService {
     private final BouwvlakkenService bouwvlakkenService;
     private final FunctieaanduidingService functieaanduidingService;
     private final BouwaanduidingService bouwaanduidingService;
-
     private final LettertekenaanduidingService lettertekenaanduidingService;
+    private final MaatvoeringService maatvoeringService;
     private final StructuurVisieGebiedService structuurVisieGebiedService;
     private final PlanRepository planRepository;
     private final ImroLoadRepository imroLoadRepository;
@@ -72,6 +72,7 @@ public class PlannenService {
                           FunctieaanduidingService functieaanduidingService,
                           BouwaanduidingService bouwaanduidingService,
                           LettertekenaanduidingService lettertekenaanduidingService,
+                          MaatvoeringService maatvoeringService,
                           StructuurVisieGebiedService structuurVisieGebiedService,
                           PlanRepository planRepository,
                           ImroLoadRepository imroLoadRepository,
@@ -97,6 +98,7 @@ public class PlannenService {
         this.functieaanduidingService = functieaanduidingService;
         this.bouwaanduidingService = bouwaanduidingService;
         this.lettertekenaanduidingService = lettertekenaanduidingService;
+        this.maatvoeringService = maatvoeringService;
         this.structuurVisieGebiedService = structuurVisieGebiedService;
         this.planRepository = planRepository;
         this.imroLoadRepository = imroLoadRepository;
@@ -281,6 +283,15 @@ public class PlannenService {
             if (imroPlan != null) {
                 if (lettertekenaanduidingCounter.getProcessed() > 0) {
                     imroPlan.setLettertekenaanduidingloaded(true);
+                }
+            }
+
+            UpdateCounter maatvoeringCounter = new UpdateCounter();
+            maatvoeringService.procesMaatvoering(savedPlan.getIdentificatie(), 1, maatvoeringCounter);
+            log.info("processed maatvoeringen: {}", maatvoeringCounter);
+            if (imroPlan != null) {
+                if (maatvoeringCounter.getProcessed() > 0) {
+                    imroPlan.setMaatvoeringloaded(true);
                 }
             }
 

@@ -2,7 +2,6 @@ package nl.bsoft.ihr.library.mapper;
 
 import lombok.Setter;
 import nl.bsoft.ihr.generated.model.*;
-import nl.bsoft.ihr.library.model.dto.LettertekenaanduidingDto;
 import nl.bsoft.ihr.library.model.dto.LocatieDto;
 import nl.bsoft.ihr.library.service.GeoService;
 import org.locationtech.jts.geom.Geometry;
@@ -44,6 +43,15 @@ public abstract class LocatieMapper implements JsonNullableMapper {
     @Mapping(target = "id", source = "id", ignore = true)
     @Mapping(target = "geometrie", source = "geometrie", qualifiedByName = "toGeometrie")
     public abstract LocatieDto toLocatieDto(Lettertekenaanduiding lettertekenaanduiding) throws ParseException;
+
+    @Mapping(target = "id", source = "id", ignore = true)
+    @Mapping(target = "geometrie", source = "geometrie", qualifiedByName = "toGeometrie")
+    public abstract LocatieDto toLocatieDto(Maatvoering maatvoering) throws ParseException;
+
+    @Mapping(target = "id", source = "id", ignore = true)
+    @Mapping(target = "geometrie", source = "geometrie", qualifiedByName = "toGeometrie")
+    public abstract LocatieDto toLocatieDto(Figuur figuur) throws ParseException;
+
     @Named("toGeometrie")
     protected Geometry toGeometrie(GeoJSON inputGeometry) throws ParseException {
 

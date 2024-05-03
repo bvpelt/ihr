@@ -62,12 +62,12 @@ public abstract class GebiedsaanduidingMapper implements JsonNullableMapper {
     }
 
     @Named("toArtikelnummers")
-    protected Set<ArtikelnummerRefDto> toArtikelnummers(List<String> artikelen) {
-        final Set<ArtikelnummerRefDto> artkelRefs = new HashSet<>();
+    protected Set<ArtikelDto> toArtikelnummers(List<String> artikelen) {
+        final Set<ArtikelDto> artkelRefs = new HashSet<>();
 
         if ((artikelen != null) && (artikelen.size() > 0)) {
             artikelen.forEach(artikel -> {
-                ArtikelnummerRefDto artikelnummerRefDto = new ArtikelnummerRefDto();
+                ArtikelDto artikelnummerRefDto = new ArtikelDto();
                 artikelnummerRefDto.setArtikel(artikel);
                 artkelRefs.add(artikelnummerRefDto);
             });
