@@ -1,6 +1,9 @@
 # ihr
 IHR Informatie Huis Ruimte
 
+# Java
+- Serialisation see https://www.baeldung.com/java-serial-version-uid
+
 # Postgres
 - fuzzy search https://www.freecodecamp.org/news/fuzzy-string-matching-with-postgresql/
 

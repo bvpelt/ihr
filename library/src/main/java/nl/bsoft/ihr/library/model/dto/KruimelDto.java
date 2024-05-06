@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 @Getter
@@ -14,7 +15,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "kruimelpad", schema = "public", catalog = "ihr")
-public class KruimelDto {
+public class KruimelDto implements Serializable {
     private static final long serialVersionUID = 23L;
 
     @Id

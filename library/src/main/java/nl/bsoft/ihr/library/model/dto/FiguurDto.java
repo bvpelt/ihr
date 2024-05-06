@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -16,7 +17,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "figuur", schema = "public", catalog = "ihr")
-public class FiguurDto {
+public class FiguurDto implements Serializable {
     private static final long serialVersionUID = 30L;
 
     @Id

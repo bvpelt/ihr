@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,7 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "verwijzingnorm", schema = "public", catalog = "ihr")
-public class VerwijzingNormDto {
+public class VerwijzingNormDto implements Serializable {
     private static final long serialVersionUID = 20L;
 
     @Id

@@ -3,6 +3,7 @@ package nl.bsoft.ihr.library.service;
 
 import lombok.extern.slf4j.Slf4j;
 import nl.bsoft.ihr.generated.model.*;
+import nl.bsoft.ihr.library.exception.NotFoundException;
 import nl.bsoft.ihr.library.mapper.*;
 import nl.bsoft.ihr.library.model.dto.*;
 import nl.bsoft.ihr.library.repository.*;
@@ -243,8 +244,10 @@ public class PlannenService {
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(APIService.getApiUrl() + "/plannen");
         uriComponentsBuilder.queryParam("page", page);
         uriComponentsBuilder.queryParam("pageSize", size);
-        String[] expand = {"geometrie"};
-        uriComponentsBuilder.queryParam("expand", expand.toString());
+        String[] expand = {"geometrie", "bbox"};
+        for (String param : expand) {
+            uriComponentsBuilder.queryParam("expand", param);
+        }
         log.trace("using url: {}", uriComponentsBuilder.build().toUri());
         return APIService.getDirectly(uriComponentsBuilder.build().toUri(), PlanCollectie.class);
     }
@@ -265,9 +268,7 @@ public class PlannenService {
                 PlanCollectieEmbedded planCollectieEmbedded = planCollectie.getEmbedded();
                 if (planCollectieEmbedded != null) {
                     List<Plan> planList = planCollectieEmbedded.getPlannen();
-                    planList.forEach(plan -> {
-                        addPlan(plan, null, updateCounter);
-                    });
+                    planList.forEach(plan -> addPlan(plan, null, updateCounter));
                     if (planCollectie.getLinks().getNext() == null) {
                         morePages = false;
                     }
@@ -284,7 +285,7 @@ public class PlannenService {
     public PlanDto addPlan(Plan plan, ImroLoadDto imroPlan, UpdateCounter updateCounter) {
         PlanDto savedPlan = null;
 
-        PlanDto planDto = null;
+        PlanDto planDto;
 
         try {
             planDto = planMapper.toPlan(plan);
@@ -436,19 +437,16 @@ public class PlannenService {
             log.info("[IHR] plan {}", planDto);
         } catch (Exception e) {
             updateCounter.skipped();
-            log.error("Error converting plan\n{}", e);
+            log.error("Error converting plan\n {}", e.toString());
         }
         return savedPlan;
     }
 
     private void extractLocatieNamen(Plan plan, PlanDto planDto) {
         List<String> locatieNaamDtoSet = plan.getLocatienamen();
-        Iterator<String> locatieNaamIterator = locatieNaamDtoSet.iterator();
-        while (locatieNaamIterator.hasNext()) {
-            String puLocatieNaam = locatieNaamIterator.next();
-
+        for (String puLocatieNaam : locatieNaamDtoSet) {
             Optional<LocatieNaamDto> optionalOverheidDto = locatieNaamRepository.findByNaam(puLocatieNaam);
-            LocatieNaamDto current = null;
+            LocatieNaamDto current;
             if (optionalOverheidDto.isPresent()) {
                 current = optionalOverheidDto.get();
                 current.getPlannen().add(planDto);
@@ -471,7 +469,7 @@ public class PlannenService {
                 OndergrondDto usedOndergrond = ondergrondMapper.toOndergrond(ondergrondenIterator.next());
 
                 Optional<OndergrondDto> optionalOndergrondDto = ondergrondRepository.findByTypeAndDatum(usedOndergrond.getType(), usedOndergrond.getDatum());
-                OndergrondDto current = null;
+                OndergrondDto current;
                 if (optionalOndergrondDto.isPresent()) {
                     current = optionalOndergrondDto.get();
                 } else {
@@ -483,18 +481,16 @@ public class PlannenService {
                 current = ondergrondRepository.save(current);
                 planDto.getOndergronden().add(current);
             } catch (Exception e) {
-                log.error("Error converting planondergrond plan: {}, exception: {}", plan.getId(), e);
+                log.error("Error converting planondergrond plan: {}, exception: {}", plan.getId(), e.toString());
             }
         }
     }
 
     private void extractVerwijzingNorm(Plan plan, PlanDto planDto) {
         List<String> verwijzingNormen = plan.getVerwijzingNorm();
-        Iterator<String> verwijzingNormIterable = verwijzingNormen.iterator();
-        while (verwijzingNormIterable.hasNext()) {
-            String verwijzing = verwijzingNormIterable.next();
+        for (String verwijzing : verwijzingNormen) {
             Optional<VerwijzingNormDto> optionalVerwijzingNormDto = verwijzingNormRepository.findByNorm(verwijzing);
-            VerwijzingNormDto current = null;
+            VerwijzingNormDto current;
             if (optionalVerwijzingNormDto.isPresent()) {
                 current = optionalVerwijzingNormDto.get();
             } else {
@@ -509,11 +505,9 @@ public class PlannenService {
 
     public void extractNormadressant(Plan plan, PlanDto planDto) {
         List<String> normadressanten = plan.getNormadressant();
-        Iterator<String> normadressantIterator = normadressanten.iterator();
-        while (normadressantIterator.hasNext()) {
-            String normadressant = normadressantIterator.next();
+        for (String normadressant : normadressanten) {
             Optional<NormadressantDto> optionalNormadressantDto = normadressantRepository.findByNorm(normadressant);
-            NormadressantDto current = null;
+            NormadressantDto current;
             if (optionalNormadressantDto.isPresent()) {
                 current = optionalNormadressantDto.get();
             } else {
@@ -529,12 +523,12 @@ public class PlannenService {
     private void extractIllustraties(Plan plan, PlanDto planDto) {
         List<IllustratieReferentie> illustratieReferenties = plan.getIllustraties();
 
-        illustratieReferenties.forEach(illustratie -> {
+        for (IllustratieReferentie illustratie : illustratieReferenties) {
             try {
                 IllustratieDto usedIllustratie = illustratieMapper.toIllustratie(illustratie);
 
                 Optional<IllustratieDto> optionalIllustratieDto = illustratieRepository.findByHrefAndTypeAndNaamAndLegendanaam(usedIllustratie.getHref(), usedIllustratie.getType(), usedIllustratie.getNaam(), usedIllustratie.getLegendanaam());
-                IllustratieDto currentIllustratie = null;
+                IllustratieDto currentIllustratie;
                 if (optionalIllustratieDto.isPresent()) {
                     currentIllustratie = optionalIllustratieDto.get();
                 } else {
@@ -549,9 +543,9 @@ public class PlannenService {
                 planDto.getIllustraties().add(currentIllustratie);
                 log.debug("illustratie: {}", illustratie);
             } catch (Exception e) {
-                log.error("Error convering illustratie: plan {}, exception: {}", plan.getId(), e);
+                log.error("Error convering illustratie: plan {}, exception: {}", plan.getId(), e.toString());
             }
-        });
+        }
     }
 
     private void extractPublicerendeOverheid(Plan plan, PlanDto planDto) {
@@ -560,7 +554,7 @@ public class PlannenService {
         if (puOverheidDto.isPresent()) {
             if (puOverheidDto.get().getCode().isPresent()) {
                 Optional<OverheidDto> optionalPublicerendeOverheid = overheidRepository.findByCode(puOverheidDto.get().getCode().get());
-                OverheidDto currentPublicerendeOverheid = null;
+                OverheidDto currentPublicerendeOverheid;
                 if (optionalPublicerendeOverheid.isPresent()) {
                     currentPublicerendeOverheid = optionalPublicerendeOverheid.get();
                 } else {
@@ -583,7 +577,7 @@ public class PlannenService {
 
         if (beleidsmatigeOverheid.getCode().isPresent()) {
             Optional<OverheidDto> OptionalBeleidsmatigOverheid = overheidRepository.findByCode(beleidsmatigeOverheid.getCode().get());
-            OverheidDto currentBeleidsMatigeOverheid = null;
+            OverheidDto currentBeleidsMatigeOverheid;
             if (OptionalBeleidsmatigOverheid.isPresent()) {
                 currentBeleidsMatigeOverheid = OptionalBeleidsmatigOverheid.get();
             } else {
@@ -607,7 +601,7 @@ public class PlannenService {
                 ExternPlanDto usedExternPlan = externPlanMapper.toExternPlan(element);
 
                 Optional<ExternPlanDto> optionalExternPlanDto = externalPlanRepository.findByNaamAndIdentificatieAndPlanstatusAndPlanstatusdateAndDossierAndHref(usedExternPlan.getNaam(), usedExternPlan.getIdentificatie(), usedExternPlan.getPlanstatus(), usedExternPlan.getPlanstatusdate(), usedExternPlan.getDossier(), usedExternPlan.getHref());
-                ExternPlanDto currentPlan = null;
+                ExternPlanDto currentPlan;
                 if (optionalExternPlanDto.isPresent()) {
                     log.debug("Found externalplan: {}", optionalExternPlanDto.get());
                     currentPlan = optionalExternPlanDto.get();
@@ -635,43 +629,43 @@ public class PlannenService {
 
     private void extractRelatiesMetExternePlannen(Plan plan, PlanDto planDto) {
         List<RelatieMetExternPlanReferentie> planList = plan.getRelatiesMetExternePlannen().getVervangt();
-        if (planList != null && planList.size() > 0) {
+        if (planList != null && !planList.isEmpty()) {
             Set<ExternPlanDto> vervangSet = findPlanRef(planList, planDto, VERVANGT_MET);
             planDto.setVervangtMetPlannen(vervangSet);
         }
 
         planList = plan.getRelatiesMetExternePlannen().getTenGevolgeVan();
-        if (planList != null && planList.size() > 0) {
+        if (planList != null && !planList.isEmpty()) {
             Set<ExternPlanDto> vervangSet = findPlanRef(planList, planDto, TENGEVOLGE_VAN_MET);
             planDto.setTengevolgeVanMetPlannen(vervangSet);
         }
 
         planList = plan.getRelatiesMetExternePlannen().getMuteert();
-        if (planList != null && planList.size() > 0) {
+        if (planList != null && !planList.isEmpty()) {
             Set<ExternPlanDto> vervangSet = findPlanRef(planList, planDto, MUTEERT_MET);
             planDto.setMuteertMetPlannen(vervangSet);
         }
 
         planList = plan.getRelatiesMetExternePlannen().getGebruiktInformatieUit();
-        if (planList != null && planList.size() > 0) {
+        if (planList != null && !planList.isEmpty()) {
             Set<ExternPlanDto> vervangSet = findPlanRef(planList, planDto, GEBRUIKT_INFORMATIE_UIT_MET);
             planDto.setGebruiktInfoUitMetPlannen(vervangSet);
         }
 
         planList = plan.getRelatiesMetExternePlannen().getGedeeltelijkeHerzieningVan();
-        if (planList != null && planList.size() > 0) {
+        if (planList != null && !planList.isEmpty()) {
             Set<ExternPlanDto> vervangSet = findPlanRef(planList, planDto, GEDEELTELIJKE_HERZIENING_MET);
             planDto.setGedeeltelijkeHerzieningMetPlannen(vervangSet);
         }
 
         planList = plan.getRelatiesMetExternePlannen().getUitTeWerkenIn();
-        if (planList != null && planList.size() > 0) {
+        if (planList != null && !planList.isEmpty()) {
             Set<ExternPlanDto> vervangSet = findPlanRef(planList, planDto, UIT_TE_WERKEN_IN_MET);
             planDto.setUitTeWerkenInMetPlannen(vervangSet);
         }
 
         planList = plan.getRelatiesMetExternePlannen().getUitgewerktIn();
-        if (planList != null && planList.size() > 0) {
+        if (planList != null && !planList.isEmpty()) {
             Set<ExternPlanDto> vervangSet = findPlanRef(planList, planDto, UITGEWERKT_IN_MET);
             planDto.setUitgewerktInMetPlannen(vervangSet);
         }
@@ -679,43 +673,43 @@ public class PlannenService {
 
     private void extractRelatiesVanuitExternePlannen(Plan plan, PlanDto planDto) {
         List<RelatieMetExternPlanReferentie> planList = plan.getRelatiesVanuitExternePlannen().getVervangt();
-        if (planList != null && planList.size() > 0) {
+        if (planList != null && !planList.isEmpty()) {
             Set<ExternPlanDto> vervangSet = findPlanRef(planList, planDto, VERVANGT_VANUIT);
             planDto.setVervangtVanuitPlannen(vervangSet);
         }
 
         planList = plan.getRelatiesVanuitExternePlannen().getTenGevolgeVan();
-        if (planList != null && planList.size() > 0) {
+        if (planList != null && !planList.isEmpty()) {
             Set<ExternPlanDto> vervangSet = findPlanRef(planList, planDto, TEN_GEVOLGE_VAN_VANUIT);
             planDto.setTengevolgeVanVanuitPlannen(vervangSet);
         }
 
         planList = plan.getRelatiesVanuitExternePlannen().getMuteert();
-        if (planList != null && planList.size() > 0) {
+        if (planList != null && !planList.isEmpty()) {
             Set<ExternPlanDto> vervangSet = findPlanRef(planList, planDto, MUTEERT_VANUIT);
             planDto.setMuteertVanuitPlannen(vervangSet);
         }
 
         planList = plan.getRelatiesVanuitExternePlannen().getGebruiktInformatieUit();
-        if (planList != null && planList.size() > 0) {
+        if (planList != null && !planList.isEmpty()) {
             Set<ExternPlanDto> vervangSet = findPlanRef(planList, planDto, GEBRUIKT_INFORMATIE_UIT_VANUIT);
             planDto.setGebruiktInfoUitVanuitPlannen(vervangSet);
         }
 
         planList = plan.getRelatiesVanuitExternePlannen().getGedeeltelijkeHerzieningVan();
-        if (planList != null && planList.size() > 0) {
+        if (planList != null && !planList.isEmpty()) {
             Set<ExternPlanDto> vervangSet = findPlanRef(planList, planDto, GEDEELTELIJKE_HERZIENING_VANUIT);
             planDto.setGedeeltelijkeHerzieningVanuitPlannen(vervangSet);
         }
 
         planList = plan.getRelatiesVanuitExternePlannen().getUitTeWerkenIn();
-        if (planList != null && planList.size() > 0) {
+        if (planList != null && !planList.isEmpty()) {
             Set<ExternPlanDto> vervangSet = findPlanRef(planList, planDto, UIT_TE_WERKEN_IN_VANUIT);
             planDto.setUitTeWerkenInVanuitPlannen(vervangSet);
         }
 
         planList = plan.getRelatiesVanuitExternePlannen().getUitgewerktIn();
-        if (planList != null && planList.size() > 0) {
+        if (planList != null && !planList.isEmpty()) {
             Set<ExternPlanDto> vervangSet = findPlanRef(planList, planDto, UITGEWERKINT_IN_VANUIT);
             planDto.setUitgewerktInVanuitPlannen(vervangSet);
         }
@@ -723,7 +717,7 @@ public class PlannenService {
 
     private void extractPlanStatus(Plan plan, PlanDto planDto) {
         Optional<PlanStatusDto> optionalPlanStatusDto = planStatusRepository.findByStatusAndDatum(plan.getPlanstatusInfo().getPlanstatus().getValue(), plan.getPlanstatusInfo().getDatum());
-        PlanStatusDto currentPlanStatus = null;
+        PlanStatusDto currentPlanStatus;
         if (optionalPlanStatusDto.isPresent()) {
             currentPlanStatus = optionalPlanStatusDto.get();
         } else {
@@ -739,7 +733,7 @@ public class PlannenService {
 
     private void extractLocation(Plan plan, String md5hash) throws ParseException {
         Optional<LocatieDto> optionalLocatieDto = locatieRepository.findByMd5hash(md5hash);
-        if (!optionalLocatieDto.isPresent()) {
+        if (optionalLocatieDto.isEmpty()) {
             LocatieDto locatieDto = locatieMapper.toLocatieDto(plan);
             locatieDto.setMd5hash(md5hash);
             locatieDto.setRegistratie(LocalDateTime.now());
@@ -749,17 +743,25 @@ public class PlannenService {
     }
 
     private PlanDto updatePlanDto(PlanDto original, PlanDto planDto) {
-        PlanDto updatedPlan = original;
         original.setPlantype(planDto.getPlantype());
         original.setBeleidsmatigeoverheid(planDto.getBeleidsmatigeoverheid());
         original.setPublicerendeoverheid(planDto.getPublicerendeoverheid());
         original.setNaam(planDto.getNaam());
         original.setLocaties(planDto.getLocaties());
         original.setPlanstatus(planDto.getPlanstatus());
+        original.setVerwijzingnaarvaststelling(planDto.getVerwijzingnaarvaststelling());
+        original.setVerwijzingnaargml(planDto.getVerwijzingnaargml());
         original.setBesluitnummer(planDto.getBesluitnummer());
+        original.setVerwijzingnormen(planDto.getVerwijzingnormen());
+        original.setNormadressanten(planDto.getNormadressanten());
+        original.setOndergronden(planDto.getOndergronden());
         original.setRegelstatus(planDto.getRegelstatus());
         original.setDossierid(planDto.getDossierid());
         original.setDossierstatus(planDto.getDossierstatus());
+        original.setIshistorisch(planDto.getIshistorisch());
+        original.setVerwijderdop(planDto.getVerwijderdop());
+        original.setIstamplan(planDto.getIstamplan());
+        original.setEinderechtsgeldigheid(planDto.getEinderechtsgeldigheid());
         original.setIsparapluplan(planDto.getIsparapluplan());
         original.setBeroepenbezwaar(planDto.getBeroepenbezwaar());
         original.setMd5hash(planDto.getMd5hash());
@@ -768,27 +770,36 @@ public class PlannenService {
     }
 
     public Plan getPlan(String identificatie) {
+        Plan plan = null;
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(APIService.getApiUrl() + "/plannen/" + identificatie);
-        String[] expand = {"geometrie"};
+        String[] expand = {"geometrie", "bbox"};
         for (String param : expand) {
             uriComponentsBuilder.queryParam("expand", param);
         }
         log.trace("using url: {}", uriComponentsBuilder.build().toUri());
-        return APIService.getDirectly(uriComponentsBuilder.build().toUri(), Plan.class);
+        try {
+            plan = APIService.getDirectly(uriComponentsBuilder.build().toUri(), Plan.class);
+        } catch (NotFoundException nf) {
+            log.error("Plan: {} not found, error: {}", identificatie, nf.toString());
+        } catch (Exception e) {
+            log.error("Plan: {} error: {}", identificatie, e.toString());
+        }
+        return plan;
     }
 
     private void procesPlan(ImroLoadDto imroPlan, UpdateCounter updateCounter) {
-        Plan plan = null;
+        Plan plan;
 
         try {
             plan = getPlan(imroPlan.getIdentificatie());
-            PlanDto savedPlan = addPlan(plan, imroPlan, updateCounter);
-            log.trace("Saved plan: {}", savedPlan.toString());
-
+            if (plan != null) {
+                PlanDto savedPlan = addPlan(plan, imroPlan, updateCounter);
+                log.trace("Saved plan: {}", savedPlan.toString());
+            }
             imroPlan.setLoaded(true);
             imroLoadRepository.save(imroPlan);
         } catch (Exception e) {
-            log.error("Plan mogelijk niet gevonden. {}", e);
+            log.error("Plan mogelijk niet gevonden. {}", e.toString());
         }
     }
 
@@ -797,9 +808,7 @@ public class PlannenService {
         Iterable<ImroLoadDto> imroLoadDtos = imroLoadRepository.findByIdentificatieNotLoaded();
 
         imroLoadDtos.forEach(
-                imroPlan -> {
-                    procesPlan(imroPlan, updateCounter);
-                }
+                imroPlan -> procesPlan(imroPlan, updateCounter)
         );
 
         return updateCounter;
@@ -810,9 +819,7 @@ public class PlannenService {
         Iterable<ImroLoadDto> imroLoadDtos = imroLoadRepository.findByIdentificatieNotLoaded();
 
         imroLoadDtos.forEach(
-                imroPlan -> {
-                    tekstenService.procesTekst(imroPlan.getIdentificatie(), 1, updateCounter);
-                }
+                imroPlan -> tekstenService.procesTekst(imroPlan.getIdentificatie(), 1, updateCounter)
         );
 
         return updateCounter;

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -16,7 +17,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "auditlog", schema = "public", catalog = "ihr")
-public class AuditLogDto {
+public class AuditLogDto implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id

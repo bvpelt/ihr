@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -15,7 +16,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "externplan", schema = "public", catalog = "ihr")
-public class ExternPlanDto {
+public class ExternPlanDto implements Serializable {
     private static final long serialVersionUID = 17L;
 
     @Id

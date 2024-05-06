@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -18,7 +19,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "plan", schema = "public", catalog = "ihr")
-public class PlanDto {
+public class PlanDto implements Serializable {
     private static final long serialVersionUID = 4L;
     // relatiesMetExternePlannen
     @OneToMany(mappedBy = "vervangtmetplan")
