@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nl.bsoft.ihr.library.service.PlannenService;
+import nl.bsoft.ihr.library.service.TekstenService;
 import nl.bsoft.ihr.library.util.UpdateCounter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class SynchronizeController {
 
     private final PlannenService plannenService;
+    private final TekstenService tekstenService;
 
     @Operation(
             operationId = "ihrSynchronisation",
@@ -44,7 +46,7 @@ public class SynchronizeController {
     }
 
     @Operation(
-            operationId = "ihrSynchronisation",
+            operationId = "ihrPlanSynchronisation",
             summary = "Synchronize ihr",
             responses = {
                     @ApiResponse(responseCode = "200", description = "OK.", content = {
@@ -66,7 +68,7 @@ public class SynchronizeController {
     }
 
     @Operation(
-            operationId = "ihrSynchronisation",
+            operationId = "ihrTekstenSynchronisation",
             summary = "Synchronize ihr",
             responses = {
                     @ApiResponse(responseCode = "200", description = "OK.", content = {
@@ -82,7 +84,7 @@ public class SynchronizeController {
     public ResponseEntity<UpdateCounter> loadIhrTeksten() {
         UpdateCounter counter = new UpdateCounter();
 
-        counter = plannenService.loadTekstenFromList();
+        counter = tekstenService.loadTekstenFromList();
 
         return ResponseEntity.ok(counter);
     }

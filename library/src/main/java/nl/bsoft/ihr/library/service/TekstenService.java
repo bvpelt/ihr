@@ -47,21 +47,21 @@ public class TekstenService {
 
     public UpdateCounter loadTekstenFromList() {
         UpdateCounter updateCounter = new UpdateCounter();
-        Iterable<ImroLoadDto> imroLoadDtos = imroLoadRepository.findByIdentificatieNotLoaded();
+        Iterable<ImroLoadDto> imroLoadDtos = imroLoadRepository.findByTekstenNotTried();
 
         imroLoadDtos.forEach(
                 imroPlan -> {
-                    procesTekst(imroPlan.getIdentificatie(), 1, updateCounter);
+                    procesTekst(imroPlan.getIdentificatie(), 1, updateCounter, imroPlan);
                 }
         );
         return updateCounter;
     }
 
 
-    public void procesTekst(String planidentificatie, int page, UpdateCounter updateCounter) {
+    public void procesTekst(String planidentificatie, int page, UpdateCounter updateCounter, ImroLoadDto imroPlan) {
         TekstCollectie teksten = getTekstenForId(planidentificatie, page);
         if (teksten != null) {
-            saveText(planidentificatie, page, teksten, updateCounter);
+            saveText(planidentificatie, page, teksten, updateCounter, imroPlan);
         }
     }
 
@@ -73,14 +73,14 @@ public class TekstenService {
         return APIService.getDirectly(uriComponentsBuilder.build().toUri(), TekstCollectie.class);
     }
 
-    private void saveText(String identificatie, int page, TekstCollectie teksten, UpdateCounter updateCounter) {
+    private void saveText(String identificatie, int page, TekstCollectie teksten, UpdateCounter updateCounter, ImroLoadDto imroplan) {
         if (teksten != null) {
             if (teksten.getEmbedded() != null) {
                 if (teksten.getEmbedded().getTeksten() != null) {
                     // add each found text
                     teksten.getEmbedded().getTeksten().forEach(tekst -> {
                         addTekst(identificatie, tekst, updateCounter);
-
+/*
                         if (tekst.getLinks() != null) {
                             List<TekstReferentie> tekstReferentieList = tekst.getLinks().getChildren();
                             if (tekstReferentieList != null) {
@@ -90,15 +90,19 @@ public class TekstenService {
                                 });
                             }
                         }
+ */
                     });
 
                     // while maximum number of teksten retrieved, get next page
                     if (teksten.getEmbedded().getTeksten().size() == MAXTEKSTSIZE) {
-                        procesTekst(identificatie, page + 1, updateCounter);
+                        procesTekst(identificatie, page + 1, updateCounter, imroplan);
                     }
+                    imroplan.setTekstenLoaded(true);
                 }
             }
         }
+        imroplan.setTekstentried(true);
+        imroLoadRepository.save(imroplan);
     }
 
     @Transactional
@@ -160,6 +164,7 @@ public class TekstenService {
         return savedTekst;
     }
 
+    /*
     public void procesTekstRef(String identificatie, String href, int page, UpdateCounter updateCounter) {
         TekstCollectie teksten = null;
 
@@ -182,4 +187,5 @@ public class TekstenService {
         return APIService.getDirectly(uriComponentsBuilder.build().toUri(), TekstCollectie.class);
     }
 
+     */
 }

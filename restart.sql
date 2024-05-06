@@ -42,7 +42,17 @@ drop table if exists normadressant;
 drop table if exists ondergrond;
 drop table if exists plan_normadressant;
 drop table if exists plan_ondergrond;
-
+drop table if exists bouwaanduiding;
+drop table if exists figuur;
+drop table if exists figuur_artikel;
+drop table if exists figuur_illustratie;
+drop table if exists figuur_tekstref;
+drop table if exists functieaanduiding;
+drop table if exists lettertekenaanduiding;
+drop table if exists lettertekenaanduiding_bestemmingsfunctie;
+drop table if exists maatvoering;
+drop table if exists maatvoering_omvang;
+drop table if exists omvang;
 
 delete from flyway_schema_history;
 
