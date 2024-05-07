@@ -42,11 +42,11 @@ public class PlannenService {
     private final BestemmingsvlakkenService bestemmingsvlakkenService;
     private final BouwvlakkenService bouwvlakkenService;
     private final FunctieaanduidingService functieaanduidingService;
-    private final BouwaanduidingService bouwaanduidingService;
+    private final BouwaanduidingenService bouwaanduidingService;
     private final LettertekenaanduidingService lettertekenaanduidingService;
-    private final MaatvoeringService maatvoeringService;
-    private final FiguurService figuurService;
-    private final StructuurVisieGebiedService structuurVisieGebiedService;
+    private final MaatvoeringenService maatvoeringService;
+    private final FigurenService figuurService;
+    private final StructuurVisieGebiedenService structuurVisieGebiedService;
     private final PlanRepository planRepository;
     private final ImroLoadRepository imroLoadRepository;
     private final LocatieRepository locatieRepository;
@@ -70,11 +70,11 @@ public class PlannenService {
                           BestemmingsvlakkenService bestemmingsvlakkenService,
                           BouwvlakkenService bouwvlakkenService,
                           FunctieaanduidingService functieaanduidingService,
-                          BouwaanduidingService bouwaanduidingService,
+                          BouwaanduidingenService bouwaanduidingService,
                           LettertekenaanduidingService lettertekenaanduidingService,
-                          MaatvoeringService maatvoeringService,
-                          FiguurService figuurService,
-                          StructuurVisieGebiedService structuurVisieGebiedService,
+                          MaatvoeringenService maatvoeringService,
+                          FigurenService figuurService,
+                          StructuurVisieGebiedenService structuurVisieGebiedService,
                           PlanRepository planRepository,
                           ImroLoadRepository imroLoadRepository,
                           LocatieRepository locatieRepository,
@@ -242,7 +242,7 @@ public class PlannenService {
                     imroPlan.setTekstenLoaded(true);
                 }
             }
-             */
+
 
             UpdateCounter bestemmingsvlakCounter = new UpdateCounter();
             bestemmingsvlakkenService.procesBestemmingsvlak(savedPlan.getIdentificatie(), 1, bestemmingsvlakCounter);
@@ -252,6 +252,7 @@ public class PlannenService {
                     imroPlan.setBestemmingsvlakkenloaded(true);
                 }
             }
+
 
             UpdateCounter bouwvlakCounter = new UpdateCounter();
             bouwvlakkenService.procesBouwvlak(savedPlan.getIdentificatie(), 1, bouwvlakCounter);
@@ -315,7 +316,7 @@ public class PlannenService {
                     imroPlan.setStructuurvisiegebiedloaded(true);
                 }
             }
-
+             */
             log.info("[IHR] plan {}", planDto);
         } catch (Exception e) {
             updateCounter.skipped();
@@ -722,9 +723,6 @@ public class PlannenService {
             }
         }
     }
-
-
-
     Set<ExternPlanDto> findPlanRef(List<RelatieMetExternPlanReferentie> vervangtList, PlanDto plan, String field) {
         Set<ExternPlanDto> planSet = new HashSet<>();
 
@@ -758,8 +756,6 @@ public class PlannenService {
         });
         return planSet;
     }
-
-
     public Plan getPlan(String identificatie) {
         Plan plan = null;
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(APIService.getApiUrl() + "/plannen/" + identificatie);
@@ -777,7 +773,6 @@ public class PlannenService {
         }
         return plan;
     }
-
     private void procesPlan(ImroLoadDto imroPlan, UpdateCounter updateCounter) {
         Plan plan;
 
@@ -793,7 +788,6 @@ public class PlannenService {
             log.error("Plan mogelijk niet gevonden. {}", e.toString());
         }
     }
-
     public UpdateCounter loadPlannen() {
         UpdateCounter updateCounter = new UpdateCounter();
         Iterable<ImroLoadDto> imroLoadDtos = imroLoadRepository.findByIdentificatieNotLoaded();

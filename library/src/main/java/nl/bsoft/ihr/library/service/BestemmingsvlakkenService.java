@@ -49,22 +49,23 @@ public class BestemmingsvlakkenService {
         this.locatieMapper = locatieMapper;
     }
 
-    public UpdateCounter loadTekstenFromList() {
+    public UpdateCounter loadBestemmingsvlakkenFromList() {
         UpdateCounter updateCounter = new UpdateCounter();
-        Iterable<ImroLoadDto> imroLoadDtos = imroLoadRepository.findByIdentificatieNotLoaded();
+        Iterable<ImroLoadDto> imroLoadDtos = imroLoadRepository.findByBestemmingsvlakkenNotTried();
 
         imroLoadDtos.forEach(
                 imroPlan -> {
-                    procesBestemmingsvlak(imroPlan.getIdentificatie(), 1, updateCounter);
+                    procesBestemmingsvlak(imroPlan.getIdentificatie(), 1, updateCounter, imroPlan);
+                    imroLoadRepository.save(imroPlan);
                 }
         );
         return updateCounter;
     }
 
-    public void procesBestemmingsvlak(String planidentificatie, int page, UpdateCounter updateCounter) {
+    public void procesBestemmingsvlak(String planidentificatie, int page, UpdateCounter updateCounter, ImroLoadDto imroPlan) {
         BestemmingsvlakCollectie bestemmingsvlakCollectie = getBestemmingsvlakkenForId(planidentificatie, page);
         if (bestemmingsvlakCollectie != null) {
-            saveBestemmingsvlakken(planidentificatie, page, bestemmingsvlakCollectie, updateCounter);
+            saveBestemmingsvlakken(planidentificatie, page, bestemmingsvlakCollectie, updateCounter, imroPlan);
         }
     }
 
@@ -76,7 +77,7 @@ public class BestemmingsvlakkenService {
         return APIService.getDirectly(uriComponentsBuilder.build().toUri(), BestemmingsvlakCollectie.class);
     }
 
-    private void saveBestemmingsvlakken(String planidentificatie, int page, BestemmingsvlakCollectie bestemmingsvlakken, UpdateCounter updateCounter) {
+    private void saveBestemmingsvlakken(String planidentificatie, int page, BestemmingsvlakCollectie bestemmingsvlakken, UpdateCounter updateCounter, ImroLoadDto imroPlan) {
         if (bestemmingsvlakken != null) {
 
             if (bestemmingsvlakken.getEmbedded() != null) {
@@ -87,11 +88,13 @@ public class BestemmingsvlakkenService {
                     });
                     // while maximum number of bestemmingsvlakken retrieved, get next page
                     if (bestemmingsvlakken.getEmbedded().getBestemmingsvlakken().size() == MAXBESTEMMINGSVLAKKEN) {
-                        procesBestemmingsvlak(planidentificatie, page + 1, updateCounter);
+                        procesBestemmingsvlak(planidentificatie, page + 1, updateCounter, imroPlan);
                     }
+                    imroPlan.setBestemmingsvlakkenloaded(true);
                 }
             }
         }
+        imroPlan.setBestemmingsvlakkentried(true);
     }
 
     @Transactional

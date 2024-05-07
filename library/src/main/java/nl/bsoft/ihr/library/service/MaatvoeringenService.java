@@ -25,7 +25,7 @@ import java.util.Optional;
 
 @Slf4j
 @Service
-public class MaatvoeringService {
+public class MaatvoeringenService {
     private final APIService APIService;
     private final ImroLoadRepository imroLoadRepository;
     private final MaatvoeringRepository maatvoeringRepository;
@@ -36,13 +36,13 @@ public class MaatvoeringService {
     private final int MAXMAATVOERINGEN = 100;
 
     @Autowired
-    public MaatvoeringService(APIService APIService,
-                              ImroLoadRepository imroLoadRepository,
-                              OmvangRepository omvangRepository,
-                              MaatvoeringRepository maatvoeringRepository,
-                              LocatieRepository locatieRepository,
-                              MaatvoeringMapper maatvoeringMapper,
-                              LocatieMapper locatieMapper) {
+    public MaatvoeringenService(APIService APIService,
+                                ImroLoadRepository imroLoadRepository,
+                                OmvangRepository omvangRepository,
+                                MaatvoeringRepository maatvoeringRepository,
+                                LocatieRepository locatieRepository,
+                                MaatvoeringMapper maatvoeringMapper,
+                                LocatieMapper locatieMapper) {
         this.APIService = APIService;
         this.imroLoadRepository = imroLoadRepository;
         this.omvangRepository = omvangRepository;
@@ -54,20 +54,21 @@ public class MaatvoeringService {
 
     public UpdateCounter loadMaatvoeringenFromList() {
         UpdateCounter updateCounter = new UpdateCounter();
-        Iterable<ImroLoadDto> imroLoadDtos = imroLoadRepository.findByIdentificatieNotLoaded();
+        Iterable<ImroLoadDto> imroLoadDtos = imroLoadRepository.findByMaatvoeringNotTried();
 
         imroLoadDtos.forEach(
                 imroPlan -> {
-                    procesMaatvoering(imroPlan.getIdentificatie(), 1, updateCounter);
+                    procesMaatvoering(imroPlan.getIdentificatie(), 1, updateCounter, imroPlan);
+                    imroLoadRepository.save(imroPlan);
                 }
         );
         return updateCounter;
     }
 
-    public void procesMaatvoering(String planidentificatie, int page, UpdateCounter updateCounter) {
+    public void procesMaatvoering(String planidentificatie, int page, UpdateCounter updateCounter, ImroLoadDto imroPlan) {
         MaatvoeringCollectie maatvoeringen = getMaatvoeringenForId(planidentificatie, page);
         if (maatvoeringen != null) {
-            saveMaatvoeringen(planidentificatie, page, maatvoeringen, updateCounter);
+            saveMaatvoeringen(planidentificatie, page, maatvoeringen, updateCounter, imroPlan);
         }
     }
 
@@ -79,7 +80,7 @@ public class MaatvoeringService {
         return APIService.getDirectly(uriComponentsBuilder.build().toUri(), MaatvoeringCollectie.class);
     }
 
-    private void saveMaatvoeringen(String planidentificatie, int page, MaatvoeringCollectie maatvoeringCollectie, UpdateCounter updateCounter) {
+    private void saveMaatvoeringen(String planidentificatie, int page, MaatvoeringCollectie maatvoeringCollectie, UpdateCounter updateCounter, ImroLoadDto imroPlan) {
         if (maatvoeringCollectie != null) {
             if (maatvoeringCollectie.getEmbedded() != null) {
                 if (maatvoeringCollectie.getEmbedded().getMaatvoeringen() != null) {
@@ -89,11 +90,13 @@ public class MaatvoeringService {
                     });
                     // while maximum number of bouwaanduidingen retrieved, get next page
                     if (maatvoeringCollectie.getEmbedded().getMaatvoeringen().size() == MAXMAATVOERINGEN) {
-                        procesMaatvoering(planidentificatie, page + 1, updateCounter);
+                        procesMaatvoering(planidentificatie, page + 1, updateCounter, imroPlan);
                     }
+                    imroPlan.setMaatvoeringloaded(true);
                 }
             }
         }
+        imroPlan.setMaatvoeringtried(true);
     }
 
     @Transactional

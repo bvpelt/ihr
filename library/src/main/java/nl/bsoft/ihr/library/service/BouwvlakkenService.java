@@ -47,22 +47,23 @@ public class BouwvlakkenService {
         this.locatieMapper = locatieMapper;
     }
 
-    public UpdateCounter loadTekstenFromList() {
+    public UpdateCounter loadBouwvlakkenFromList() {
         UpdateCounter updateCounter = new UpdateCounter();
-        Iterable<ImroLoadDto> imroLoadDtos = imroLoadRepository.findByIdentificatieNotLoaded();
+        Iterable<ImroLoadDto> imroLoadDtos = imroLoadRepository.findByBouwvlakkenNotTried();
 
         imroLoadDtos.forEach(
                 imroPlan -> {
-                    procesBouwvlak(imroPlan.getIdentificatie(), 1, updateCounter);
+                    procesBouwvlak(imroPlan.getIdentificatie(), 1, updateCounter, imroPlan);
+                    imroLoadRepository.save(imroPlan);
                 }
         );
         return updateCounter;
     }
 
-    public void procesBouwvlak(String planidentificatie, int page, UpdateCounter updateCounter) {
+    public void procesBouwvlak(String planidentificatie, int page, UpdateCounter updateCounter, ImroLoadDto imroPlan) {
         BouwvlakCollectie bouwvlakCollectie = getBouwvlakkenForId(planidentificatie, page);
         if (bouwvlakCollectie != null) {
-            saveBouwvlakken(planidentificatie, page, bouwvlakCollectie, updateCounter);
+            saveBouwvlakken(planidentificatie, page, bouwvlakCollectie, updateCounter, imroPlan);
         }
     }
 
@@ -74,7 +75,7 @@ public class BouwvlakkenService {
         return APIService.getDirectly(uriComponentsBuilder.build().toUri(), BouwvlakCollectie.class);
     }
 
-    private void saveBouwvlakken(String planidentificatie, int page, BouwvlakCollectie bouwvlakCollectie, UpdateCounter updateCounter) {
+    private void saveBouwvlakken(String planidentificatie, int page, BouwvlakCollectie bouwvlakCollectie, UpdateCounter updateCounter, ImroLoadDto imroPlan) {
         if (bouwvlakCollectie != null) {
             if (bouwvlakCollectie.getEmbedded() != null) {
                 if (bouwvlakCollectie.getEmbedded().getBouwvlakken() != null) {
@@ -84,11 +85,13 @@ public class BouwvlakkenService {
                     });
                     // while maximum number of bouwvlaken retrieved, get next page
                     if (bouwvlakCollectie.getEmbedded().getBouwvlakken().size() == MAXBOUWVLAKKEN) {
-                        procesBouwvlak(planidentificatie, page + 1, updateCounter);
+                        procesBouwvlak(planidentificatie, page + 1, updateCounter, imroPlan);
                     }
+                    imroPlan.setBouwvlakkenloaded(true);
                 }
             }
         }
+        imroPlan.setBouwvlakkentried(true);
     }
 
     @Transactional

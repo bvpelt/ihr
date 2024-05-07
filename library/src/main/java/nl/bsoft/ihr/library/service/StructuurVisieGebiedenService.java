@@ -19,7 +19,7 @@ import java.util.*;
 
 @Slf4j
 @Service
-public class StructuurVisieGebiedService {
+public class StructuurVisieGebiedenService {
     private final APIService APIService;
     private final ImroLoadRepository imroLoadRepository;
     private final StructuurvisieGebiedRepository structuurvisieGebiedRepository;
@@ -37,19 +37,19 @@ public class StructuurVisieGebiedService {
     private final int MAXBESTEMMINGSVLAKKEN = 100;
 
     @Autowired
-    public StructuurVisieGebiedService(APIService APIService,
-                                       ImroLoadRepository imroLoadRepository,
-                                       StructuurvisieGebiedRepository structuurvisieGebiedRepository,
-                                       ThemaRepository structuurvisieGebiedThemaRepository,
-                                       StructuurvisieGebiedBeleidRepository structuurvisieGebiedBeleidRepository,
-                                       TekstRefRepository tekstRefRepository,
-                                       BeleidRepository beleidRepositor,
-                                       ThemaRepository themaRepository,
-                                       LocatieRepository locatieRepository,
-                                       StructuurVisieGebiedMapper structuurVisieGebiedMapper,
-                                       CartografieRepository cartografieRepository,
-                                       LocatieMapper locatieMapper,
-                                       IllustratieRepository illustratieRepository) {
+    public StructuurVisieGebiedenService(APIService APIService,
+                                         ImroLoadRepository imroLoadRepository,
+                                         StructuurvisieGebiedRepository structuurvisieGebiedRepository,
+                                         ThemaRepository structuurvisieGebiedThemaRepository,
+                                         StructuurvisieGebiedBeleidRepository structuurvisieGebiedBeleidRepository,
+                                         TekstRefRepository tekstRefRepository,
+                                         BeleidRepository beleidRepositor,
+                                         ThemaRepository themaRepository,
+                                         LocatieRepository locatieRepository,
+                                         StructuurVisieGebiedMapper structuurVisieGebiedMapper,
+                                         CartografieRepository cartografieRepository,
+                                         LocatieMapper locatieMapper,
+                                         IllustratieRepository illustratieRepository) {
         this.APIService = APIService;
         this.imroLoadRepository = imroLoadRepository;
         this.structuurvisieGebiedRepository = structuurvisieGebiedRepository;
@@ -65,22 +65,23 @@ public class StructuurVisieGebiedService {
         this.illustratieRepository = illustratieRepository;
     }
 
-    public UpdateCounter loadTekstenFromList() {
+    public UpdateCounter loadStructuurvisieGebiedenFromList() {
         UpdateCounter updateCounter = new UpdateCounter();
-        Iterable<ImroLoadDto> imroLoadDtos = imroLoadRepository.findByIdentificatieNotLoaded();
+        Iterable<ImroLoadDto> imroLoadDtos = imroLoadRepository.findByStructuurvisiegebiedNotTried();
 
         imroLoadDtos.forEach(
                 imroPlan -> {
-                    procesStructuurVisieGebied(imroPlan.getIdentificatie(), 1, updateCounter);
+                    procesStructuurVisieGebied(imroPlan.getIdentificatie(), 1, updateCounter, imroPlan);
+                    imroLoadRepository.save(imroPlan);
                 }
         );
         return updateCounter;
     }
 
-    public void procesStructuurVisieGebied(String planidentificatie, int page, UpdateCounter updateCounter) {
+    public void procesStructuurVisieGebied(String planidentificatie, int page, UpdateCounter updateCounter, ImroLoadDto imroPlan) {
         StructuurvisiegebiedCollectie structuurvisiegebiedCollectie = getStructuurvisiegebiedForId(planidentificatie, page);
         if (structuurvisiegebiedCollectie != null) {
-            saveStructuurvisiegebieden(planidentificatie, page, structuurvisiegebiedCollectie, updateCounter);
+            saveStructuurvisiegebieden(planidentificatie, page, structuurvisiegebiedCollectie, updateCounter, imroPlan);
         }
     }
 
@@ -93,7 +94,7 @@ public class StructuurVisieGebiedService {
         return APIService.getDirectly(uriComponentsBuilder.build().toUri(), StructuurvisiegebiedCollectie.class);
     }
 
-    private void saveStructuurvisiegebieden(String planidentificatie, int page, StructuurvisiegebiedCollectie structuurvisies, UpdateCounter updateCounter) {
+    private void saveStructuurvisiegebieden(String planidentificatie, int page, StructuurvisiegebiedCollectie structuurvisies, UpdateCounter updateCounter, ImroLoadDto imroPlan) {
         if (structuurvisies != null) {
             if (structuurvisies.getEmbedded() != null) {
                 if (structuurvisies.getEmbedded().getStructuurvisiegebieden() != null) {
@@ -102,11 +103,13 @@ public class StructuurVisieGebiedService {
                     });
 
                     if (structuurvisies.getEmbedded().getStructuurvisiegebieden().size() == MAXBESTEMMINGSVLAKKEN) {
-                        procesStructuurVisieGebied(planidentificatie, page + 1, updateCounter);
+                        procesStructuurVisieGebied(planidentificatie, page + 1, updateCounter, imroPlan);
                     }
+                    imroPlan.setStructuurvisiegebiedloaded(true);
                 }
             }
         }
+        imroPlan.setStructuurvisiegebiedtried(true);
     }
 
     @Transactional

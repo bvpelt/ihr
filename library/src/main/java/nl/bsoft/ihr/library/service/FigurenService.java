@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @Slf4j
 @Service
-public class FiguurService {
+public class FigurenService {
     private final APIService APIService;
     private final ImroLoadRepository imroLoadRepository;
     private final FiguurRepository figuurRepository;
@@ -34,16 +34,16 @@ public class FiguurService {
     private final int MAXFIGUREN = 100;
 
     @Autowired
-    public FiguurService(APIService APIService,
-                         ImroLoadRepository imroLoadRepository,
-                         FiguurRepository figuurRepository,
-                         ArtikelRepository artikelRepository,
-                         TekstRefRepository tekstRefRepository,
-                         IllustratieRepository illustratieRepository,
-                         LocatieRepository locatieRepository,
-                         FiguurMapper figuurMapper,
-                         IllustratieMapper illustratieMapper,
-                         LocatieMapper locatieMapper) {
+    public FigurenService(APIService APIService,
+                          ImroLoadRepository imroLoadRepository,
+                          FiguurRepository figuurRepository,
+                          ArtikelRepository artikelRepository,
+                          TekstRefRepository tekstRefRepository,
+                          IllustratieRepository illustratieRepository,
+                          LocatieRepository locatieRepository,
+                          FiguurMapper figuurMapper,
+                          IllustratieMapper illustratieMapper,
+                          LocatieMapper locatieMapper) {
         this.APIService = APIService;
         this.imroLoadRepository = imroLoadRepository;
         this.figuurRepository = figuurRepository;
@@ -62,16 +62,17 @@ public class FiguurService {
 
         imroLoadDtos.forEach(
                 imroPlan -> {
-                    procesFiguur(imroPlan.getIdentificatie(), 1, updateCounter);
+                    procesFiguur(imroPlan.getIdentificatie(), 1, updateCounter, imroPlan);
+                    imroLoadRepository.save(imroPlan);
                 }
         );
         return updateCounter;
     }
 
-    public void procesFiguur(String planidentificatie, int page, UpdateCounter updateCounter) {
+    public void procesFiguur(String planidentificatie, int page, UpdateCounter updateCounter, ImroLoadDto imroPlan) {
         FiguurCollectie figuren = getFigurenForId(planidentificatie, page);
         if (figuren != null) {
-            saveFiguren(planidentificatie, page, figuren, updateCounter);
+            saveFiguren(planidentificatie, page, figuren, updateCounter, imroPlan);
         }
     }
 
@@ -83,7 +84,7 @@ public class FiguurService {
         return APIService.getDirectly(uriComponentsBuilder.build().toUri(), FiguurCollectie.class);
     }
 
-    private void saveFiguren(String planidentificatie, int page, FiguurCollectie figuurCollectie, UpdateCounter updateCounter) {
+    private void saveFiguren(String planidentificatie, int page, FiguurCollectie figuurCollectie, UpdateCounter updateCounter, ImroLoadDto imroPlan) {
         if (figuurCollectie != null) {
             if (figuurCollectie.getEmbedded() != null) {
                 if (figuurCollectie.getEmbedded().getFiguren() != null) {
@@ -93,11 +94,13 @@ public class FiguurService {
                     });
                     // while maximum number of bouwaanduidingen retrieved, get next page
                     if (figuurCollectie.getEmbedded().getFiguren().size() == MAXFIGUREN) {
-                        procesFiguur(planidentificatie, page + 1, updateCounter);
+                        procesFiguur(planidentificatie, page + 1, updateCounter, imroPlan);
                     }
+                    imroPlan.setFiguurloaded(true);
                 }
             }
         }
+        imroPlan.setFiguurtried(true);
     }
 
     @Transactional

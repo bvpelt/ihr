@@ -54,20 +54,20 @@ public class LettertekenaanduidingService {
 
     public UpdateCounter loadLettertekenaanduidingenFromList() {
         UpdateCounter updateCounter = new UpdateCounter();
-        Iterable<ImroLoadDto> imroLoadDtos = imroLoadRepository.findByIdentificatieNotLoaded();
+        Iterable<ImroLoadDto> imroLoadDtos = imroLoadRepository.findByLettertekenaanduidingNotTried();
 
         imroLoadDtos.forEach(
                 imroPlan -> {
-                    procesLettertekenaanduiding(imroPlan.getIdentificatie(), 1, updateCounter);
+                    procesLettertekenaanduiding(imroPlan.getIdentificatie(), 1, updateCounter, imroPlan);
                 }
         );
         return updateCounter;
     }
 
-    public void procesLettertekenaanduiding(String planidentificatie, int page, UpdateCounter updateCounter) {
+    public void procesLettertekenaanduiding(String planidentificatie, int page, UpdateCounter updateCounter, ImroLoadDto imroPlan) {
         LettertekenaanduidingCollectie lettertekenaanduidingen = getLettertekenaanduidingForId(planidentificatie, page);
         if (lettertekenaanduidingen != null) {
-            saveLettertekenaanduidingen(planidentificatie, page, lettertekenaanduidingen, updateCounter);
+            saveLettertekenaanduidingen(planidentificatie, page, lettertekenaanduidingen, updateCounter, imroPlan);
         }
     }
 
@@ -79,7 +79,7 @@ public class LettertekenaanduidingService {
         return APIService.getDirectly(uriComponentsBuilder.build().toUri(), LettertekenaanduidingCollectie.class);
     }
 
-    private void saveLettertekenaanduidingen(String planidentificatie, int page, LettertekenaanduidingCollectie lettertekenaanduidingCollectie, UpdateCounter updateCounter) {
+    private void saveLettertekenaanduidingen(String planidentificatie, int page, LettertekenaanduidingCollectie lettertekenaanduidingCollectie, UpdateCounter updateCounter, ImroLoadDto imroPlan) {
         if (lettertekenaanduidingCollectie != null) {
             if (lettertekenaanduidingCollectie.getEmbedded() != null) {
                 if (lettertekenaanduidingCollectie.getEmbedded().getLettertekenaanduidingen() != null) {
@@ -89,11 +89,13 @@ public class LettertekenaanduidingService {
                     });
                     // while maximum number of bouwaanduidingen retrieved, get next page
                     if (lettertekenaanduidingCollectie.getEmbedded().getLettertekenaanduidingen().size() == MAXLETTERTEKENAANDUIDINGEN) {
-                        procesLettertekenaanduiding(planidentificatie, page + 1, updateCounter);
+                        procesLettertekenaanduiding(planidentificatie, page + 1, updateCounter, imroPlan);
                     }
+                    imroPlan.setLettertekenaanduidingloaded(true);
                 }
             }
         }
+        imroPlan.setLettertekenaanduidingtried(true);
     }
 
     @Transactional

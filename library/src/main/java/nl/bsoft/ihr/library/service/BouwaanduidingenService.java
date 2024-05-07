@@ -23,7 +23,7 @@ import java.util.Optional;
 
 @Slf4j
 @Service
-public class BouwaanduidingService {
+public class BouwaanduidingenService {
     private final APIService APIService;
     private final ImroLoadRepository imroLoadRepository;
     private final BouwaanduidingRepository bouwaanduidingRepository;
@@ -33,12 +33,12 @@ public class BouwaanduidingService {
     private final int MAXBOUWAANDUIDINGEN = 100;
 
     @Autowired
-    public BouwaanduidingService(APIService APIService,
-                                 ImroLoadRepository imroLoadRepository,
-                                 BouwaanduidingRepository bouwaanduidingRepository,
-                                 LocatieRepository locatieRepository,
-                                 BouwaanduidingMapper bouwaanduidingMapper,
-                                 LocatieMapper locatieMapper) {
+    public BouwaanduidingenService(APIService APIService,
+                                   ImroLoadRepository imroLoadRepository,
+                                   BouwaanduidingRepository bouwaanduidingRepository,
+                                   LocatieRepository locatieRepository,
+                                   BouwaanduidingMapper bouwaanduidingMapper,
+                                   LocatieMapper locatieMapper) {
         this.APIService = APIService;
         this.imroLoadRepository = imroLoadRepository;
         this.bouwaanduidingRepository = bouwaanduidingRepository;
@@ -49,20 +49,21 @@ public class BouwaanduidingService {
 
     public UpdateCounter loadBouwaanduidingenFromList() {
         UpdateCounter updateCounter = new UpdateCounter();
-        Iterable<ImroLoadDto> imroLoadDtos = imroLoadRepository.findByIdentificatieNotLoaded();
+        Iterable<ImroLoadDto> imroLoadDtos = imroLoadRepository.findByBouwaanduidingNotTried();
 
         imroLoadDtos.forEach(
                 imroPlan -> {
-                    procesBouwaanduiding(imroPlan.getIdentificatie(), 1, updateCounter);
+                    procesBouwaanduiding(imroPlan.getIdentificatie(), 1, updateCounter, imroPlan);
+                    imroLoadRepository.save(imroPlan);
                 }
         );
         return updateCounter;
     }
 
-    public void procesBouwaanduiding(String planidentificatie, int page, UpdateCounter updateCounter) {
+    public void procesBouwaanduiding(String planidentificatie, int page, UpdateCounter updateCounter, ImroLoadDto imroPlan) {
         BouwaanduidingCollectie bouwaanduidingen = getBouwaanduidingForId(planidentificatie, page);
         if (bouwaanduidingen != null) {
-            saveBouwaanduidingen(planidentificatie, page, bouwaanduidingen, updateCounter);
+            saveBouwaanduidingen(planidentificatie, page, bouwaanduidingen, updateCounter, imroPlan);
         }
     }
 
@@ -74,7 +75,7 @@ public class BouwaanduidingService {
         return APIService.getDirectly(uriComponentsBuilder.build().toUri(), BouwaanduidingCollectie.class);
     }
 
-    private void saveBouwaanduidingen(String planidentificatie, int page, BouwaanduidingCollectie bouwaanduidingCollectie, UpdateCounter updateCounter) {
+    private void saveBouwaanduidingen(String planidentificatie, int page, BouwaanduidingCollectie bouwaanduidingCollectie, UpdateCounter updateCounter, ImroLoadDto imroPlan) {
         if (bouwaanduidingCollectie != null) {
             if (bouwaanduidingCollectie.getEmbedded() != null) {
                 if (bouwaanduidingCollectie.getEmbedded().getBouwaanduidingen() != null) {
@@ -84,11 +85,14 @@ public class BouwaanduidingService {
                     });
                     // while maximum number of bouwaanduidingen retrieved, get next page
                     if (bouwaanduidingCollectie.getEmbedded().getBouwaanduidingen().size() == MAXBOUWAANDUIDINGEN) {
-                        procesBouwaanduiding(planidentificatie, page + 1, updateCounter);
+                        procesBouwaanduiding(planidentificatie, page + 1, updateCounter, imroPlan);
                     }
+
+                    imroPlan.setBouwaanduidingloaded(true);
                 }
             }
         }
+        imroPlan.setBouwaanduidingtried(true);
     }
 
     @Transactional

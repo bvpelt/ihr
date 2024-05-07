@@ -52,6 +52,7 @@ public class TekstenService {
         imroLoadDtos.forEach(
                 imroPlan -> {
                     procesTekst(imroPlan.getIdentificatie(), 1, updateCounter, imroPlan);
+                    imroLoadRepository.save(imroPlan);
                 }
         );
         return updateCounter;
@@ -102,7 +103,6 @@ public class TekstenService {
             }
         }
         imroplan.setTekstentried(true);
-        imroLoadRepository.save(imroplan);
     }
 
     @Transactional

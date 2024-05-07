@@ -1,6 +1,10 @@
 # ihr
 IHR Informatie Huis Ruimte
 
+# Swagger
+To see swagger specification of the synchronisation, first start synchronisation
+- See http://localhost:8080/swagger-ui/index.html
+
 # Java
 - Serialisation see https://www.baeldung.com/java-serial-version-uid
 
