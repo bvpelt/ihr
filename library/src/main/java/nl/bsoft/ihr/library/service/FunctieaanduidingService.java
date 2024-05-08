@@ -53,14 +53,14 @@ public class FunctieaanduidingService {
 
         imroLoadDtos.forEach(
                 imroPlan -> {
-                    procesFunctieaanduiding(imroPlan.getIdentificatie(), 1, updateCounter, imroPlan);
+                    procesFunctieaanduidingen(imroPlan.getIdentificatie(), 1, updateCounter, imroPlan);
                     imroLoadRepository.save(imroPlan);
                 }
         );
         return updateCounter;
     }
 
-    public void procesFunctieaanduiding(String planidentificatie, int page, UpdateCounter updateCounter, ImroLoadDto imroPlan) {
+    public void procesFunctieaanduidingen(String planidentificatie, int page, UpdateCounter updateCounter, ImroLoadDto imroPlan) {
         FunctieaanduidingCollectie functieaanduidingen = getFunctieaanduidingForId(planidentificatie, page);
         if (functieaanduidingen != null) {
             saveFunctieaanduidingen(planidentificatie, page, functieaanduidingen, updateCounter, imroPlan);
@@ -85,13 +85,17 @@ public class FunctieaanduidingService {
                     });
                     // while maximum number of functieaanduidingen retrieved, get next page
                     if (functieaanduidingCollectie.getEmbedded().getFunctieaanduidingen().size() == MAXFUNCTIEAANDUIDINGEN) {
-                        procesFunctieaanduiding(planidentificatie, page + 1, updateCounter, imroPlan);
+                        procesFunctieaanduidingen(planidentificatie, page + 1, updateCounter, imroPlan);
                     }
-                    imroPlan.setFiguurloaded(true);
+                    if (imroPlan != null) {
+                        imroPlan.setFiguurloaded(true);
+                    }
                 }
             }
         }
-        imroPlan.setFiguurtried(true);
+        if (imroPlan != null) {
+            imroPlan.setFiguurtried(true);
+        }
     }
 
     @Transactional

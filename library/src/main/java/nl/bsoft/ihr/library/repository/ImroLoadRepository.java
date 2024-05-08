@@ -7,10 +7,14 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface ImroLoadRepository extends PagingAndSortingRepository<ImroLoadDto, Long>,
         CrudRepository<ImroLoadDto, Long>,
         JpaSpecificationExecutor<ImroLoadDto> {
+
+    Optional<ImroLoadDto> findByIdentificatie(String identificatie);
 
     @Query(
             value =
@@ -31,10 +35,12 @@ public interface ImroLoadRepository extends PagingAndSortingRepository<ImroLoadD
             value =
                     "SELECT * FROM imroload WHERE  structuurvisiegebiedtried = false", nativeQuery = true)
     Iterable<ImroLoadDto> findByStructuurvisiegebiedNotTried();
+
     @Query(
             value =
                     "SELECT * FROM imroload WHERE  bouwvlakkentried = false", nativeQuery = true)
     Iterable<ImroLoadDto> findByBouwvlakkenNotTried();
+
     @Query(
             value =
                     "SELECT * FROM imroload WHERE  functieaanduidingtried = false", nativeQuery = true)

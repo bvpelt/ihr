@@ -30,8 +30,6 @@ ALTER TABLE lettertekenaanduiding
         CACHE 1
         );
 
-alter table imroload
-    add lettertekenaanduidingloaded boolean default false;
 
 -- table lettertekenaanduiding_bestemmingsfunctie
 create table lettertekenaanduiding_bestemmingsfunctie

@@ -4,12 +4,38 @@ create table imroload
     id                         bigint not null primary key,
     identificatie              text   not null,
     loaded                     boolean default false,
+    planloaded boolean default false,
     tekstenloaded              boolean default false,
+    tekstentried boolean default false,
     bestemmingsvlakkenloaded   boolean default false,
-    structuurvisiegebiedloaded boolean default false
+    bestemmingsvlakkentried boolean default false,
+    structuurvisiegebiedloaded boolean default false,
+    structuurvisiegebiedtried boolean default false,
+    bouwvlakkenloaded boolean default false,
+    bouwvlakkentried boolean default false,
+    functieaanduidingloaded boolean default false,
+    functieaanduidingtried boolean default false,
+    bouwaanduidingloaded boolean default false,
+    bouwaanduidingtried boolean default false,
+    lettertekenaanduidingloaded boolean default false,
+    lettertekenaanduidingtried boolean default false,
+    maatvoeringloaded boolean default false,
+    maatvoeringtried boolean default false,
+    figuurloaded boolean default false,
+    figuurtried boolean default false
 );
 
 create index imroload_identificatie_idx on imroload (identificatie);
+
+create index imroload_identificatie_tekstentried_idx on imroload (tekstentried);
+create index imroload_identificatie_bestemmingsvlakkentried_idx on imroload (bestemmingsvlakkentried);
+create index imroload_identificatie_structuurvisiegebiedtried_idx on imroload (structuurvisiegebiedtried);
+create index imroload_identificatie_bouwvlakkentried_idx on imroload (bouwvlakkentried);
+create index imroload_identificatie_functieaanduidingtried_idx on imroload (functieaanduidingtried);
+create index imroload_identificatie_bouwaanduidingtried_idx on imroload (bouwaanduidingtried);
+create index imroload_identificatie_lettertekenaanduidingtried_idx on imroload (lettertekenaanduidingtried);
+create index imroload_identificatie_maatvoeringtried_idx on imroload (maatvoeringtried);
+create index imroload_identificatie_figuurtried_idx on imroload (figuurtried);
 
 ALTER TABLE imroload
     OWNER TO testuser;

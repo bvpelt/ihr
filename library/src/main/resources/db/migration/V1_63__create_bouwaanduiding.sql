@@ -30,6 +30,3 @@ ALTER TABLE bouwaanduiding
         NO MAXVALUE
         CACHE 1
         );
-
-alter table imroload
-    add bouwaanduidingloaded boolean default false;

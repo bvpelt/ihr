@@ -55,14 +55,14 @@ public class BestemmingsvlakkenService {
 
         imroLoadDtos.forEach(
                 imroPlan -> {
-                    procesBestemmingsvlak(imroPlan.getIdentificatie(), 1, updateCounter, imroPlan);
+                    procesBestemmingsvlakken(imroPlan.getIdentificatie(), 1, updateCounter, imroPlan);
                     imroLoadRepository.save(imroPlan);
                 }
         );
         return updateCounter;
     }
 
-    public void procesBestemmingsvlak(String planidentificatie, int page, UpdateCounter updateCounter, ImroLoadDto imroPlan) {
+    public void procesBestemmingsvlakken(String planidentificatie, int page, UpdateCounter updateCounter, ImroLoadDto imroPlan) {
         BestemmingsvlakCollectie bestemmingsvlakCollectie = getBestemmingsvlakkenForId(planidentificatie, page);
         if (bestemmingsvlakCollectie != null) {
             saveBestemmingsvlakken(planidentificatie, page, bestemmingsvlakCollectie, updateCounter, imroPlan);
@@ -88,13 +88,17 @@ public class BestemmingsvlakkenService {
                     });
                     // while maximum number of bestemmingsvlakken retrieved, get next page
                     if (bestemmingsvlakken.getEmbedded().getBestemmingsvlakken().size() == MAXBESTEMMINGSVLAKKEN) {
-                        procesBestemmingsvlak(planidentificatie, page + 1, updateCounter, imroPlan);
+                        procesBestemmingsvlakken(planidentificatie, page + 1, updateCounter, imroPlan);
                     }
-                    imroPlan.setBestemmingsvlakkenloaded(true);
+                    if (imroPlan != null) {
+                        imroPlan.setBestemmingsvlakkenloaded(true);
+                    }
                 }
             }
         }
-        imroPlan.setBestemmingsvlakkentried(true);
+        if (imroPlan != null) {
+            imroPlan.setBestemmingsvlakkentried(true);
+        }
     }
 
     @Transactional

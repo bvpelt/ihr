@@ -58,14 +58,14 @@ public class MaatvoeringenService {
 
         imroLoadDtos.forEach(
                 imroPlan -> {
-                    procesMaatvoering(imroPlan.getIdentificatie(), 1, updateCounter, imroPlan);
+                    procesMaatvoeringen(imroPlan.getIdentificatie(), 1, updateCounter, imroPlan);
                     imroLoadRepository.save(imroPlan);
                 }
         );
         return updateCounter;
     }
 
-    public void procesMaatvoering(String planidentificatie, int page, UpdateCounter updateCounter, ImroLoadDto imroPlan) {
+    public void procesMaatvoeringen(String planidentificatie, int page, UpdateCounter updateCounter, ImroLoadDto imroPlan) {
         MaatvoeringCollectie maatvoeringen = getMaatvoeringenForId(planidentificatie, page);
         if (maatvoeringen != null) {
             saveMaatvoeringen(planidentificatie, page, maatvoeringen, updateCounter, imroPlan);
@@ -90,13 +90,17 @@ public class MaatvoeringenService {
                     });
                     // while maximum number of bouwaanduidingen retrieved, get next page
                     if (maatvoeringCollectie.getEmbedded().getMaatvoeringen().size() == MAXMAATVOERINGEN) {
-                        procesMaatvoering(planidentificatie, page + 1, updateCounter, imroPlan);
+                        procesMaatvoeringen(planidentificatie, page + 1, updateCounter, imroPlan);
                     }
-                    imroPlan.setMaatvoeringloaded(true);
+                    if (imroPlan != null) {
+                        imroPlan.setMaatvoeringloaded(true);
+                    }
                 }
             }
         }
-        imroPlan.setMaatvoeringtried(true);
+        if (imroPlan != null) {
+            imroPlan.setMaatvoeringtried(true);
+        }
     }
 
     @Transactional

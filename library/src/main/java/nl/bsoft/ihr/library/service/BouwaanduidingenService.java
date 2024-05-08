@@ -53,14 +53,14 @@ public class BouwaanduidingenService {
 
         imroLoadDtos.forEach(
                 imroPlan -> {
-                    procesBouwaanduiding(imroPlan.getIdentificatie(), 1, updateCounter, imroPlan);
+                    procesBouwaanduidingen(imroPlan.getIdentificatie(), 1, updateCounter, imroPlan);
                     imroLoadRepository.save(imroPlan);
                 }
         );
         return updateCounter;
     }
 
-    public void procesBouwaanduiding(String planidentificatie, int page, UpdateCounter updateCounter, ImroLoadDto imroPlan) {
+    public void procesBouwaanduidingen(String planidentificatie, int page, UpdateCounter updateCounter, ImroLoadDto imroPlan) {
         BouwaanduidingCollectie bouwaanduidingen = getBouwaanduidingForId(planidentificatie, page);
         if (bouwaanduidingen != null) {
             saveBouwaanduidingen(planidentificatie, page, bouwaanduidingen, updateCounter, imroPlan);
@@ -85,14 +85,17 @@ public class BouwaanduidingenService {
                     });
                     // while maximum number of bouwaanduidingen retrieved, get next page
                     if (bouwaanduidingCollectie.getEmbedded().getBouwaanduidingen().size() == MAXBOUWAANDUIDINGEN) {
-                        procesBouwaanduiding(planidentificatie, page + 1, updateCounter, imroPlan);
+                        procesBouwaanduidingen(planidentificatie, page + 1, updateCounter, imroPlan);
                     }
-
-                    imroPlan.setBouwaanduidingloaded(true);
+                    if (imroPlan != null) {
+                        imroPlan.setBouwaanduidingloaded(true);
+                    }
                 }
             }
         }
-        imroPlan.setBouwaanduidingtried(true);
+        if (imroPlan != null) {
+            imroPlan.setBouwaanduidingtried(true);
+        }
     }
 
     @Transactional

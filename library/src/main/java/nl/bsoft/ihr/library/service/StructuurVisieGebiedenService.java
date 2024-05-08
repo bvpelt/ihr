@@ -71,14 +71,14 @@ public class StructuurVisieGebiedenService {
 
         imroLoadDtos.forEach(
                 imroPlan -> {
-                    procesStructuurVisieGebied(imroPlan.getIdentificatie(), 1, updateCounter, imroPlan);
+                    procesStructuurVisieGebieden(imroPlan.getIdentificatie(), 1, updateCounter, imroPlan);
                     imroLoadRepository.save(imroPlan);
                 }
         );
         return updateCounter;
     }
 
-    public void procesStructuurVisieGebied(String planidentificatie, int page, UpdateCounter updateCounter, ImroLoadDto imroPlan) {
+    public void procesStructuurVisieGebieden(String planidentificatie, int page, UpdateCounter updateCounter, ImroLoadDto imroPlan) {
         StructuurvisiegebiedCollectie structuurvisiegebiedCollectie = getStructuurvisiegebiedForId(planidentificatie, page);
         if (structuurvisiegebiedCollectie != null) {
             saveStructuurvisiegebieden(planidentificatie, page, structuurvisiegebiedCollectie, updateCounter, imroPlan);
@@ -103,13 +103,17 @@ public class StructuurVisieGebiedenService {
                     });
 
                     if (structuurvisies.getEmbedded().getStructuurvisiegebieden().size() == MAXBESTEMMINGSVLAKKEN) {
-                        procesStructuurVisieGebied(planidentificatie, page + 1, updateCounter, imroPlan);
+                        procesStructuurVisieGebieden(planidentificatie, page + 1, updateCounter, imroPlan);
                     }
-                    imroPlan.setStructuurvisiegebiedloaded(true);
+                    if (imroPlan != null) {
+                        imroPlan.setStructuurvisiegebiedloaded(true);
+                    }
                 }
             }
         }
-        imroPlan.setStructuurvisiegebiedtried(true);
+        if (imroPlan != null) {
+            imroPlan.setStructuurvisiegebiedtried(true);
+        }
     }
 
     @Transactional
@@ -160,12 +164,13 @@ public class StructuurVisieGebiedenService {
                 savedStructuurVisieGebiedDto = structuurvisieGebiedRepository.save(current);
                 updateCounter.add();
             }
-
+            //[TODO bug verwijzingnaartekst werkt niet]
             // add/update themas
             extractedThema(structuurvisie, savedStructuurVisieGebiedDto);
 
             // add/update beleid
             extractedBeleid(structuurvisie, savedStructuurVisieGebiedDto);
+
 
             // add/update verwijzingNaarTekst
             extractedVerwijzingnaarTekst(structuurvisie, savedStructuurVisieGebiedDto);

@@ -53,14 +53,14 @@ public class BouwvlakkenService {
 
         imroLoadDtos.forEach(
                 imroPlan -> {
-                    procesBouwvlak(imroPlan.getIdentificatie(), 1, updateCounter, imroPlan);
+                    procesBouwvlakken(imroPlan.getIdentificatie(), 1, updateCounter, imroPlan);
                     imroLoadRepository.save(imroPlan);
                 }
         );
         return updateCounter;
     }
 
-    public void procesBouwvlak(String planidentificatie, int page, UpdateCounter updateCounter, ImroLoadDto imroPlan) {
+    public void procesBouwvlakken(String planidentificatie, int page, UpdateCounter updateCounter, ImroLoadDto imroPlan) {
         BouwvlakCollectie bouwvlakCollectie = getBouwvlakkenForId(planidentificatie, page);
         if (bouwvlakCollectie != null) {
             saveBouwvlakken(planidentificatie, page, bouwvlakCollectie, updateCounter, imroPlan);
@@ -85,13 +85,17 @@ public class BouwvlakkenService {
                     });
                     // while maximum number of bouwvlaken retrieved, get next page
                     if (bouwvlakCollectie.getEmbedded().getBouwvlakken().size() == MAXBOUWVLAKKEN) {
-                        procesBouwvlak(planidentificatie, page + 1, updateCounter, imroPlan);
+                        procesBouwvlakken(planidentificatie, page + 1, updateCounter, imroPlan);
                     }
-                    imroPlan.setBouwvlakkenloaded(true);
+                    if (imroPlan != null) {
+                        imroPlan.setBouwvlakkenloaded(true);
+                    }
                 }
             }
         }
-        imroPlan.setBouwvlakkentried(true);
+        if (imroPlan != null) {
+            imroPlan.setBouwvlakkentried(true);
+        }
     }
 
     @Transactional

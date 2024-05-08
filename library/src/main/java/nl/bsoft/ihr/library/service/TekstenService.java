@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import nl.bsoft.ihr.generated.model.Kruimel;
 import nl.bsoft.ihr.generated.model.Tekst;
 import nl.bsoft.ihr.generated.model.TekstCollectie;
-import nl.bsoft.ihr.generated.model.TekstReferentie;
 import nl.bsoft.ihr.library.mapper.TekstMapper;
 import nl.bsoft.ihr.library.model.dto.ImroLoadDto;
 import nl.bsoft.ihr.library.model.dto.KruimelDto;
@@ -51,7 +50,7 @@ public class TekstenService {
 
         imroLoadDtos.forEach(
                 imroPlan -> {
-                    procesTekst(imroPlan.getIdentificatie(), 1, updateCounter, imroPlan);
+                    procesTeksten(imroPlan.getIdentificatie(), 1, updateCounter, imroPlan);
                     imroLoadRepository.save(imroPlan);
                 }
         );
@@ -59,7 +58,7 @@ public class TekstenService {
     }
 
 
-    public void procesTekst(String planidentificatie, int page, UpdateCounter updateCounter, ImroLoadDto imroPlan) {
+    public void procesTeksten(String planidentificatie, int page, UpdateCounter updateCounter, ImroLoadDto imroPlan) {
         TekstCollectie teksten = getTekstenForId(planidentificatie, page);
         if (teksten != null) {
             saveText(planidentificatie, page, teksten, updateCounter, imroPlan);
@@ -74,7 +73,7 @@ public class TekstenService {
         return APIService.getDirectly(uriComponentsBuilder.build().toUri(), TekstCollectie.class);
     }
 
-    private void saveText(String identificatie, int page, TekstCollectie teksten, UpdateCounter updateCounter, ImroLoadDto imroplan) {
+    private void saveText(String identificatie, int page, TekstCollectie teksten, UpdateCounter updateCounter, ImroLoadDto imroPlan) {
         if (teksten != null) {
             if (teksten.getEmbedded() != null) {
                 if (teksten.getEmbedded().getTeksten() != null) {
@@ -96,13 +95,17 @@ public class TekstenService {
 
                     // while maximum number of teksten retrieved, get next page
                     if (teksten.getEmbedded().getTeksten().size() == MAXTEKSTSIZE) {
-                        procesTekst(identificatie, page + 1, updateCounter, imroplan);
+                        procesTeksten(identificatie, page + 1, updateCounter, imroPlan);
                     }
-                    imroplan.setTekstenLoaded(true);
+                    if (imroPlan != null) {
+                        imroPlan.setTekstenLoaded(true);
+                    }
                 }
             }
         }
-        imroplan.setTekstentried(true);
+        if (imroPlan != null) {
+            imroPlan.setTekstentried(true);
+        }
     }
 
     @Transactional

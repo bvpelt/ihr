@@ -23,7 +23,7 @@ create table plan
     md5hash                    text
 );
 
-create index plan_identificatie_idx on plan (identificatie);
+create unique index plan_identificatie_idx on plan (identificatie);
 
 create index plan_naam_idx on plan (naam);
 
