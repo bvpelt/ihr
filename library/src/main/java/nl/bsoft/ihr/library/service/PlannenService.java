@@ -308,8 +308,11 @@ public class PlannenService {
             //
             String md5hash = DigestUtils.md5Hex(plan.getGeometrie().toString().toUpperCase());
             planDto.setMd5hash(md5hash);
+            String bboxMd5hash = DigestUtils.md5Hex(plan.getBbox().toString().toUpperCase());
+            planDto.setBboxMd5hash(bboxMd5hash);
 
             extractLocation(plan, md5hash);
+            extractLocationBbox(plan, bboxMd5hash);
 
             Optional<PlanDto> optionalFoundPlanDto = planRepository.findByIdentificatie(planDto.getIdentificatie());
 
@@ -456,6 +459,17 @@ public class PlannenService {
         }
     }
 
+    private void extractLocationBbox(Plan plan, String md5hash) throws ParseException {
+        Optional<LocatieDto> optionalLocatieDto = locatieRepository.findByMd5hash(md5hash);
+        if (optionalLocatieDto.isEmpty()) {
+            LocatieDto locatieDto = locatieMapper.toLocatieDtoBbox(plan);
+            locatieDto.setMd5hash(md5hash);
+            locatieDto.setRegistratie(LocalDateTime.now());
+            locatieRepository.save(locatieDto);
+            log.debug("Added locatie: {}", md5hash);
+        }
+    }
+
     private PlanDto updatePlanDto(PlanDto original, PlanDto planDto) {
         planDto.setPlantype(original.getPlantype());
         planDto.setBeleidsmatigeoverheid(original.getBeleidsmatigeoverheid());
@@ -479,6 +493,7 @@ public class PlannenService {
         planDto.setIsparapluplan(original.getIsparapluplan());
         planDto.setBeroepenbezwaar(original.getBeroepenbezwaar());
         planDto.setMd5hash(original.getMd5hash());
+        planDto.setBboxMd5hash(original.getBboxMd5hash());
 
         return planDto;
     }
@@ -632,7 +647,7 @@ public class PlannenService {
         }
     }
 
-    public void extractNormadressant(Plan plan, PlanDto planDto) {
+    private void extractNormadressant(Plan plan, PlanDto planDto) {
         List<String> normadressanten = plan.getNormadressant();
         for (String normadressant : normadressanten) {
             Optional<NormadressantDto> optionalNormadressantDto = normadressantRepository.findByNorm(normadressant);
@@ -738,7 +753,7 @@ public class PlannenService {
         }
     }
 
-    Set<ExternPlanDto> findPlanRef(List<RelatieMetExternPlanReferentie> vervangtList, PlanDto plan, String field) {
+    private Set<ExternPlanDto> findPlanRef(List<RelatieMetExternPlanReferentie> vervangtList, PlanDto plan, String field) {
         Set<ExternPlanDto> planSet = new HashSet<>();
 
         vervangtList.forEach(element -> {
@@ -772,7 +787,7 @@ public class PlannenService {
         return planSet;
     }
 
-    public Plan getPlan(String identificatie) {
+    private Plan getPlan(String identificatie) {
         Plan plan = null;
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(APIService.getApiUrl() + "/plannen/" + identificatie);
         String[] expand = {"geometrie", "bbox"};

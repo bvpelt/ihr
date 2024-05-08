@@ -20,7 +20,8 @@ create table plan
     verwijderdop               timestamp,
     istamplan                  boolean,
     einderechtsgeldigheid      date,
-    md5hash                    text
+    md5hash                    text not null,
+    bboxmd5hash                text not null
 );
 
 create unique index plan_identificatie_idx on plan (identificatie);
@@ -30,6 +31,10 @@ create index plan_naam_idx on plan (naam);
 create index plan_dossier_idx on plan (dossierid);
 
 create index plan_besluitnummer_idx on plan (besluitnummer);
+
+create index plan_md5hash_idx on plan (md5hash);
+
+create index plan_bboxd5hash_idx on plan (bboxmd5hash);
 
 ALTER TABLE plan
     OWNER TO testuser;

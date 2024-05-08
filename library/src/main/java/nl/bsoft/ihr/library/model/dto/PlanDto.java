@@ -138,24 +138,28 @@ public class PlanDto implements Serializable {
 
     @Column(name = "md5hash", nullable = false)
     private String md5hash;
+    @Column(name = "bboxmd5hash", nullable = false)
+    private String bboxMd5hash;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PlanDto planDto = (PlanDto) o;
-        return Objects.equals(identificatie, planDto.identificatie) && Objects.equals(plantype, planDto.plantype) && Objects.equals(beleidsmatigeoverheid, planDto.beleidsmatigeoverheid) && Objects.equals(publicerendeoverheid, planDto.publicerendeoverheid) && Objects.equals(naam, planDto.naam) && Objects.equals(planstatus, planDto.planstatus) && Objects.equals(verwijzingnaarvaststelling, planDto.verwijzingnaarvaststelling) && Objects.equals(verwijzingnaargml, planDto.verwijzingnaargml) && Objects.equals(besluitnummer, planDto.besluitnummer) && Objects.equals(regelstatus, planDto.regelstatus) && Objects.equals(dossierid, planDto.dossierid) && Objects.equals(dossierstatus, planDto.dossierstatus) && Objects.equals(ishistorisch, planDto.ishistorisch) && Objects.equals(verwijderdop, planDto.verwijderdop) && Objects.equals(istamplan, planDto.istamplan) && Objects.equals(einderechtsgeldigheid, planDto.einderechtsgeldigheid) && Objects.equals(isparapluplan, planDto.isparapluplan) && Objects.equals(beroepenbezwaar, planDto.beroepenbezwaar) && Objects.equals(md5hash, planDto.md5hash);
+        return Objects.equals(identificatie, planDto.identificatie) && Objects.equals(plantype, planDto.plantype) && Objects.equals(beleidsmatigeoverheid, planDto.beleidsmatigeoverheid) && Objects.equals(publicerendeoverheid, planDto.publicerendeoverheid) && Objects.equals(naam, planDto.naam) && Objects.equals(planstatus, planDto.planstatus) && Objects.equals(verwijzingnaarvaststelling, planDto.verwijzingnaarvaststelling) && Objects.equals(verwijzingnaargml, planDto.verwijzingnaargml) && Objects.equals(besluitnummer, planDto.besluitnummer) && Objects.equals(regelstatus, planDto.regelstatus) && Objects.equals(dossierid, planDto.dossierid) && Objects.equals(dossierstatus, planDto.dossierstatus) && Objects.equals(ishistorisch, planDto.ishistorisch) && Objects.equals(verwijderdop, planDto.verwijderdop) && Objects.equals(istamplan, planDto.istamplan) && Objects.equals(einderechtsgeldigheid, planDto.einderechtsgeldigheid) && Objects.equals(isparapluplan, planDto.isparapluplan) && Objects.equals(beroepenbezwaar, planDto.beroepenbezwaar) && Objects.equals(md5hash, planDto.md5hash) && Objects.equals(bboxMd5hash, planDto.bboxMd5hash);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(identificatie, plantype, beleidsmatigeoverheid, publicerendeoverheid, naam, planstatus, verwijzingnaarvaststelling, verwijzingnaargml, besluitnummer, regelstatus, dossierid, dossierstatus, ishistorisch, verwijderdop, istamplan, einderechtsgeldigheid, isparapluplan, beroepenbezwaar, md5hash);
+        return Objects.hash(identificatie, plantype, beleidsmatigeoverheid, publicerendeoverheid, naam, planstatus, verwijzingnaarvaststelling, verwijzingnaargml, besluitnummer, regelstatus, dossierid, dossierstatus, ishistorisch, verwijderdop, istamplan, einderechtsgeldigheid, isparapluplan, beroepenbezwaar, md5hash, bboxMd5hash);
     }
 
     @Override
     public String toString() {
         return "PlanDto{" +
-                "identificatie='" + identificatie + '\'' +
+                "vervangtMetPlannen=" + vervangtMetPlannen +
+                ", id=" + id +
+                ", identificatie='" + identificatie + '\'' +
                 ", plantype='" + plantype + '\'' +
                 ", beleidsmatigeoverheid=" + beleidsmatigeoverheid +
                 ", publicerendeoverheid=" + publicerendeoverheid +
@@ -174,6 +178,7 @@ public class PlanDto implements Serializable {
                 ", isparapluplan=" + isparapluplan +
                 ", beroepenbezwaar='" + beroepenbezwaar + '\'' +
                 ", md5hash='" + md5hash + '\'' +
+                ", bboxMd5hash='" + bboxMd5hash + '\'' +
                 '}';
     }
 }

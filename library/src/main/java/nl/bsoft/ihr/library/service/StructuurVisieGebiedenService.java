@@ -85,7 +85,6 @@ public class StructuurVisieGebiedenService {
         }
     }
 
-
     private StructuurvisiegebiedCollectie getStructuurvisiegebiedForId(String planidentificatie, int page) {
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(APIService.getApiUrl() + "/plannen/" + planidentificatie + "/structuurvisiegebieden");
         uriComponentsBuilder.queryParam("pageSize", MAXBESTEMMINGSVLAKKEN);
