@@ -4,12 +4,15 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.models.media.MediaType;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nl.bsoft.ihr.library.service.*;
 import nl.bsoft.ihr.library.util.UpdateCounter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -52,7 +55,7 @@ public class SynchronizeController {
     }
 
     @Operation(
-            operationId = "ihrPlanSynchronisation",
+            operationId = "ihrPlannenSynchronisation",
             summary = "Synchronize ihr",
             responses = {
                     @ApiResponse(responseCode = "200", description = "OK.", content = {
@@ -69,6 +72,28 @@ public class SynchronizeController {
         UpdateCounter counter = new UpdateCounter();
 
         counter = plannenService.loadPlannen();
+
+        return ResponseEntity.ok(counter);
+    }
+
+    @Operation(
+            operationId = "ihrPlanSynchronisation",
+            summary = "Synchronize ihr",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "OK.", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = UpdateCounter.class))
+                    })
+            }
+    )
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value = "/load/{identificatie}",
+            produces = {"application/json"}
+    )
+    public ResponseEntity<UpdateCounter> loadIhrPlan(@PathVariable String identificatie) {
+        UpdateCounter counter = new UpdateCounter();
+
+        counter = plannenService.loadPlan(identificatie);
 
         return ResponseEntity.ok(counter);
     }

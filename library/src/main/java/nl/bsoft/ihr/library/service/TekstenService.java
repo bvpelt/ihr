@@ -5,9 +5,11 @@ import nl.bsoft.ihr.generated.model.Kruimel;
 import nl.bsoft.ihr.generated.model.Tekst;
 import nl.bsoft.ihr.generated.model.TekstCollectie;
 import nl.bsoft.ihr.library.mapper.TekstMapper;
+import nl.bsoft.ihr.library.model.dto.AuditLogDto;
 import nl.bsoft.ihr.library.model.dto.ImroLoadDto;
 import nl.bsoft.ihr.library.model.dto.KruimelDto;
 import nl.bsoft.ihr.library.model.dto.TekstDto;
+import nl.bsoft.ihr.library.repository.AuditLogRepository;
 import nl.bsoft.ihr.library.repository.ImroLoadRepository;
 import nl.bsoft.ihr.library.repository.KruimelRepository;
 import nl.bsoft.ihr.library.repository.TekstRepository;
@@ -28,6 +30,7 @@ public class TekstenService {
     private final ImroLoadRepository imroLoadRepository;
     private final TekstRepository tekstRepository;
     private final KruimelRepository kruimelRepository;
+    private final AuditLogRepository auditLogRepository;
     private final TekstMapper tekstMapper;
     private final int MAXTEKSTSIZE = 100;
 
@@ -36,11 +39,13 @@ public class TekstenService {
                           ImroLoadRepository imroLoadRepository,
                           TekstRepository tekstRepository,
                           KruimelRepository kruimelRepository,
+                          AuditLogRepository auditLogRepository,
                           TekstMapper tekstMapper) {
         this.APIService = APIService;
         this.imroLoadRepository = imroLoadRepository;
         this.tekstRepository = tekstRepository;
         this.kruimelRepository = kruimelRepository;
+        this.auditLogRepository = auditLogRepository;
         this.tekstMapper = tekstMapper;
     }
 
@@ -80,17 +85,6 @@ public class TekstenService {
                     // add each found text
                     teksten.getEmbedded().getTeksten().forEach(tekst -> {
                         addTekst(identificatie, tekst, updateCounter);
-/*
-                        if (tekst.getLinks() != null) {
-                            List<TekstReferentie> tekstReferentieList = tekst.getLinks().getChildren();
-                            if (tekstReferentieList != null) {
-                                tekstReferentieList.forEach(tekstReferentie -> {
-                                    String href = tekstReferentie.getHref();
-                                    procesTekstRef(identificatie, href, 1, updateCounter);
-                                });
-                            }
-                        }
- */
                     });
 
                     // while maximum number of teksten retrieved, get next page
@@ -113,6 +107,7 @@ public class TekstenService {
         TekstDto savedTekst = null;
 
         try {
+            String actie = "";
             TekstDto current = tekstMapper.toTekst(tekst);
             current.setPlanidentificatie(planidentificatie);
 
@@ -121,9 +116,11 @@ public class TekstenService {
             if (found.isPresent()) {
                 // if equal do not save
                 if (found.get().equals(current)) {
+                    actie = "skipped";
                     updateCounter.skipped();
                     savedTekst = found.get();
                 } else { // if changed update
+                    actie = "updated";
                     TekstDto updated = found.get();
                     updated.setTitel(current.getTitel());
                     updated.setInhoud(current.getInhoud());
@@ -135,6 +132,7 @@ public class TekstenService {
                     savedTekst = tekstRepository.save(current);
                 }
             } else { // new occurrence
+                actie = "add";
                 updateCounter.add();
                 savedTekst = tekstRepository.save(current);
             }
@@ -161,34 +159,12 @@ public class TekstenService {
                 currentKruimel.setKruimelpad(savedTekst);
                 kruimelRepository.save(currentKruimel);
             }
+            AuditLogDto auditLogDto = new AuditLogDto(planidentificatie, savedTekst.getTekstidentificatie(), "tekst", actie);
+            auditLogRepository.save(auditLogDto);
         } catch (Exception e) {
             log.error("Error while processing: {} in tekst processing: {}", tekst, e);
         }
         return savedTekst;
     }
 
-    /*
-    public void procesTekstRef(String identificatie, String href, int page, UpdateCounter updateCounter) {
-        TekstCollectie teksten = null;
-
-        try {
-            teksten = getTekstRef(href, page);
-
-            if (teksten != null) {
-                saveText(identificatie, page, teksten, updateCounter);
-            } else {
-                log.error("teksten is null");
-            }
-        } catch (Exception e) {
-            log.error("Expected tekstref plan: {} href: {}, error: {}", identificatie, e);
-        }
-    }
-
-    private TekstCollectie getTekstRef(String ref, int page) {
-        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(ref);
-        log.trace("using url: {}", uriComponentsBuilder.build().toUri());
-        return APIService.getDirectly(uriComponentsBuilder.build().toUri(), TekstCollectie.class);
-    }
-
-     */
 }

@@ -5,9 +5,11 @@ import nl.bsoft.ihr.generated.model.Bouwaanduiding;
 import nl.bsoft.ihr.generated.model.BouwaanduidingCollectie;
 import nl.bsoft.ihr.library.mapper.BouwaanduidingMapper;
 import nl.bsoft.ihr.library.mapper.LocatieMapper;
+import nl.bsoft.ihr.library.model.dto.AuditLogDto;
 import nl.bsoft.ihr.library.model.dto.BouwaanduidingDto;
 import nl.bsoft.ihr.library.model.dto.ImroLoadDto;
 import nl.bsoft.ihr.library.model.dto.LocatieDto;
+import nl.bsoft.ihr.library.repository.AuditLogRepository;
 import nl.bsoft.ihr.library.repository.BouwaanduidingRepository;
 import nl.bsoft.ihr.library.repository.ImroLoadRepository;
 import nl.bsoft.ihr.library.repository.LocatieRepository;
@@ -28,6 +30,7 @@ public class BouwaanduidingenService {
     private final ImroLoadRepository imroLoadRepository;
     private final BouwaanduidingRepository bouwaanduidingRepository;
     private final LocatieRepository locatieRepository;
+    private final AuditLogRepository auditLogRepository;
     private final BouwaanduidingMapper bouwaanduidingMapper;
     private final LocatieMapper locatieMapper;
     private final int MAXBOUWAANDUIDINGEN = 100;
@@ -37,12 +40,14 @@ public class BouwaanduidingenService {
                                    ImroLoadRepository imroLoadRepository,
                                    BouwaanduidingRepository bouwaanduidingRepository,
                                    LocatieRepository locatieRepository,
+                                   AuditLogRepository auditLogRepository,
                                    BouwaanduidingMapper bouwaanduidingMapper,
                                    LocatieMapper locatieMapper) {
         this.APIService = APIService;
         this.imroLoadRepository = imroLoadRepository;
         this.bouwaanduidingRepository = bouwaanduidingRepository;
         this.locatieRepository = locatieRepository;
+        this.auditLogRepository = auditLogRepository;
         this.bouwaanduidingMapper = bouwaanduidingMapper;
         this.locatieMapper = locatieMapper;
     }
@@ -103,6 +108,7 @@ public class BouwaanduidingenService {
         BouwaanduidingDto savedBouwaanduiding = null;
 
         try {
+            String actie = "";
             BouwaanduidingDto current = bouwaanduidingMapper.toBouwaanduiding(bouwaanduiding);
             current.setPlanidentificatie(planidentificatie);
             String md5hash = null;
@@ -131,9 +137,11 @@ public class BouwaanduidingenService {
             if (optionalFound.isPresent()) { // existing entry
                 BouwaanduidingDto found = optionalFound.get();
                 if (found.equals(current)) { // not changed
+                    actie = "skipped";
                     savedBouwaanduiding = found;
                     updateCounter.skipped();
                 } else {                     // changed
+                    actie = "changed";
                     found.setNaam(naam);
                     found.setLabelinfo(labelInfo);
                     found.setVerwijzingnaartekst(verwijzingnaartekst);
@@ -143,9 +151,12 @@ public class BouwaanduidingenService {
                     updateCounter.updated();
                 }
             } else { // new entry
+                actie = "add";
                 savedBouwaanduiding = bouwaanduidingRepository.save(current);
                 updateCounter.add();
             }
+            AuditLogDto auditLogDto = new AuditLogDto(planidentificatie, savedBouwaanduiding.getIdentificatie(), "bouwaanduiding", actie);
+            auditLogRepository.save(auditLogDto);
         } catch (Exception e) {
             updateCounter.skipped();
             log.error("Error while processing: {} in bouwaanduiding processing: {}", bouwaanduiding, e);

@@ -2,7 +2,6 @@ package nl.bsoft.ihr.library;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import nl.bsoft.ihr.generated.model.Gebiedsaanduiding;
 import nl.bsoft.ihr.generated.model.Plan;
 import nl.bsoft.ihr.library.mapper.LocatieMapper;
 import nl.bsoft.ihr.library.mapper.LocatieMapperImpl;
@@ -35,6 +34,7 @@ public class PlanTests {
     private ResourceLoader resourceLoader = null;
     @Autowired
     private ObjectMapper objectMapper;
+
     @Autowired
     public PlanTests(APIService apiService) {
         this.APIService = apiService;
@@ -167,6 +167,7 @@ public class PlanTests {
             log.error("Error in mapPlanDto test: {}", e);
         }
     }
+
     private Plan getPlan(String planidentificatie) {
         Plan plan = null;
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(APIService.getApiUrl() + "/plannen/" + planidentificatie);

@@ -6448,4 +6448,4 @@ components:
       name: "X-Api-Key"
       type: "apiKey"
 security:
-  - apiKey: []
+  - apiKey: [ ]

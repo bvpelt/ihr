@@ -26,6 +26,7 @@ public class BestemmingsvlakkenService {
     private final BestemmingFunctieRepository bestemmingFunctieRepository;
     private final TekstRefRepository tekstRefRepository;
     private final LocatieRepository locatieRepository;
+    private final AuditLogRepository auditLogRepository;
     private final BestemmingsvlakMapper bestemmingsvlakMapper;
     private final LocatieMapper locatieMapper;
     private final int MAXBESTEMMINGSVLAKKEN = 100;
@@ -37,6 +38,7 @@ public class BestemmingsvlakkenService {
                                      BestemmingFunctieRepository bestemmingFunctieRepository,
                                      TekstRefRepository tekstRefRepository,
                                      LocatieRepository locatieRepository,
+                                     AuditLogRepository auditLogRepository,
                                      BestemmingsvlakMapper bestemmingsvlakMapper,
                                      LocatieMapper locatieMapper) {
         this.APIService = APIService;
@@ -45,6 +47,7 @@ public class BestemmingsvlakkenService {
         this.bestemmingFunctieRepository = bestemmingFunctieRepository;
         this.tekstRefRepository = tekstRefRepository;
         this.locatieRepository = locatieRepository;
+        this.auditLogRepository = auditLogRepository;
         this.bestemmingsvlakMapper = bestemmingsvlakMapper;
         this.locatieMapper = locatieMapper;
     }
@@ -106,6 +109,7 @@ public class BestemmingsvlakkenService {
         BestemmingsvlakDto savedBestemmingsvlak = null;
 
         try {
+            String actie = "";
             BestemmingsvlakDto current = bestemmingsvlakMapper.toBestemmingsvlak(bestemmingsvlak);
             current.setPlanidentificatie(planidentificatie);
             String md5hash = null;
@@ -128,9 +132,11 @@ public class BestemmingsvlakkenService {
             if (optionalFound.isPresent()) { // existing entry
                 BestemmingsvlakDto found = optionalFound.get();
                 if (found.equals(current)) { // not changed
+                    actie = "skipped";
                     savedBestemmingsvlak = found;
                     updateCounter.skipped();
                 } else {                     // changed
+                    actie = "changed";
                     found.setType(current.getType());
                     found.setNaam(current.getNaam());
 
@@ -154,6 +160,7 @@ public class BestemmingsvlakkenService {
                     updateCounter.updated();
                 }
             } else { // new entry
+                actie = "add";
                 current.getBestemmingsfuncties().forEach(bestemmingFunctie -> {
                     Optional<BestemmingFunctieDto> optionalBestemmingsFunctie = bestemmingFunctieRepository.findByBestemmingsfunctieAndFunctieniveau(bestemmingFunctie.getBestemmingsfunctie(), bestemmingFunctie.getFunctieniveau());
                     if (optionalBestemmingsFunctie.isPresent()) { // exist
@@ -181,6 +188,9 @@ public class BestemmingsvlakkenService {
                 savedBestemmingsvlak = bestemmingsvlakRepository.save(current);
                 updateCounter.add();
             }
+
+            AuditLogDto auditLogDto = new AuditLogDto(planidentificatie, savedBestemmingsvlak.getIdentificatie(), "bestemmingsvlak", actie);
+            auditLogRepository.save(auditLogDto);
         } catch (Exception e) {
             updateCounter.skipped();
             log.error("Error while processing: {} in bestemmingsvlak processing: {}", bestemmingsvlak, e);

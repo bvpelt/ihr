@@ -5,14 +5,8 @@ import nl.bsoft.ihr.generated.model.Lettertekenaanduiding;
 import nl.bsoft.ihr.generated.model.LettertekenaanduidingCollectie;
 import nl.bsoft.ihr.library.mapper.LettertekenaanduidingMapper;
 import nl.bsoft.ihr.library.mapper.LocatieMapper;
-import nl.bsoft.ihr.library.model.dto.BestemmingFunctieDto;
-import nl.bsoft.ihr.library.model.dto.ImroLoadDto;
-import nl.bsoft.ihr.library.model.dto.LettertekenaanduidingDto;
-import nl.bsoft.ihr.library.model.dto.LocatieDto;
-import nl.bsoft.ihr.library.repository.BestemmingFunctieRepository;
-import nl.bsoft.ihr.library.repository.ImroLoadRepository;
-import nl.bsoft.ihr.library.repository.LettertekenaanduidingRepository;
-import nl.bsoft.ihr.library.repository.LocatieRepository;
+import nl.bsoft.ihr.library.model.dto.*;
+import nl.bsoft.ihr.library.repository.*;
 import nl.bsoft.ihr.library.util.UpdateCounter;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +25,7 @@ public class LettertekenaanduidingService {
     private final LettertekenaanduidingRepository lettertekenaanduidingRepository;
     private final BestemmingFunctieRepository bestemmingFunctieRepository;
     private final LocatieRepository locatieRepository;
+    private final AuditLogRepository auditLogRepository;
     private final LettertekenaanduidingMapper lettertekenaanduidingMapper;
     private final LocatieMapper locatieMapper;
     private final int MAXLETTERTEKENAANDUIDINGEN = 100;
@@ -41,6 +36,7 @@ public class LettertekenaanduidingService {
                                         BestemmingFunctieRepository bestemmingFunctieRepository,
                                         LettertekenaanduidingRepository lettertekenaanduidingRepository,
                                         LocatieRepository locatieRepository,
+                                        AuditLogRepository auditLogRepository,
                                         LettertekenaanduidingMapper lettertekenaanduidingMapper,
                                         LocatieMapper locatieMapper) {
         this.APIService = APIService;
@@ -48,6 +44,7 @@ public class LettertekenaanduidingService {
         this.bestemmingFunctieRepository = bestemmingFunctieRepository;
         this.lettertekenaanduidingRepository = lettertekenaanduidingRepository;
         this.locatieRepository = locatieRepository;
+        this.auditLogRepository = auditLogRepository;
         this.lettertekenaanduidingMapper = lettertekenaanduidingMapper;
         this.locatieMapper = locatieMapper;
     }
@@ -107,6 +104,7 @@ public class LettertekenaanduidingService {
         LettertekenaanduidingDto savedLettertekenaanduiding = null;
 
         try {
+            String actie = "";
             LettertekenaanduidingDto current = lettertekenaanduidingMapper.toLettertekenaanduiding(lettertekenaanduiding);
             current.setPlanidentificatie(planidentificatie);
             String md5hash = null;
@@ -130,9 +128,11 @@ public class LettertekenaanduidingService {
             if (optionalFound.isPresent()) { // existing entry
                 LettertekenaanduidingDto found = optionalFound.get();
                 if (found.equals(current)) { // not changed
+                    actie = "skipped";
                     savedLettertekenaanduiding = found;
                     updateCounter.skipped();
                 } else {                     // changed
+                    actie = "changed";
                     found.setNaam(current.getNaam());
                     found.setLabelinfo(current.getLabelinfo());
                     found.setStyleid(current.getStyleid());
@@ -147,6 +147,7 @@ public class LettertekenaanduidingService {
                     updateCounter.updated();
                 }
             } else { // new entry
+                actie = "add";
                 lettertekenaanduiding.getBestemmingsfuncties().forEach(bestemmingsfunctie -> {
                     String functie = bestemmingsfunctie.getBestemmingsfunctie();
                     String functieniveau = bestemmingsfunctie.getFunctieniveau();
@@ -168,6 +169,8 @@ public class LettertekenaanduidingService {
                 savedLettertekenaanduiding = lettertekenaanduidingRepository.save(current);
                 updateCounter.add();
             }
+            AuditLogDto auditLogDto = new AuditLogDto(planidentificatie, savedLettertekenaanduiding.getIdentificatie(), "letteraanduiding", actie);
+            auditLogRepository.save(auditLogDto);
         } catch (Exception e) {
             updateCounter.skipped();
             log.error("Error while processing: {} in lettertekenaanduiding processing: {}", lettertekenaanduiding, e);

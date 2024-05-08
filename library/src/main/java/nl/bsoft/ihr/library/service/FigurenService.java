@@ -28,6 +28,7 @@ public class FigurenService {
     private final TekstRefRepository tekstRefRepository;
     private final IllustratieRepository illustratieRepository;
     private final LocatieRepository locatieRepository;
+    private final AuditLogRepository auditLogRepository;
     private final FiguurMapper figuurMapper;
     private final IllustratieMapper illustratieMapper;
     private final LocatieMapper locatieMapper;
@@ -41,6 +42,7 @@ public class FigurenService {
                           TekstRefRepository tekstRefRepository,
                           IllustratieRepository illustratieRepository,
                           LocatieRepository locatieRepository,
+                          AuditLogRepository auditLogRepository,
                           FiguurMapper figuurMapper,
                           IllustratieMapper illustratieMapper,
                           LocatieMapper locatieMapper) {
@@ -51,6 +53,7 @@ public class FigurenService {
         this.tekstRefRepository = tekstRefRepository;
         this.illustratieRepository = illustratieRepository;
         this.locatieRepository = locatieRepository;
+        this.auditLogRepository = auditLogRepository;
         this.figuurMapper = figuurMapper;
         this.illustratieMapper = illustratieMapper;
         this.locatieMapper = locatieMapper;
@@ -112,6 +115,7 @@ public class FigurenService {
         FiguurDto savedFiguur = null;
 
         try {
+            String actie = "";
             FiguurDto current = figuurMapper.toMaatvoering(figuur);
             current.setPlanidentificatie(planidentificatie);
             String md5hash = null;
@@ -135,9 +139,11 @@ public class FigurenService {
             if (optionalFound.isPresent()) { // existing entry
                 FiguurDto found = optionalFound.get();
                 if (found.equals(current)) { // not changed
+                    actie = "skipped";
                     savedFiguur = found;
                     updateCounter.skipped();
                 } else {                     // changed
+                    actie = "changed";
                     found.setNaam(current.getNaam());
                     found.setLabelinfo(current.getLabelinfo());
                     found.setStyleid(current.getStyleid());
@@ -166,6 +172,7 @@ public class FigurenService {
                     updateCounter.updated();
                 }
             } else { // new entry
+                actie = "add";
                 figuur.getArtikelnummers().forEach(artikel -> {
                     Optional<ArtikelDto> optionalArtikel = artikelRepository.findByArtikel(artikel);
                     ArtikelDto foundArtikel = null;
@@ -225,6 +232,8 @@ public class FigurenService {
                 savedFiguur = figuurRepository.save(current);
                 updateCounter.add();
             }
+            AuditLogDto auditLogDto = new AuditLogDto(planidentificatie, savedFiguur.getIdentificatie(), "figuur", actie);
+            auditLogRepository.save(auditLogDto);
         } catch (Exception e) {
             updateCounter.skipped();
             log.error("Error while processing: {} in figuur processing: {}", figuur, e);

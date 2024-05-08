@@ -5,9 +5,11 @@ import nl.bsoft.ihr.generated.model.Bouwvlak;
 import nl.bsoft.ihr.generated.model.BouwvlakCollectie;
 import nl.bsoft.ihr.library.mapper.BouwvlakMapper;
 import nl.bsoft.ihr.library.mapper.LocatieMapper;
+import nl.bsoft.ihr.library.model.dto.AuditLogDto;
 import nl.bsoft.ihr.library.model.dto.BouwvlakDto;
 import nl.bsoft.ihr.library.model.dto.ImroLoadDto;
 import nl.bsoft.ihr.library.model.dto.LocatieDto;
+import nl.bsoft.ihr.library.repository.AuditLogRepository;
 import nl.bsoft.ihr.library.repository.BouwvlakRepository;
 import nl.bsoft.ihr.library.repository.ImroLoadRepository;
 import nl.bsoft.ihr.library.repository.LocatieRepository;
@@ -28,6 +30,7 @@ public class BouwvlakkenService {
     private final ImroLoadRepository imroLoadRepository;
     private final BouwvlakRepository bouwvlakRepository;
     private final LocatieRepository locatieRepository;
+    private final AuditLogRepository auditLogRepository;
     private final BouwvlakMapper bouwvlakMapper;
     private final LocatieMapper locatieMapper;
     private final int MAXBOUWVLAKKEN = 100;
@@ -37,12 +40,14 @@ public class BouwvlakkenService {
                               ImroLoadRepository imroLoadRepository,
                               BouwvlakRepository bouwvlakRepository,
                               LocatieRepository locatieRepository,
+                              AuditLogRepository auditLogRepository,
                               BouwvlakMapper bouwvlakMapper,
                               LocatieMapper locatieMapper) {
         this.APIService = APIService;
         this.imroLoadRepository = imroLoadRepository;
         this.bouwvlakRepository = bouwvlakRepository;
         this.locatieRepository = locatieRepository;
+        this.auditLogRepository = auditLogRepository;
         this.bouwvlakMapper = bouwvlakMapper;
         this.locatieMapper = locatieMapper;
     }
@@ -103,6 +108,7 @@ public class BouwvlakkenService {
         BouwvlakDto savedBouwvlak = null;
 
         try {
+            String actie = "";
             BouwvlakDto current = bouwvlakMapper.toBestemmingsvlak(bouwvlak);
             current.setPlanidentificatie(planidentificatie);
             String md5hash = null;
@@ -125,9 +131,11 @@ public class BouwvlakkenService {
             if (optionalFound.isPresent()) { // existing entry
                 BouwvlakDto found = optionalFound.get();
                 if (found.equals(current)) { // not changed
+                    actie = "skipped";
                     savedBouwvlak = found;
                     updateCounter.skipped();
                 } else {                     // changed
+                    actie = "changed";
                     found.setNaam(current.getNaam());
                     found.setStyleid(current.getStyleid());
                     found.setMd5hash(md5hash);
@@ -135,9 +143,13 @@ public class BouwvlakkenService {
                     updateCounter.updated();
                 }
             } else { // new entry
+                actie = "add";
                 savedBouwvlak = bouwvlakRepository.save(current);
                 updateCounter.add();
             }
+
+            AuditLogDto auditLogDto = new AuditLogDto(planidentificatie, savedBouwvlak.getIdentificatie(), "bouwvlak", actie);
+            auditLogRepository.save(auditLogDto);
         } catch (Exception e) {
             updateCounter.skipped();
             log.error("Error while processing: {} in bouwvlakken processing: {}", bouwvlak, e);

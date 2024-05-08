@@ -26,6 +26,7 @@ public abstract class LocatieMapper implements JsonNullableMapper {
     @Mapping(target = "id", source = "id", ignore = true)
     @Mapping(target = "geometrie", source = "bbox", qualifiedByName = "toGeometrie")
     public abstract LocatieDto toLocatieDtoBbox(Plan plan) throws ParseException;
+
     @Mapping(target = "id", source = "id", ignore = true)
     @Mapping(target = "geometrie", source = "geometrie", qualifiedByName = "toGeometrie")
     public abstract LocatieDto toLocatieDto(Bestemmingsvlak bestemmingsvlak) throws ParseException;

@@ -5,14 +5,8 @@ import nl.bsoft.ihr.generated.model.Maatvoering;
 import nl.bsoft.ihr.generated.model.MaatvoeringCollectie;
 import nl.bsoft.ihr.library.mapper.LocatieMapper;
 import nl.bsoft.ihr.library.mapper.MaatvoeringMapper;
-import nl.bsoft.ihr.library.model.dto.ImroLoadDto;
-import nl.bsoft.ihr.library.model.dto.LocatieDto;
-import nl.bsoft.ihr.library.model.dto.MaatvoeringDto;
-import nl.bsoft.ihr.library.model.dto.OmvangDto;
-import nl.bsoft.ihr.library.repository.ImroLoadRepository;
-import nl.bsoft.ihr.library.repository.LocatieRepository;
-import nl.bsoft.ihr.library.repository.MaatvoeringRepository;
-import nl.bsoft.ihr.library.repository.OmvangRepository;
+import nl.bsoft.ihr.library.model.dto.*;
+import nl.bsoft.ihr.library.repository.*;
 import nl.bsoft.ihr.library.util.UpdateCounter;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +25,7 @@ public class MaatvoeringenService {
     private final MaatvoeringRepository maatvoeringRepository;
     private final OmvangRepository omvangRepository;
     private final LocatieRepository locatieRepository;
+    private final AuditLogRepository auditLogRepository;
     private final MaatvoeringMapper maatvoeringMapper;
     private final LocatieMapper locatieMapper;
     private final int MAXMAATVOERINGEN = 100;
@@ -41,6 +36,7 @@ public class MaatvoeringenService {
                                 OmvangRepository omvangRepository,
                                 MaatvoeringRepository maatvoeringRepository,
                                 LocatieRepository locatieRepository,
+                                AuditLogRepository auditLogRepository,
                                 MaatvoeringMapper maatvoeringMapper,
                                 LocatieMapper locatieMapper) {
         this.APIService = APIService;
@@ -48,6 +44,7 @@ public class MaatvoeringenService {
         this.omvangRepository = omvangRepository;
         this.maatvoeringRepository = maatvoeringRepository;
         this.locatieRepository = locatieRepository;
+        this.auditLogRepository = auditLogRepository;
         this.maatvoeringMapper = maatvoeringMapper;
         this.locatieMapper = locatieMapper;
     }
@@ -108,6 +105,7 @@ public class MaatvoeringenService {
         MaatvoeringDto savedMaatvoering = null;
 
         try {
+            String actie = "";
             MaatvoeringDto current = maatvoeringMapper.toMaatvoering(maatvoering);
             current.setPlanidentificatie(planidentificatie);
             String md5hash = null;
@@ -131,9 +129,11 @@ public class MaatvoeringenService {
             if (optionalFound.isPresent()) { // existing entry
                 MaatvoeringDto found = optionalFound.get();
                 if (found.equals(current)) { // not changed
+                    actie = "skipped";
                     savedMaatvoering = found;
                     updateCounter.skipped();
                 } else {                     // changed
+                    actie = "changed";
                     found.setNaam(current.getNaam());
                     found.setVerwijzingnaartekst(current.getVerwijzingnaartekst());
                     found.setStyleid(current.getStyleid());
@@ -148,6 +148,7 @@ public class MaatvoeringenService {
                     updateCounter.updated();
                 }
             } else { // new entry
+                actie = "add";
                 maatvoering.getOmvang().forEach(omvang -> {
                     String naam = omvang.getNaam();
                     String waarde = omvang.getWaarde();
@@ -171,6 +172,8 @@ public class MaatvoeringenService {
                 savedMaatvoering = maatvoeringRepository.save(current);
                 updateCounter.add();
             }
+            AuditLogDto auditLogDto = new AuditLogDto(planidentificatie, savedMaatvoering.getIdentificatie(), "maatvoering", actie);
+            auditLogRepository.save(auditLogDto);
         } catch (Exception e) {
             updateCounter.skipped();
             log.error("Error while processing: {} in maatvoering processing: {}", maatvoering, e);

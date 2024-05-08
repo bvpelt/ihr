@@ -1,12 +1,12 @@
 -- table bouwvlak
 create table bouwvlak
 (
-    id                    bigint not null primary key,
-    planidentificatie     text   not null,
-    identificatie         text   not null,
-    naam                  text,
-    styleid               text,
-    md5hash               text
+    id                bigint not null primary key,
+    planidentificatie text   not null,
+    identificatie     text   not null,
+    naam              text,
+    styleid           text,
+    md5hash           text
 );
 
 create index bouwvlak_planidentificatie_idx on bouwvlak (planidentificatie);

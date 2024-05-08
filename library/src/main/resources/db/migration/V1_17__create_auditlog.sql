@@ -1,24 +1,19 @@
 -- table auditlog
 create table auditlog
 (
-    id          bigint      not null primary key,
-    jobid       varchar(48) not null,
-    jobname     varchar(48),
-    jobstate    varchar(12) not null,
-    validat     date,
-    result      text,
-    registratie timestamp,
-    added       int,
-    updated     int,
-    unmodified  int,
-    removed     int,
-    skipped     int,
-    processed   int
+    id            bigint not null primary key,
+    planid        text   not null,
+    identificatie text,
+    objectsoort   text,
+    actie         text,
+    registratie   timestamp default current_timestamp
 );
 
-create index auditlog_jobid_idx on auditlog (jobid);
+create index auditlog_planid_idx on auditlog (planid);
 
-create index auditlog_jobname_idx on auditlog (jobname);
+create index auditlog_identificatie_idx on auditlog (identificatie);
+
+create index auditlog_actie_idx on auditlog (actie);
 
 
 ALTER TABLE auditlog

@@ -58,6 +58,7 @@ public class PlannenService {
     private final OndergrondRepository ondergrondRepository;
     private final ExternalPlanRepository externalPlanRepository;
     private final IllustratieRepository illustratieRepository;
+    private final AuditLogRepository auditLogRepository;
     private final PlanMapper planMapper;
     private final LocatieMapper locatieMapper;
     private final ExternPlanMapper externPlanMapper;
@@ -90,7 +91,8 @@ public class PlannenService {
                           NormadressantRepository normadressantRepository,
                           OndergrondRepository ondergrondRepository,
                           ExternalPlanRepository externalPlanRepository,
-                          IllustratieRepository illustratieRepository
+                          IllustratieRepository illustratieRepository,
+                          AuditLogRepository auditLogRepository
     ) {
         this.APIService = APIService;
         this.tekstenService = tekstenService;
@@ -118,6 +120,7 @@ public class PlannenService {
         this.ondergrondRepository = ondergrondRepository;
         this.externalPlanRepository = externalPlanRepository;
         this.illustratieRepository = illustratieRepository;
+        this.auditLogRepository = auditLogRepository;
         this.MAX_PAGE_SIZE = APIService.getMAX_PAGE_SIZE();
     }
 
@@ -298,6 +301,7 @@ public class PlannenService {
         PlanDto planDto;
 
         try {
+            String actie = "";
             planDto = planMapper.toPlan(plan);
             //
             // Check if locatie is known
@@ -360,11 +364,14 @@ public class PlannenService {
 
             if (optionalFoundPlanDto.isPresent()) {
                 if (changed) {
+                    actie = "updated";
                     updateCounter.updated();
                 } else {
+                    actie = "add";
                     updateCounter.add();
                 }
             } else {
+                actie = "add";
                 updateCounter.add();
             }
 
@@ -440,10 +447,13 @@ public class PlannenService {
             }
             imroPlan.setStructuurvisiegebiedtried(true);
 
+            AuditLogDto auditLogDto = new AuditLogDto(savedPlan.getIdentificatie(), "plan", actie);
+            auditLogRepository.save(auditLogDto);
+
             log.info("[IHR] plan {}", planDto);
         } catch (Exception e) {
             updateCounter.skipped();
-            log.error("Error converting plan\n {}", e.toString());
+            log.error("Error converting plan\n {}", e);
         }
         return savedPlan;
     }
@@ -830,6 +840,22 @@ public class PlannenService {
         imroLoadDtos.forEach(
                 imroPlan -> procesPlan(imroPlan, updateCounter)
         );
+        return updateCounter;
+    }
+
+
+    public UpdateCounter loadPlan(String identificatie) {
+        UpdateCounter updateCounter = new UpdateCounter();
+        if (identificatie != null) {
+            Optional<ImroLoadDto> imroLoadDtos = imroLoadRepository.findByIdentificatie(identificatie);
+
+            if (imroLoadDtos.isPresent()) {
+
+                ImroLoadDto imroPlan = imroLoadDtos.get();
+
+                procesPlan(imroPlan, updateCounter);
+            }
+        }
         return updateCounter;
     }
 }

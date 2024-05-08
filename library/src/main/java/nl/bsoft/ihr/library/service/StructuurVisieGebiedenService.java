@@ -31,6 +31,7 @@ public class StructuurVisieGebiedenService {
     private final LocatieRepository locatieRepository;
     private final CartografieRepository cartografieRepository;
     private final IllustratieRepository illustratieRepository;
+    private final AuditLogRepository auditLogRepository;
     private final StructuurVisieGebiedMapper structuurVisieGebiedMapper;
     private final LocatieMapper locatieMapper;
 
@@ -48,6 +49,7 @@ public class StructuurVisieGebiedenService {
                                          LocatieRepository locatieRepository,
                                          StructuurVisieGebiedMapper structuurVisieGebiedMapper,
                                          CartografieRepository cartografieRepository,
+                                         AuditLogRepository auditLogRepository,
                                          LocatieMapper locatieMapper,
                                          IllustratieRepository illustratieRepository) {
         this.APIService = APIService;
@@ -61,6 +63,7 @@ public class StructuurVisieGebiedenService {
         this.locatieRepository = locatieRepository;
         this.structuurVisieGebiedMapper = structuurVisieGebiedMapper;
         this.cartografieRepository = cartografieRepository;
+        this.auditLogRepository = auditLogRepository;
         this.locatieMapper = locatieMapper;
         this.illustratieRepository = illustratieRepository;
     }
@@ -119,6 +122,7 @@ public class StructuurVisieGebiedenService {
     protected StructuurVisieGebiedDto addStructuurVisie(String planidentificatie, Structuurvisiegebied structuurvisie, UpdateCounter updateCounter) {
         StructuurVisieGebiedDto savedStructuurVisieGebiedDto = null;
         try {
+            String actie = "";
             StructuurVisieGebiedDto current = structuurVisieGebiedMapper.toStructuurVisieGebied(structuurvisie);
             current.setPlanidentificatie(planidentificatie);
 
@@ -149,9 +153,11 @@ public class StructuurVisieGebiedenService {
             if (optionalFound.isPresent()) { // existing entry
                 StructuurVisieGebiedDto found = optionalFound.get();
                 if (found.equals(current)) { // not changed
+                    actie = "skipped";
                     savedStructuurVisieGebiedDto = found;
                     updateCounter.skipped();
                 } else {                     // changed
+                    actie = "changed";
                     StructuurVisieGebiedDto updated = optionalFound.get();
                     updated.setNaam(current.getNaam());
                     updated.setLocaties(current.getLocaties());
@@ -160,6 +166,7 @@ public class StructuurVisieGebiedenService {
                     updateCounter.updated();
                 }
             } else { // new
+                actie = "add";
                 savedStructuurVisieGebiedDto = structuurvisieGebiedRepository.save(current);
                 updateCounter.add();
             }
@@ -185,6 +192,8 @@ public class StructuurVisieGebiedenService {
 
             savedStructuurVisieGebiedDto = structuurvisieGebiedRepository.save(savedStructuurVisieGebiedDto);
 
+            AuditLogDto auditLogDto = new AuditLogDto(planidentificatie, savedStructuurVisieGebiedDto.getIdentificatie(), "structuurvisiegebied", actie);
+            auditLogRepository.save(auditLogDto);
         } catch (Exception e) {
             log.error("Error while processing: {} in processing: {}", structuurvisie, e);
         }

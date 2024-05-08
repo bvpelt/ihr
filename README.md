@@ -1,6 +1,9 @@
 # ihr
 IHR Informatie Huis Ruimte
 
+# Structuurvisie
+probleem with NL.IMRO.0262.xxStructuurv2012-SV41
+
 # Swagger
 To see swagger specification of the synchronisation, first start synchronisation
 - See http://localhost:8080/swagger-ui/index.html

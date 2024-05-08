@@ -5,9 +5,11 @@ import nl.bsoft.ihr.generated.model.Functieaanduiding;
 import nl.bsoft.ihr.generated.model.FunctieaanduidingCollectie;
 import nl.bsoft.ihr.library.mapper.FunctieaanduidingMapper;
 import nl.bsoft.ihr.library.mapper.LocatieMapper;
+import nl.bsoft.ihr.library.model.dto.AuditLogDto;
 import nl.bsoft.ihr.library.model.dto.FunctieaanduidingDto;
 import nl.bsoft.ihr.library.model.dto.ImroLoadDto;
 import nl.bsoft.ihr.library.model.dto.LocatieDto;
+import nl.bsoft.ihr.library.repository.AuditLogRepository;
 import nl.bsoft.ihr.library.repository.FunctieaanduidingRepository;
 import nl.bsoft.ihr.library.repository.ImroLoadRepository;
 import nl.bsoft.ihr.library.repository.LocatieRepository;
@@ -28,6 +30,7 @@ public class FunctieaanduidingService {
     private final ImroLoadRepository imroLoadRepository;
     private final FunctieaanduidingRepository functieaanduidingRepository;
     private final LocatieRepository locatieRepository;
+    private final AuditLogRepository auditLogRepository;
     private final FunctieaanduidingMapper functieaanduidingMapper;
     private final LocatieMapper locatieMapper;
     private final int MAXFUNCTIEAANDUIDINGEN = 100;
@@ -37,12 +40,14 @@ public class FunctieaanduidingService {
                                     ImroLoadRepository imroLoadRepository,
                                     FunctieaanduidingRepository functieaanduidingRepository,
                                     LocatieRepository locatieRepository,
+                                    AuditLogRepository auditLogRepository,
                                     FunctieaanduidingMapper functieaanduidingMapper,
                                     LocatieMapper locatieMapper) {
         this.APIService = APIService;
         this.imroLoadRepository = imroLoadRepository;
         this.functieaanduidingRepository = functieaanduidingRepository;
         this.locatieRepository = locatieRepository;
+        this.auditLogRepository = auditLogRepository;
         this.functieaanduidingMapper = functieaanduidingMapper;
         this.locatieMapper = locatieMapper;
     }
@@ -103,6 +108,7 @@ public class FunctieaanduidingService {
         FunctieaanduidingDto savedFunctieaanduiding = null;
 
         try {
+            String actie = "";
             FunctieaanduidingDto current = functieaanduidingMapper.toFunctieaanduiding(functieaanduiding);
             current.setPlanidentificatie(planidentificatie);
             String md5hash = null;
@@ -125,9 +131,11 @@ public class FunctieaanduidingService {
             if (optionalFound.isPresent()) { // existing entry
                 FunctieaanduidingDto found = optionalFound.get();
                 if (found.equals(current)) { // not changed
+                    actie = "skipped";
                     savedFunctieaanduiding = found;
                     updateCounter.skipped();
                 } else {                     // changed
+                    actie = "changed";
                     found.setNaam(current.getNaam());
                     found.setStyleid(current.getStyleid());
                     found.setMd5hash(md5hash);
@@ -135,9 +143,12 @@ public class FunctieaanduidingService {
                     updateCounter.updated();
                 }
             } else { // new entry
+                actie = "add";
                 savedFunctieaanduiding = functieaanduidingRepository.save(current);
                 updateCounter.add();
             }
+            AuditLogDto auditLogDto = new AuditLogDto(planidentificatie, savedFunctieaanduiding.getIdentificatie(), "functieaanduiding", actie);
+            auditLogRepository.save(auditLogDto);
         } catch (Exception e) {
             updateCounter.skipped();
             log.error("Error while processing: {} in functiaanduiding processing: {}", functieaanduiding, e);

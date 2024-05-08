@@ -2,14 +2,10 @@ package nl.bsoft.ihr.library;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import nl.bsoft.ihr.generated.model.Bouwvlak;
 import nl.bsoft.ihr.generated.model.Functieaanduiding;
 import nl.bsoft.ihr.generated.model.InfoGet200Response;
-import nl.bsoft.ihr.library.mapper.BouwvlakMapper;
-import nl.bsoft.ihr.library.mapper.BouwvlakMapperImpl;
 import nl.bsoft.ihr.library.mapper.FunctieaanduidingMapper;
 import nl.bsoft.ihr.library.mapper.FunctieaanduidingMapperImpl;
-import nl.bsoft.ihr.library.model.dto.BouwvlakDto;
 import nl.bsoft.ihr.library.model.dto.FunctieaanduidingDto;
 import nl.bsoft.ihr.library.service.APIService;
 import org.junit.jupiter.api.*;
