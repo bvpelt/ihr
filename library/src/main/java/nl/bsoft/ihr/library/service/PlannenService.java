@@ -337,7 +337,7 @@ public class PlannenService {
             }
 
             // onetomany relations
-            extractPlanStatus(plan, planDto);
+            extractPlanStatus(planDto);
 
             extractBeleidsmatigeOverheid(plan, planDto);
 
@@ -508,20 +508,15 @@ public class PlannenService {
         return planDto;
     }
 
-    private void extractPlanStatus(Plan plan, PlanDto planDto) {
-        Optional<PlanStatusDto> optionalPlanStatusDto = planStatusRepository.findByStatusAndDatum(plan.getPlanstatusInfo().getPlanstatus().getValue(), plan.getPlanstatusInfo().getDatum());
-        PlanStatusDto currentPlanStatus;
+    private void extractPlanStatus(PlanDto planDto) {
+        PlanStatusDto planStatusDto = planDto.getPlanstatus();
+        Optional<PlanStatusDto> optionalPlanStatusDto = planStatusRepository.findByStatusAndDatum(planStatusDto.getStatus(), planStatusDto.getDatum());
         if (optionalPlanStatusDto.isPresent()) {
-            currentPlanStatus = optionalPlanStatusDto.get();
-        } else {
-            currentPlanStatus = new PlanStatusDto();
-            currentPlanStatus.setStatus(plan.getPlanstatusInfo().getPlanstatus().getValue());
-            currentPlanStatus.setDatum(plan.getPlanstatusInfo().getDatum());
+            planStatusDto = optionalPlanStatusDto.get();
         }
-        currentPlanStatus.getPlannen().add(planDto);
-        currentPlanStatus = planStatusRepository.save(currentPlanStatus);
-        planDto.setPlanstatus(currentPlanStatus);
-        log.info("Planstatus: {}", currentPlanStatus);
+        planStatusDto.getPlannen().add(planDto);
+        planStatusRepository.save(planStatusDto);
+        log.info("Planstatus: {}", planStatusDto);
     }
 
     private void extractBeleidsmatigeOverheid(Plan plan, PlanDto planDto) {

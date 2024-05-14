@@ -33,7 +33,7 @@ public abstract class PlanMapper implements JsonNullableMapper {
     @Mapping(target = "naam", source = "naam")
     @Mapping(target = "besluitnummer", source = "besluitnummer", qualifiedByName = "toJsonNullableString")
     @Mapping(target = "regelstatus", source = "regelStatus", qualifiedByName = "toJsonNullableString")
-    @Mapping(target = "planstatus", source = "planstatusInfo", qualifiedByName = "toPlanStatusInfo")
+    @Mapping(target = "planstatus", source = "planstatusInfo", qualifiedByName = "toPlanStatusDto")
     @Mapping(target = "dossierid", source = "dossier", qualifiedByName = "toDossierId")
     @Mapping(target = "dossierstatus", source = "dossier", qualifiedByName = "toDossierStatus")
     @Mapping(target = "ishistorisch", source = "isHistorisch")
@@ -46,6 +46,17 @@ public abstract class PlanMapper implements JsonNullableMapper {
     @Mapping(target = "beroepenbezwaar", source = "beroepEnBezwaar", qualifiedByName = "toBeroepEnBezwaar")
     public abstract PlanDto toPlan(Plan plan) throws ParseException;
 
+    @Named("toPlanStatusDto")
+    protected PlanStatusDto toPlanStatusDto(PlanstatusInfo planstatusInfo) {
+        PlanStatusDto planStatusDto = null;
+        if (planstatusInfo != null) {
+            planStatusDto = new PlanStatusDto();
+            planStatusDto.setStatus(planstatusInfo.getPlanstatus().getValue());
+            LocalDate localDate = planstatusInfo.getDatum();
+            planStatusDto.setDatum(localDate);
+        }
+        return planStatusDto;
+    }
     @Named("toId")
     protected String toId(String id) {
         return id;

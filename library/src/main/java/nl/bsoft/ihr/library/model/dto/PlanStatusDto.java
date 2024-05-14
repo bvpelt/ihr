@@ -50,6 +50,7 @@ public class PlanStatusDto implements Serializable {
         return "PlanStatusDto{" +
                 "id=" + id +
                 ", status='" + status + '\'' +
+                ", datum=" + datum +
                 '}';
     }
 }
