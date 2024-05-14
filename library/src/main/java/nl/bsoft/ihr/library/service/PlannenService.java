@@ -339,9 +339,9 @@ public class PlannenService {
             // onetomany relations
             extractPlanStatus(planDto);
 
-            extractBeleidsmatigeOverheid(plan, planDto);
+            extractBeleidsmatigeOverheid(/* plan, */ planDto);
 
-            extractPublicerendeOverheid(plan, planDto);
+            extractPublicerendeOverheid(/*plan,*/ planDto);
 
             planRepository.save(planDto); // reference for locatienamen
 
@@ -519,7 +519,8 @@ public class PlannenService {
         log.info("Planstatus: {}", planStatusDto);
     }
 
-    private void extractBeleidsmatigeOverheid(Plan plan, PlanDto planDto) {
+    private void extractBeleidsmatigeOverheid(/*Plan plan, */PlanDto planDto) {
+        /*
         PlanBeleidsmatigVerantwoordelijkeOverheid beleidsmatigeOverheid = plan.getBeleidsmatigVerantwoordelijkeOverheid();
 
         if (beleidsmatigeOverheid.getCode().isPresent()) {
@@ -538,9 +539,21 @@ public class PlannenService {
             planDto.setBeleidsmatigeoverheid(currentBeleidsMatigeOverheid);
             log.debug("beleidsmatige overheid: {}", currentBeleidsMatigeOverheid);
         }
+         */
+        OverheidDto beleidsmatigeOverheid = planDto.getBeleidsmatigeoverheid();
+        if (beleidsmatigeOverheid.getCode() != null) {
+            Optional<OverheidDto> optionalBeleidsmatigOverheid = overheidRepository.findByCode(beleidsmatigeOverheid.getCode());
+            if (optionalBeleidsmatigOverheid.isPresent()) {
+                beleidsmatigeOverheid = optionalBeleidsmatigOverheid.get();
+            }
+            beleidsmatigeOverheid.getPublicerend().add(planDto);
+            overheidRepository.save(beleidsmatigeOverheid);
+        }
+        log.debug("beleidsmatige overheid: {}", beleidsmatigeOverheid);
     }
 
-    private void extractPublicerendeOverheid(Plan plan, PlanDto planDto) {
+    private void extractPublicerendeOverheid(/*Plan plan, */ PlanDto planDto) {
+        /*
         JsonNullable<PlanPublicerendBevoegdGezag> puOverheidDto = plan.getPublicerendBevoegdGezag();
 
         if (puOverheidDto.isPresent()) {
@@ -562,6 +575,19 @@ public class PlannenService {
                 log.debug("publicerende overheid: {}", currentPublicerendeOverheid);
             }
         }
+         */
+        OverheidDto publicerendeOverheid = planDto.getPublicerendeoverheid();
+        if (publicerendeOverheid != null) {
+            if (publicerendeOverheid.getCode() != null) {
+                Optional<OverheidDto> optionalPublicerendeOverheid = overheidRepository.findByCode(publicerendeOverheid.getCode());
+                if (optionalPublicerendeOverheid.isPresent()) {
+                    publicerendeOverheid = optionalPublicerendeOverheid.get();
+                }
+                publicerendeOverheid.getPublicerend().add(planDto);
+                overheidRepository.save(publicerendeOverheid);
+            }
+        }
+        log.debug("publicerende overheid: {}", publicerendeOverheid);
     }
 
     private void extractRelatiesMetExternePlannen(Plan plan, PlanDto planDto) {

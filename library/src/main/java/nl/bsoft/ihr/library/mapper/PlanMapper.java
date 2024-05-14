@@ -1,10 +1,8 @@
 package nl.bsoft.ihr.library.mapper;
 
 import lombok.Setter;
-import nl.bsoft.ihr.generated.model.Plan;
-import nl.bsoft.ihr.generated.model.PlanDossier;
-import nl.bsoft.ihr.generated.model.PlanType;
-import nl.bsoft.ihr.generated.model.PlanstatusInfo;
+import nl.bsoft.ihr.generated.model.*;
+import nl.bsoft.ihr.library.model.dto.OverheidDto;
 import nl.bsoft.ihr.library.model.dto.PlanDto;
 import nl.bsoft.ihr.library.model.dto.PlanStatusDto;
 import org.locationtech.jts.io.ParseException;
@@ -26,10 +24,12 @@ import java.time.OffsetDateTime;
 public abstract class PlanMapper implements JsonNullableMapper {
 
     @Mapping(target = "id", source = "id", ignore = true)
-    @Mapping(target = "illustraties", source = "illustraties", ignore = true)
-    @Mapping(target = "ondergronden", source = "ondergronden", ignore = true)
     @Mapping(target = "identificatie", source = "id", qualifiedByName = "toId")
     @Mapping(target = "plantype", source = "type", qualifiedByName = "toPlanType")
+    @Mapping(target = "beleidsmatigeoverheid", source = "beleidsmatigVerantwoordelijkeOverheid", qualifiedByName = "toBeleidsmatigeOverheid")
+    @Mapping(target = "publicerendeoverheid", source = "publicerendBevoegdGezag", qualifiedByName = "toPublicerendeOverheid")
+    @Mapping(target = "illustraties", source = "illustraties", ignore = true)
+    @Mapping(target = "ondergronden", source = "ondergronden", ignore = true)
     @Mapping(target = "naam", source = "naam")
     @Mapping(target = "besluitnummer", source = "besluitnummer", qualifiedByName = "toJsonNullableString")
     @Mapping(target = "regelstatus", source = "regelStatus", qualifiedByName = "toJsonNullableString")
@@ -57,6 +57,42 @@ public abstract class PlanMapper implements JsonNullableMapper {
         }
         return planStatusDto;
     }
+
+    @Named("toBeleidsmatigeOverheid")
+    protected OverheidDto toBeleidsmatigeOverheid(PlanBeleidsmatigVerantwoordelijkeOverheid overheid) {
+        OverheidDto beleidsmatigeOverheid = null;
+        if (overheid != null) {
+            beleidsmatigeOverheid = new OverheidDto();
+            if (overheid.getNaam().isPresent()) {
+                beleidsmatigeOverheid.setNaam(overheid.getNaam().get());
+            }
+            if (overheid.getCode().isPresent()) {
+                beleidsmatigeOverheid.setCode(overheid.getCode().get());
+            }
+            beleidsmatigeOverheid.setType(overheid.getType().getValue());
+        }
+        return beleidsmatigeOverheid;
+    }
+
+    @Named("toPublicerendeOverheid")
+    protected OverheidDto toPublicerendeOverheid(JsonNullable<PlanPublicerendBevoegdGezag> overheid) {
+        OverheidDto publicerendeOverheid = null;
+
+        if (overheid != null) {
+            if (overheid.isPresent()) {
+                publicerendeOverheid = new OverheidDto();
+                if (overheid.get().getNaam().isPresent()) {
+                    publicerendeOverheid.setNaam(overheid.get().getNaam().get());
+                }
+                if (overheid.get().getCode().isPresent()) {
+                    publicerendeOverheid.setCode(overheid.get().getCode().get());
+                }
+                publicerendeOverheid.setType(overheid.get().getType().getValue());
+            }
+        }
+        return publicerendeOverheid;
+    }
+
     @Named("toId")
     protected String toId(String id) {
         return id;
