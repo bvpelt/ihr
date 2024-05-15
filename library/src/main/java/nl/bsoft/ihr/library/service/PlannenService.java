@@ -339,11 +339,13 @@ public class PlannenService {
             // onetomany relations
             extractPlanStatus(planDto);
 
-            extractBeleidsmatigeOverheid(/* plan, */ planDto);
+            extractBeleidsmatigeOverheid(planDto);
 
-            extractPublicerendeOverheid(/*plan,*/ planDto);
+            extractPublicerendeOverheid(planDto);
 
-            planRepository.save(planDto); // reference for locatienamen
+            extractLocatieNamen(/*plan,*/ planDto);
+
+            planRepository.save(planDto); // reference for manytomany relations
 
             extractRelatiesMetExternePlannen(plan, planDto);
 
@@ -356,7 +358,7 @@ public class PlannenService {
 
             extractVerwijzingNorm(plan, planDto);
 
-            extractLocatieNamen(plan, planDto);
+
 
             extractOndergrond(plan, planDto);
 
@@ -513,38 +515,20 @@ public class PlannenService {
         Optional<PlanStatusDto> optionalPlanStatusDto = planStatusRepository.findByStatusAndDatum(planStatusDto.getStatus(), planStatusDto.getDatum());
         if (optionalPlanStatusDto.isPresent()) {
             planStatusDto = optionalPlanStatusDto.get();
+            planDto.setPlanstatus(planStatusDto);
         }
         planStatusDto.getPlannen().add(planDto);
         planStatusRepository.save(planStatusDto);
         log.info("Planstatus: {}", planStatusDto);
     }
 
-    private void extractBeleidsmatigeOverheid(/*Plan plan, */PlanDto planDto) {
-        /*
-        PlanBeleidsmatigVerantwoordelijkeOverheid beleidsmatigeOverheid = plan.getBeleidsmatigVerantwoordelijkeOverheid();
-
-        if (beleidsmatigeOverheid.getCode().isPresent()) {
-            Optional<OverheidDto> OptionalBeleidsmatigOverheid = overheidRepository.findByCode(beleidsmatigeOverheid.getCode().get());
-            OverheidDto currentBeleidsMatigeOverheid;
-            if (OptionalBeleidsmatigOverheid.isPresent()) {
-                currentBeleidsMatigeOverheid = OptionalBeleidsmatigOverheid.get();
-            } else {
-                currentBeleidsMatigeOverheid = new OverheidDto();
-                currentBeleidsMatigeOverheid.setNaam(beleidsmatigeOverheid.getNaam().get());
-                currentBeleidsMatigeOverheid.setCode(beleidsmatigeOverheid.getCode().get());
-                currentBeleidsMatigeOverheid.setType(beleidsmatigeOverheid.getType().getValue());
-            }
-            currentBeleidsMatigeOverheid.getBeleidsmatig().add(planDto);
-            currentBeleidsMatigeOverheid = overheidRepository.save(currentBeleidsMatigeOverheid);
-            planDto.setBeleidsmatigeoverheid(currentBeleidsMatigeOverheid);
-            log.debug("beleidsmatige overheid: {}", currentBeleidsMatigeOverheid);
-        }
-         */
+    private void extractBeleidsmatigeOverheid(PlanDto planDto) {
         OverheidDto beleidsmatigeOverheid = planDto.getBeleidsmatigeoverheid();
         if (beleidsmatigeOverheid.getCode() != null) {
-            Optional<OverheidDto> optionalBeleidsmatigOverheid = overheidRepository.findByCode(beleidsmatigeOverheid.getCode());
-            if (optionalBeleidsmatigOverheid.isPresent()) {
-                beleidsmatigeOverheid = optionalBeleidsmatigOverheid.get();
+            Optional<OverheidDto> optionalOverheid = overheidRepository.findByCode(beleidsmatigeOverheid.getCode());
+            if (optionalOverheid.isPresent()) {
+                beleidsmatigeOverheid = optionalOverheid.get();
+                planDto.setBeleidsmatigeoverheid(beleidsmatigeOverheid);
             }
             beleidsmatigeOverheid.getPublicerend().add(planDto);
             overheidRepository.save(beleidsmatigeOverheid);
@@ -552,36 +536,14 @@ public class PlannenService {
         log.debug("beleidsmatige overheid: {}", beleidsmatigeOverheid);
     }
 
-    private void extractPublicerendeOverheid(/*Plan plan, */ PlanDto planDto) {
-        /*
-        JsonNullable<PlanPublicerendBevoegdGezag> puOverheidDto = plan.getPublicerendBevoegdGezag();
-
-        if (puOverheidDto.isPresent()) {
-            if (puOverheidDto.get().getCode().isPresent()) {
-                Optional<OverheidDto> optionalPublicerendeOverheid = overheidRepository.findByCode(puOverheidDto.get().getCode().get());
-                OverheidDto currentPublicerendeOverheid;
-                if (optionalPublicerendeOverheid.isPresent()) {
-                    currentPublicerendeOverheid = optionalPublicerendeOverheid.get();
-                } else {
-                    currentPublicerendeOverheid = new OverheidDto();
-                    currentPublicerendeOverheid.setNaam(puOverheidDto.get().getNaam().get());
-                    currentPublicerendeOverheid.setCode(puOverheidDto.get().getCode().get());
-                    currentPublicerendeOverheid.setType(puOverheidDto.get().getType().getValue());
-                }
-                currentPublicerendeOverheid.getBeleidsmatig().add(planDto);
-                currentPublicerendeOverheid = overheidRepository.save(currentPublicerendeOverheid);
-
-                planDto.setPublicerendeoverheid(currentPublicerendeOverheid);
-                log.debug("publicerende overheid: {}", currentPublicerendeOverheid);
-            }
-        }
-         */
+    private void extractPublicerendeOverheid(PlanDto planDto) {
         OverheidDto publicerendeOverheid = planDto.getPublicerendeoverheid();
         if (publicerendeOverheid != null) {
             if (publicerendeOverheid.getCode() != null) {
-                Optional<OverheidDto> optionalPublicerendeOverheid = overheidRepository.findByCode(publicerendeOverheid.getCode());
-                if (optionalPublicerendeOverheid.isPresent()) {
-                    publicerendeOverheid = optionalPublicerendeOverheid.get();
+                Optional<OverheidDto> optionalOverheid = overheidRepository.findByCode(publicerendeOverheid.getCode());
+                if (optionalOverheid.isPresent()) {
+                    publicerendeOverheid = optionalOverheid.get();
+                    planDto.setPublicerendeoverheid(publicerendeOverheid);
                 }
                 publicerendeOverheid.getPublicerend().add(planDto);
                 overheidRepository.save(publicerendeOverheid);
@@ -712,7 +674,8 @@ public class PlannenService {
         }
     }
 
-    private void extractLocatieNamen(Plan plan, PlanDto planDto) {
+    private void extractLocatieNamen(/*Plan plan, */ PlanDto planDto) {
+        /*
         List<String> locatieNaamDtoSet = plan.getLocatienamen();
         for (String puLocatieNaam : locatieNaamDtoSet) {
             Optional<LocatieNaamDto> optionalOverheidDto = locatieNaamRepository.findByNaam(puLocatieNaam);
@@ -729,6 +692,56 @@ public class PlannenService {
             planDto.getLocaties().add(current);
             log.debug("locatie: {}", current);
         }
+
+
+        @Service
+public class PlanService {
+
+    @Autowired
+    private PlanRepository planRepository;
+
+    @Autowired
+    private LocatieNaamRepository locatieNaamRepository;
+
+    public void savePlanWithLocatienaams(PlanDto planDto, Set<LocatieNaamDto> locatieNaamDtos) {
+        // Create a new PlanDto instance
+        PlanDto newPlan = new PlanDto();
+        newPlan.setName(planDto.getName()); // Assuming name is a property in PlanDto
+
+        // Populate the LocatieNaamDto instances
+        Set<LocatieNaamDto> locaties = new HashSet<>();
+        for (LocatieNaamDto locatieNaamDto : locatieNaamDtos) {
+            LocatieNaamDto existingLocatie = locatieNaamRepository.findById(locatieNaamDto.getId()).orElse(null);
+            if (existingLocatie != null) {
+                locaties.add(existingLocatie);
+            } else {
+                locaties.add(locatieNaamDto);
+            }
+        }
+
+        // Associate the LocatieNaamDto instances with the PlanDto
+        newPlan.setLocaties(locaties);
+
+        // Save the PlanDto instance
+        planRepository.save(newPlan);
+    }
+}
+         */
+        Set<LocatieNaamDto> orgLocaties = planDto.getLocaties();
+        Set<LocatieNaamDto> locaties = new HashSet<>();
+        orgLocaties.forEach(locatie -> {
+            LocatieNaamDto locatieNaamDto = null;
+            Optional<LocatieNaamDto> optionalLocNaam = locatieNaamRepository.findByNaam(locatie.getNaam());
+            if (optionalLocNaam.isPresent()) {
+                locatieNaamDto = optionalLocNaam.get();
+            } else {
+                locatieNaamDto = new LocatieNaamDto();
+                locatieNaamDto.setNaam(locatie.getNaam());
+                locatieNaamRepository.save(locatieNaamDto);
+            }
+            locaties.add(locatieNaamDto);
+        });
+        planDto.setLocaties(locaties);
     }
 
     private void extractOndergrond(Plan plan, PlanDto planDto) {

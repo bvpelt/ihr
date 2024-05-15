@@ -2,6 +2,7 @@ package nl.bsoft.ihr.library.mapper;
 
 import lombok.Setter;
 import nl.bsoft.ihr.generated.model.*;
+import nl.bsoft.ihr.library.model.dto.LocatieNaamDto;
 import nl.bsoft.ihr.library.model.dto.OverheidDto;
 import nl.bsoft.ihr.library.model.dto.PlanDto;
 import nl.bsoft.ihr.library.model.dto.PlanStatusDto;
@@ -12,6 +13,9 @@ import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Setter
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
@@ -28,9 +32,11 @@ public abstract class PlanMapper implements JsonNullableMapper {
     @Mapping(target = "plantype", source = "type", qualifiedByName = "toPlanType")
     @Mapping(target = "beleidsmatigeoverheid", source = "beleidsmatigVerantwoordelijkeOverheid", qualifiedByName = "toBeleidsmatigeOverheid")
     @Mapping(target = "publicerendeoverheid", source = "publicerendBevoegdGezag", qualifiedByName = "toPublicerendeOverheid")
+    @Mapping(target = "naam", source = "naam")
+    @Mapping(target = "locaties", source = "locatienamen", qualifiedByName = "toLocatieNamen")
+
     @Mapping(target = "illustraties", source = "illustraties", ignore = true)
     @Mapping(target = "ondergronden", source = "ondergronden", ignore = true)
-    @Mapping(target = "naam", source = "naam")
     @Mapping(target = "besluitnummer", source = "besluitnummer", qualifiedByName = "toJsonNullableString")
     @Mapping(target = "regelstatus", source = "regelStatus", qualifiedByName = "toJsonNullableString")
     @Mapping(target = "planstatus", source = "planstatusInfo", qualifiedByName = "toPlanStatusDto")
@@ -44,7 +50,7 @@ public abstract class PlanMapper implements JsonNullableMapper {
     @Mapping(target = "verwijzingnaarvaststelling", source = "verwijzingNaarVaststellingsbesluit", qualifiedByName = "toJsonNullableString")
     @Mapping(target = "verwijzingnaargml", source = "verwijzingNaarGml")
     @Mapping(target = "beroepenbezwaar", source = "beroepEnBezwaar", qualifiedByName = "toBeroepEnBezwaar")
-    public abstract PlanDto toPlan(Plan plan) throws ParseException;
+    public abstract PlanDto toPlan(Plan plan)  throws ParseException;
 
     @Named("toPlanStatusDto")
     protected PlanStatusDto toPlanStatusDto(PlanstatusInfo planstatusInfo) {
@@ -58,6 +64,16 @@ public abstract class PlanMapper implements JsonNullableMapper {
         return planStatusDto;
     }
 
+    @Named("toLocatieNamen")
+    protected Set<LocatieNaamDto> toLocatieNamen(List<String> locatieNamen) {
+        Set<LocatieNaamDto> locatieNamenSet = new HashSet<>();
+        locatieNamen.forEach(locatienaam -> {
+            LocatieNaamDto locNaam = new LocatieNaamDto();
+            locNaam.setNaam(locatienaam);
+            locatieNamenSet.add(locNaam);
+        });
+        return locatieNamenSet;
+    }
     @Named("toBeleidsmatigeOverheid")
     protected OverheidDto toBeleidsmatigeOverheid(PlanBeleidsmatigVerantwoordelijkeOverheid overheid) {
         OverheidDto beleidsmatigeOverheid = null;
