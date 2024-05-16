@@ -33,7 +33,6 @@ public abstract class PlanMapper implements JsonNullableMapper {
     @Mapping(target = "beleidsmatigeoverheid", source = "beleidsmatigVerantwoordelijkeOverheid", qualifiedByName = "toBeleidsmatigeOverheid")
     @Mapping(target = "publicerendeoverheid", source = "publicerendBevoegdGezag", qualifiedByName = "toPublicerendeOverheid")
     @Mapping(target = "naam", source = "naam")
-    @Mapping(target = "locaties", source = "locatienamen", qualifiedByName = "toLocatieNamen")
 
     @Mapping(target = "illustraties", source = "illustraties", ignore = true)
     @Mapping(target = "ondergronden", source = "ondergronden", ignore = true)

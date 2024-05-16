@@ -343,9 +343,9 @@ public class PlannenService {
 
             extractPublicerendeOverheid(planDto);
 
-            extractLocatieNamen(/*plan,*/ planDto);
-
             planRepository.save(planDto); // reference for manytomany relations
+
+            extractLocatieNamen(plan, planDto);
 
             extractRelatiesMetExternePlannen(plan, planDto);
 
@@ -357,7 +357,6 @@ public class PlannenService {
             extractNormadressant(plan, planDto);
 
             extractVerwijzingNorm(plan, planDto);
-
 
 
             extractOndergrond(plan, planDto);
@@ -674,74 +673,24 @@ public class PlannenService {
         }
     }
 
-    private void extractLocatieNamen(/*Plan plan, */ PlanDto planDto) {
-        /*
-        List<String> locatieNaamDtoSet = plan.getLocatienamen();
-        for (String puLocatieNaam : locatieNaamDtoSet) {
-            Optional<LocatieNaamDto> optionalOverheidDto = locatieNaamRepository.findByNaam(puLocatieNaam);
-            LocatieNaamDto current;
-            if (optionalOverheidDto.isPresent()) {
-                current = optionalOverheidDto.get();
-                current.getPlannen().add(planDto);
-            } else {
-                current = new LocatieNaamDto();
-                current.setNaam(puLocatieNaam);
-                current.getPlannen().add(planDto);
-            }
-            current = locatieNaamRepository.save(current);
-            planDto.getLocaties().add(current);
-            log.debug("locatie: {}", current);
-        }
-
-
-        @Service
-public class PlanService {
-
-    @Autowired
-    private PlanRepository planRepository;
-
-    @Autowired
-    private LocatieNaamRepository locatieNaamRepository;
-
-    public void savePlanWithLocatienaams(PlanDto planDto, Set<LocatieNaamDto> locatieNaamDtos) {
-        // Create a new PlanDto instance
-        PlanDto newPlan = new PlanDto();
-        newPlan.setName(planDto.getName()); // Assuming name is a property in PlanDto
-
-        // Populate the LocatieNaamDto instances
-        Set<LocatieNaamDto> locaties = new HashSet<>();
-        for (LocatieNaamDto locatieNaamDto : locatieNaamDtos) {
-            LocatieNaamDto existingLocatie = locatieNaamRepository.findById(locatieNaamDto.getId()).orElse(null);
-            if (existingLocatie != null) {
-                locaties.add(existingLocatie);
-            } else {
-                locaties.add(locatieNaamDto);
-            }
-        }
-
-        // Associate the LocatieNaamDto instances with the PlanDto
-        newPlan.setLocaties(locaties);
-
-        // Save the PlanDto instance
-        planRepository.save(newPlan);
-    }
-}
-         */
-        Set<LocatieNaamDto> orgLocaties = planDto.getLocaties();
-        Set<LocatieNaamDto> locaties = new HashSet<>();
+    /*
+    precondition: planDto is persisted without locatienaamDto relations!!!!
+    postcondition: LocatienaamDto's are persisted and added to planDto which should be saved lateron
+     */
+    private void extractLocatieNamen(Plan plan,  PlanDto planDto) {
+        List<String> orgLocaties = plan.getLocatienamen();
         orgLocaties.forEach(locatie -> {
             LocatieNaamDto locatieNaamDto = null;
-            Optional<LocatieNaamDto> optionalLocNaam = locatieNaamRepository.findByNaam(locatie.getNaam());
-            if (optionalLocNaam.isPresent()) {
+            Optional<LocatieNaamDto> optionalLocNaam = locatieNaamRepository.findByNaam(locatie);
+            if (optionalLocNaam.isPresent()) { // use existing locatienaam
                 locatieNaamDto = optionalLocNaam.get();
-            } else {
+            } else { // create new locatienaam
                 locatieNaamDto = new LocatieNaamDto();
-                locatieNaamDto.setNaam(locatie.getNaam());
-                locatieNaamRepository.save(locatieNaamDto);
+                locatieNaamDto.setNaam(locatie);
             }
-            locaties.add(locatieNaamDto);
+            locatieNaamDto.getPlannen().add(planDto);
+            planDto.getLocaties().add(locatieNaamDto);
         });
-        planDto.setLocaties(locaties);
     }
 
     private void extractOndergrond(Plan plan, PlanDto planDto) {

@@ -8,6 +8,7 @@ import nl.bsoft.ihr.library.mapper.LocatieMapperImpl;
 import nl.bsoft.ihr.library.mapper.PlanMapper;
 import nl.bsoft.ihr.library.mapper.PlanMapperImpl;
 import nl.bsoft.ihr.library.model.dto.LocatieDto;
+import nl.bsoft.ihr.library.model.dto.LocatieNaamDto;
 import nl.bsoft.ihr.library.model.dto.PlanDto;
 import nl.bsoft.ihr.library.service.APIService;
 import org.junit.jupiter.api.*;
@@ -21,6 +22,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 
 @Slf4j
 @ComponentScan("nl.bsoft.ihr.library")
