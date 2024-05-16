@@ -451,6 +451,7 @@ public class PlannenService {
             AuditLogDto auditLogDto = new AuditLogDto(savedPlan.getIdentificatie(), "plan", actie);
             auditLogRepository.save(auditLogDto);
 
+            imroPlan.setPlanloaded(true);
             log.info("[IHR] plan {}", planDto);
         } catch (Exception e) {
             updateCounter.skipped();
