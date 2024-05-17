@@ -69,6 +69,13 @@ public class FunctieaanduidingService {
         FunctieaanduidingCollectie functieaanduidingen = getFunctieaanduidingForId(planidentificatie, page);
         if (functieaanduidingen != null) {
             saveFunctieaanduidingen(planidentificatie, page, functieaanduidingen, updateCounter, imroPlan);
+            if (imroPlan != null) {
+                imroPlan.setFunctieaanduidingloaded(true);
+                imroPlan.setFiguurloadedprocesed(updateCounter.getProcessed());
+            }
+        }
+        if (imroPlan != null) {
+            imroPlan.setFunctieaanduidingtried(true);
         }
     }
 
@@ -92,14 +99,8 @@ public class FunctieaanduidingService {
                     if (functieaanduidingCollectie.getEmbedded().getFunctieaanduidingen().size() == MAXFUNCTIEAANDUIDINGEN) {
                         procesFunctieaanduidingen(planidentificatie, page + 1, updateCounter, imroPlan);
                     }
-                    if (imroPlan != null) {
-                        imroPlan.setFiguurloaded(true);
-                    }
                 }
             }
-        }
-        if (imroPlan != null) {
-            imroPlan.setFiguurtried(true);
         }
     }
 

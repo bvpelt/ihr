@@ -69,6 +69,13 @@ public class BestemmingsvlakkenService {
         BestemmingsvlakCollectie bestemmingsvlakCollectie = getBestemmingsvlakkenForId(planidentificatie, page);
         if (bestemmingsvlakCollectie != null) {
             saveBestemmingsvlakken(planidentificatie, page, bestemmingsvlakCollectie, updateCounter, imroPlan);
+            if (imroPlan != null) {
+                imroPlan.setBestemmingsvlakkenloaded(true);
+                imroPlan.setBestemmingsvlakkenloadedprocesed(updateCounter.getProcessed());
+            }
+        }
+        if (imroPlan != null) {
+            imroPlan.setBestemmingsvlakkentried(true);
         }
     }
 
@@ -93,14 +100,8 @@ public class BestemmingsvlakkenService {
                     if (bestemmingsvlakken.getEmbedded().getBestemmingsvlakken().size() == MAXBESTEMMINGSVLAKKEN) {
                         procesBestemmingsvlakken(planidentificatie, page + 1, updateCounter, imroPlan);
                     }
-                    if (imroPlan != null) {
-                        imroPlan.setBestemmingsvlakkenloaded(true);
-                    }
                 }
             }
-        }
-        if (imroPlan != null) {
-            imroPlan.setBestemmingsvlakkentried(true);
         }
     }
 

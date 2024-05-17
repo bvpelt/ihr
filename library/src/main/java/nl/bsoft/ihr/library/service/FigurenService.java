@@ -76,6 +76,13 @@ public class FigurenService {
         FiguurCollectie figuren = getFigurenForId(planidentificatie, page);
         if (figuren != null) {
             saveFiguren(planidentificatie, page, figuren, updateCounter, imroPlan);
+            if (imroPlan != null) {
+                imroPlan.setFiguurloaded(true);
+                imroPlan.setFiguurloadedprocesed(updateCounter.getProcessed());
+            }
+        }
+        if (imroPlan != null) {
+            imroPlan.setFiguurtried(true);
         }
     }
 
@@ -99,14 +106,8 @@ public class FigurenService {
                     if (figuurCollectie.getEmbedded().getFiguren().size() == MAXFIGUREN) {
                         procesFiguren(planidentificatie, page + 1, updateCounter, imroPlan);
                     }
-                    if (imroPlan != null) {
-                        imroPlan.setFiguurloaded(true);
-                    }
                 }
             }
-        }
-        if (imroPlan != null) {
-            imroPlan.setFiguurtried(true);
         }
     }
 

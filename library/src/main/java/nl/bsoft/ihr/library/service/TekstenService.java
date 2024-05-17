@@ -67,6 +67,13 @@ public class TekstenService {
         TekstCollectie teksten = getTekstenForId(planidentificatie, page);
         if (teksten != null) {
             saveText(planidentificatie, page, teksten, updateCounter, imroPlan);
+            if (imroPlan != null) {
+                imroPlan.setTekstenLoaded(true);
+                imroPlan.setTekstenloadedprocesed(updateCounter.getProcessed());
+            }
+        }
+        if (imroPlan != null) {
+            imroPlan.setTekstentried(true);
         }
     }
 
@@ -91,14 +98,8 @@ public class TekstenService {
                     if (teksten.getEmbedded().getTeksten().size() == MAXTEKSTSIZE) {
                         procesTeksten(identificatie, page + 1, updateCounter, imroPlan);
                     }
-                    if (imroPlan != null) {
-                        imroPlan.setTekstenLoaded(true);
-                    }
                 }
             }
-        }
-        if (imroPlan != null) {
-            imroPlan.setTekstentried(true);
         }
     }
 

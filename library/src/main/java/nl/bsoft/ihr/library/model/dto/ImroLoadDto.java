@@ -29,38 +29,56 @@ public class ImroLoadDto implements Serializable {
     private Boolean planloaded;
     @Column(name = "tekstenloaded")
     private Boolean tekstenLoaded;
+    @Column(name = "tekstenloadedprocesed")
+    private Integer tekstenloadedprocesed;
     @Column(name = "tekstentried")
     private Boolean tekstentried;
     @Column(name = "bestemmingsvlakkenloaded")
     private Boolean bestemmingsvlakkenloaded;
+    @Column(name = "bestemmingsvlakkenloadedprocesed")
+    private Integer bestemmingsvlakkenloadedprocesed;
     @Column(name = "bestemmingsvlakkentried")
     private Boolean bestemmingsvlakkentried;
     @Column(name = "structuurvisiegebiedloaded")
     private Boolean structuurvisiegebiedloaded;
+    @Column(name = "structuurvisiegebiedloadedprocesed")
+    private Integer structuurvisiegebiedloadedprocesed;
     @Column(name = "structuurvisiegebiedtried")
     private Boolean structuurvisiegebiedtried;
     @Column(name = "bouwvlakkenloaded")
     private Boolean bouwvlakkenloaded;
+    @Column(name = "bouwvlakkenloadedprocesed")
+    private Integer bouwvlakkenloadedprocesed;
     @Column(name = "bouwvlakkentried")
     private Boolean bouwvlakkentried;
     @Column(name = "functieaanduidingloaded")
     private Boolean functieaanduidingloaded;
+    @Column(name = "functieaanduidingloadedprocesed")
+    private Integer functieaanduidingloadedprocesed;
     @Column(name = "functieaanduidingtried")
     private Boolean functieaanduidingtried;
     @Column(name = "bouwaanduidingloaded")
     private Boolean bouwaanduidingloaded;
+    @Column(name = "bouwaanduidingloadedprocesed")
+    private Integer bouwaanduidingloadedprocesed;
     @Column(name = "bouwaanduidingtried")
     private Boolean bouwaanduidingtried;
     @Column(name = "lettertekenaanduidingloaded")
     private Boolean lettertekenaanduidingloaded;
+    @Column(name = "lettertekenaanduidingloadedprocesed")
+    private Integer lettertekenaanduidingloadedprocesed;
     @Column(name = "lettertekenaanduidingtried")
     private Boolean lettertekenaanduidingtried;
     @Column(name = "maatvoeringloaded")
     private Boolean maatvoeringloaded;
+    @Column(name = "maatvoeringloadedprocesed")
+    private Integer maatvoeringloadedprocesed;
     @Column(name = "maatvoeringtried")
     private Boolean maatvoeringtried;
     @Column(name = "figuurloaded")
     private Boolean figuurloaded;
+    @Column(name = "figuurloadedprocesed")
+    private Integer figuurloadedprocesed;
     @Column(name = "figuurtried")
     private Boolean figuurtried;
 
@@ -74,12 +92,12 @@ public class ImroLoadDto implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ImroLoadDto that = (ImroLoadDto) o;
-        return Objects.equals(identificatie, that.identificatie) && Objects.equals(loaded, that.loaded) && Objects.equals(planloaded, that.planloaded) && Objects.equals(tekstenLoaded, that.tekstenLoaded) && Objects.equals(tekstentried, that.tekstentried) && Objects.equals(bestemmingsvlakkenloaded, that.bestemmingsvlakkenloaded) && Objects.equals(bestemmingsvlakkentried, that.bestemmingsvlakkentried) && Objects.equals(structuurvisiegebiedloaded, that.structuurvisiegebiedloaded) && Objects.equals(structuurvisiegebiedtried, that.structuurvisiegebiedtried) && Objects.equals(bouwvlakkenloaded, that.bouwvlakkenloaded) && Objects.equals(bouwvlakkentried, that.bouwvlakkentried) && Objects.equals(functieaanduidingloaded, that.functieaanduidingloaded) && Objects.equals(functieaanduidingtried, that.functieaanduidingtried) && Objects.equals(bouwaanduidingloaded, that.bouwaanduidingloaded) && Objects.equals(bouwaanduidingtried, that.bouwaanduidingtried) && Objects.equals(lettertekenaanduidingloaded, that.lettertekenaanduidingloaded) && Objects.equals(lettertekenaanduidingtried, that.lettertekenaanduidingtried) && Objects.equals(maatvoeringloaded, that.maatvoeringloaded) && Objects.equals(maatvoeringtried, that.maatvoeringtried) && Objects.equals(figuurloaded, that.figuurloaded) && Objects.equals(figuurtried, that.figuurtried);
+        return Objects.equals(identificatie, that.identificatie) && Objects.equals(loaded, that.loaded) && Objects.equals(planloaded, that.planloaded) && Objects.equals(tekstenLoaded, that.tekstenLoaded) && Objects.equals(tekstenloadedprocesed, that.tekstenloadedprocesed) && Objects.equals(tekstentried, that.tekstentried) && Objects.equals(bestemmingsvlakkenloaded, that.bestemmingsvlakkenloaded) && Objects.equals(bestemmingsvlakkenloadedprocesed, that.bestemmingsvlakkenloadedprocesed) && Objects.equals(bestemmingsvlakkentried, that.bestemmingsvlakkentried) && Objects.equals(structuurvisiegebiedloaded, that.structuurvisiegebiedloaded) && Objects.equals(structuurvisiegebiedloadedprocesed, that.structuurvisiegebiedloadedprocesed) && Objects.equals(structuurvisiegebiedtried, that.structuurvisiegebiedtried) && Objects.equals(bouwvlakkenloaded, that.bouwvlakkenloaded) && Objects.equals(bouwvlakkenloadedprocesed, that.bouwvlakkenloadedprocesed) && Objects.equals(bouwvlakkentried, that.bouwvlakkentried) && Objects.equals(functieaanduidingloaded, that.functieaanduidingloaded) && Objects.equals(functieaanduidingloadedprocesed, that.functieaanduidingloadedprocesed) && Objects.equals(functieaanduidingtried, that.functieaanduidingtried) && Objects.equals(bouwaanduidingloaded, that.bouwaanduidingloaded) && Objects.equals(bouwaanduidingloadedprocesed, that.bouwaanduidingloadedprocesed) && Objects.equals(bouwaanduidingtried, that.bouwaanduidingtried) && Objects.equals(lettertekenaanduidingloaded, that.lettertekenaanduidingloaded) && Objects.equals(lettertekenaanduidingloadedprocesed, that.lettertekenaanduidingloadedprocesed) && Objects.equals(lettertekenaanduidingtried, that.lettertekenaanduidingtried) && Objects.equals(maatvoeringloaded, that.maatvoeringloaded) && Objects.equals(maatvoeringloadedprocesed, that.maatvoeringloadedprocesed) && Objects.equals(maatvoeringtried, that.maatvoeringtried) && Objects.equals(figuurloaded, that.figuurloaded) && Objects.equals(figuurloadedprocesed, that.figuurloadedprocesed) && Objects.equals(figuurtried, that.figuurtried);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(identificatie, loaded, planloaded, tekstenLoaded, tekstentried, bestemmingsvlakkenloaded, bestemmingsvlakkentried, structuurvisiegebiedloaded, structuurvisiegebiedtried, bouwvlakkenloaded, bouwvlakkentried, functieaanduidingloaded, functieaanduidingtried, bouwaanduidingloaded, bouwaanduidingtried, lettertekenaanduidingloaded, lettertekenaanduidingtried, maatvoeringloaded, maatvoeringtried, figuurloaded, figuurtried);
+        return Objects.hash(identificatie, loaded, planloaded, tekstenLoaded, tekstenloadedprocesed, tekstentried, bestemmingsvlakkenloaded, bestemmingsvlakkenloadedprocesed, bestemmingsvlakkentried, structuurvisiegebiedloaded, structuurvisiegebiedloadedprocesed, structuurvisiegebiedtried, bouwvlakkenloaded, bouwvlakkenloadedprocesed, bouwvlakkentried, functieaanduidingloaded, functieaanduidingloadedprocesed, functieaanduidingtried, bouwaanduidingloaded, bouwaanduidingloadedprocesed, bouwaanduidingtried, lettertekenaanduidingloaded, lettertekenaanduidingloadedprocesed, lettertekenaanduidingtried, maatvoeringloaded, maatvoeringloadedprocesed, maatvoeringtried, figuurloaded, figuurloadedprocesed, figuurtried);
     }
 
     @Override
@@ -90,22 +108,31 @@ public class ImroLoadDto implements Serializable {
                 ", loaded=" + loaded +
                 ", planloaded=" + planloaded +
                 ", tekstenLoaded=" + tekstenLoaded +
+                ", tekstenloadedprocesed=" + tekstenloadedprocesed +
                 ", tekstentried=" + tekstentried +
                 ", bestemmingsvlakkenloaded=" + bestemmingsvlakkenloaded +
+                ", bestemmingsvlakkenloadedprocesed=" + bestemmingsvlakkenloadedprocesed +
                 ", bestemmingsvlakkentried=" + bestemmingsvlakkentried +
                 ", structuurvisiegebiedloaded=" + structuurvisiegebiedloaded +
+                ", structuurvisiegebiedloadedprocesed=" + structuurvisiegebiedloadedprocesed +
                 ", structuurvisiegebiedtried=" + structuurvisiegebiedtried +
                 ", bouwvlakkenloaded=" + bouwvlakkenloaded +
+                ", bouwvlakkenloadedprocesed=" + bouwvlakkenloadedprocesed +
                 ", bouwvlakkentried=" + bouwvlakkentried +
                 ", functieaanduidingloaded=" + functieaanduidingloaded +
+                ", functieaanduidingloadedprocesed=" + functieaanduidingloadedprocesed +
                 ", functieaanduidingtried=" + functieaanduidingtried +
                 ", bouwaanduidingloaded=" + bouwaanduidingloaded +
+                ", bouwaanduidingloadedprocesed=" + bouwaanduidingloadedprocesed +
                 ", bouwaanduidingtried=" + bouwaanduidingtried +
                 ", lettertekenaanduidingloaded=" + lettertekenaanduidingloaded +
+                ", lettertekenaanduidingloadedprocesed=" + lettertekenaanduidingloadedprocesed +
                 ", lettertekenaanduidingtried=" + lettertekenaanduidingtried +
                 ", maatvoeringloaded=" + maatvoeringloaded +
+                ", maatvoeringloadedprocesed=" + maatvoeringloadedprocesed +
                 ", maatvoeringtried=" + maatvoeringtried +
                 ", figuurloaded=" + figuurloaded +
+                ", figuurloadedprocesed=" + figuurloadedprocesed +
                 ", figuurtried=" + figuurtried +
                 '}';
     }

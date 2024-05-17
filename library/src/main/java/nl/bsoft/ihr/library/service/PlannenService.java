@@ -377,76 +377,40 @@ public class PlannenService {
             }
 
             UpdateCounter tekstCounter = new UpdateCounter();
-            tekstenService.procesTeksten(savedPlan.getIdentificatie(), 1, tekstCounter, null);
+            tekstenService.procesTeksten(savedPlan.getIdentificatie(), 1, tekstCounter, imroPlan);
             log.info("processed teksten: {}", tekstCounter);
-            if (tekstCounter.getProcessed() > 0) {
-                imroPlan.setTekstenLoaded(true);
-            }
-            imroPlan.setTekstentried(true);
 
             UpdateCounter bestemmingsvlakCounter = new UpdateCounter();
-            bestemmingsvlakkenService.procesBestemmingsvlakken(savedPlan.getIdentificatie(), 1, bestemmingsvlakCounter, null);
+            bestemmingsvlakkenService.procesBestemmingsvlakken(savedPlan.getIdentificatie(), 1, bestemmingsvlakCounter, imroPlan);
             log.info("processed bestemmingsvlakken: {}", bestemmingsvlakCounter);
-            if (bestemmingsvlakCounter.getProcessed() > 0) {
-                imroPlan.setBestemmingsvlakkenloaded(true);
-            }
-            imroPlan.setBestemmingsvlakkentried(true);
 
             UpdateCounter bouwvlakCounter = new UpdateCounter();
-            bouwvlakkenService.procesBouwvlakken(savedPlan.getIdentificatie(), 1, bouwvlakCounter, null);
+            bouwvlakkenService.procesBouwvlakken(savedPlan.getIdentificatie(), 1, bouwvlakCounter, imroPlan);
             log.info("processed bouwvlakken: {}", bouwvlakCounter);
-            if (bouwvlakCounter.getProcessed() > 0) {
-                imroPlan.setBouwvlakkenloaded(true);
-            }
-            imroPlan.setBouwvlakkentried(true);
 
             UpdateCounter functieaanduidingCounter = new UpdateCounter();
-            functieaanduidingService.procesFunctieaanduidingen(savedPlan.getIdentificatie(), 1, functieaanduidingCounter, null);
+            functieaanduidingService.procesFunctieaanduidingen(savedPlan.getIdentificatie(), 1, functieaanduidingCounter, imroPlan);
             log.info("processed functieaanduidingen: {}", functieaanduidingCounter);
-            if (functieaanduidingCounter.getProcessed() > 0) {
-                imroPlan.setFunctieaanduidingloaded(true);
-            }
-            imroPlan.setFunctieaanduidingtried(true);
 
             UpdateCounter bouwaanduidingCounter = new UpdateCounter();
-            bouwaanduidingService.procesBouwaanduidingen(savedPlan.getIdentificatie(), 1, bouwaanduidingCounter, null);
+            bouwaanduidingService.procesBouwaanduidingen(savedPlan.getIdentificatie(), 1, bouwaanduidingCounter, imroPlan);
             log.info("processed bouwaanduidingen: {}", bouwaanduidingCounter);
-            if (bouwaanduidingCounter.getProcessed() > 0) {
-                imroPlan.setBouwaanduidingloaded(true);
-            }
-            imroPlan.setBouwaanduidingtried(true);
 
             UpdateCounter lettertekenaanduidingCounter = new UpdateCounter();
-            lettertekenaanduidingService.procesLettertekenaanduidingen(savedPlan.getIdentificatie(), 1, lettertekenaanduidingCounter, null);
+            lettertekenaanduidingService.procesLettertekenaanduidingen(savedPlan.getIdentificatie(), 1, lettertekenaanduidingCounter, imroPlan);
             log.info("processed lettertekenaanduidingen: {}", lettertekenaanduidingCounter);
-            if (lettertekenaanduidingCounter.getProcessed() > 0) {
-                imroPlan.setLettertekenaanduidingloaded(true);
-            }
-            imroPlan.setLettertekenaanduidingtried(true);
 
             UpdateCounter maatvoeringCounter = new UpdateCounter();
-            maatvoeringService.procesMaatvoeringen(savedPlan.getIdentificatie(), 1, maatvoeringCounter, null);
+            maatvoeringService.procesMaatvoeringen(savedPlan.getIdentificatie(), 1, maatvoeringCounter, imroPlan);
             log.info("processed maatvoeringen: {}", maatvoeringCounter);
-            if (maatvoeringCounter.getProcessed() > 0) {
-                imroPlan.setMaatvoeringloaded(true);
-            }
-            imroPlan.setMaatvoeringtried(true);
 
             UpdateCounter figuurCounter = new UpdateCounter();
-            figuurService.procesFiguren(savedPlan.getIdentificatie(), 1, figuurCounter, null);
+            figuurService.procesFiguren(savedPlan.getIdentificatie(), 1, figuurCounter, imroPlan);
             log.info("processed figuren: {}", figuurCounter);
-            if (figuurCounter.getProcessed() > 0) {
-                imroPlan.setFiguurloaded(true);
-            }
-            imroPlan.setFiguurtried(true);
 
             UpdateCounter structuurvisieCounter = new UpdateCounter();
-            structuurVisieGebiedService.procesStructuurVisieGebieden(savedPlan.getIdentificatie(), 1, structuurvisieCounter, null);
+            structuurVisieGebiedService.procesStructuurVisieGebieden(savedPlan.getIdentificatie(), 1, structuurvisieCounter, imroPlan);
             log.info("processed structuurvisiegebied: {}", structuurvisieCounter);
-            if (structuurvisieCounter.getProcessed() > 0) {
-                imroPlan.setStructuurvisiegebiedloaded(true);
-            }
-            imroPlan.setStructuurvisiegebiedtried(true);
 
             AuditLogDto auditLogDto = new AuditLogDto(savedPlan.getIdentificatie(), "plan", actie);
             auditLogRepository.save(auditLogDto);

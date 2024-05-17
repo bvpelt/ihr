@@ -65,6 +65,13 @@ public class LettertekenaanduidingService {
         LettertekenaanduidingCollectie lettertekenaanduidingen = getLettertekenaanduidingForId(planidentificatie, page);
         if (lettertekenaanduidingen != null) {
             saveLettertekenaanduidingen(planidentificatie, page, lettertekenaanduidingen, updateCounter, imroPlan);
+            if (imroPlan != null) {
+                imroPlan.setLettertekenaanduidingloaded(true);
+                imroPlan.setLettertekenaanduidingloadedprocesed(updateCounter.getProcessed());
+            }
+        }
+        if (imroPlan != null) {
+            imroPlan.setLettertekenaanduidingtried(true);
         }
     }
 
@@ -88,14 +95,8 @@ public class LettertekenaanduidingService {
                     if (lettertekenaanduidingCollectie.getEmbedded().getLettertekenaanduidingen().size() == MAXLETTERTEKENAANDUIDINGEN) {
                         procesLettertekenaanduidingen(planidentificatie, page + 1, updateCounter, imroPlan);
                     }
-                    if (imroPlan != null) {
-                        imroPlan.setLettertekenaanduidingloaded(true);
-                    }
                 }
             }
-        }
-        if (imroPlan != null) {
-            imroPlan.setLettertekenaanduidingtried(true);
         }
     }
 

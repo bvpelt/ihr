@@ -66,6 +66,13 @@ public class MaatvoeringenService {
         MaatvoeringCollectie maatvoeringen = getMaatvoeringenForId(planidentificatie, page);
         if (maatvoeringen != null) {
             saveMaatvoeringen(planidentificatie, page, maatvoeringen, updateCounter, imroPlan);
+            if (imroPlan != null) {
+                imroPlan.setMaatvoeringloaded(true);
+                imroPlan.setMaatvoeringloadedprocesed(updateCounter.getProcessed());
+            }
+        }
+        if (imroPlan != null) {
+            imroPlan.setMaatvoeringtried(true);
         }
     }
 
@@ -89,14 +96,8 @@ public class MaatvoeringenService {
                     if (maatvoeringCollectie.getEmbedded().getMaatvoeringen().size() == MAXMAATVOERINGEN) {
                         procesMaatvoeringen(planidentificatie, page + 1, updateCounter, imroPlan);
                     }
-                    if (imroPlan != null) {
-                        imroPlan.setMaatvoeringloaded(true);
-                    }
                 }
             }
-        }
-        if (imroPlan != null) {
-            imroPlan.setMaatvoeringtried(true);
         }
     }
 

@@ -69,6 +69,13 @@ public class BouwvlakkenService {
         BouwvlakCollectie bouwvlakCollectie = getBouwvlakkenForId(planidentificatie, page);
         if (bouwvlakCollectie != null) {
             saveBouwvlakken(planidentificatie, page, bouwvlakCollectie, updateCounter, imroPlan);
+            if (imroPlan != null) {
+                imroPlan.setBouwvlakkenloaded(true);
+                imroPlan.setBouwvlakkenloadedprocesed(updateCounter.getProcessed());
+            }
+        }
+        if (imroPlan != null) {
+            imroPlan.setBouwvlakkentried(true);
         }
     }
 
@@ -92,14 +99,8 @@ public class BouwvlakkenService {
                     if (bouwvlakCollectie.getEmbedded().getBouwvlakken().size() == MAXBOUWVLAKKEN) {
                         procesBouwvlakken(planidentificatie, page + 1, updateCounter, imroPlan);
                     }
-                    if (imroPlan != null) {
-                        imroPlan.setBouwvlakkenloaded(true);
-                    }
                 }
             }
-        }
-        if (imroPlan != null) {
-            imroPlan.setBouwvlakkentried(true);
         }
     }
 

@@ -85,6 +85,13 @@ public class StructuurVisieGebiedenService {
         StructuurvisiegebiedCollectie structuurvisiegebiedCollectie = getStructuurvisiegebiedForId(planidentificatie, page);
         if (structuurvisiegebiedCollectie != null) {
             saveStructuurvisiegebieden(planidentificatie, page, structuurvisiegebiedCollectie, updateCounter, imroPlan);
+            if (imroPlan != null) {
+                imroPlan.setStructuurvisiegebiedloaded(true);
+                imroPlan.setStructuurvisiegebiedloadedprocesed(updateCounter.getProcessed());
+            }
+        }
+        if (imroPlan != null) {
+            imroPlan.setStructuurvisiegebiedtried(true);
         }
     }
 
@@ -107,14 +114,8 @@ public class StructuurVisieGebiedenService {
                     if (structuurvisies.getEmbedded().getStructuurvisiegebieden().size() == MAXBESTEMMINGSVLAKKEN) {
                         procesStructuurVisieGebieden(planidentificatie, page + 1, updateCounter, imroPlan);
                     }
-                    if (imroPlan != null) {
-                        imroPlan.setStructuurvisiegebiedloaded(true);
-                    }
                 }
             }
-        }
-        if (imroPlan != null) {
-            imroPlan.setStructuurvisiegebiedtried(true);
         }
     }
 
