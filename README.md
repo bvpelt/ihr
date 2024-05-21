@@ -171,3 +171,70 @@ grep -e '-- table' *.sql | sed -e 's/[^-]*-- table \(.*\)/drop table if exists \
 grep -e '-- table' *.sql | sed -e 's/[^-]*-- table \(.*\)/\1;/' | sort | sed -e 's/^\(.*\);/select count\(*\) from \1;/'
 popd
 ```
+
+# Check relation external plannen
+
+```sql
+select * from externplan where vervangtmetplan_id=858;
+select * from externplan where tengevolgevanmetplan_id=858;
+select * from externplan where muteertmetplan_id=858;
+select * from externplan where gebruiktinfouitmetplan_id=858;
+select * from externplan where gedeeltelijkeherzieningmetplan_id=858;
+select * from externplan where uittewerkinginmetplan_id=858;
+select * from externplan where uitgewerktinmetplan_id=858;
+select * from externplan where vervangtvanuitplan_id=858;
+select * from externplan where tegevolgevanvanuitplan_id=858;
+select * from externplan where muteertvanuitplan_id=858;
+select * from externplan where gebruiktinforuitvanuitplan_id=858;
+select * from externplan where gedeeltelijkeherzieningvanuitplan_id=858;
+select * from externplan where uittewerkinginvanuitplan_id=858;
+select * from externplan where uitgewerktinvanuitplan_id=858;
+
+select * from externplan where vervangtmetplan_id=858 or
+    tengevolgevanmetplan_id=858 or
+    muteertmetplan_id=858 or
+    gebruiktinfouitmetplan_id=858 or
+    gedeeltelijkeherzieningmetplan_id=858 or
+    uittewerkinginmetplan_id=858 or
+    uitgewerktinmetplan_id=858 or
+    vervangtvanuitplan_id=858 or
+    tegevolgevanvanuitplan_id=858 or
+    muteertvanuitplan_id=858 or
+    gebruiktinforuitvanuitplan_id=858 or
+    gedeeltelijkeherzieningvanuitplan_id=858 or
+    uittewerkinginvanuitplan_id=858 or
+    uitgewerktinvanuitplan_id=858;
+
+-- ref: https://stackoverflow.com/questions/4547672/return-multiple-fields-as-a-record-in-postgresql-with-pl-pgsql
+create or replace function check_plan_relation_on_id (in bigint) returns record
+as $$
+    declare ret record;
+begin    
+    select * from externplan where vervangtmetplan_id=$1 or
+    tengevolgevanmetplan_id=$1 or
+    muteertmetplan_id=$1 or
+    gebruiktinfouitmetplan_id=$1 or
+    gedeeltelijkeherzieningmetplan_id=$1 or
+    uittewerkinginmetplan_id=$1 or
+    uitgewerktinmetplan_id=$1 or
+    vervangtvanuitplan_id=$1 or
+    tegevolgevanvanuitplan_id=$1 or
+    muteertvanuitplan_id=$1 or
+    gebruiktinforuitvanuitplan_id=$1 or
+    gedeeltelijkeherzieningvanuitplan_id=$1 or
+    uittewerkinginvanuitplan_id=$1 or
+    uitgewerktinvanuitplan_id=$1  into ret;
+return ret;    
+end;$$ language plpgsql;
+ 
+-- example: select check_plan_relation_on_id(862);
+
+select id, naam, identificatie, planstatus, planstatusdate, dossier, href, vervangtmetplan_id, tengevolgevanmetplan_id, muteertmetplan_id, 
+       gebruiktinfouitmetplan_id, gedeeltelijkeherzieningmetplan_id, uittewerkinginmetplan_id, uitgewerktinmetplan_id, vervangtvanuitplan_id,  
+ tegevolgevanvanuitplan_id, muteertvanuitplan_id, gebruiktinforuitvanuitplan_id, gedeeltelijkeherzieningvanuitplan_id, uittewerkinginvanuitplan_id, uitgewerktinvanuitplan_id 
+from  check_plan_relation_on_id(862)
+    as (id bigint, naam text, identificatie text, planstatus text, planstatusdate text, dossier  text, href text,vervangtmetplan_id  bigint, tengevolgevanmetplan_id  bigint,
+    muteertmetplan_id  bigint, gebruiktinfouitmetplan_id bigint, gedeeltelijkeherzieningmetplan_id bigint, uittewerkinginmetplan_id bigint, uitgewerktinmetplan_id bigint,
+    vervangtvanuitplan_id bigint, tegevolgevanvanuitplan_id bigint, muteertvanuitplan_id   bigint, gebruiktinforuitvanuitplan_id bigint, gedeeltelijkeherzieningvanuitplan_id bigint,
+        uittewerkinginvanuitplan_id  bigint, uitgewerktinvanuitplan_id  bigint);
+```
