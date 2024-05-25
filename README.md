@@ -238,3 +238,19 @@ from  check_plan_relation_on_id(862)
     vervangtvanuitplan_id bigint, tegevolgevanvanuitplan_id bigint, muteertvanuitplan_id   bigint, gebruiktinforuitvanuitplan_id bigint, gedeeltelijkeherzieningvanuitplan_id bigint,
         uittewerkinginvanuitplan_id  bigint, uitgewerktinvanuitplan_id  bigint);
 ```
+
+# check relation
+## plan - externplan
+
+```sql
+-- relation based on plan id
+select p.id, p.identificatie, e.id, e.identificatie from plan p left join externplan e on (p.identificatie = e.identificatie);
+-- relation based on plan id
+select e.id, e.identificatie, p.id, p.identificatie from externplan e left join plan p on (e.identificatie = p.identificatie);
+
+
+select p.id, p.identificatie, e.id, e.identificatie, e.muteertvanuitplan_id from plan p left join externplan e on (p.id = e.muteertvanuitplan_id);
+select  e.id, e.identificatie, e.muteertvanuitplan_id, p.id, p.identificatie from externplan e left join plan p on (e.muteertvanuitplan_id = p.id);
+
+copy (select * from externplan) to '/tmp/test.csv' With CSV DELIMITER ',' HEADER;
+```
