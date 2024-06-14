@@ -34,6 +34,8 @@ public class FunctieaanduidingTests {
     @Autowired
     private ObjectMapper objectMapper;
 
+    private final String apiVersion = "4.1.0";
+
 
     @Autowired
     public FunctieaanduidingTests(APIService apiService) {
@@ -72,7 +74,7 @@ public class FunctieaanduidingTests {
 
         String version = keyValue.get("version");
         log.info("version: {}", version);
-        Assert.isTrue(version.equals("4.0.1"));
+        Assert.isTrue(version.equals(apiVersion));
     }
 
 

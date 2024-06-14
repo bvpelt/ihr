@@ -34,6 +34,7 @@ public class BouwvlakTests {
     @Autowired
     private ObjectMapper objectMapper;
 
+    private final String apiVersion = "4.1.0";
 
     @Autowired
     public BouwvlakTests(APIService apiService) {
@@ -62,7 +63,7 @@ public class BouwvlakTests {
 
         String version = keyValue.get("version");
         log.info("version: {}", version);
-        Assert.isTrue(version.equals("4.0.1"));
+        Assert.isTrue(version.equals(apiVersion));
     }
 
 
