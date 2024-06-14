@@ -10,7 +10,6 @@ import nl.bsoft.ihr.library.repository.*;
 import nl.bsoft.ihr.library.util.UpdateCounter;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.locationtech.jts.io.ParseException;
-import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,8 +61,6 @@ public class PlannenService {
     private final PlanMapper planMapper;
     private final LocatieMapper locatieMapper;
     private final ExternPlanMapper externPlanMapper;
-    private final IllustratieMapper illustratieMapper;
-    private final OndergrondMapper ondergrondMapper;
 
     @Autowired
     public PlannenService(APIService APIService,
@@ -84,8 +81,6 @@ public class PlannenService {
                           PlanMapper planMapper,
                           LocatieMapper locatieMapper,
                           ExternPlanMapper externPlanMapper,
-                          IllustratieMapper illustratieMapper,
-                          OndergrondMapper ondergrondMapper,
                           PlanStatusRepository planStatusRepository,
                           VerwijzingNormRepository verwijzingNormRepository,
                           NormadressantRepository normadressantRepository,
@@ -112,8 +107,6 @@ public class PlannenService {
         this.planMapper = planMapper;
         this.locatieMapper = locatieMapper;
         this.externPlanMapper = externPlanMapper;
-        this.illustratieMapper = illustratieMapper;
-        this.ondergrondMapper = ondergrondMapper;
         this.planStatusRepository = planStatusRepository;
         this.verwijzingNormRepository = verwijzingNormRepository;
         this.normadressantRepository = normadressantRepository;
